@@ -64,14 +64,17 @@
             box-shadow: 0px 0px 15px rgba(138, 43, 226, 1);
         }
 
+        /* Token Data Section - Now Visible & Styled */
         .token-data {
             margin-top: 30px;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 223, 0, 0.2); /* Soft gold tint */
+            border: 1px solid #ffdd57; /* Neon gold border */
             border-radius: 10px;
             font-size: 18px;
             font-weight: bold;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 0px 15px rgba(255, 223, 0, 0.5);
+            color: #ffdd57; /* Bright gold text for visibility */
             opacity: 1; /* Ensure it's always visible */
             transform: translateY(0);
         }
@@ -92,7 +95,7 @@
         <a href="tokenomics.html" class="cta-button">📊 Tokenomics</a>
         <a href="roadmap.html" class="cta-button">🗺️ Roadmap</a>
 
-        <div class="token-data show">
+        <div class="token-data">
             <h2>Live Token Data</h2>
             <p>💰 Price: <span id="price">$0.00</span></p>
             <p>📊 Market Cap: <span id="marketcap">$0</span></p>
@@ -109,7 +112,11 @@
             setTimeout(() => document.querySelectorAll(".cta-button")[0].classList.add("show"), 1000);
             setTimeout(() => document.querySelectorAll(".cta-button")[1].classList.add("show"), 1200);
             setTimeout(() => document.querySelectorAll(".cta-button")[2].classList.add("show"), 1400);
+            setTimeout(() => document.querySelector(".token-data").classList.add("show"), 1600);
         });
+
+        // Ensure Token Data is Visible from the Start
+        document.querySelector(".token-data").classList.add("show");
     </script>
 </body>
 </html>
