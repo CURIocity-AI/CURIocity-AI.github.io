@@ -37,7 +37,13 @@
             border-radius: 5px;
             font-size: 18px;
             text-align: left;
-            opacity: 1; /* No delay, loads instantly */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        .milestone.show {
+            opacity: 1;
             transform: translateY(0);
         }
 
@@ -68,7 +74,4 @@
         <div class="milestone">🌎 <b>Phase 3:</b> Strategic Partnerships, Exchange Listings 🔜</div>
         <div class="milestone">🚀 <b>Phase 4:</b> More Utility for $CURI, Big Collaborations 🔜</div>
 
-        <a href="index.html" class="back-link">🔙 Back to Home</a>
-    </div>
-</body>
-</html>
+        <
