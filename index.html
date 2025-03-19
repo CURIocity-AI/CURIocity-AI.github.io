@@ -106,6 +106,27 @@
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+.links {
+    margin-top: 20px;
+}
+
+.links a {
+    display: block;
+    padding: 12px;
+    font-size: 18px;
+    color: white;
+    background: #6a0dad;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 10px auto;
+    width: 220px;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.links a:hover {
+    background: #8a2be2;
+}
     </style>
 </head>
 <body>
@@ -116,7 +137,11 @@
         <p>Curiosity didn’t kill the cat, it made it rich!</p>
         <a href="community.html" class="cta-button">Join Our Community</a>
 
-        <div class="token-data">
+   <div class="links">
+    <a href="tokenomics.html" class="cta-button">📊 Tokenomics</a>
+    <a href="roadmap.html" class="cta-button">🗺️ Roadmap</a>
+    <a href="community.html" class="cta-button">🌍 Join Community</a>
+</div>     <div class="token-data">
             <h2>Live Token Data</h2>
             <p>💰 Price: <span id="price">$0.00</span></p>
             <p>📊 Market Cap: <span id="marketcap">$0</span></p>
