@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -63,28 +63,27 @@
             box-shadow: 0px 0px 15px rgba(138, 43, 226, 1);
         }
 
-        /* Token Data - Now Always Visible */
+        /* Token Data - 3D Black Card */
         .token-data {
             margin-top: 30px;
-            padding: 15px;
-            background: rgba(255, 223, 0, 0.2);
-            border: 1px solid #ffdd57;
-            border-radius: 10px;
+            padding: 20px;
+            background: #111; /* Deep black for contrast */
+            border-radius: 15px;
             font-size: 18px;
             font-weight: bold;
-            box-shadow: 0px 0px 15px rgba(255, 223, 0, 0.5);
-            color: #ffdd57;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.7); /* Strong 3D shadow */
+            color: #ffdd57; /* Gold text */
             opacity: 1;
             transform: translateY(0);
             transition: none; /* No animation delay */
         }
 
-        /* Make Sure the Text Inside the Card is Visible */
+        /* Token Data Text Visibility */
         .token-data h2, .token-data p, .token-data span {
-            color: #ffdd57 !important; /* Ensure Bright Gold Text */
+            color: #ffdd57 !important;
             font-size: 18px;
             font-weight: bold;
-            opacity: 1 !important; /* Make Sure They Are Not Hidden */
+            opacity: 1 !important;
         }
 
         /* Sequential Animations */
@@ -103,7 +102,7 @@
         <a href="tokenomics.html" class="cta-button">📊 Tokenomics</a>
         <a href="roadmap.html" class="cta-button">🗺️ Roadmap</a>
 
-        <!-- Token Data Now Always Visible -->
+        <!-- Token Data - Now Black & 3D -->
         <div class="token-data">
             <h2>Live Token Data</h2>
             <p>💰 Price: <span id="price">$0.001</span></p>
@@ -122,9 +121,6 @@
             setTimeout(() => document.querySelectorAll(".cta-button")[1].classList.add("show"), 1200);
             setTimeout(() => document.querySelectorAll(".cta-button")[2].classList.add("show"), 1400);
         });
-
-        // Ensure Token Data is Visible from the Start
-        document.querySelector(".token-data").classList.add("show");
     </script>
 </body>
 </html>
