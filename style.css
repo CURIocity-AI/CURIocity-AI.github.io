@@ -47,6 +47,6 @@ h1 {
   height: auto; /* Maintain correct aspect ratio */
   display: block; /* Avoid extra spacing */
   margin: 0 auto; /* Center the logo */
-  margin-bottom: 3px;
-  border-radius: 50%;
+ 
+  border-radius: 25px;
 }
