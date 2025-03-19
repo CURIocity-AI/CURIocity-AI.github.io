@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -92,7 +92,10 @@
             padding: 12px 20px;
             font-size: 16px;
             font-weight: bold;
-            border-radius: 8px;
+            border-style:solid;
+            bordr-width:1px;
+            width:30px;
+            border-radius: 50px;
             cursor: pointer;
             transition: 0.3s ease-in-out;
             z-index: 1000;
@@ -117,7 +120,7 @@
     </style>
 </head>
 <body>
-    <button class="toggle-mode" onclick="toggleMode()">☀️ Toggle Mode</button>
+    <button class="toggle-mode" onclick="toggleMode()">☀️</button>
 
     <div class="container hidden">
         <img src="curiosity_logo.png" alt="Curiosity Logo" class="logo hidden">
@@ -160,4 +163,11 @@
             const elements = document.querySelectorAll(".hidden");
             elements.forEach((el) => {
                 const position = el.getBoundingClientRect().top;
-                if (position < window.innerHeight -
+                if (position < window.innerHeight - 50) {
+                    el.classList.add("visible");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
