@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,6 +16,7 @@
             overflow-x: hidden;
             transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
         }
+
         .light-mode {
             background: #f4f4f4;
             color: #222;
@@ -110,28 +111,40 @@
             border-radius: 8px;
             cursor: pointer;
             transition: 0.3s ease-in-out;
-            z-index: 1000; /* Ensure it stays on top */
+            z-index: 1000;
             box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
         }
 
         .toggle-mode:hover {
             background: #f4c542;
         }
+
+        /* Animations */
+        .hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
     <button class="toggle-mode" onclick="toggleMode()">☀️ Toggle Mode</button>
 
-    <div class="container">
-        <img src="curiosity_logo.png" alt="Curiosity Logo" class="logo">
-        <h1>Curiosity ($CURI) Token</h1>
-        <p>Curiosity didn’t kill the cat, it made it rich!</p>
-        <a href="community.html" class="cta-button">Join Our Community</a>
-        <a href="tokenomics.html" class="cta-button">📊 Tokenomics</a>
-        <a href="roadmap.html" class="cta-button">🗺️ Roadmap</a>
+    <div class="container hidden">
+        <img src="curiosity_logo.png" alt="Curiosity Logo" class="logo hidden">
+        <h1 class="hidden">Curiosity ($CURI) Token</h1>
+        <p class="hidden">Curiosity didn’t kill the cat, it made it rich!</p>
+        <a href="community.html" class="cta-button hidden">Join Our Community</a>
+        <a href="tokenomics.html" class="cta-button hidden">📊 Tokenomics</a>
+        <a href="roadmap.html" class="cta-button hidden">🗺️ Roadmap</a>
 
         <!-- Token Data - Now Animated & Black -->
-        <div class="token-data">
+        <div class="token-data hidden">
             <h2>Live Token Data</h2>
             <p>💰 Price: <span id="price">$0.001</span></p>
             <p>📊 Market Cap: <span id="marketcap">$500,000</span></p>
@@ -149,6 +162,23 @@
             if (localStorage.getItem("theme") === "light") {
                 document.body.classList.add("light-mode");
             }
+
+            const elements = document.querySelectorAll(".hidden");
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add("visible");
+                }, index * 300);
+            });
+        });
+
+        document.addEventListener("scroll", () => {
+            const elements = document.querySelectorAll(".hidden");
+            elements.forEach((el) => {
+                const position = el.getBoundingClientRect().top;
+                if (position < window.innerHeight - 50) {
+                    el.classList.add("visible");
+                }
+            });
         });
     </script>
 </body>
