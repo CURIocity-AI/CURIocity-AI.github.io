@@ -7,30 +7,32 @@
     <link rel="stylesheet" href="style.css">
     <style>
         body {
-            font-family: Arial, sans-serif;            text-align: center;
+            font-family: Arial, sans-serif;
+            text-align: center;
             padding: 20px;
             background: linear-gradient(135deg, #1a1a2e, #16213e);
             color: white;
         }
 
-        .roadmap {
-            max-width: 600px;
+        .roadmap-container {
+            max-width: 800px;
             margin: auto;
-            text-align: left;
-            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
         }
 
         .milestone {
             margin-bottom: 20px;
-            padding: 10px;
-            border-left: 4px solid #ffdd57;
+            padding: 15px;
+            border-left: 5px solid #ffdd57;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
+            font-size: 18px;
+            text-align: left;
             opacity: 0;
             transform: translateY(20px);
-            transition: 0.6s ease-in-out;
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
         }
 
         .milestone.show {
@@ -42,25 +44,32 @@
             font-size: 2rem;
             color: #ffdd57;
         }
+
+        a {
+            color: #ffdd57;
+            font-weight: bold;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <h1>$CURI Roadmap</h1>
-    <div class="roadmap">
+    <div class="roadmap-container">
         <div class="milestone">🚀 <b>Phase 1:</b> Website Launch, Community Setup ✅</div>
         <div class="milestone">🔥 <b>Phase 2:</b> Airdrop, Listings on CoinGecko & CoinMarketCap 🔜</div>
         <div class="milestone">🌎 <b>Phase 3:</b> Strategic Partnerships, Exchange Listings 🔜</div>
         <div class="milestone">🚀 <b>Phase 4:</b> More Utility for $CURI, Big Collaborations 🔜</div>
     </div>
 
+    <a href="index.html">🔙 Back to Home</a>
+
     <script>
-        const milestones = document.querySelectorAll('.milestone');
-        window.addEventListener('scroll', () => {
-            milestones.forEach(milestone => {
-                const position = milestone.getBoundingClientRect().top;
-                if (position < window.innerHeight - 50) {
+        document.addEventListener("DOMContentLoaded", () => {
+            const milestones = document.querySelectorAll('.milestone');
+            milestones.forEach((milestone, index) => {
+                setTimeout(() => {
                     milestone.classList.add('show');
-                }
+                }, index * 500);
             });
         });
     </script>
