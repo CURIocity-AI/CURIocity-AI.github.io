@@ -4,15 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>$CURI Tokenomics</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        h1 { color: #6a0dad; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        canvas {
+            margin-top: 20px;
+        }
+
+        a {
+            color: #ffdd57;
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <h1>$CURI Tokenomics</h1>
-    <p>Total Supply: <b>500,000,000 $CURI</b></p>
-    <p>🔹 Community: 50% <br> 🔹 Development: 20% <br> 🔹 Marketing: 15% <br> 🔹 Liquidity: 10% <br> 🔹 Airdrop: 5%</p>
-    <a href="index.html">Back to Home</a>
+    <div class="container">
+        <h1>$CURI Tokenomics</h1>
+        <p>Total Supply: <b>500,000,000 $CURI</b></p>
+        <canvas id="tokenomicsChart"></canvas>
+        <a href="index.html">🔙 Back to Home</a>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('tokenomicsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Community (50%)', 'Development (20%)', 'Marketing (15%)', 'Liquidity (10%)', 'Airdrop (5%)'],
+                datasets: [{
+                    data: [50, 20, 15, 10, 5],
+                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff']
+                }]
+            }
+        });
+    </script>
 </body>
 </html>
