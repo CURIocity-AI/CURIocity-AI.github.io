@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,6 +21,7 @@
             animation: bgAnimation 10s infinite alternate;
             color: white;
         }
+
         .container {
             max-width: 800px;
             margin: auto;
@@ -57,6 +58,19 @@
         .cta-button:hover {
             background: #8a2be2;
         }
+
+        /* Live Token Data */
+        .token-data {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .token-data p {
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -65,11 +79,24 @@
         <h1>Curiosity ($CURI) Token</h1>
         <p>Curiosity didn’t kill the cat, it made it rich!</p>
         <a href="community.html" class="cta-button">Join Our Community</a>
-<section id="whitepaper">
-    <h2>Whitepaper</h2>
-    <p>Learn more about $CURI's mission, tokenomics, and roadmap.</p>
-    <a href="Curiosity_Whitepaper.pdf" download class="cta-button">📄 Download Whitepaper</a>
-</section>
+
+        <div class="token-data">
+            <h2>Live Token Data</h2>
+            <p>💰 Price: <span id="price">$0.00</span></p>
+            <p>📊 Market Cap: <span id="marketcap">$0</span></p>
+            <p>🔄 Total Supply: 500,000,000 $CURI</p>
+        </div>
     </div>
+
+    <script>
+        // Placeholder function for live token data (Replace with API later)
+        function updateTokenData() {
+            document.getElementById("price").innerText = "$0.001";
+            document.getElementById("marketcap").innerText = "$500,000";
+        }
+
+        // Simulate data update after 2 seconds
+        setTimeout(updateTokenData, 2000);
+    </script>
 </body>
 </html>
