@@ -4,27 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curiosity ($CURI) Token</title>
- <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
     <style>
-        body { text-align: center; font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
-        h1 { color: #6a0dad; }
-        img { width: 200px; margin-top: 20px; }
+        /* Background animation */
+        @keyframes bgAnimation {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            background-size: 200% 200%;
+            animation: bgAnimation 10s infinite alternate;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #f4f4f4;
+        }
+
+        .logo {
+            width: 150px;
+            border-radius: 50%;
+            margin-top: 20px;
+            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin-top: 20px;
+            background: #6a0dad;
+            color: white;
+            font-size: 18px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .cta-button:hover {
+            background: #8a2be2;
+        }
     </style>
 </head>
 <body>
-
-    <div class="navbar">
-        <a href="index.html">Home</a>
-        <a href="tokenomics.html">Tokenomics</a>
-        <a href="roadmap.html">Roadmap</a>
-        <a href="about.html">About</a>
-        <a href="community.html">Community</a>
-    </div>
-
     <div class="container">
-        <h1>Welcome to $CURI</h1>
-        <p>$CURI is a meme token built on curiosity and discovery.</p>
-        <a href="about.html" class="button">Learn More</a>
+        <img src="curiosity_logo.png" alt="Curiosity Logo" class="logo">
+        <h1>Curiosity ($CURI) Token</h1>
+        <p>Curiosity didn’t kill the cat, it made it rich!</p>
+        <a href="community.html" class="cta-button">Join Our Community</a>
     </div>
 </body>
 </html>
