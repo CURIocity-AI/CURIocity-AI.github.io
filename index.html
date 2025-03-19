@@ -1,5 +1,4 @@
-
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -39,7 +38,7 @@
             transition: opacity 1s ease-out 0.3s, transform 1s ease-out 0.3s;
         }
 
-        h1, p, .cta-button, .token-data {
+        h1, p, .cta-button {
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 1s ease-out, transform 1s ease-out;
@@ -64,19 +63,20 @@
             box-shadow: 0px 0px 15px rgba(138, 43, 226, 1);
         }
 
-        /* Token Data Section - Now Visible & Styled */
+        /* Token Data - Now Always Visible */
         .token-data {
             margin-top: 30px;
             padding: 15px;
-            background: rgba(255, 223, 0, 0.2); /* Soft gold tint */
-            border: 1px solid #ffdd57; /* Neon gold border */
+            background: rgba(255, 223, 0, 0.2);
+            border: 1px solid #ffdd57;
             border-radius: 10px;
             font-size: 18px;
             font-weight: bold;
             box-shadow: 0px 0px 15px rgba(255, 223, 0, 0.5);
-            color: white; /* Bright gold text for visibility */
-            opacity: 1; /* Ensure it's always visible */
+            color: #ffdd57;
+            opacity: 1;
             transform: translateY(0);
+            transition: none; /* No animation delay */
         }
 
         /* Sequential Animations */
@@ -95,10 +95,11 @@
         <a href="tokenomics.html" class="cta-button">📊 Tokenomics</a>
         <a href="roadmap.html" class="cta-button">🗺️ Roadmap</a>
 
+        <!-- Token Data Now Always Visible -->
         <div class="token-data">
             <h2>Live Token Data</h2>
-            <p>💰 Price: <span id="price">$0.00</span></p>
-            <p>📊 Market Cap: <span id="marketcap">$0</span></p>
+            <p>💰 Price: <span id="price">$0.001</span></p>
+            <p>📊 Market Cap: <span id="marketcap">$500,000</span></p>
             <p>🔄 Total Supply: 500,000,000 $CURI</p>
         </div>
     </div>
@@ -112,11 +113,7 @@
             setTimeout(() => document.querySelectorAll(".cta-button")[0].classList.add("show"), 1000);
             setTimeout(() => document.querySelectorAll(".cta-button")[1].classList.add("show"), 1200);
             setTimeout(() => document.querySelectorAll(".cta-button")[2].classList.add("show"), 1400);
-            setTimeout(() => document.querySelector(".token-data").classList.add("show"), 1600);
         });
-
-        // Ensure Token Data is Visible from the Start
-        document.querySelector(".token-data").classList.add("show");
     </script>
 </body>
 </html>
