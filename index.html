@@ -6,7 +6,7 @@
     <title>Curiosity ($CURI) Token</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Background Animation */
+        /* General Styling */
         body {
             font-family: 'Poppins', sans-serif;
             text-align: center;
@@ -14,6 +14,12 @@
             background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
             color: white;
             overflow-x: hidden;
+            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .light-mode {
+            background: #f4f4f4;
+            color: #222;
         }
 
         .container {
@@ -24,24 +30,18 @@
             border-radius: 15px;
             backdrop-filter: blur(10px);
             box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
         }
 
         .logo {
             width: 180px;
             border-radius: 50%;
             box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease-out 0.3s, transform 1s ease-out 0.3s;
         }
 
-        h1, p, .cta-button {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
+        h1 {
+            font-size: 2.5rem;
+            color: #ffdd57;
+            text-transform: uppercase;
         }
 
         .cta-button {
@@ -63,37 +63,64 @@
             box-shadow: 0px 0px 15px rgba(138, 43, 226, 1);
         }
 
-        /* Token Data - 3D Black Card */
+        /* Token Data - 3D Animated Card */
         .token-data {
             margin-top: 30px;
             padding: 20px;
-            background: #111; /* Deep black for contrast */
+            background: #111;
             border-radius: 15px;
             font-size: 18px;
             font-weight: bold;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.7); /* Strong 3D shadow */
-            color: #ffdd57; /* Gold text */
-            opacity: 1;
-            transform: translateY(0);
-            transition: none; /* No animation delay */
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.7);
+            color: #ffdd57;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
-        /* Token Data Text Visibility */
-        .token-data h2, .token-data p, .token-data span {
-            color: #ffdd57 !important;
-            font-size: 18px;
+        .token-data:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 10px 25px rgba(255, 223, 0, 0.5);
+        }
+
+        /* Light Mode Adjustments */
+        .light-mode .token-data {
+            background: #fff;
+            color: #222;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .light-mode .cta-button {
+            background: #333;
+            color: white;
+        }
+
+        .light-mode .cta-button:hover {
+            background: #555;
+        }
+
+        /* Toggle Button */
+        .toggle-mode {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ffdd57;
+            color: #222;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
             font-weight: bold;
-            opacity: 1 !important;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
         }
 
-        /* Sequential Animations */
-        .show {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
+        .toggle-mode:hover {
+            background: #f4c542;
         }
     </style>
 </head>
 <body>
+    <button class="toggle-mode" onclick="toggleMode()">☀️ Toggle Mode</button>
+
     <div class="container">
         <img src="curiosity_logo.png" alt="Curiosity Logo" class="logo">
         <h1>Curiosity ($CURI) Token</h1>
@@ -102,7 +129,7 @@
         <a href="tokenomics.html" class="cta-button">📊 Tokenomics</a>
         <a href="roadmap.html" class="cta-button">🗺️ Roadmap</a>
 
-        <!-- Token Data - Now Black & 3D -->
+        <!-- Token Data - Now Animated & Black -->
         <div class="token-data">
             <h2>Live Token Data</h2>
             <p>💰 Price: <span id="price">$0.001</span></p>
@@ -112,14 +139,15 @@
     </div>
 
     <script>
+        function toggleMode() {
+            document.body.classList.toggle("light-mode");
+            localStorage.setItem("theme", document.body.classList.contains("light-mode") ? "light" : "dark");
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
-            setTimeout(() => document.querySelector(".container").classList.add("show"), 200);
-            setTimeout(() => document.querySelector(".logo").classList.add("show"), 400);
-            setTimeout(() => document.querySelector("h1").classList.add("show"), 600);
-            setTimeout(() => document.querySelector("p").classList.add("show"), 800);
-            setTimeout(() => document.querySelectorAll(".cta-button")[0].classList.add("show"), 1000);
-            setTimeout(() => document.querySelectorAll(".cta-button")[1].classList.add("show"), 1200);
-            setTimeout(() => document.querySelectorAll(".cta-button")[2].classList.add("show"), 1400);
+            if (localStorage.getItem("theme") === "light") {
+                document.body.classList.add("light-mode");
+            }
         });
     </script>
 </body>
