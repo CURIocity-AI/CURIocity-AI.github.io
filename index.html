@@ -14,6 +14,7 @@
             padding: 20px;
             background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
             color: white;
+            overflow-x: hidden;
         }
 
         .container {
@@ -24,19 +25,24 @@
             border-radius: 15px;
             backdrop-filter: blur(10px);
             box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        h1 {
-            font-size: 3rem;
-            color: #ffdd57;
-            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
         }
 
         .logo {
             width: 180px;
             border-radius: 50%;
             box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out 0.3s, transform 1s ease-out 0.3s;
+        }
+
+        h1, p, .cta-button, .token-data {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
         }
 
         .cta-button {
@@ -58,7 +64,6 @@
             box-shadow: 0px 0px 15px rgba(138, 43, 226, 1);
         }
 
-        /* Live Token Data */
         .token-data {
             margin-top: 30px;
             padding: 15px;
@@ -68,10 +73,10 @@
             font-weight: bold;
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Sequential Animations */
+        .show {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -91,5 +96,18 @@
             <p>🔄 Total Supply: 500,000,000 $CURI</p>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => document.querySelector(".container").classList.add("show"), 200);
+            setTimeout(() => document.querySelector(".logo").classList.add("show"), 400);
+            setTimeout(() => document.querySelector("h1").classList.add("show"), 600);
+            setTimeout(() => document.querySelector("p").classList.add("show"), 800);
+            setTimeout(() => document.querySelectorAll(".cta-button")[0].classList.add("show"), 1000);
+            setTimeout(() => document.querySelectorAll(".cta-button")[1].classList.add("show"), 1200);
+            setTimeout(() => document.querySelectorAll(".cta-button")[2].classList.add("show"), 1400);
+            setTimeout(() => document.querySelector(".token-data").classList.add("show"), 1600);
+        });
+    </script>
 </body>
 </html>
