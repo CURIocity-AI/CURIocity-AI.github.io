@@ -6,35 +6,41 @@
     <title>$CURI Roadmap</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* General Styling */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
+            color: white;
             text-align: center;
             padding: 20px;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            color: white;
         }
 
         .roadmap-container {
             max-width: 800px;
             margin: auto;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-in-out;
         }
 
-        .roadmap h2 {
+        h2 {
+            font-size: 2.5rem;
             color: #ffdd57;
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 20px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 1.5px;
         }
 
         .milestone {
+            position: relative;
             margin-bottom: 20px;
             padding: 15px;
-            border-left: 5px solid #ffdd57;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
+            border-left: 4px solid #ffdd57;
+            border-radius: 10px;
             font-size: 18px;
             text-align: left;
             opacity: 0;
@@ -47,31 +53,44 @@
             transform: translateY(0);
         }
 
-        .back-link {
-            display: block;
-            margin-top: 20px;
+        /* Neon Glow Effect */
+        .milestone::before {
+            content: "🔥";
+            position: absolute;
+            left: -25px;
+            font-size: 22px;
             color: #ffdd57;
-            font-weight: bold;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0px 0px 5px #ffdd57; }
+            100% { text-shadow: 0px 0px 15px #ffdd57; }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            font-size: 18px;
+            color: #1a1a2e;
+            background: #ffdd57;
             text-decoration: none;
-            padding: 10px;
-            border: 2px solid #ffdd57;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-weight: bold;
             transition: 0.3s;
         }
 
         .back-link:hover {
-            background: #ffdd57;
-            color: #1a1a2e;
+            background: #f4c542;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
     <div class="roadmap-container">
-        <h2>$CURI Roadmap</h2>
-
-        <div class="milestone">🚀 <b>Phase 1:</b> Website Launch, Community Setup ✅</div>
-        <div class="milestone">🔥 <b>Phase 2:</b> Airdrop, Listings on CoinGecko & CoinMarketCap 🔜</div>
-        <div class="milestone">🌎 <b>Phase 3:</b> Strategic Partnerships, Exchange Listings 🔜</div>
-        <div class="milestone">🚀 <b>Phase 4:</b> More Utility for $CURI, Big Collaborations 🔜</div>
-
-        <
+        <h2>$C
