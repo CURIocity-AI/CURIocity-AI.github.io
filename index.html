@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curiosity ($CURI) Token</title>
-   <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
     <style>
         /* General Styling */
         body {
@@ -81,36 +81,18 @@
             box-shadow: 0px 10px 25px rgba(255, 223, 0, 0.5);
         }
 
-        /* Light Mode Adjustments */
-        .light-mode .token-data {
-            background: #fff;
-            color: #222;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .light-mode .cta-button {
-            background: #333;
-            color: white;
-        }
-
-        .light-mode .cta-button:hover {
-            background: #555;
-        }
-
-        /* Toggle Button - Now Fixed & Always Visible */
+        /* Toggle Button - Fixed Position */
         .toggle-mode {
             position: fixed;
             top: 15px;
-            width:40px;
             right: 15px;
             background: #ffdd57;
             color: #222;
-            border-style: solid;
-            border-width:1px;
+            border: none;
             padding: 12px 20px;
             font-size: 16px;
             font-weight: bold;
-            border-radius: 60px;
+            border-radius: 8px;
             cursor: pointer;
             transition: 0.3s ease-in-out;
             z-index: 1000;
@@ -135,7 +117,7 @@
     </style>
 </head>
 <body>
-    <button class="toggle-mode" onclick="toggleMode()">☀️</button>
+    <button class="toggle-mode" onclick="toggleMode()">☀️ Toggle Mode</button>
 
     <div class="container hidden">
         <img src="curiosity_logo.png" alt="Curiosity Logo" class="logo hidden">
@@ -144,6 +126,7 @@
         <a href="community.html" class="cta-button hidden">Join Our Community</a>
         <a href="tokenomics.html" class="cta-button hidden">📊 Tokenomics</a>
         <a href="roadmap.html" class="cta-button hidden">🗺️ Roadmap</a>
+        <a href="whitepaper.pdf" class="cta-button hidden" target="_blank">📄 Whitepaper</a> <!-- Whitepaper Button Added -->
 
         <!-- Token Data - Now Animated & Black -->
         <div class="token-data hidden">
@@ -177,11 +160,4 @@
             const elements = document.querySelectorAll(".hidden");
             elements.forEach((el) => {
                 const position = el.getBoundingClientRect().top;
-                if (position < window.innerHeight - 50) {
-                    el.classList.add("visible");
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+                if (position < window.innerHeight -
