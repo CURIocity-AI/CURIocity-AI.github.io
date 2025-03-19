@@ -22,6 +22,13 @@
             border-radius: 10px;
         }
 
+        .roadmap h2 {
+            color: #ffdd57;
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
         .milestone {
             margin-bottom: 20px;
             padding: 15px;
@@ -40,38 +47,27 @@
             transform: translateY(0);
         }
 
-        h1 {
-            font-size: 2rem;
-            color: #ffdd57;
-        }
-
-        a {
+        .back-link {
+            display: block;
+            margin-top: 20px;
             color: #ffdd57;
             font-weight: bold;
             text-decoration: none;
+            padding: 10px;
+            border: 2px solid #ffdd57;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            background: #ffdd57;
+            color: #1a1a2e;
         }
     </style>
 </head>
 <body>
-    <h1>$CURI Roadmap</h1>
     <div class="roadmap-container">
+        <h2>$CURI Roadmap</h2>
+
         <div class="milestone">🚀 <b>Phase 1:</b> Website Launch, Community Setup ✅</div>
-        <div class="milestone">🔥 <b>Phase 2:</b> Airdrop, Listings on CoinGecko & CoinMarketCap 🔜</div>
-        <div class="milestone">🌎 <b>Phase 3:</b> Strategic Partnerships, Exchange Listings 🔜</div>
-        <div class="milestone">🚀 <b>Phase 4:</b> More Utility for $CURI, Big Collaborations 🔜</div>
-    </div>
-
-    <a href="index.html">🔙 Back to Home</a>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const milestones = document.querySelectorAll('.milestone');
-            milestones.forEach((milestone, index) => {
-                setTimeout(() => {
-                    milestone.classList.add('show');
-                }, index * 500);
-            });
-        });
-    </script>
-</body>
-</html>
+        <div class="milestone">🔥 <b>Phase 2:</b> Airdrop
