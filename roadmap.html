@@ -4,27 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>$CURI Roadmap</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        h1 { color: #6a0dad; }
-        .roadmap { max-width: 600px; margin: auto; text-align: left; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+        }
+
+        .roadmap {
+            max-width: 600px;
+            margin: auto;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .milestone {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-left: 4px solid #ffdd57;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.6s ease-in-out;
+        }
+
+        .milestone.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #ffdd57;
+        }
     </style>
 </head>
 <body>
     <h1>$CURI Roadmap</h1>
     <div class="roadmap">
-        <h3>🚀 Phase 1: Foundation</h3>
-        <p>✅ Website Launch <br> ✅ Smart Contract Deployment <br> 🔄 Community Building</p>
-
-        <h3>🔥 Phase 2: Growth</h3>
-        <p>🔜 Social Media Campaigns <br> 🔜 Airdrops & Giveaways <br> 🔜 Listings on CoinGecko & CoinMarketCap</p>
-
-        <h3>🌍 Phase 3: Expansion</h3>
-        <p>🔜 Strategic Partnerships <br> 🔜 Exchange Listings (CEX & DEX) <br> 🔜 NFT & Web3 Integrations</p>
-
-        <h3>🚀 Phase 4: The Future</h3>
-        <p>🔜 More Utility for $CURI <br> 🔜 Community-Driven Development <br> 🔜 Big Collaborations</p>
+        <div class="milestone">🚀 <b>Phase 1:</b> Website Launch, Community Setup ✅</div>
+        <div class="milestone">🔥 <b>Phase 2:</b> Airdrop, Listings on CoinGecko & CoinMarketCap 🔜</div>
+        <div class="milestone">🌎 <b>Phase 3:</b> Strategic Partnerships, Exchange Listings 🔜</div>
+        <div class="milestone">🚀 <b>Phase 4:</b> More Utility for $CURI, Big Collaborations 🔜</div>
     </div>
-    <a href="index.html">Back to Home</a>
+
+    <script>
+        const milestones = document.querySelectorAll('.milestone');
+        window.addEventListener('scroll', () => {
+            milestones.forEach(milestone => {
+                const position = milestone.getBoundingClientRect().top;
+                if (position < window.innerHeight - 50) {
+                    milestone.classList.add('show');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
