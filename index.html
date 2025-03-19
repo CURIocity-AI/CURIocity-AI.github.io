@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -79,6 +79,14 @@
             transition: none; /* No animation delay */
         }
 
+        /* Make Sure the Text Inside the Card is Visible */
+        .token-data h2, .token-data p, .token-data span {
+            color: #ffdd57 !important; /* Ensure Bright Gold Text */
+            font-size: 18px;
+            font-weight: bold;
+            opacity: 1 !important; /* Make Sure They Are Not Hidden */
+        }
+
         /* Sequential Animations */
         .show {
             opacity: 1 !important;
@@ -114,6 +122,9 @@
             setTimeout(() => document.querySelectorAll(".cta-button")[1].classList.add("show"), 1200);
             setTimeout(() => document.querySelectorAll(".cta-button")[2].classList.add("show"), 1400);
         });
+
+        // Ensure Token Data is Visible from the Start
+        document.querySelector(".token-data").classList.add("show");
     </script>
 </body>
 </html>
