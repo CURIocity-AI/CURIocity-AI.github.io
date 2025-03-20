@@ -25,6 +25,10 @@
             color: white;
             padding: 20px;
             transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+            height: 200vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .light-mode {
@@ -33,44 +37,42 @@
         }
 
         .roadmap-container {
-            max-width: 900px;
-            margin: auto;
-            perspective: 1000px;
+            max-width: 400px;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
         .timeline-item {
-            position: relative;
-            margin: 40px auto;
+            position: absolute;
+            width: 80%;
             padding: 20px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.4); /* White shadow effect */
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.4);
+            text-align: center;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
             opacity: 0;
-            transform: rotateX(80deg) scaleY(0);
-            transition: opacity 1s ease-out, transform 1s ease-out;
-            max-width: 80%;
-            transform-origin: center;
+            transform: scale(0.5) rotateX(90deg);
         }
 
-        .timeline-item.visible {
+        .timeline-item.active {
             opacity: 1;
-            transform: rotateX(0deg) scaleY(1);
+            transform: scale(1) rotateX(0deg);
+            z-index: 10;
         }
 
-        .timeline-item:nth-child(odd) {
-            transform: rotateX(80deg) translateY(50px);
+        .timeline-item.above {
+            transform: translateY(-120%) scale(0.8) rotateX(45deg);
+            opacity: 0.6;
         }
 
-        .timeline-item:nth-child(even) {
-            transform: rotateX(-80deg) translateY(-50px);
-        }
-
-        .timeline-item.visible:nth-child(odd) {
-            transform: rotateX(0deg) translateY(0);
-        }
-
-        .timeline-item.visible:nth-child(even) {
-            transform: rotateX(0deg) translateY(0);
+        .timeline-item.below {
+            transform: translateY(120%) scale(0.8) rotateX(-45deg);
+            opacity: 0.6;
         }
 
         .timeline-item h3 {
@@ -79,7 +81,7 @@
 
         .light-mode .timeline-item {
             background: rgba(0, 0, 0, 0.1);
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); /* Adjust shadow for light mode */
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
         }
 
         /* Return to Home Button */
@@ -95,6 +97,8 @@
             cursor: pointer;
             text-decoration: none;
             transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+            position: absolute;
+            bottom: 20px;
         }
 
         .return-home:hover {
@@ -114,19 +118,19 @@
 <body>
     <h1>🚀 Roadmap</h1>
     <div class="roadmap-container">
-        <div class="timeline-item hidden">
+        <div class="timeline-item active">
             <h3>Phase 1: Launch</h3>
             <p>- Token Creation ✅<br>- Website & Social Media Setup ✅</p>
         </div>
-        <div class="timeline-item hidden">
+        <div class="timeline-item">
             <h3>Phase 2: Community Growth</h3>
             <p>- Airdrop Campaign 🎁<br>- Influencer Marketing 🔥</p>
         </div>
-        <div class="timeline-item hidden">
+        <div class="timeline-item">
             <h3>Phase 3: Exchange Listings</h3>
             <p>- CEX & DEX Listings 📈<br>- Liquidity Lock 🔒</p>
         </div>
-        <div class="timeline-item hidden">
+        <div class="timeline-item">
             <h3>Phase 4: Ecosystem Expansion</h3>
             <p>- Staking & NFT Integration 🎨<br>- More Partnerships 🤝</p>
         </div>
@@ -135,13 +139,32 @@
     <a class="return-home" onclick="returnHome()">🏠 Return to Home</a>
 
     <script>
-        document.addEventListener("scroll", () => {
-            document.querySelectorAll(".timeline-item").forEach((el) => {
-                if (el.getBoundingClientRect().top < window.innerHeight - 50) {
-                    el.classList.add("visible");
+        let currentIndex = 0;
+        const items = document.querySelectorAll(".timeline-item");
+
+        function updateTimeline() {
+            items.forEach((item, index) => {
+                item.classList.remove("active", "above", "below");
+                if (index === currentIndex) {
+                    item.classList.add("active");
+                } else if (index < currentIndex) {
+                    item.classList.add("above");
+                } else {
+                    item.classList.add("below");
                 }
             });
+        }
+
+        document.addEventListener("wheel", (event) => {
+            if (event.deltaY > 0 && currentIndex < items.length - 1) {
+                currentIndex++;
+            } else if (event.deltaY < 0 && currentIndex > 0) {
+                currentIndex--;
+            }
+            updateTimeline();
         });
+
+        updateTimeline();
     </script>
 </body>
 </html>
