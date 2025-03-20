@@ -25,12 +25,7 @@
             color: white;
             padding: 20px;
             transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            overflow-x: hidden;
         }
 
         .light-mode {
@@ -39,42 +34,33 @@
         }
 
         .roadmap-container {
-            position: relative;
-            width: 400px;
-            height: 400px;
-            perspective: 1200px;
-            overflow: hidden;
-        }
-
-        .roadmap-wrapper {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 50%;
-            left: 50%;
-            transform-style: preserve-3d;
-            transform: translate(-50%, -50%) rotateX(0deg);
-            transition: transform 0.5s ease-in-out;
+            max-width: 1000px;
+            margin: auto;
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 20px 0;
         }
 
         .timeline-item {
-            position: absolute;
-            width: 80%;
+            min-width: 300px;
+            flex: 0 0 auto;
             padding: 20px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.4);
             text-align: center;
-            transform-style: preserve-3d;
-            opacity: 0.9;
-            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
-        /* Arrange the cards in a smooth cylinder */
-        .timeline-item:nth-child(1) { transform: rotateX(0deg) translateZ(200px); }
-        .timeline-item:nth-child(2) { transform: rotateX(90deg) translateZ(200px); }
-        .timeline-item:nth-child(3) { transform: rotateX(180deg) translateZ(200px); }
-        .timeline-item:nth-child(4) { transform: rotateX(270deg) translateZ(200px); }
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         .timeline-item h3 {
             color: #ffdd57;
@@ -83,20 +69,6 @@
         .light-mode .timeline-item {
             background: rgba(0, 0, 0, 0.1);
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Small Center Box (Static Reference Point) */
-        .center-box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.5);
         }
 
         /* Return to Home Button */
@@ -112,8 +84,6 @@
             cursor: pointer;
             text-decoration: none;
             transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
-            position: absolute;
-            bottom: 20px;
         }
 
         .return-home:hover {
@@ -133,48 +103,34 @@
 <body>
     <h1>🚀 Roadmap</h1>
     <div class="roadmap-container">
-        <div class="center-box"></div> <!-- Static Small Box -->
-        <div class="roadmap-wrapper">
-            <div class="timeline-item">
-                <h3>Phase 1: Launch</h3>
-                <p>- Token Creation ✅<br>- Website & Social Media Setup ✅</p>
-            </div>
-            <div class="timeline-item">
-                <h3>Phase 2: Community Growth</h3>
-                <p>- Airdrop Campaign 🎁<br>- Influencer Marketing 🔥</p>
-            </div>
-            <div class="timeline-item">
-                <h3>Phase 3: Exchange Listings</h3>
-                <p>- CEX & DEX Listings 📈<br>- Liquidity Lock 🔒</p>
-            </div>
-            <div class="timeline-item">
-                <h3>Phase 4: Ecosystem Expansion</h3>
-                <p>- Staking & NFT Integration 🎨<br>- More Partnerships 🤝</p>
-            </div>
+        <div class="timeline-item hidden">
+            <h3>Phase 1: Launch</h3>
+            <p>- Token Creation ✅<br>- Website & Social Media Setup ✅</p>
+        </div>
+        <div class="timeline-item hidden">
+            <h3>Phase 2: Community Growth</h3>
+            <p>- Airdrop Campaign 🎁<br>- Influencer Marketing 🔥</p>
+        </div>
+        <div class="timeline-item hidden">
+            <h3>Phase 3: Exchange Listings</h3>
+            <p>- CEX & DEX Listings 📈<br>- Liquidity Lock 🔒</p>
+        </div>
+        <div class="timeline-item hidden">
+            <h3>Phase 4: Ecosystem Expansion</h3>
+            <p>- Staking & NFT Integration 🎨<br>- More Partnerships 🤝</p>
         </div>
     </div>
 
     <a class="return-home" onclick="returnHome()">🏠 Return to Home</a>
 
     <script>
-        let rotation = 0;
-        const wrapper = document.querySelector(".roadmap-wrapper");
-
-        function rotateTimeline(direction) {
-            if (direction === "down") {
-                rotation -= 90;
-            } else {
-                rotation += 90;
-            }
-            wrapper.style.transform = `translate(-50%, -50%) rotateX(${rotation}deg)`;
-        }
-
-        document.addEventListener("wheel", (event) => {
-            if (event.deltaY > 0) {
-                rotateTimeline("down");
-            } else {
-                rotateTimeline("up");
-            }
+        document.addEventListener("DOMContentLoaded", () => {
+            const elements = document.querySelectorAll(".timeline-item");
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add("visible");
+                }, index * 300);
+            });
         });
     </script>
 </body>
