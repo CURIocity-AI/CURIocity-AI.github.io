@@ -1,115 +1,92 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$CURI Roadmap</title>
+    <title>Roadmap - Curiosity ($CURI)</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* General Styling */
         body {
             font-family: 'Poppins', sans-serif;
+            text-align: center;
             background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
             color: white;
-            text-align: center;
             padding: 20px;
         }
 
         .roadmap-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
-            animation: fadeIn 1s ease-in-out;
         }
 
-        h2 {
-            font-size: 2.5rem;
-            color: #ffdd57;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            letter-spacing: 1.5px;
-        }
-
-        .milestone {
+        .timeline {
             position: relative;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-left: 4px solid #ffdd57;
-            border-radius: 10px;
-            font-size: 18px;
-            text-align: left;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            margin: 50px 0;
+            padding-left: 20px;
         }
 
-        .milestone.show {
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 10px;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: #ffdd57;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .timeline-item.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Neon Glow Effect */
-        .milestone::before {
-            content: "🔥";
-            position: absolute;
-            left: -25px;
-            font-size: 22px;
+        .timeline-item h3 {
             color: #ffdd57;
-            animation: glow 1.5s infinite alternate;
-        }
-
-        @keyframes glow {
-            0% { text-shadow: 0px 0px 5px #ffdd57; }
-            100% { text-shadow: 0px 0px 15px #ffdd57; }
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 20px;
-            font-size: 18px;
-            color: #1a1a2e;
-            background: #ffdd57;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .back-link:hover {
-            background: #f4c542;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
+    <h1>🚀 Roadmap</h1>
     <div class="roadmap-container">
-        <h2>$CURI Roadmap</h2>
-
-        <div class="milestone">🚀 <b>Phase 1:</b> Website Launch, Community Setup ✅</div>
-        <div class="milestone">🔥 <b>Phase 2:</b> Airdrop, Listings on CoinGecko & CoinMarketCap 🔜</div>
-        <div class="milestone">🌎 <b>Phase 3:</b> Strategic Partnerships, Exchange Listings 🔜</div>
-        <div class="milestone">🚀 <b>Phase 4:</b> More Utility for $CURI, Big Collaborations 🔜</div>
-
-        <a href="index.html" class="back-link">🔙 Back to Home</a>
+        <div class="timeline">
+            <div class="timeline-item hidden">
+                <h3>Phase 1: Launch</h3>
+                <p>- Token Creation ✅<br>- Website & Social Media Setup ✅</p>
+            </div>
+            <div class="timeline-item hidden">
+                <h3>Phase 2: Community Growth</h3>
+                <p>- Airdrop Campaign 🎁<br>- Influencer Marketing 🔥</p>
+            </div>
+            <div class="timeline-item hidden">
+                <h3>Phase 3: Exchange Listings</h3>
+                <p>- CEX & DEX Listings 📈<br>- Liquidity Lock 🔒</p>
+            </div>
+            <div class="timeline-item hidden">
+                <h3>Phase 4: Ecosystem Expansion</h3>
+                <p>- Staking & NFT Integration 🎨<br>- More Partnerships 🤝</p>
+            </div>
+        </div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const milestones = document.querySelectorAll('.milestone');
-            milestones.forEach((milestone, index) => {
-                setTimeout(() => {
-                    milestone.classList.add('show');
-                }, index * 300);
+        document.addEventListener("scroll", () => {
+            document.querySelectorAll(".timeline-item").forEach((el) => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 50) {
+                    el.classList.add("visible");
+                }
             });
         });
     </script>
