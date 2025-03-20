@@ -1,187 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curiosity ($CURI) Token</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* General Styling */
-        body {
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            padding: 20px;
-            background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
-            color: white;
-            overflow-x: hidden;
-            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
-        }
-
-        .light-mode {
-            background: #f4f4f4;
-            color: #222;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
-        }
-
-        .logo {
-            width: 180px;
-            border-radius: 50%;
-            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            color: #ffdd57;
-            text-transform: uppercase;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 14px 30px;
-            margin-top: 20px;
-            background: #6a0dad;
-            color: white;
-            font-size: 20px;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: 0.3s ease-in-out;
-            font-weight: bold;
-            box-shadow: 0px 0px 10px rgba(106, 13, 173, 0.8);
-        }
-
-        .cta-button:hover {
-            background: #8a2be2;
-            box-shadow: 0px 0px 15px rgba(138, 43, 226, 1);
-        }
-
-        /* Token Data - 3D Animated Card */
-        .token-data {
-            margin-top: 30px;
-            padding: 20px;
-            background: #111;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.7);
-            color: #ffdd57;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        }
-
-        .token-data:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 10px 25px rgba(255, 223, 0, 0.5);
-        }
-
-        /* Toggle Button - Sliding Effect */
-        .toggle-container {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            width: 60px;
-            height: 30px;
-            background: #ddd;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            padding: 3px;
-            cursor: pointer;
-            transition: background 0.3s ease-in-out;
-            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-        }
-
-        .toggle-circle {
-            width: 24px;
-            height: 24px;
-            background: #ffdd57;
-            border-radius: 50%;
-            position: relative;
-            left: 3px;
-            transition: left 0.3s ease-in-out, background 0.3s ease-in-out;
-        }
-
-        .light-mode .toggle-container {
-            background: #333;
-        }
-
-        .light-mode .toggle-circle {
-            left: 30px;
-            background: #f4c542;
-        }
-
-        /* Animations */
-        .hidden {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-
-        .visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curiosity ($CURI) Token</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* General Styling */
+    body {
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
+      color: white;
+      overflow-x: hidden;
+      transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+    }
+    .light-mode {
+      background: #f4f4f4;
+      color: #222;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
+    }
+    .logo {
+      width: 180px;
+      border-radius: 50%;
+      box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #ffdd57;
+      text-transform: uppercase;
+    }
+    .cta-button {
+      display: inline-block;
+      padding: 14px 30px;
+      margin-top: 20px;
+      background: #6a0dad;
+      color: white;
+      font-size: 20px;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: 0.3s ease-in-out;
+      font-weight: bold;
+      box-shadow: 0px 0px 10px rgba(106, 13, 173, 0.8);
+    }
+    .cta-button:hover {
+      background: #8a2be2;
+      box-shadow: 0px 0px 15px rgba(138, 43, 226, 1);
+    }
+    /* Token Data - 3D Animated Card */
+    .token-data {
+      margin-top: 30px;
+      padding: 20px;
+      background: #111;
+      border-radius: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.7);
+      color: #ffdd57;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .token-data:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 10px 25px rgba(255, 223, 0, 0.5);
+    }
+    /* Light Mode Adjustments */
+    .light-mode .token-data {
+      background: #fff;
+      color: #222;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    .light-mode .cta-button {
+      background: #333;
+      color: white;
+    }
+    .light-mode .cta-button:hover {
+      background: #555;
+    }
+    /* Toggle Button - Sliding Effect */
+    .toggle-container {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      width: 60px;
+      height: 30px;
+      background: #ddd;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      padding: 3px;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+    .toggle-circle {
+      width: 24px;
+      height: 24px;
+      background: #ffdd57;
+      border-radius: 50%;
+      position: relative;
+      left: 3px;
+      transition: left 0.3s ease-in-out, background 0.3s ease-in-out;
+    }
+    .light-mode .toggle-container {
+      background: #333;
+    }
+    .light-mode .toggle-circle {
+      left: 30px;
+      background: #f4c542;
+    }
+    /* Animations for Sequential Loading */
+    .hidden {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
-    <div class="toggle-container" onclick="toggleMode()">
-        <div class="toggle-circle"></div>
+  <!-- Fixed Toggle Button with Sliding Effect -->
+  <div class="toggle-container" onclick="toggleMode()">
+    <div class="toggle-circle"></div>
+  </div>
+
+  <div class="container hidden">
+    <img src="curiosity_logo.png" alt="Curiosity Logo" class="logo hidden">
+    <h1 class="hidden">Curiosity ($CURI) Token</h1>
+    <p class="hidden">Curiosity didn’t kill the cat, it made it rich!</p>
+    <a href="community.html" class="cta-button hidden">Join Our Community</a>
+    <a href="tokenomics.html" class="cta-button hidden">📊 Tokenomics</a>
+    <a href="roadmap.html" class="cta-button hidden">🗺️ Roadmap</a>
+    <a href="whitepaper.pdf" class="cta-button hidden" target="_blank">📄 Whitepaper</a>
+
+    <!-- Token Data Card -->
+    <div class="token-data hidden">
+      <h2>Live Token Data</h2>
+      <p>💰 Price: <span id="price">$0.001</span></p>
+      <p>📊 Market Cap: <span id="marketcap">$500,000</span></p>
+      <p>🔄 Total Supply: 500,000,000 $CURI</p>
     </div>
+  </div>
 
-    <div class="container hidden">
-        <img src="curiosity_logo.png" alt="Curiosity Logo" class="logo hidden">
-        <h1 class="hidden">Curiosity ($CURI) Token</h1>
-        <p class="hidden">Curiosity didn’t kill the cat, it made it rich!</p>
-        <a href="community.html" class="cta-button hidden">Join Our Community</a>
-        <a href="tokenomics.html" class="cta-button hidden">📊 Tokenomics</a>
-        <a href="roadmap.html" class="cta-button hidden">🗺️ Roadmap</a>
-        <a href="whitepaper.pdf" class="cta-button hidden" target="_blank">📄 Whitepaper</a>
+  <script>
+    function toggleMode() {
+      document.body.classList.toggle("light-mode");
+      localStorage.setItem("theme", document.body.classList.contains("light-mode") ? "light" : "dark");
+    }
 
-        <!-- Token Data - Now Animated & Black -->
-        <div class="token-data hidden">
-            <h2>Live Token Data</h2>
-            <p>💰 Price: <span id="price">$0.001</span></p>
-            <p>📊 Market Cap: <span id="marketcap">$500,000</span></p>
-            <p>🔄 Total Supply: 500,000,000 $CURI</p>
-        </div>
-    </div>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("theme") === "light") {
+        document.body.classList.add("light-mode");
+      }
+      // Sequential animation on load with delays
+      const elements = document.querySelectorAll(".hidden");
+      elements.forEach((el, index) => {
+        setTimeout(() => {
+          el.classList.add("visible");
+        }, index * 300);
+      });
+    });
 
-    <script>
-        function toggleMode() {
-            document.body.classList.toggle("light-mode");
-            localStorage.setItem("theme", document.body.classList.contains("light-mode") ? "light" : "dark");
+    document.addEventListener("scroll", () => {
+      const elements = document.querySelectorAll(".hidden");
+      elements.forEach((el) => {
+        const position = el.getBoundingClientRect().top;
+        if (position < window.innerHeight - 50) {
+          el.classList.add("visible");
         }
+      });
+    });
 
-        document.addEventListener("DOMContentLoaded", () => {
-            if (localStorage.getItem("theme") === "light") {
-                document.body.classList.add("light-mode");
-            }
-
-            const elements = document.querySelectorAll(".hidden");
-            elements.forEach((el, index) => {
-                setTimeout(() => {
-                    el.classList.add("visible");
-                }, index * 300);
-            });
-        });
-
-        document.addEventListener("scroll", () => {
-            const elements = document.querySelectorAll(".hidden");
-            elements.forEach((el) => {
-                const position = el.getBoundingClientRect().top;
-                if (position < window.innerHeight - 50) {
-                    el.classList.add("visible");
-                }
-            });
-        });
-    </script>
+    // Simulate live token data updates (dummy simulation)
+    function simulateTokenData() {
+      const priceEl = document.getElementById("price");
+      const marketCapEl = document.getElementById("marketcap");
+      let price = 0.001;
+      let marketCap = 500000;
+      setInterval(() => {
+        // Increment price and market cap slightly
+        price += Math.random() * 0.0001;
+        marketCap += Math.floor(Math.random() * 1000);
+        priceEl.innerText = "$" + price.toFixed(4);
+        marketCapEl.innerText = "$" + marketCap.toLocaleString();
+      }, 2000);
+    }
+    simulateTokenData();
+  </script>
 </body>
 </html>
