@@ -81,28 +81,40 @@
             box-shadow: 0px 10px 25px rgba(255, 223, 0, 0.5);
         }
 
-        /* Toggle Button - Fixed Position */
-        .toggle-mode {
+        /* Toggle Button - Sliding Effect */
+        .toggle-container {
             position: fixed;
             top: 15px;
             right: 15px;
-            background: #ffdd57;
-            color: #222;
-            border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            border-style:solid;
-            bordr-width:1px;
-            width:30px;
-            border-radius: 50px;
+            width: 60px;
+            height: 30px;
+            background: #ddd;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            padding: 3px;
             cursor: pointer;
-            transition: 0.3s ease-in-out;
-            z-index: 1000;
+            transition: background 0.3s ease-in-out;
             box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
         }
 
-        .toggle-mode:hover {
+        .toggle-circle {
+            width: 24px;
+            height: 24px;
+            background: #ffdd57;
+            border-radius: 50%;
+            position: relative;
+            left: 3px;
+            transition: left 0.3s ease-in-out, background 0.3s ease-in-out;
+        }
+
+        .light-mode .toggle-container {
+            background: #333;
+        }
+
+        .light-mode .toggle-circle {
+            left: 30px;
             background: #f4c542;
         }
 
@@ -120,7 +132,9 @@
     </style>
 </head>
 <body>
-    <button class="toggle-mode" onclick="toggleMode()">☀️</button>
+    <div class="toggle-container" onclick="toggleMode()">
+        <div class="toggle-circle"></div>
+    </div>
 
     <div class="container hidden">
         <img src="curiosity_logo.png" alt="Curiosity Logo" class="logo hidden">
@@ -129,7 +143,7 @@
         <a href="community.html" class="cta-button hidden">Join Our Community</a>
         <a href="tokenomics.html" class="cta-button hidden">📊 Tokenomics</a>
         <a href="roadmap.html" class="cta-button hidden">🗺️ Roadmap</a>
-        <a href="whitepaper.pdf" class="cta-button hidden" target="_blank">📄 Whitepaper</a> <!-- Whitepaper Button Added -->
+        <a href="whitepaper.pdf" class="cta-button hidden" target="_blank">📄 Whitepaper</a>
 
         <!-- Token Data - Now Animated & Black -->
         <div class="token-data hidden">
