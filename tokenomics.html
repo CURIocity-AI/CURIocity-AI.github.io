@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmap - Curiosity ($CURI)</title>
+    <title>Tokenomics - Curiosity ($CURI)</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -14,79 +15,45 @@
             padding: 20px;
         }
 
-        .roadmap-container {
-            max-width: 900px;
+        .chart-container {
+            max-width: 500px;
             margin: auto;
-        }
-
-        .timeline {
-            position: relative;
-            margin: 50px 0;
-            padding-left: 20px;
-        }
-
-        .timeline::before {
-            content: "";
-            position: absolute;
-            left: 10px;
-            top: 0;
-            width: 4px;
-            height: 100%;
-            background: #ffdd57;
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 40px;
-            padding: 20px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
         }
 
-        .timeline-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .timeline-item h3 {
-            color: #ffdd57;
+        canvas {
+            max-width: 100%;
         }
     </style>
 </head>
 <body>
-    <h1>🚀 Roadmap</h1>
-    <div class="roadmap-container">
-        <div class="timeline">
-            <div class="timeline-item hidden">
-                <h3>Phase 1: Launch</h3>
-                <p>- Token Creation ✅<br>- Website & Social Media Setup ✅</p>
-            </div>
-            <div class="timeline-item hidden">
-                <h3>Phase 2: Community Growth</h3>
-                <p>- Airdrop Campaign 🎁<br>- Influencer Marketing 🔥</p>
-            </div>
-            <div class="timeline-item hidden">
-                <h3>Phase 3: Exchange Listings</h3>
-                <p>- CEX & DEX Listings 📈<br>- Liquidity Lock 🔒</p>
-            </div>
-            <div class="timeline-item hidden">
-                <h3>Phase 4: Ecosystem Expansion</h3>
-                <p>- Staking & NFT Integration 🎨<br>- More Partnerships 🤝</p>
-            </div>
-        </div>
+    <h1>📊 Tokenomics</h1>
+    <div class="chart-container">
+        <canvas id="tokenomicsChart"></canvas>
     </div>
 
     <script>
-        document.addEventListener("scroll", () => {
-            document.querySelectorAll(".timeline-item").forEach((el) => {
-                if (el.getBoundingClientRect().top < window.innerHeight - 50) {
-                    el.classList.add("visible");
+        const ctx = document.getElementById('tokenomicsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Liquidity', 'Team', 'Marketing', 'Airdrop', 'Development'],
+                datasets: [{
+                    data: [40, 20, 15, 15, 10], // Adjust values as needed
+                    backgroundColor: ['#ffdd57', '#ff5733', '#33ff57', '#5733ff', '#ff33a1'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
                 }
-            });
+            }
         });
     </script>
 </body>
