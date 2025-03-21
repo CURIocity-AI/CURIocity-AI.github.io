@@ -282,41 +282,46 @@ function stakeTokens(event) {
 
     <script>
         document.getElementById("apyForm").addEventListener("submit", function (event) {
-            event.preventDefault();
+    event.preventDefault();
 
-            // Get Input Values
-            const stakingAmount = parseFloat(document.getElementById("stakeAmount").value);
-            const durationMonths = parseInt(document.getElementById("duration").value);
-            const durationYears = durationMonths / 12;
+    // Get Input Value
+    const stakingAmount = parseFloat(document.getElementById("stakeAmount").value);
 
-            // Validation: Ensure valid staking amount
-            if (isNaN(stakingAmount) || stakingAmount <= 0) {
-                alert("Please enter a valid staking amount greater than 0.");
-                return;
-            }
+    // Debugging: Check the value retrieved
+    console.log("Staking Amount Entered:", stakingAmount);
 
-            if (stakingAmount < 1) { // Minimum staking amount check
-                alert("The minimum staking amount is 1 $CURI.");
-                return;
-            }
+    // Validation: Ensure the input is a valid number greater than 0
+    if (isNaN(stakingAmount) || stakingAmount <= 0) {
+        alert("Please enter a valid staking amount greater than 0.");
+        return;
+    }
 
-            // Define Tiered APY Rates
-            let apy = 10; // Default APY
-            if (stakingAmount > 500 && stakingAmount <= 10000) {
-                apy = 12; // Medium Tier
-            } else if (stakingAmount > 10000) {
-                apy = 15; // High Tier
-            }
+    if (stakingAmount < 1) { // Minimum staking amount check
+        alert("The minimum staking amount is 1 $CURI.");
+        return;
+    }
 
-            // Calculate Estimated Rewards
-            const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
+    // Get Duration and Calculate Rewards
+    const durationMonths = parseInt(document.getElementById("duration").value);
+    const durationYears = durationMonths / 12;
 
-            // Update the Results Section
-            document.getElementById("rewards").innerText = estimatedRewards.toFixed(2);
-            document.getElementById("tier").innerText = `${apy}% APY (Tier: ${
-                apy === 10 ? "Low" : apy === 12 ? "Medium" : "High"
-            })`;
-        });
+    // Define Tiered APY Rates
+    let apy = 10; // Default APY
+    if (stakingAmount > 500 && stakingAmount <= 10000) {
+        apy = 12; // Medium Tier
+    } else if (stakingAmount > 10000) {
+        apy = 15; // High Tier
+    }
+
+    // Calculate Estimated Rewards
+    const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
+
+    // Update the Results Section
+    document.getElementById("rewards").innerText = estimatedRewards.toFixed(2);
+    document.getElementById("tier").innerText = `${apy}% APY (Tier: ${
+        apy === 10 ? "Low" : apy === 12 ? "Medium" : "High"
+    })`;
+});
     </script>
 
 </body>
