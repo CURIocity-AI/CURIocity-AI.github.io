@@ -49,6 +49,34 @@
 
         // Update Rewards Every Second
         setInterval(calculateRewards, REWARD_INTERVAL);
+
+    // Staking APY Calculator Script
+    document.getElementById("apyForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const apy = 10; // Annual Percentage Yield (10%)
+    const stakingAmount = parseFloat(document.getElementById("stakeAmount").value);
+    const durationMonths = parseInt(document.getElementById("duration").value);
+    const durationYears = durationMonths / 12;
+
+    // Validation: Check if staking amount is valid
+    if (!stakingAmount || stakingAmount <= 0) {
+        alert("Please enter a valid staking amount greater than 0.");
+        return;
+    }
+
+    if (stakingAmount < 1) { // Minimum staking amount
+        alert("The minimum staking amount is 1 $CURI.");
+        return;
+    }
+
+    // Calculate rewards
+    const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
+
+    // Update results
+    document.getElementById("rewards").innerText = estimatedRewards.toFixed(2);
+});
+    });
     </script>
     <style>
         body {
