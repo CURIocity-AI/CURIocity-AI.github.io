@@ -5,52 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staking - Curiosity ($CURI)</title>
     <link rel="stylesheet" href="style.css">
-    <script>
-        // Variables for Staking
-        let stakedTokens = 0;
-        let rewards = 0;
-        const APY = 10; // Annual Percentage Yield
-        const REWARD_INTERVAL = 1000; // Update rewards every second
-
-        // Function to Stake Tokens
-function stakeTokens(event) {
-    event.preventDefault();
-    const amount = parseFloat(document.getElementById("stakeAmount").value);
-
-    // Validation: Ensure staking amount is valid and meets the minimum
-    if (isNaN(amount) || amount <= 0) {
-        alert("Please enter a valid staking amount greater than 0.");
-        return;
-    }
-
-    if (amount < 1) { // Minimum staking amount check
-        alert("The minimum staking amount is 1 $CURI.");
-        return;
-    }
-
-    // Proceed with staking
-    stakedTokens += amount;
-    document.getElementById("stakedTokens").innerText = stakedTokens.toFixed(2);
-    document.getElementById("stakeAmount").value = "";
-}
-
-        // Function to Unstake Tokens
-        function unstakeTokens() {
-            const unstakeAmount = stakedTokens;
-            if (unstakeAmount <= 0) {
-                alert("You have no tokens to unstake.");
-                return;
-            }
-            stakedTokens = 0;
-            rewards = 0;
-            document.getElementById("stakedTokens").innerText = stakedTokens.toFixed(2);
-            document.getElementById("rewards").innerText = rewards.toFixed(4);
-            alert(`You have unstaked ${unstakeAmount.toFixed(2)} $CURI tokens.`);
-        }
-
-  
-
-  </script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -61,26 +15,17 @@ function stakeTokens(event) {
             transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
         }
 
-        .light-mode {
-            background: #f4f4f4;
-            color: #222;
-        }
-
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .staking-container {
+        .staking-container, .staking-calculator {
             max-width: 400px;
             margin: auto;
             padding: 20px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
         }
 
-        .staking-container input {
+        .staking-container input, .staking-calculator input, .staking-calculator select {
             padding: 10px;
             font-size: 16px;
             border: none;
@@ -89,7 +34,7 @@ function stakeTokens(event) {
             margin-bottom: 10px;
         }
 
-        .staking-container button {
+        .staking-container button, .staking-calculator button {
             padding: 10px 20px;
             font-size: 16px;
             font-weight: bold;
@@ -102,151 +47,7 @@ function stakeTokens(event) {
             margin: 5px 0;
         }
 
-        .staking-container button:hover {
-            background: #f4c542;
-        }
-
-        .light-mode button {
-            background: #222;
-            color: white;
-        }
-
-        .light-mode button:hover {
-            background: #444;
-        }
-
-        .return-home {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: #6a0dad;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
-        }
-
-        .return-home:hover {
-            background: #8a2be2;
-        }
-
-        .light-mode .return-home {
-            background: #222;
-            color: white;
-        }
-
-        .light-mode .return-home:hover {
-            background: #444;
-        }
-
-        .stats {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-
-    /* Staking APY Calculator Styles */
-    .staking-calculator {
-        margin-top: 30px;
-        padding: 20px;
-        text-align: center;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 15px;
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .staking-calculator h2 {
-        font-size: 1.8rem;
-        margin-bottom: 15px;
-    }
-
-    .staking-calculator label {
-        font-size: 1rem;
-        display: block;
-        margin-top: 10px;
-    }
-
-    .staking-calculator input,
-    .staking-calculator select {
-        width: 80%;
-        padding: 10px;
-        margin: 10px auto;
-        font-size: 1rem;
-        border-radius: 8px;
-        border: none;
-    }
-
-    .staking-calculator button {
-        padding: 10px 20px;
-        font-size: 1rem;
-        font-weight: bold;
-        background: #ffdd57;
-        border: none;
-        border-radius: 8px;
-        color: #222;
-        cursor: pointer;
-        transition: background 0.3s ease-in-out;
-    }
-
-    .staking-calculator button:hover {
-        background: #f4c542;
-    }
-
-    .results {
-        margin-top: 15px;
-        font-size: 1.2rem;
-    }
-    </style>
-</head>
-<body>
-    <h1>🔒 Stake Your $CURI Tokens</h1>
-    <div class="staking-container">
-        <form onsubmit="stakeTokens(event)">
-            <input type="text" id="stakeAmount" placeholder="Enter amount to stake" />
-            <button type="submit">Stake</button>
-        </form>
-        <button onclick="unstakeTokens()">Unstake All</button>
-        <div class="stats">
-            <p>Staked Tokens: <span id="stakedTokens">0.00</span> $CURI</p>
-            <p>Rewards Earned: <span id="rewards">0.0000</span> $CURI</p>
-        </div>
-    </div>
-   
-<!-- Staking APY Calculator -->
-<style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #1a1a2e;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .staking-calculator {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .staking-calculator input, .staking-calculator select, .staking-calculator button {
-            padding: 10px;
-            margin: 10px 0;
-            width: 80%;
-            border-radius: 8px;
-            border: none;
-        }
-
-        .staking-calculator button {
-            background: #ffdd57;
-            color: #222;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .staking-calculator button:hover {
+        .staking-container button:hover, .staking-calculator button:hover {
             background: #f4c542;
         }
 
@@ -257,11 +58,26 @@ function stakeTokens(event) {
     </style>
 </head>
 <body>
-    <h1>📈 Staking APY Calculator</h1>
+    <h1>🔒 Stake Your $CURI Tokens</h1>
+
+    <!-- Staking Section -->
+    <div class="staking-container">
+        <form onsubmit="stakeTokens(event)">
+            <input type="text" id="stakingInput" placeholder="Enter amount to stake" />
+            <button type="submit">Stake</button>
+        </form>
+        <button onclick="unstakeTokens()">Unstake All</button>
+        <div class="stats">
+            <p>Staked Tokens: <span id="stakedTokens">0.00</span> $CURI</p>
+            <p>Rewards Earned: <span id="stakingRewards">0.0000</span> $CURI</p>
+        </div>
+    </div>
+
+    <!-- APY Calculator Section -->
     <div class="staking-calculator">
         <form id="apyForm">
-            <label for="stakeAmount">Enter Staking Amount ($CURI):</label>
-            <input type="number" id="stakeAmount" placeholder="e.g., 1000">
+            <label for="apyInput">Enter Staking Amount ($CURI):</label>
+            <input type="number" id="apyInput" placeholder="e.g., 1000">
 
             <label for="duration">Select Duration:</label>
             <select id="duration">
@@ -275,54 +91,73 @@ function stakeTokens(event) {
         </form>
 
         <div id="results" class="results">
-            <h3>Estimated Rewards: <span id="rewards">0</span> $CURI</h3>
-            <p>Reward Tier: <span id="tier">10% APY (Tier: Low)</span></p>
+            <h3>Estimated Rewards: <span id="apyRewards">0</span> $CURI</h3>
+            <p>Reward Tier: <span id="apyTier">10% APY (Tier: Low)</span></p>
         </div>
     </div>
 
     <script>
+        // Variables for Staking
+        let stakedTokens = 0;
+        let stakingRewards = 0;
+
+        // Staking Functions
+        function stakeTokens(event) {
+            event.preventDefault();
+            const amount = parseFloat(document.getElementById("stakingInput").value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid staking amount greater than 0.");
+                return;
+            }
+
+            if (amount < 1) {
+                alert("The minimum staking amount is 1 $CURI.");
+                return;
+            }
+
+            stakedTokens += amount;
+            document.getElementById("stakedTokens").innerText = stakedTokens.toFixed(2);
+            document.getElementById("stakingInput").value = "";
+        }
+
+        function unstakeTokens() {
+            if (stakedTokens <= 0) {
+                alert("You have no tokens to unstake.");
+                return;
+            }
+
+            alert(`You have unstaked ${stakedTokens.toFixed(2)} $CURI.`);
+            stakedTokens = 0;
+            stakingRewards = 0;
+            document.getElementById("stakedTokens").innerText = stakedTokens.toFixed(2);
+            document.getElementById("stakingRewards").innerText = stakingRewards.toFixed(4);
+        }
+
+        // APY Calculator
         document.getElementById("apyForm").addEventListener("submit", function (event) {
-    event.preventDefault();
+            event.preventDefault();
 
-    // Get Input Value
-    const stakingAmount = parseFloat(document.getElementById("stakeAmount").value);
+            const stakingAmount = parseFloat(document.getElementById("apyInput").value);
+            const durationMonths = parseInt(document.getElementById("duration").value);
+            const durationYears = durationMonths / 12;
 
-    // Debugging: Check the value retrieved
-    console.log("Staking Amount Entered:", stakingAmount);
+            if (isNaN(stakingAmount) || stakingAmount <= 0) {
+                alert("Please enter a valid staking amount greater than 0.");
+                return;
+            }
 
-    // Validation: Ensure the input is a valid number greater than 0
-    if (isNaN(stakingAmount) || stakingAmount <= 0) {
-        alert("Please enter a valid staking amount greater than 0.");
-        return;
-    }
+            let apy = 10; // Default APY
+            if (stakingAmount > 500 && stakingAmount <= 10000) apy = 12;
+            else if (stakingAmount > 10000) apy = 15;
 
-    if (stakingAmount < 1) { // Minimum staking amount check
-        alert("The minimum staking amount is 1 $CURI.");
-        return;
-    }
+            const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
 
-    // Get Duration and Calculate Rewards
-    const durationMonths = parseInt(document.getElementById("duration").value);
-    const durationYears = durationMonths / 12;
-
-    // Define Tiered APY Rates
-    let apy = 10; // Default APY
-    if (stakingAmount > 500 && stakingAmount <= 10000) {
-        apy = 12; // Medium Tier
-    } else if (stakingAmount > 10000) {
-        apy = 15; // High Tier
-    }
-
-    // Calculate Estimated Rewards
-    const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
-
-    // Update the Results Section
-    document.getElementById("rewards").innerText = estimatedRewards.toFixed(2);
-    document.getElementById("tier").innerText = `${apy}% APY (Tier: ${
-        apy === 10 ? "Low" : apy === 12 ? "Medium" : "High"
-    })`;
-});
+            document.getElementById("apyRewards").innerText = estimatedRewards.toFixed(2);
+            document.getElementById("apyTier").innerText = `${apy}% APY (Tier: ${
+                apy === 10 ? "Low" : apy === 12 ? "Medium" : "High"
+            })`;
+        });
     </script>
-
 </body>
 </html>
