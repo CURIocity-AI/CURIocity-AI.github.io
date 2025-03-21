@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airdrop - Curiosity ($CURI)</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // Countdown Timer Script
+        function startCountdown() {
+            const endDate = new Date("2025-04-15T23:59:59").getTime(); // Set Airdrop End Date
+            const timerElement = document.getElementById("countdown");
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const timeLeft = endDate - now;
+
+                if (timeLeft < 0) {
+                    timerElement.innerHTML = "Airdrop Ended!";
+                    clearInterval(timerInterval);
+                    return;
+                }
+
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+
+            const timerInterval = setInterval(updateTimer, 1000);
+            updateTimer();
+        }
+
+        // Form Submission Script
+        function submitWallet(event) {
+            event.preventDefault();
+            const wallet = document.getElementById("wallet").value;
+            if (wallet === "") {
+                alert("Please enter your wallet address.");
+                return;
+            }
+            document.getElementById("confirmation").innerHTML = "✅ Wallet submitted successfully!";
+            document.getElementById("walletForm").reset();
+        }
+
+        document.addEventListener("DOMContentLoaded", startCountdown);
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
+            color: white;
+            padding: 20px;
+            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .light-mode {
+            background: #f4f4f4;
+            color: #222;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        #countdown {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            width: 300px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background: #ffdd57;
+            color: #222;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background: #f4c542;
+        }
+
+        .light-mode button {
+            background: #222;
+            color: white;
+        }
+
+        .light-mode button:hover {
+            background: #444;
+        }
+
+        #confirmation {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffdd57;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎁 Curiosity ($CURI) Airdrop</h1>
+    <p id="countdown">Loading countdown...</p>
+    <form id="walletForm" onsubmit="submitWallet(event)">
+        <input type="text" id="wallet" placeholder="Enter your wallet address" />
+        <br>
+        <button type="submit">Submit Wallet</button>
+    </form>
+    <p id="confirmation"></p>
+</body>
+</html>
