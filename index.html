@@ -169,6 +169,52 @@
     .telegram {
         background: #0088cc;
     }
+    /* Community Feeds Styling */
+    .community-feeds {
+        margin-top: 50px;
+        padding: 20px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .community-feeds h2 {
+        font-size: 28px;
+        color: #ffdd57;
+        margin-bottom: 20px;
+    }
+
+    .feeds-container {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+
+    .feed {
+        width: 400px;
+        max-width: 100%;
+    }
+
+    .telegram-button {
+        display: inline-block;
+        padding: 15px 30px;
+        background: #0088cc;
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+        border-radius: 8px;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .telegram-button:hover {
+        background: #005f8b;
+    }
+
+    .light-mode .community-feeds {
+        background: rgba(0, 0, 0, 0.1);
+    }
 </style>
 </head>
 <body>
@@ -181,6 +227,27 @@
     <img src="curicoin.png" alt="Curiosity Logo" class="logo hidden">
     <h1 class="hidden">Curiosity ($CURI) Token</h1>
     <p class="hidden">Curiosity didn’t kill the cat, it made it rich!</p>
+
+<!-- Community Feeds Section -->
+<div class="community-feeds">
+    <h2>🌐 Community Feeds</h2>
+    <div class="feeds-container">
+        <!-- Twitter Feed -->
+        <div class="feed twitter-feed">
+            <a class="twitter-timeline" data-width="400" data-height="600" data-theme="dark" href="https://twitter.com/your_handle">
+                Tweets by @your_handle
+            </a>
+        </div>
+
+        <!-- Telegram Feed -->
+        <div class="feed telegram-feed">
+            <a href="https://t.me/your_channel" target="_blank" class="telegram-button">
+                Join Our Telegram Channel
+            </a>
+        </div>
+    </div>
+</div>
+
     <a href="community.html" class="cta-button hidden">Join Our Community</a>
     <a href="tokenomics.html" class="cta-button hidden">📊 Tokenomics</a>
     <a href="roadmap.html" class="cta-button hidden">🗺️ Roadmap</a>
@@ -250,5 +317,8 @@
     }
     simulateTokenData();
   </script>
+
+<!-- Twitter Widget Script -->
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
