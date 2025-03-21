@@ -214,73 +214,111 @@ function stakeTokens(event) {
     </div>
    
 <!-- Staking APY Calculator -->
-<div class="staking-calculator">
-    <h2>📈 Staking APY Calculator</h2>
-    <form id="apyForm">
-        <label for="stakeAmount">Enter Staking Amount ($CURI):</label>
-        <input type="number" id="stakeAmount" placeholder="e.g., 1000" />
+<title>Staking APY Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
 
-        <label for="duration">Select Duration:</label>
-        <select id="duration">
-            <option value="1">1 Month</option>
-            <option value="3">3 Months</option>
-            <option value="6">6 Months</option>
-            <option value="12" selected>1 Year</option>
-        </select>
+        .staking-calculator {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
 
-        <button type="submit">Calculate Rewards</button>
-    </form>
+        .staking-calculator input, .staking-calculator select, .staking-calculator button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            border-radius: 8px;
+            border: none;
+        }
 
-<div id="results" class="results">
-    <h3>Estimated Rewards: <span id="rewards">0</span> $CURI</h3>
-    <p>Reward Tier: <span id="tier">10% APY (Tier: Low)</span></p>
-</div>
+        .staking-calculator button {
+            background: #ffdd57;
+            color: #222;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-</div>
+        .staking-calculator button:hover {
+            background: #f4c542;
+        }
 
-<!-- Return to Home Button -->
-    <a href="index.html" class="return-home">🏠 Return to Home</a>
-<script>
-// Function to Calculate Rewards
- document.getElementById("apyForm").addEventListener("submit", function (event) {
-    event.preventDefault();
+        .results {
+            margin-top: 15px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📈 Staking APY Calculator</h1>
+    <div class="staking-calculator">
+        <form id="apyForm">
+            <label for="stakeAmount">Enter Staking Amount ($CURI):</label>
+            <input type="number" id="stakeAmount" placeholder="e.g., 1000">
 
-    // Get Input Values
-    const stakingAmount = parseFloat(document.getElementById("stakeAmount").value);
-    const durationMonths = parseInt(document.getElementById("duration").value);
-    const durationYears = durationMonths / 12;
+            <label for="duration">Select Duration:</label>
+            <select id="duration">
+                <option value="1">1 Month</option>
+                <option value="3">3 Months</option>
+                <option value="6">6 Months</option>
+                <option value="12" selected>1 Year</option>
+            </select>
 
-    // Validation: Ensure valid staking amount
-    if (isNaN(stakingAmount) || stakingAmount <= 0) {
-        alert("Please enter a valid staking amount greater than 0.");
-        return;
-    }
+            <button type="submit">Calculate Rewards</button>
+        </form>
 
-    if (stakingAmount < 1) { // Minimum staking amount check
-        alert("The minimum staking amount is 1 $CURI.");
-        return;
-    }
+        <div id="results" class="results">
+            <h3>Estimated Rewards: <span id="rewards">0</span> $CURI</h3>
+            <p>Reward Tier: <span id="tier">10% APY (Tier: Low)</span></p>
+        </div>
+    </div>
 
-    // Define Tiered APY Rates
-    let apy = 10; // Default APY
-    if (stakingAmount > 500 && stakingAmount <= 10000) {
-        apy = 12; // Medium Tier
-    } else if (stakingAmount > 10000) {
-        apy = 15; // High Tier
-    }
+    <script>
+        document.getElementById("apyForm").addEventListener("submit", function (event) {
+            event.preventDefault();
 
-    // Calculate Estimated Rewards
-    const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
+            // Get Input Values
+            const stakingAmount = parseFloat(document.getElementById("stakeAmount").value);
+            const durationMonths = parseInt(document.getElementById("duration").value);
+            const durationYears = durationMonths / 12;
 
-    // Update the Results Section
-    document.getElementById("rewards").innerText = estimatedRewards.toFixed(2);
-    document.getElementById("tier").innerText = `${apy}% APY (Tier: ${
-        apy === 10 ? "Low" : apy === 12 ? "Medium" : "High"
-    })`;
-});
+            // Validation: Ensure valid staking amount
+            if (isNaN(stakingAmount) || stakingAmount <= 0) {
+                alert("Please enter a valid staking amount greater than 0.");
+                return;
+            }
 
-        // Update Rewards Every Second
-        setInterval(calculateRewards, REWARD_INTERVAL);
-</script>
+            if (stakingAmount < 1) { // Minimum staking amount check
+                alert("The minimum staking amount is 1 $CURI.");
+                return;
+            }
+
+            // Define Tiered APY Rates
+            let apy = 10; // Default APY
+            if (stakingAmount > 500 && stakingAmount <= 10000) {
+                apy = 12; // Medium Tier
+            } else if (stakingAmount > 10000) {
+                apy = 15; // High Tier
+            }
+
+            // Calculate Estimated Rewards
+            const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
+
+            // Update the Results Section
+            document.getElementById("rewards").innerText = estimatedRewards.toFixed(2);
+            document.getElementById("tier").innerText = `${apy}% APY (Tier: ${
+                apy === 10 ? "Low" : apy === 12 ? "Medium" : "High"
+            })`;
+        });
+    </script>
+
 </body>
 </html>
