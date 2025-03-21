@@ -70,3 +70,25 @@ h1 {
 .cta-button:hover {
     background: #8a2be2;
 }
+
+/* General Animation Styles */
+.hidden {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* For Hover Effects */
+.glow-effect {
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.glow-effect:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 5px 20px rgba(255, 223, 0, 0.7);
+}
