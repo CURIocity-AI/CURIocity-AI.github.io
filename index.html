@@ -128,7 +128,48 @@
       opacity: 1;
       transform: translateY(0);
     }
-  </style>
+
+    /* Social Media Popups Styling */
+    .social-popup {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 1000;
+    }
+
+    .popup-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .popup-icon:hover {
+        transform: scale(1.1);
+        box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .popup-icon img {
+        width: 60%;
+        height: 60%;
+    }
+
+    .twitter {
+        background: #1da1f2;
+    }
+
+    .telegram {
+        background: #0088cc;
+    }
+</style>
 </head>
 <body>
   <!-- Fixed Toggle Button with Sliding Effect -->
@@ -154,6 +195,16 @@
       <p>📊 Market Cap: <span id="marketcap">$500,000</span></p>
       <p>🔄 Total Supply: 500,000,000 $CURI</p>
     </div>
+
+<!-- Social Media Popups -->
+<div class="social-popup">
+    <a href="https://twitter.com/your_handle" target="_blank" class="popup-icon twitter">
+        <img src="twitter-icon.png" alt="Twitter">
+    </a>
+    <a href="https://t.me/your_channel" target="_blank" class="popup-icon telegram">
+        <img src="telegram-icon.png" alt="Telegram">
+    </a>
+</div>
   </div>
 
   <script>
