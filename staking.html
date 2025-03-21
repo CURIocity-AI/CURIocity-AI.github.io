@@ -144,6 +144,58 @@
             margin-top: 20px;
             font-size: 18px;
         }
+
+    /* Staking APY Calculator Styles */
+    .staking-calculator {
+        margin-top: 30px;
+        padding: 20px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .staking-calculator h2 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+
+    .staking-calculator label {
+        font-size: 1rem;
+        display: block;
+        margin-top: 10px;
+    }
+
+    .staking-calculator input,
+    .staking-calculator select {
+        width: 80%;
+        padding: 10px;
+        margin: 10px auto;
+        font-size: 1rem;
+        border-radius: 8px;
+        border: none;
+    }
+
+    .staking-calculator button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: bold;
+        background: #ffdd57;
+        border: none;
+        border-radius: 8px;
+        color: #222;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .staking-calculator button:hover {
+        background: #f4c542;
+    }
+
+    .results {
+        margin-top: 15px;
+        font-size: 1.2rem;
+    }
     </style>
 </head>
 <body>
@@ -160,5 +212,51 @@
         </div>
     </div>
     <a href="index.html" class="return-home">🏠 Return to Home</a>
+<!-- Staking APY Calculator -->
+<div class="staking-calculator">
+    <h2>📈 Staking APY Calculator</h2>
+    <form id="apyForm">
+        <label for="stakeAmount">Enter Staking Amount ($CURI):</label>
+        <input type="number" id="stakeAmount" placeholder="e.g., 1000" />
+
+        <label for="duration">Select Duration:</label>
+        <select id="duration">
+            <option value="1">1 Month</option>
+            <option value="3">3 Months</option>
+            <option value="6">6 Months</option>
+            <option value="12" selected>1 Year</option>
+        </select>
+
+        <button type="submit">Calculate Rewards</button>
+    </form>
+
+    <div id="results" class="results">
+        <h3>Estimated Rewards: <span id="rewards">0</span> $CURI</h3>
+    </div>
+</div>
+
+
+<<script>
+    // Staking APY Calculator Script
+    document.getElementById("apyForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const apy = 10; // Annual Percentage Yield (10%)
+        const stakingAmount = parseFloat(document.getElementById("stakeAmount").value);
+        const durationMonths = parseInt(document.getElementById("duration").value);
+        const durationYears = durationMonths / 12;
+
+        if (!stakingAmount || stakingAmount <= 0) {
+            alert("Please enter a valid staking amount.");
+            return;
+        }
+
+        // Calculate rewards
+        const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
+
+        // Update results
+        document.getElementById("rewards").innerText = estimatedRewards.toFixed(2);
+    });
+</script>
 </body>
 </html>
