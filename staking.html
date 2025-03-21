@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staking - Curiosity ($CURI)</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // Variables for Staking
+        let stakedTokens = 0;
+        let rewards = 0;
+        const APY = 10; // Annual Percentage Yield
+        const REWARD_INTERVAL = 1000; // Update rewards every second
+
+        // Function to Stake Tokens
+        function stakeTokens(event) {
+            event.preventDefault();
+            const amount = parseFloat(document.getElementById("stakeAmount").value);
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid amount.");
+                return;
+            }
+            stakedTokens += amount;
+            document.getElementById("stakedTokens").innerText = stakedTokens.toFixed(2);
+            document.getElementById("stakeAmount").value = "";
+        }
+
+        // Function to Unstake Tokens
+        function unstakeTokens() {
+            const unstakeAmount = stakedTokens;
+            if (unstakeAmount <= 0) {
+                alert("You have no tokens to unstake.");
+                return;
+            }
+            stakedTokens = 0;
+            rewards = 0;
+            document.getElementById("stakedTokens").innerText = stakedTokens.toFixed(2);
+            document.getElementById("rewards").innerText = rewards.toFixed(4);
+            alert(`You have unstaked ${unstakeAmount.toFixed(2)} $CURI tokens.`);
+        }
+
+        // Function to Calculate Rewards
+        function calculateRewards() {
+            if (stakedTokens > 0) {
+                rewards += (stakedTokens * (APY / 100)) / (365 * 24 * 60 * 60); // Rewards per second
+                document.getElementById("rewards").innerText = rewards.toFixed(4);
+            }
+        }
+
+        // Update Rewards Every Second
+        setInterval(calculateRewards, REWARD_INTERVAL);
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
+            color: white;
+            padding: 20px;
+            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .light-mode {
+            background: #f4f4f4;
+            color: #222;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .staking-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .staking-container input {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .staking-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background: #ffdd57;
+            color: #222;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+            margin: 5px 0;
+        }
+
+        .staking-container button:hover {
+            background: #f4c542;
+        }
+
+        .light-mode button {
+            background: #222;
+            color: white;
+        }
+
+        .light-mode button:hover {
+            background: #444;
+        }
+
+        .return-home {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #6a0dad;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .return-home:hover {
+            background: #8a2be2;
+        }
+
+        .light-mode .return-home {
+            background: #222;
+            color: white;
+        }
+
+        .light-mode .return-home:hover {
+            background: #444;
+        }
+
+        .stats {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔒 Stake Your $CURI Tokens</h1>
+    <div class="staking-container">
+        <form onsubmit="stakeTokens(event)">
+            <input type="text" id="stakeAmount" placeholder="Enter amount to stake" />
+            <button type="submit">Stake</button>
+        </form>
+        <button onclick="unstakeTokens()">Unstake All</button>
+        <div class="stats">
+            <p>Staked Tokens: <span id="stakedTokens">0.00</span> $CURI</p>
+            <p>Rewards Earned: <span id="rewards">0.0000</span> $CURI</p>
+        </div>
+    </div>
+    <a href="index.html" class="return-home">🏠 Return to Home</a>
+</body>
+</html>
