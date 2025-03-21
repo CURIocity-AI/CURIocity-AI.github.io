@@ -48,23 +48,9 @@ function stakeTokens(event) {
             alert(`You have unstaked ${unstakeAmount.toFixed(2)} $CURI tokens.`);
         }
 
-        // Function to Calculate Rewards
-        function calculateRewards() {
-            if (stakedTokens > 0) {
-                rewards += (stakedTokens * (APY / 100)) / (365 * 24 * 60 * 60); // Rewards per second
-                document.getElementById("rewards").innerText = rewards.toFixed(4);
-            }
-        }
-
-        // Update Rewards Every Second
-        setInterval(calculateRewards, REWARD_INTERVAL);
-
-
-  // Function to Calculate Rewards
-document.getElementById("apyForm").addEventListener("submit", function (event) {
+      // Function to Calculate Rewards document.getElementById("apyForm").addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const apy = 10; // Annual Percentage Yield (10%)
     const stakingAmount = parseFloat(document.getElementById("stakeAmount").value);
     const durationMonths = parseInt(document.getElementById("duration").value);
     const durationYears = durationMonths / 12;
@@ -75,17 +61,32 @@ document.getElementById("apyForm").addEventListener("submit", function (event) {
         return;
     }
 
-    if (stakingAmount < 1) {
+    if (stakingAmount < 1) { // Minimum staking amount check
         alert("The minimum staking amount is 1 $CURI.");
         return;
     }
 
-    // Calculate estimated rewards
+    // Define Tiered APY Rates
+    let apy = 10; // Default APY
+    if (stakingAmount > 500 && stakingAmount <= 10000) {
+        apy = 12; // Medium Tier
+    } else if (stakingAmount > 10000) {
+        apy = 15; // High Tier
+    }
+
+    // Calculate Rewards Based on Tiered APY
     const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
 
-    // Update results
+    // Update Results
     document.getElementById("rewards").innerText = estimatedRewards.toFixed(2);
+    document.getElementById("tier").innerText = `${apy}% APY (Tier: ${
+        apy === 10 ? "Low" : apy === 12 ? "Medium" : "High"
+    })`;
 });
+
+        // Update Rewards Every Second
+        setInterval(calculateRewards, REWARD_INTERVAL);
+
   </script>
     <style>
         body {
