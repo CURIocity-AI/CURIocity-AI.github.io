@@ -6,6 +6,48 @@
     <title>Staking - Curiosity ($CURI)</title>
     <link rel="stylesheet" href="style.css">
     <style>
+/* Header Styling */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.main-header h1 {
+    font-size: 1.5rem;
+    color: #ffdd57;
+    font-weight: bold;
+    margin: 0;
+}
+
+.main-header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.main-header nav ul li {
+    margin: 0 10px;
+}
+
+.main-header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+.main-header nav ul li a:hover {
+    background: #ffdd57;
+    color: #222;
+}
         body {
             font-family: 'Poppins', sans-serif;
             text-align: center;
@@ -84,6 +126,17 @@
     </style>
 </head>
 <body>
+<header class="main-header">
+    <h1>Curiosity ($CURI)</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="staking.html">Staking</a></li>
+            <li><a href="referral.html">Referral</a></li>
+            <li><a href="airdrop.html">Airdrop</a></li>
+        </ul>
+    </nav>
+</header>
     <h1>🔒 Stake Your $CURI Tokens</h1>
 
     <!-- Staking Section -->
