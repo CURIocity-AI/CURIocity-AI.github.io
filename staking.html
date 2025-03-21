@@ -48,46 +48,7 @@ function stakeTokens(event) {
             alert(`You have unstaked ${unstakeAmount.toFixed(2)} $CURI tokens.`);
         }
 
-  // Function to Calculate Rewards
- document.getElementById("apyForm").addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    // Get Input Values
-    const stakingAmount = parseFloat(document.getElementById("stakeAmount").value);
-    const durationMonths = parseInt(document.getElementById("duration").value);
-    const durationYears = durationMonths / 12;
-
-    // Validation: Ensure valid staking amount
-    if (isNaN(stakingAmount) || stakingAmount <= 0) {
-        alert("Please enter a valid staking amount greater than 0.");
-        return;
-    }
-
-    if (stakingAmount < 1) { // Minimum staking amount check
-        alert("The minimum staking amount is 1 $CURI.");
-        return;
-    }
-
-    // Define Tiered APY Rates
-    let apy = 10; // Default APY
-    if (stakingAmount > 500 && stakingAmount <= 10000) {
-        apy = 12; // Medium Tier
-    } else if (stakingAmount > 10000) {
-        apy = 15; // High Tier
-    }
-
-    // Calculate Estimated Rewards
-    const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
-
-    // Update the Results Section
-    document.getElementById("rewards").innerText = estimatedRewards.toFixed(2);
-    document.getElementById("tier").innerText = `${apy}% APY (Tier: ${
-        apy === 10 ? "Low" : apy === 12 ? "Medium" : "High"
-    })`;
-});
-
-        // Update Rewards Every Second
-        setInterval(calculateRewards, REWARD_INTERVAL);
+  
 
   </script>
     <style>
@@ -279,6 +240,47 @@ function stakeTokens(event) {
 
 <!-- Return to Home Button -->
     <a href="index.html" class="return-home">🏠 Return to Home</a>
+<script>
+// Function to Calculate Rewards
+ document.getElementById("apyForm").addEventListener("submit", function (event) {
+    event.preventDefault();
 
+    // Get Input Values
+    const stakingAmount = parseFloat(document.getElementById("stakeAmount").value);
+    const durationMonths = parseInt(document.getElementById("duration").value);
+    const durationYears = durationMonths / 12;
+
+    // Validation: Ensure valid staking amount
+    if (isNaN(stakingAmount) || stakingAmount <= 0) {
+        alert("Please enter a valid staking amount greater than 0.");
+        return;
+    }
+
+    if (stakingAmount < 1) { // Minimum staking amount check
+        alert("The minimum staking amount is 1 $CURI.");
+        return;
+    }
+
+    // Define Tiered APY Rates
+    let apy = 10; // Default APY
+    if (stakingAmount > 500 && stakingAmount <= 10000) {
+        apy = 12; // Medium Tier
+    } else if (stakingAmount > 10000) {
+        apy = 15; // High Tier
+    }
+
+    // Calculate Estimated Rewards
+    const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
+
+    // Update the Results Section
+    document.getElementById("rewards").innerText = estimatedRewards.toFixed(2);
+    document.getElementById("tier").innerText = `${apy}% APY (Tier: ${
+        apy === 10 ? "Low" : apy === 12 ? "Medium" : "High"
+    })`;
+});
+
+        // Update Rewards Every Second
+        setInterval(calculateRewards, REWARD_INTERVAL);
+</script>
 </body>
 </html>
