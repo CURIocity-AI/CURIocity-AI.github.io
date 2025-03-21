@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT Gallery - Curiosity ($CURI)</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .light-mode {
+            background: #f4f4f4;
+            color: #222;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        .nft-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .nft-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .nft-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 10px 25px rgba(255, 255, 255, 0.4);
+        }
+
+        .nft-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .nft-name {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #ffdd57;
+        }
+
+        .nft-description {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .nft-price {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .buy-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background: #6a0dad;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .buy-button:hover {
+            background: #8a2be2;
+        }
+
+        .light-mode .nft-card {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .light-mode .buy-button {
+            background: #333;
+        }
+
+        .light-mode .buy-button:hover {
+            background: #555;
+        }
+
+        .return-home {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #ffdd57;
+            color: #222;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .return-home:hover {
+            background: #f4c542;
+        }
+
+        .light-mode .return-home {
+            background: #222;
+            color: white;
+        }
+
+        .light-mode .return-home:hover {
+            background: #444;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 Curiosity NFT Gallery</h1>
+    <div class="nft-gallery">
+        <!-- NFT Card 1 -->
+        <div class="nft-card">
+            <img src="nft1.png" alt="NFT 1" class="nft-image">
+            <h3 class="nft-name">Curious Cat #1</h3>
+            <p class="nft-description">A rare and mysterious feline.</p>
+            <p class="nft-price">Price: 0.05 ETH</p>
+            <button class="buy-button">Buy Now</button>
+        </div>
+        <!-- NFT Card 2 -->
+        <div class="nft-card">
+            <img src="nft2.png" alt="NFT 2" class="nft-image">
+            <h3 class="nft-name">Curious Cat #2</h3>
+            <p class="nft-description">An adventurous and curious cat.</p>
+            <p class="nft-price">Price: 0.08 ETH</p>
+            <button class="buy-button">Buy Now</button>
+        </div>
+        <!-- Add more NFTs here -->
+    </div>
+    <a href="index.html" class="return-home">🏠 Return to Home</a>
+</body>
+</html>
