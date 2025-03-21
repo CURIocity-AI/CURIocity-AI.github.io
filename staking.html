@@ -52,11 +52,12 @@ function stakeTokens(event) {
  document.getElementById("apyForm").addEventListener("submit", function (event) {
     event.preventDefault();
 
+    // Get Input Values
     const stakingAmount = parseFloat(document.getElementById("stakeAmount").value);
     const durationMonths = parseInt(document.getElementById("duration").value);
     const durationYears = durationMonths / 12;
 
-    // Validation: Ensure staking amount is valid
+    // Validation: Ensure valid staking amount
     if (isNaN(stakingAmount) || stakingAmount <= 0) {
         alert("Please enter a valid staking amount greater than 0.");
         return;
@@ -75,10 +76,10 @@ function stakeTokens(event) {
         apy = 15; // High Tier
     }
 
-    // Calculate Rewards Based on Tiered APY
+    // Calculate Estimated Rewards
     const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
 
-    // Update Results
+    // Update the Results Section
     document.getElementById("rewards").innerText = estimatedRewards.toFixed(2);
     document.getElementById("tier").innerText = `${apy}% APY (Tier: ${
         apy === 10 ? "Low" : apy === 12 ? "Medium" : "High"
