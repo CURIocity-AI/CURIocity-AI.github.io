@@ -6,7 +6,7 @@
     <title>Staking - Curiosity ($CURI)</title>
     <link rel="stylesheet" href="style.css">
     <style>
-/* Header Styling */
+/* General Header Styling */
 .main-header {
     display: flex;
     justify-content: space-between;
@@ -15,6 +15,9 @@
     background: rgba(255, 255, 255, 0.1);
     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .main-header h1 {
@@ -24,18 +27,24 @@
     margin: 0;
 }
 
-.main-header nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+/* Navbar Links */
+.navbar {
     display: flex;
+    align-items: center;
 }
 
-.main-header nav ul li {
+.nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
     margin: 0 10px;
 }
 
-.main-header nav ul li a {
+.nav-links li a {
     color: white;
     text-decoration: none;
     font-weight: bold;
@@ -44,11 +53,54 @@
     transition: background 0.3s ease-in-out;
 }
 
-.main-header nav ul li a:hover {
+.nav-links li a:hover {
     background: #ffdd57;
     color: #222;
 }
-        body {
+
+/* Hamburger Menu Styling */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.hamburger span {
+    background: white;
+    height: 3px;
+    width: 25px;
+    margin: 3px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Responsive Design for Smaller Screens */
+@media screen and (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+        border-radius: 10px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 15px 0;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}       body {
             font-family: 'Poppins', sans-serif;
             text-align: center;
             background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
@@ -128,13 +180,18 @@
 <body>
 <header class="main-header">
     <h1>Curiosity ($CURI)</h1>
-    <nav>
-        <ul>
+    <nav class="navbar">
+        <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="staking.html">Staking</a></li>
             <li><a href="referral.html">Referral</a></li>
             <li><a href="airdrop.html">Airdrop</a></li>
         </ul>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </nav>
 </header>
     <h1>🔒 Stake Your $CURI Tokens</h1>
