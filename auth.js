@@ -40,4 +40,24 @@ document.getElementById("registerForm").addEventListener("submit", (e) => {
     const password = document.getElementById("password").value;
     registerUser(email, password);
 });
+
+// Login Functionality
+function loginUser(email, password) {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            alert("Login successful!");
+            window.location.href = "dashboard.html"; // Redirect to dashboard
+        })
+        .catch((error) => {
+            alert(error.message);
+        });
+}
+
+// Event Listener for Login
+document.getElementById("loginForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    loginUser(email, password);
+});
 </script>
