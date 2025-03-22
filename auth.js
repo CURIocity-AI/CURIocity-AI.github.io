@@ -60,4 +60,24 @@ document.getElementById("loginForm").addEventListener("submit", (e) => {
     const password = document.getElementById("password").value;
     loginUser(email, password);
 });
+
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+
+async function createUserInDatabase(userId) {
+    const userDocRef = doc(db, "users", userId);
+    await setDoc(userDocRef, {
+        tokenBalance: 1000, // Default starting balance
+        stakingRewards: 0,
+        referrals: 0,
+        referralRewards: 0
+    });
+    console.log("User document created!");
+}
+
+// Call this function after user registration
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        createUserInDatabase(user.uid);
+    }
+});
 </script>
