@@ -63,6 +63,23 @@
         .login-link:hover {
             color: white;
         }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            background: #6a0dad;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .back-button:hover {
+            background: #8a2be2;
+        }
     </style>
 </head>
 <body>
@@ -79,57 +96,31 @@
 
     <button class="back-button" onclick="goBack()">Back</button>
 
-    <script src="common.js"></script>
+    <!-- Import auth.js and use registerUser -->
     <script type="module" src="auth.js"></script>
-
     <script type="module">
-        import { auth, db } from './auth.js';
-        import { createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js';
-        import { doc, setDoc } from 'https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js';
+        import { registerUser } from './auth.js';
 
-        // Handle Registration
-        document.getElementById('registerForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            // Collect user input values
-            const username = document.getElementById('username').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
+        // Handle form submission for registration
+        document.getElementById("registerForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            // Collect form data
+            const username = document.getElementById("username").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
 
             // Basic validation
             if (!username || !email || !password) {
-                alert('All fields are required!');
+                alert("All fields are required!");
                 return;
             }
 
-            try {
-                console.log('Starting registration process...');
-
-                // Create user in Firebase Auth
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                console.log('User registered successfully:', user);
-
-                // Save user data to Firestore
-                const userDocRef = doc(db, 'users', user.uid);
-                await setDoc(userDocRef, {
-                    username: username,
-                    email: email,
-                    tokenBalance: 1000, // Default token balance
-                    stakingRewards: 0,
-                    referrals: 0,
-                    referralRewards: 0
-                });
-
-                console.log('User data saved to Firestore!');
-                alert('Account created successfully!');
-                window.location.href = 'dashboard.html'; // Redirect after successful registration
-            } catch (error) {
-                console.error('Error during registration:', error.message);
-                alert(`Registration failed: ${error.message}`);
-            }
+            // Call registerUser function from auth.js
+            registerUser(email, password, username);
         });
 
+        // Go back to the previous page
         function goBack() {
             window.history.back();
         }
