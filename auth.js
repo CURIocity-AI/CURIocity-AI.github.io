@@ -80,4 +80,15 @@ auth.onAuthStateChanged((user) => {
         createUserInDatabase(user.uid);
     }
 });
+
+import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+
+// Example: Update token balance
+async function updateTokenBalance(userId, newBalance) {
+    const userDocRef = doc(db, "users", userId);
+    await updateDoc(userDocRef, {
+        tokenBalance: newBalance
+    });
+    console.log("Token balance updated!");
+}
 </script>
