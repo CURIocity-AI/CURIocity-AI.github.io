@@ -1,94 +1,88 @@
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+<script>
+// Import Firebase SDKs
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
+// Firebase Configuration
+const firebaseConfig = {
     apiKey: "AIzaSyB-G9TAjjwAIfbC5qCrDRrqQykl-skn3v4",
     authDomain: "curitoken-87a26.firebaseapp.com",
     projectId: "curitoken-87a26",
-    storageBucket: "curitoken-87a26.firebasestorage.app",
+    storageBucket: "curitoken-87a26.appspot.com", // Corrected this to match Firebase bucket format
     messagingSenderId: "698884646705",
     appId: "1:698884646705:web:ebfb0fa5c8e943ade23210",
     measurementId: "G-C155DRCN40"
-  };
+};
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Export Firebase instances for reuse
+export { auth, db };
 
 // Register Functionality
-function registerUser(email, password) {
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            alert("Registration successful! Welcome to Curiosity!");
-            window.location.href = "dashboard.html"; // Redirect to dashboard
-        })
-        .catch((error) => {
-            alert(error.message);
-        });
-}
+async function registerUser(email, password, username) {
+    try {
+        // Create user in Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-// Event Listener for Registration
-document.getElementById("registerForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    registerUser(email, password);
-});
+        // Save user data to Firestore
+        await setDoc(doc(db, "users", user.uid), {
+            username: username,
+            email: email,
+            tokenBalance: 1000, // Default token balance
+            stakingRewards: 0,
+            referrals: 0,
+            referralRewards: 0
+        });
+
+        alert("Registration successful! Welcome to Curiosity!");
+        window.location.href = "dashboard.html"; // Redirect to dashboard
+    } catch (error) {
+        console.error("Error during registration:", error.message);
+        alert(`Error: ${error.message}`);
+    }
+}
 
 // Login Functionality
-function loginUser(email, password) {
-    firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            alert("Login successful!");
-            window.location.href = "dashboard.html"; // Redirect to dashboard
-        })
-        .catch((error) => {
-            alert(error.message);
-        });
+async function loginUser(email, password) {
+    try {
+        // Sign in the user
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        alert("Login successful!");
+        window.location.href = "dashboard.html"; // Redirect to dashboard
+    } catch (error) {
+        console.error("Error during login:", error.message);
+        alert(`Error: ${error.message}`);
+    }
 }
 
-// Event Listener for Login
-document.getElementById("loginForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    loginUser(email, password);
-});
-
-import { doc, setDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
-
-async function createUserInDatabase(userId) {
-    const userDocRef = doc(db, "users", userId);
-    await setDoc(userDocRef, {
-        tokenBalance: 1000, // Default starting balance
-        stakingRewards: 0,
-        referrals: 0,
-        referralRewards: 0
-    });
-    console.log("User document created!");
-}
-
-// Call this function after user registration
-auth.onAuthStateChanged((user) => {
+// Realtime Auth Listener
+onAuthStateChanged(auth, (user) => {
     if (user) {
-        createUserInDatabase(user.uid);
+        console.log("User is logged in:", user);
+        // You can redirect or update the UI based on the authenticated user
+    } else {
+        console.log("No user is logged in.");
     }
 });
 
-import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
-
-// Example: Update token balance
+// Example: Update Token Balance
 async function updateTokenBalance(userId, newBalance) {
-    const userDocRef = doc(db, "users", userId);
-    await updateDoc(userDocRef, {
-        tokenBalance: newBalance
-    });
-    console.log("Token balance updated!");
+    try {
+        const userDocRef = doc(db, "users", userId);
+        await updateDoc(userDocRef, {
+            tokenBalance: newBalance
+        });
+        console.log("Token balance updated successfully!");
+    } catch (error) {
+        console.error("Error updating token balance:", error.message);
+    }
 }
+
+export { registerUser, loginUser, updateTokenBalance };
 </script>
