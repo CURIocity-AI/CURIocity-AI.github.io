@@ -20,4 +20,24 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+
+// Register Functionality
+function registerUser(email, password) {
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            alert("Registration successful! Welcome to Curiosity!");
+            window.location.href = "dashboard.html"; // Redirect to dashboard
+        })
+        .catch((error) => {
+            alert(error.message);
+        });
+}
+
+// Event Listener for Registration
+document.getElementById("registerForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    registerUser(email, password);
+});
 </script>
