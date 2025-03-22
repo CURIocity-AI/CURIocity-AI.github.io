@@ -63,22 +63,65 @@
         .register-link:hover {
             color: white;
         }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            background: #6a0dad;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .back-button:hover {
+            background: #8a2be2;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h1>Login</h1>
-        <form>
-            <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Password" required>
+        <h1>Welcome Back</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
         <a href="register.html" class="register-link">Don't have an account? Register</a>
-
-<button class="back-button" onclick="goBack()">Back</button>
     </div>
 
-<script src="common.js"></script>
-<script type="module" src="auth.js"></script>
+    <button class="back-button" onclick="goBack()">Back</button>
+
+    <!-- Import auth.js and handle login functionality -->
+    <script type="module" src="auth.js"></script>
+    <script type="module">
+        import { loginUser } from './auth.js';
+
+        // Handle form submission for login
+        document.getElementById("loginForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            // Collect form data
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            // Basic validation
+            if (!email || !password) {
+                alert("All fields are required!");
+                return;
+            }
+
+            // Call loginUser function from auth.js
+            loginUser(email, password);
+        });
+
+        // Go back to the previous page
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 </body>
 </html>
