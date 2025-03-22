@@ -215,6 +215,36 @@
         // Example: Update progress bar dynamically
         const stakingProgress = document.getElementById("stakingProgress");
         stakingProgress.style.width = "50%"; // Example progress value
-    </script>
+</script>
+
+<script type="module">
+    import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+
+    // Restrict Access to Authenticated Users
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const userId = user.uid;
+
+            // Reference the user's Firestore document
+            const userDocRef = doc(db, "users", userId);
+
+            // Fetch user data and listen for real-time updates
+            onSnapshot(userDocRef, (doc) => {
+                if (doc.exists()) {
+                    const data = doc.data();
+                    document.getElementById("tokenBalance").innerText = data.tokenBalance;
+                    document.getElementById("stakingRewards").innerText = data.stakingRewards.toFixed(4);
+                    document.getElementById("referrals").innerText = data.referrals;
+                    document.getElementById("referralRewards").innerText = data.referralRewards;
+                } else {
+                    console.log("No user data found!");
+                }
+            });
+        } else {
+            window.location.href = "login.html"; // Redirect to login if not authenticated
+        }
+    });
+</script>
 </body>
 </html>
