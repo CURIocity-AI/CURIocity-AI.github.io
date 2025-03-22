@@ -6,174 +6,100 @@
     <title>Staking - Curiosity ($CURI)</title>
     <link rel="stylesheet" href="style.css">
     <style>
-/* General Header Styling */
-.main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background: rgba(255, 255, 255, 0.1);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.main-header h1 {
-    font-size: 1.5rem;
-    color: #ffdd57;
-    font-weight: bold;
-    margin: 0;
-}
-
-/* Navbar Links */
-.navbar {
-    display: flex;
-    align-items: center;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-links li {
-    margin: 0 10px;
-}
-
-.nav-links li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: background 0.3s ease-in-out;
-}
-
-.nav-links li a:hover {
-    background: #ffdd57;
-    color: #222;
-}
-
-/* Hamburger Menu Styling */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    margin-left: 20px;
-}
-
-.hamburger span {
-    background: white;
-    height: 3px;
-    width: 25px;
-    margin: 3px 0;
-    transition: all 0.3s ease-in-out;
-}
-
-/* Responsive Design for Smaller Screens */
-@media screen and (max-width: 768px) {
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        background: rgba(0, 0, 0, 0.9);
-        position: absolute;
-        top: 60px;
-        right: 0;
-        width: 100%;
-        text-align: center;
-        padding: 20px 0;
-        border-radius: 10px;
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    .nav-links li {
-        margin: 15px 0;
-    }
-
-    .hamburger {
-        display: flex;
-    }
-}       body {
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
-            color: white;
-            padding: 20px;
-            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
-        }
-
-        .staking-container, .staking-calculator {
-            max-width: 400px;
-            margin: auto;
-            padding: 20px;
+        /* General Header Styling */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.2);
-            margin-top: 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .staking-container input, .staking-calculator input, .staking-calculator select {
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .staking-container button, .staking-calculator button {
-            padding: 10px 20px;
-            font-size: 16px;
+        .main-header h1 {
+            font-size: 1.5rem;
+            color: #ffdd57;
             font-weight: bold;
+            margin: 0;
+        }
+
+        /* Navbar Links */
+        .navbar {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li {
+            margin: 0 10px;
+        }
+
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .nav-links li a:hover {
             background: #ffdd57;
             color: #222;
-            border: none;
-            border-radius: 5px;
+        }
+
+        /* Hamburger Menu Styling */
+        .hamburger {
+            display: none;
+            flex-direction: column;
             cursor: pointer;
-            transition: background 0.3s ease-in-out;
-            margin: 5px 0;
+            margin-left: 20px;
         }
 
-        .staking-container button:hover, .staking-calculator button:hover {
-            background: #f4c542;
+        .hamburger span {
+            background: white;
+            height: 3px;
+            width: 25px;
+            margin: 3px 0;
+            transition: all 0.3s ease-in-out;
         }
 
-        .results {
-            margin-top: 15px;
-            font-size: 18px;
-        }
+        /* Responsive Design for Smaller Screens */
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background: rgba(0, 0, 0, 0.9);
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 100%;
+                text-align: center;
+                padding: 20px 0;
+                border-radius: 10px;
+            }
 
-.return-home {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: #6a0dad;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
-        }
+            .nav-links.active {
+                display: flex;
+            }
 
-        .return-home:hover {
-            background: #8a2be2;
-        }
+            .nav-links li {
+                margin: 15px 0;
+            }
 
-        .light-mode .return-home {
-            background: #222;
-            color: white;
-        }
-
-        .light-mode .return-home:hover {
-            background: #444;
+            .hamburger {
+                display: flex;
+            }
         }
     </style>
 </head>
@@ -194,108 +120,60 @@
         </div>
     </nav>
 </header>
-    <h1>🔒 Stake Your $CURI Tokens</h1>
+<h1>🔒 Stake Your $CURI Tokens</h1>
 
-    <!-- Staking Section -->
-    <div class="staking-container">
-        <form onsubmit="stakeTokens(event)">
-            <input type="text" id="stakingInput" placeholder="Enter amount to stake" />
-            <button type="submit">Stake</button>
-        </form>
-        <button onclick="unstakeTokens()">Unstake All</button>
-        <div class="stats">
-            <p>Staked Tokens: <span id="stakedTokens">0.00</span> $CURI</p>
-            <p>Rewards Earned: <span id="stakingRewards">0.0000</span> $CURI</p>
-        </div>
+<!-- Staking Section -->
+<div class="staking-container">
+    <form onsubmit="stakeTokens(event)">
+        <input type="text" id="stakingInput" placeholder="Enter amount to stake" />
+        <button type="submit">Stake</button>
+    </form>
+    <button onclick="unstakeTokens()">Unstake All</button>
+    <div class="stats">
+        <p>Staked Tokens: <span id="stakedTokens">0.00</span> $CURI</p>
+        <p>Rewards Earned: <span id="stakingRewards">0.0000</span> $CURI</p>
     </div>
+</div>
+<a class="return-home" onclick="returnHome()">🏠 Return to Home</a>
 
-    <!-- APY Calculator Section -->
-    <div class="staking-calculator">
-        <form id="apyForm">
-            <label for="apyInput">Enter Staking Amount ($CURI):</label>
-            <input type="number" id="apyInput" placeholder="e.g., 1000">
+<script>
+    // Hamburger Menu Functionality
+    function toggleMenu() {
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('active');
+    }
 
-            <label for="duration">Select Duration:</label>
-            <select id="duration">
-                <option value="1">1 Month</option>
-                <option value="3">3 Months</option>
-                <option value="6">6 Months</option>
-                <option value="12" selected>1 Year</option>
-            </select>
+    // Staking Functions
+    let stakedTokens = 0;
 
-            <button type="submit">Calculate Rewards</button>
-        </form>
+    function stakeTokens(event) {
+        event.preventDefault();
+        const amount = parseFloat(document.getElementById("stakingInput").value);
 
-        <div id="results" class="results">
-            <h3>Estimated Rewards: <span id="apyRewards">0</span> $CURI</h3>
-            <p>Reward Tier: <span id="apyTier">10% APY (Tier: Low)</span></p>
-        </div>
-    </div>
-    <a class="return-home" onclick="returnHome()">🏠 Return to Home</a>
-    <script>
-        // Variables for Staking
-        let stakedTokens = 0;
-        let stakingRewards = 0;
-
-        // Staking Functions
-        function stakeTokens(event) {
-            event.preventDefault();
-            const amount = parseFloat(document.getElementById("stakingInput").value);
-
-            if (isNaN(amount) || amount <= 0) {
-                alert("Please enter a valid staking amount greater than 0.");
-                return;
-            }
-
-            if (amount < 1) {
-                alert("The minimum staking amount is 1 $CURI.");
-                return;
-            }
-
-            stakedTokens += amount;
-            document.getElementById("stakedTokens").innerText = stakedTokens.toFixed(2);
-            document.getElementById("stakingInput").value = "";
-        }
-        function returnHome() {
-            window.location.href = "index.html";
-        }
-        function unstakeTokens() {
-            if (stakedTokens <= 0) {
-                alert("You have no tokens to unstake.");
-                return;
-            }
-
-            alert(`You have unstaked ${stakedTokens.toFixed(2)} $CURI.`);
-            stakedTokens = 0;
-            stakingRewards = 0;
-            document.getElementById("stakedTokens").innerText = stakedTokens.toFixed(2);
-            document.getElementById("stakingRewards").innerText = stakingRewards.toFixed(4);
+        if (isNaN(amount) || amount <= 0) {
+            alert("Please enter a valid staking amount greater than 0.");
+            return;
         }
 
-        // APY Calculator
-        document.getElementById("apyForm").addEventListener("submit", function (event) {
-            event.preventDefault();
+        stakedTokens += amount;
+        document.getElementById("stakedTokens").innerText = stakedTokens.toFixed(2);
+        document.getElementById("stakingInput").value = "";
+    }
 
-            const stakingAmount = parseFloat(document.getElementById("apyInput").value);
-            const durationMonths = parseInt(document.getElementById("duration").value);
-            const durationYears = durationMonths / 12;
+    function unstakeTokens() {
+        if (stakedTokens <= 0) {
+            alert("You have no tokens to unstake.");
+            return;
+        }
 
-            if (isNaN(stakingAmount) || stakingAmount <= 0) {
-                alert("Please enter a valid staking amount greater than 0.");
-                return;
-            }
+        alert(`You have unstaked ${stakedTokens.toFixed(2)} $CURI.`);
+        stakedTokens = 0;
+        document.getElementById("stakedTokens").innerText = stakedTokens.toFixed(2);
+    }
 
-            let apy = 10; // Default APY
-            if (stakingAmount > 500 && stakingAmount <= 10000) apy = 12;
-            else if (stakingAmount > 10000) apy = 15;
-
-            const estimatedRewards = (stakingAmount * (apy / 100)) * durationYears;
-
-            document.getElementById("apyRewards").innerText = estimatedRewards.toFixed(2);
-            document.getElementById("apyTier").innerText = `${apy}% APY (Tier: ${
-                apy === 10 ? "Low" : apy === 12 ? "Medium" : "High"
-            })`;
-        });
-    </script>
+    function returnHome() {
+        window.location.href = "index.html";
+    }
+</script>
 </body>
 </html>
