@@ -1,4 +1,3 @@
-<script>
 // Import Firebase SDKs
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
@@ -85,4 +84,3 @@ async function updateTokenBalance(userId, newBalance) {
 }
 
 export { registerUser, loginUser, updateTokenBalance };
-</script>
