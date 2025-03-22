@@ -110,6 +110,26 @@
             }
         }
 
+        /* Logout Button */
+        .logout-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #ffdd57;
+            color: #222;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .logout-button:hover {
+            background: #f4c542;
+            color: white;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .dashboard-header h1 {
@@ -127,6 +147,7 @@
     </style>
 </head>
 <body>
+    <!-- Dashboard Container -->
     <div class="dashboard-container">
         <div class="dashboard-header">
             <h1>Dashboard</h1>
@@ -159,9 +180,32 @@
                 <p>Rewards: <span id="referralRewards">0</span> $CURI</p>
             </div>
         </div>
+
+        <!-- Logout Button -->
+        <button class="logout-button" onclick="logout()">Logout</button>
     </div>
 
+    <script src="auth.js"></script>
     <script>
+        // Restrict Access to Authenticated Users
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = "login.html"; // Redirect if not logged in
+            }
+        });
+
+        // Logout Functionality
+        function logout() {
+            firebase.auth().signOut()
+                .then(() => {
+                    alert("Logged out successfully!");
+                    window.location.href = "login.html";
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        }
+
         // Example Placeholder Data
         document.getElementById("tokenBalance").innerText = 1000;
         document.getElementById("stakingRewards").innerText = 25.4567;
@@ -173,7 +217,4 @@
         stakingProgress.style.width = "50%"; // Example progress value
     </script>
 </body>
-
-<script src="common.js"></script>
-<script type="module" src="auth.js"></script>
 </html>
