@@ -131,13 +131,27 @@
         <!-- Proceed Button -->
         <button id="proceedButton" onclick="showProofForm()" disabled>Proceed</button>
 
-        <!-- Proof Submission Section -->
-        <form id="proofForm" onsubmit="submitProof(event)">
-            <input type="text" id="wallet" placeholder="Enter your Wallet Address" required>
-            <input type="text" id="twitterLink" placeholder="Enter Twitter Retweet Link" required>
-            <input type="text" id="telegramUsername" placeholder="Enter Telegram Username" required>
-            <button type="submit">Submit Proof</button>
-        </form>
+      <!-- Proof Submission Section -->
+<form id="proofForm" onsubmit="submitProof(event)">
+    <input type="text" id="wallet" placeholder="Enter your Wallet Address" required>
+    <input type="text" id="twitterLink" placeholder="Enter Twitter Retweet Link" required>
+    <input type="text" id="telegramUsername" placeholder="Enter Telegram Username" required>
+    <button type="submit">Submit Proof</button>
+</form>
+
+<!-- Status and Next Steps -->
+<div id="submissionStatus" style="display: none; margin-top: 20px;">
+    <p id="statusMessage" style="color: #28a745; font-weight: bold;"></p>
+    <div>
+        <button class="next-step-button" onclick="goToDashboard()">Go to Dashboard</button>
+        <button class="next-step-button" onclick="startMoreTasks()">Start More Tasks</button>
+    </div>
+</div>
+
+<!-- Spinner -->
+<div id="spinner" style="display: none; margin-top: 20px;">
+    <img src="spinner.gif" alt="Loading..." width="50">
+</div>
 
         <!-- Back Button -->
         <button class="back-button" onclick="goBack()">Back to Guide</button>
