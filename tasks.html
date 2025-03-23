@@ -115,4 +115,60 @@
             background: #f4c542;
         }
 
-        #proof
+        #proofForm {
+            display: none; /* Hidden until tasks are completed */
+            margin-top: 20px;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            background: #6a0dad;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .back-button:hover {
+            background: #8a2be2;
+        }
+    </style>
+</head>
+<body>
+    <div class="task-container">
+        <h1>🎁 Airdrop Tasks</h1>
+        <h2>Complete the tasks below:</h2>
+
+        <!-- Tasks Section -->
+        <div class="tasks-list">
+            <label>
+                <input type="checkbox" class="task-checkbox"> Retweet the pinned post on our Twitter
+            </label>
+            <br>
+            <label>
+                <input type="checkbox" class="task-checkbox"> Join our Telegram group
+            </label>
+            <br>
+            <label>
+                <input type="checkbox" class="task-checkbox"> Follow our Instagram page
+            </label>
+        </div>
+
+        <button onclick="validateTasks()">✅ Mark Tasks as Completed</button>
+
+        <!-- Proof Submission Section -->
+        <form id="proofForm" onsubmit="submitProof(event)">
+            <input type="text" id="wallet" placeholder="Enter your Wallet Address" required>
+            <input type="text" id="twitterLink" placeholder="Enter Twitter Retweet Link" required>
+            <input type="text" id="telegramUsername" placeholder="Enter Telegram Username" required>
+            <button type="submit">Submit Proof</button>
+        </form>
+
+        <button class="back-button" onclick="goBack()">Back to Guide</button>
+    </div>
+</body>
+</html>
