@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airdrop - Curiosity ($CURI)</title>
+    <title>Airdrop Guide - Curiosity ($CURI)</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* General Styling */
         body {
             font-family: 'Poppins', sans-serif;
             text-align: center;
@@ -14,10 +13,6 @@
             color: white;
             padding: 20px;
             margin: 0;
-        }
-
-        .section {
-            margin-bottom: 40px;
         }
 
         h1, h2 {
@@ -38,15 +33,10 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background 0.3s ease-in-out;
-            margin: 10px;
         }
 
         button:hover {
             background: #f4c542;
-        }
-
-        .hidden {
-            display: none;
         }
 
         .back-button {
@@ -68,16 +58,10 @@
         .back-button:hover {
             background: #8a2be2;
         }
-
-        .tasks-button {
-            margin-top: 20px;
-            display: inline-block;
-        }
     </style>
 </head>
 <body>
-    <!-- Airdrop Guide Section -->
-    <div id="airdropGuide" class="section">
+    <div id="airdropGuide">
         <h1>🎁 Welcome to the Curiosity Airdrop!</h1>
         <p>Follow these steps to participate and claim your $CURI tokens:</p>
         <ol>
@@ -86,72 +70,16 @@
             <li>Submit your ERC-20 wallet address and proof of tasks.</li>
         </ol>
         <p>Once you've completed the steps, you'll receive your share of the airdrop tokens.</p>
-        <button class="tasks-button" onclick="showTasks()">🚀 Start Tasks</button>
+        <a href="tasks.html">
+            <button>🚀 Start Tasks</button>
+        </a>
         <button class="back-button" onclick="goBack()">Back</button>
     </div>
 
-    <!-- Tasks Section -->
-    <div id="airdropTasks" class="section hidden">
-        <h2>Complete the Tasks Below:</h2>
-        <form id="airdropForm" onsubmit="submitAirdropRequest(event)">
-            <input type="text" id="wallet" placeholder="Enter your ERC-20 Wallet Address" required />
-            <input type="text" id="twitterLink" placeholder="Enter Your Twitter Retweet Link" required />
-            <input type="text" id="telegramUsername" placeholder="Enter Your Telegram Username" required />
-            <button type="submit">Submit Airdrop Request</button>
-        </form>
-        <p id="confirmation"></p>
-        <button class="back-button" onclick="showGuide()">Back to Guide</button>
-    </div>
-
-    <script type="module">
-        import { db } from './auth.js';
-        import { addDoc, collection } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
-
-        // Show Tasks Section
-        function showTasks() {
-            document.getElementById("airdropGuide").classList.add("hidden");
-            document.getElementById("airdropTasks").classList.remove("hidden");
-        }
-
-        // Show Guide Section
-        function showGuide() {
-            document.getElementById("airdropTasks").classList.add("hidden");
-            document.getElementById("airdropGuide").classList.remove("hidden");
-        }
-
+    <script>
         // Go Back to Previous Page
         function goBack() {
             window.history.back();
-        }
-
-        // Submit Airdrop Request
-        async function submitAirdropRequest(event) {
-            event.preventDefault();
-
-            const wallet = document.getElementById("wallet").value.trim();
-            const twitterLink = document.getElementById("twitterLink").value.trim();
-            const telegramUsername = document.getElementById("telegramUsername").value.trim();
-
-            if (!wallet || !twitterLink || !telegramUsername) {
-                alert("Please complete all fields before submitting.");
-                return;
-            }
-
-            try {
-                await addDoc(collection(db, "airdrop_requests"), {
-                    wallet,
-                    twitterLink,
-                    telegramUsername,
-                    submittedAt: new Date().toISOString(),
-                });
-
-                alert("✅ Airdrop request submitted successfully!");
-                document.getElementById("airdropForm").reset();
-                document.getElementById("confirmation").innerText = "✅ Request Submitted Successfully!";
-            } catch (error) {
-                console.error("Error submitting airdrop request:", error);
-                alert("❌ Failed to submit. Please try again later.");
-            }
         }
     </script>
 </body>
