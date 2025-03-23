@@ -3,109 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airdrop Tasks - Curiosity ($CURI)</title>
+    <title>Airdrop Task - Curiosity ($CURI)</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
-            color: white;
-            padding: 20px;
-        }
-
-        h1, h2 {
-            color: #ffdd57;
-        }
-
-        ul {
-            text-align: left;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 0;
-            list-style: none;
-        }
-
-        li {
-            margin: 10px 0;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        input, button {
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 20px;
-            background: #ffdd57;
-            color: #222;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease-in-out;
-        }
-
-        button:hover {
-            background: #f4c542;
-        }
-
-        input {
-            width: 80%;
-            display: block;
-            margin: 10px auto;
-        }
-
-        .back-button {
-            margin-top: 20px;
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: bold;
-            background: #6a0dad;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease-in-out;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
-        .back-button:hover {
-            background: #8a2be2;
-        }
-    </style>
-</head>
-<body>
-    <h1>🚀 Complete Your Airdrop Tasks</h1>
-    <h2>Checklist</h2>
-    <ul>
-        <li>1️⃣ Retweet our pinned post on Twitter.</li>
-        <li>2️⃣ Join our official Telegram group.</li>
-        <li>3️⃣ Submit your wallet address and task proof below.</li>
-    </ul>
-
-    <form id="airdropForm" onsubmit="submitTasks(event)">
-        <input type="text" id="wallet" placeholder="Enter Your Wallet Address" required>
-        <input type="text" id="twitterLink" placeholder="Enter Your Twitter Retweet Link" required>
-        <input type="text" id="telegramUsername" placeholder="Enter Your Telegram Username" required>
-        <button type="submit">Submit Proof</button>
-    </form>
-    <p id="confirmation"></p>
-    <button class="back-button" onclick="goBack()">Back to Guide</button>
-
     <script type="module">
         import { db } from './auth.js';
         import { addDoc, collection } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
-        // Handle Task Submission
-        async function submitTasks(event) {
+        // Handle Proof Submission
+        async function submitProof(event) {
             event.preventDefault();
 
+            // Collect form data
             const wallet = document.getElementById("wallet").value.trim();
             const twitterLink = document.getElementById("twitterLink").value.trim();
             const telegramUsername = document.getElementById("telegramUsername").value.trim();
 
-            if (!wallet || !twitterLink || !telegramUsername
+            // Validation
+            if (!wallet || !twitterLink || !telegramUsername) {
+                alert("Please complete all fields before submitting.");
+                return;
+            }
+
+            try {
+                // Save proof data to Firestore
+                await addDoc(collection(db, "airdrop_proofs"), {
+                    wallet,
+                    twitterLink,
+                    telegramUsername,
+                    status: "Pending Review",
+                    submittedAt: new Date().toISOString(),
+                });
+
+                // Redirect to success page
+                window.location.href = "success.html";
+            } catch (error) {
+                console.error("Error submitting proof:", error);
+                alert("❌ Failed to submit proof. Please try again later.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>📋 Airdrop Tasks</h1>
+    <form id="proofForm" onsubmit="submitProof(event)">
+        <input type="text" id="wallet" placeholder="Enter your wallet address" required>
+        <p>* Must be a valid ERC-20 wallet</p>
+        <input type="text" id="twitterLink" placeholder="Enter your Twitter Retweet Link" required>
+        <p>* Retweet the pinned post</p>
+        <input type="text" id="telegramUsername" placeholder="Enter your Telegram Username" required>
+        <p>* Join our Telegram group</p>
+        <button type="submit">Submit Proof</button>
+    </form>
+    <button class="back-button" onclick="goBack()">Back to Guide</button>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>
