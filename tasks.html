@@ -6,15 +6,16 @@
     <title>Airdrop Tasks - Curiosity ($CURI)</title>
     <link rel="stylesheet" href="style.css">
     <script type="module">
+        // Import Firebase functions (if applicable)
         import { db } from './auth.js';
         import { addDoc, collection } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
-        // Enable the Proceed Button when all tasks are checked
+        // Validate checkboxes and enable the Proceed button
         function validateTasks() {
             const tasks = document.querySelectorAll(".task-checkbox");
             const allCompleted = Array.from(tasks).every(task => task.checked);
-
             const proceedButton = document.getElementById("proceedButton");
+
             if (allCompleted) {
                 proceedButton.disabled = false;
                 proceedButton.classList.add("enabled");
@@ -24,14 +25,23 @@
             }
         }
 
+        // Show Proof Submission Form
+        function showProofForm() {
+            const proofForm = document.getElementById("proofForm");
+            proofForm.style.display = "block";
+            window.scrollTo({ top: proofForm.offsetTop, behavior: "smooth" });
+        }
+
         // Handle Proof Submission
         async function submitProof(event) {
             event.preventDefault();
 
+            // Collect proof data
             const wallet = document.getElementById("wallet").value.trim();
             const twitterLink = document.getElementById("twitterLink").value.trim();
             const telegramUsername = document.getElementById("telegramUsername").value.trim();
 
+            // Validate input fields
             if (!wallet || !twitterLink || !telegramUsername) {
                 alert("Please complete all fields before submitting.");
                 return;
@@ -49,13 +59,14 @@
 
                 alert("✅ Proof submitted successfully!");
                 document.getElementById("proofForm").reset();
-                window.location.href = "success.html"; // Redirect to a success page
+                window.location.href = "success.html"; // Redirect to success page
             } catch (error) {
                 console.error("Error submitting proof:", error);
                 alert("❌ Failed to submit proof. Please try again later.");
             }
         }
 
+        // Back to Guide Page
         function goBack() {
             window.location.href = "guide.html";
         }
@@ -141,7 +152,7 @@
         }
 
         #proofForm {
-            display: none; /* Hidden until the "Proceed" button is clicked */
+            display: none; /* Hidden until the Proceed button is clicked */
             margin-top: 20px;
         }
 
@@ -185,7 +196,7 @@
         </div>
 
         <!-- Proceed Button -->
-        <button id="proceedButton" onclick="document.getElementById('proofForm').style.display = 'block'" disabled>Proceed</button>
+        <button id="proceedButton" onclick="showProofForm()" disabled>Proceed</button>
 
         <!-- Proof Submission Section -->
         <form id="proofForm" onsubmit="submitProof(event)">
