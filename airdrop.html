@@ -13,7 +13,7 @@
             background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
             color: white;
             padding: 20px;
-            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+            margin: 0;
         }
 
         .section {
@@ -38,6 +38,7 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background 0.3s ease-in-out;
+            margin: 10px;
         }
 
         button:hover {
@@ -59,10 +60,18 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background 0.3s ease-in-out;
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
 
         .back-button:hover {
             background: #8a2be2;
+        }
+
+        .tasks-button {
+            margin-top: 20px;
+            display: inline-block;
         }
     </style>
 </head>
@@ -77,7 +86,7 @@
             <li>Submit your ERC-20 wallet address and proof of tasks.</li>
         </ol>
         <p>Once you've completed the steps, you'll receive your share of the airdrop tokens.</p>
-        <button onclick="showTasks()">🚀 Start Tasks</button>
+        <button class="tasks-button" onclick="showTasks()">🚀 Start Tasks</button>
         <button class="back-button" onclick="goBack()">Back</button>
     </div>
 
