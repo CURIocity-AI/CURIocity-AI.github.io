@@ -9,20 +9,22 @@
         import { db } from './auth.js';
         import { addDoc, collection } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
-        // Handle Task Completion Validation
+        // Function to enable the "Proceed" button when all tasks are completed
         function validateTasks() {
             const tasks = document.querySelectorAll(".task-checkbox");
             const allCompleted = Array.from(tasks).every(task => task.checked);
 
+            const proceedButton = document.getElementById("proceedButton");
             if (allCompleted) {
-                document.getElementById("proofForm").style.display = "block";
-                alert("✅ All tasks completed! Please submit your proof.");
+                proceedButton.disabled = false;
+                proceedButton.classList.add("enabled");
             } else {
-                alert("⚠️ Please complete all tasks before submitting proof.");
+                proceedButton.disabled = true;
+                proceedButton.classList.remove("enabled");
             }
         }
 
-        // Handle Proof Submission
+        // Function to simulate Proof Submission
         async function submitProof(event) {
             event.preventDefault();
 
@@ -31,7 +33,7 @@
             const telegramUsername = document.getElementById("telegramUsername").value.trim();
 
             if (!wallet || !twitterLink || !telegramUsername) {
-                alert("Please complete all fields before submitting.");
+                alert("Please fill out all fields before proceeding.");
                 return;
             }
 
@@ -46,14 +48,13 @@
 
                 alert("✅ Proof submitted successfully!");
                 document.getElementById("proofForm").reset();
-                window.location.href = "success.html"; // Redirect after submission
+                window.location.href = "success.html"; // Redirect to success page
             } catch (error) {
                 console.error("Error submitting proof:", error);
                 alert("❌ Failed to submit proof. Please try again later.");
             }
         }
 
-        // Back to Guide Button Functionality
         function goBack() {
             window.location.href = "guide.html";
         }
@@ -86,8 +87,25 @@
             margin-bottom: 20px;
         }
 
+        .tasks-list label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
         .tasks-list input[type="checkbox"] {
             margin-right: 10px;
+        }
+
+        .tasks-list a {
+            margin-left: 10px;
+            color: #ffdd57;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .tasks-list a:hover {
+            text-decoration: underline;
         }
 
         input, textarea {
@@ -115,8 +133,18 @@
             background: #f4c542;
         }
 
+        #proceedButton {
+            background: gray;
+            cursor: not-allowed;
+        }
+
+        #proceedButton.enabled {
+            background: #ffdd57;
+            cursor: pointer;
+        }
+
         #proofForm {
-            display: none; /* Hidden until tasks are completed */
+            display: none; /* Hidden until the "Proceed" button is clicked */
             margin-top: 20px;
         }
 
@@ -146,19 +174,21 @@
         <!-- Tasks Section -->
         <div class="tasks-list">
             <label>
-                <input type="checkbox" class="task-checkbox"> Retweet the pinned post on our Twitter
+                <input type="checkbox" class="task-checkbox" onclick="validateTasks()"> Retweet our pinned post on
+                <a href="https://twitter.com" target="_blank">Twitter</a>
             </label>
-            <br>
             <label>
-                <input type="checkbox" class="task-checkbox"> Join our Telegram group
+                <input type="checkbox" class="task-checkbox" onclick="validateTasks()"> Join our
+                <a href="https://t.me" target="_blank">Telegram Group</a>
             </label>
-            <br>
             <label>
-                <input type="checkbox" class="task-checkbox"> Follow our Instagram page
+                <input type="checkbox" class="task-checkbox" onclick="validateTasks()"> Follow our
+                <a href="https://instagram.com" target="_blank">Instagram Page</a>
             </label>
         </div>
 
-        <button onclick="validateTasks()">✅ Mark Tasks as Completed</button>
+        <!-- Proceed Button -->
+        <button id="proceedButton" onclick="document.getElementById('proofForm').style.display = 'block'" disabled>Proceed</button>
 
         <!-- Proof Submission Section -->
         <form id="proofForm" onsubmit="submitProof(event)">
