@@ -5,74 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Airdrop Tasks - Curiosity ($CURI)</title>
     <link rel="stylesheet" href="style.css">
-    <script type="module">
-        // Import Firebase functions (if applicable)
-        import { db } from './auth.js';
-        import { addDoc, collection } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
-
-        // Validate checkboxes and enable the Proceed button
-        function validateTasks() {
-            const tasks = document.querySelectorAll(".task-checkbox");
-            const allCompleted = Array.from(tasks).every(task => task.checked);
-            const proceedButton = document.getElementById("proceedButton");
-
-            if (allCompleted) {
-                proceedButton.disabled = false;
-                proceedButton.classList.add("enabled");
-            } else {
-                proceedButton.disabled = true;
-                proceedButton.classList.remove("enabled");
-            }
-        }
-
-        // Show Proof Submission Form
-        function showProofForm() {
-            const proofForm = document.getElementById("proofForm");
-            proofForm.style.display = "block";
-            window.scrollTo({ top: proofForm.offsetTop, behavior: "smooth" });
-        }
-
-        // Handle Proof Submission
-        async function submitProof(event) {
-            event.preventDefault();
-
-            // Collect proof data
-            const wallet = document.getElementById("wallet").value.trim();
-            const twitterLink = document.getElementById("twitterLink").value.trim();
-            const telegramUsername = document.getElementById("telegramUsername").value.trim();
-
-            // Validate input fields
-            if (!wallet || !twitterLink || !telegramUsername) {
-                alert("Please complete all fields before submitting.");
-                return;
-            }
-
-            try {
-                // Save proof to Firestore
-                await addDoc(collection(db, "airdrop_proofs"), {
-                    wallet,
-                    twitterLink,
-                    telegramUsername,
-                    status: "Pending Review",
-                    submittedAt: new Date().toISOString(),
-                });
-
-                alert("✅ Proof submitted successfully!");
-                document.getElementById("proofForm").reset();
-                window.location.href = "success.html"; // Redirect to success page
-            } catch (error) {
-                console.error("Error submitting proof:", error);
-                alert("❌ Failed to submit proof. Please try again later.");
-            }
-        }
-
-        // Back to Guide Page
-        function goBack() {
-            window.location.href = "guide.html";
-        }
-    </script>
     <style>
-        /* General Styling */
         body {
             font-family: 'Poppins', sans-serif;
             text-align: center;
@@ -152,7 +85,7 @@
         }
 
         #proofForm {
-            display: none; /* Hidden until the Proceed button is clicked */
+            display: none; /* Hidden until tasks are completed */
             margin-top: 20px;
         }
 
@@ -206,7 +139,54 @@
             <button type="submit">Submit Proof</button>
         </form>
 
+        <!-- Back Button -->
         <button class="back-button" onclick="goBack()">Back to Guide</button>
     </div>
+
+    <script>
+        // Validate tasks and enable Proceed button
+        function validateTasks() {
+            const tasks = document.querySelectorAll(".task-checkbox");
+            const allCompleted = Array.from(tasks).every(task => task.checked);
+            const proceedButton = document.getElementById("proceedButton");
+
+            if (allCompleted) {
+                proceedButton.disabled = false;
+                proceedButton.classList.add("enabled");
+            } else {
+                proceedButton.disabled = true;
+                proceedButton.classList.remove("enabled");
+            }
+        }
+
+        // Show Proof Submission Form
+        function showProofForm() {
+            const proofForm = document.getElementById("proofForm");
+            proofForm.style.display = "block";
+            window.scrollTo({ top: proofForm.offsetTop, behavior: "smooth" });
+        }
+
+        // Handle Proof Submission
+        function submitProof(event) {
+            event.preventDefault();
+
+            const wallet = document.getElementById("wallet").value.trim();
+            const twitterLink = document.getElementById("twitterLink").value.trim();
+            const telegramUsername = document.getElementById("telegramUsername").value.trim();
+
+            if (!wallet || !twitterLink || !telegramUsername) {
+                alert("Please complete all fields before submitting.");
+                return;
+            }
+
+            alert("✅ Proof submitted successfully! We'll review your submission shortly.");
+            document.getElementById("proofForm").reset();
+        }
+
+        // Back to Guide
+        function goBack() {
+            window.location.href = "guide.html"; // Replace with actual guide page URL
+        }
+    </script>
 </body>
 </html>
