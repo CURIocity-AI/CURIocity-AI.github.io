@@ -38,6 +38,7 @@
             }
 
             try {
+                // Save proof to Firestore
                 await addDoc(collection(db, "airdrop_proofs"), {
                     wallet,
                     twitterLink,
@@ -48,7 +49,7 @@
 
                 alert("✅ Proof submitted successfully!");
                 document.getElementById("proofForm").reset();
-                window.location.href = "success.html";
+                window.location.href = "success.html"; // Redirect to a success page
             } catch (error) {
                 console.error("Error submitting proof:", error);
                 alert("❌ Failed to submit proof. Please try again later.");
