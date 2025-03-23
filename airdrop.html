@@ -5,73 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Airdrop - Curiosity ($CURI)</title>
     <link rel="stylesheet" href="style.css">
-    <script type="module">
-        // Import Firebase functions
-        import { db } from './auth.js';
-        import { addDoc, collection } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
-
-        // Countdown Timer Script
-        function startCountdown() {
-            const endDate = new Date("2025-04-15T23:59:59").getTime(); // Set Airdrop End Date
-            const timerElement = document.getElementById("countdown");
-
-            function updateTimer() {
-                const now = new Date().getTime();
-                const timeLeft = endDate - now;
-
-                if (timeLeft < 0) {
-                    timerElement.innerHTML = "Airdrop Ended!";
-                    clearInterval(timerInterval);
-                    return;
-                }
-
-                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000)) / 1000);
-
-                timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-            }
-
-            const timerInterval = setInterval(updateTimer, 1000);
-            updateTimer();
-        }
-
-        // Form Submission Script
-        async function submitAirdropRequest(event) {
-            event.preventDefault();
-
-            // Collect form data
-            const wallet = document.getElementById("wallet").value.trim();
-            const twitterLink = document.getElementById("twitterLink").value.trim();
-            const telegramUsername = document.getElementById("telegramUsername").value.trim();
-
-            // Validate inputs
-            if (!wallet || !twitterLink || !telegramUsername) {
-                alert("Please complete all fields before submitting.");
-                return;
-            }
-
-            try {
-                // Save data to Firestore
-                await addDoc(collection(db, "airdrop_requests"), {
-                    wallet,
-                    twitterLink,
-                    telegramUsername,
-                    submittedAt: new Date().toISOString(),
-                });
-
-                alert("✅ Airdrop request submitted successfully!");
-                document.getElementById("walletForm").reset();
-                document.getElementById("confirmation").innerText = "✅ Request Submitted Successfully!";
-            } catch (error) {
-                console.error("Error submitting airdrop request:", error);
-                alert("❌ Failed to submit. Please try again later.");
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", startCountdown);
-    </script>
     <style>
         /* General Styling */
         body {
@@ -83,37 +16,26 @@
             transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
         }
 
-        h1 {
-            margin-bottom: 10px;
+        .section {
+            margin-bottom: 40px;
         }
 
-        #countdown {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
+        h1, h2 {
+            color: #ffdd57;
         }
 
-        form {
-            margin-top: 20px;
-        }
-
-        input[type="text"], textarea {
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            width: 300px;
-            margin-bottom: 10px;
+        p {
+            margin: 10px 0;
         }
 
         button {
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-size: 16px;
             font-weight: bold;
             background: #ffdd57;
             color: #222;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             transition: background 0.3s ease-in-out;
         }
@@ -122,102 +44,90 @@
             background: #f4c542;
         }
 
-        #confirmation {
-            margin-top: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #ffdd57;
+        .hidden {
+            display: none;
         }
 
-        .return-home {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: #6a0dad;
+        .light-mode {
+            background: #f4f4f4;
+            color: #222;
+        }
+
+        .light-mode button {
+            background: #222;
             color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
-        .return-home:hover {
-            background: #8a2be2;
-        }
-
-        /* Airdrop Progress Bar Styling */
-        .airdrop-progress {
-            margin-top: 30px;
-            padding: 20px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .progress-container {
-            width: 100%;
-            height: 25px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            overflow: hidden;
-            margin: 15px 0;
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 75%;
-            background: linear-gradient(90deg, #ffdd57, #f4c542);
-            transition: width 0.5s ease-in-out;
-        }
-
-        .airdrop-progress p {
-            font-size: 16px;
-            margin-top: 10px;
+        .light-mode button:hover {
+            background: #444;
         }
     </style>
 </head>
 <body>
-    <h1>🎁 Curiosity ($CURI) Airdrop</h1>
-    <p id="countdown">Loading countdown...</p>
-    <form id="walletForm" onsubmit="submitAirdropRequest(event)">
-        <input type="text" id="wallet" placeholder="Enter your wallet address" required />
-        <p>* Must be a valid ERC-20 wallet</p>
-        <input type="text" id="twitterLink" placeholder="Enter your Twitter Retweet Link" required />
-        <p>* Retweet the pinned post</p>
-        <input type="text" id="telegramUsername" placeholder="Enter Telegram Username" required />
-        <p>* Join our Telegram group</p>
-        <button type="submit">Submit Airdrop Request</button>
-    </form>
-    <p id="confirmation"></p>
-
-    <!-- Airdrop Progress Section -->
-    <div class="airdrop-progress">
-        <h2>🎁 Airdrop Progress</h2>
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        <p><span id="claimed">75%</span> Claimed - <span id="remaining">25%</span> Remaining</p>
+    <!-- Airdrop Guide Section -->
+    <div id="airdropGuide" class="section">
+        <h1>🎁 Welcome to the Curiosity Airdrop!</h1>
+        <p>Follow these steps to participate and claim your $CURI tokens:</p>
+        <ol>
+            <li>Retweet our pinned post on Twitter.</li>
+            <li>Join our Telegram group.</li>
+            <li>Submit your ERC-20 wallet address and proof of tasks.</li>
+        </ol>
+        <p>Once you've completed the steps, you'll receive your share of the airdrop tokens.</p>
+        <button onclick="showTasks()">🚀 Start Tasks</button>
     </div>
 
-    <!-- Return to Home Button -->
-    <a href="index.html" class="return-home">🏠 Return to Home</a>
+    <!-- Tasks Section -->
+    <div id="airdropTasks" class="section hidden">
+        <h2>Complete the Tasks Below:</h2>
+        <form id="airdropForm" onsubmit="submitAirdropRequest(event)">
+            <input type="text" id="wallet" placeholder="Enter your ERC-20 Wallet Address" required />
+            <input type="text" id="twitterLink" placeholder="Enter Your Twitter Retweet Link" required />
+            <input type="text" id="telegramUsername" placeholder="Enter Your Telegram Username" required />
+            <button type="submit">Submit Airdrop Request</button>
+        </form>
+        <p id="confirmation"></p>
+    </div>
 
-    <script>
-        // Simulate Dynamic Updates for Airdrop Progress
-        document.addEventListener("DOMContentLoaded", () => {
-            const totalAirdrop = 1000000;
-            const claimedAirdrop = 750000;
+    <script type="module">
+        import { db } from './auth.js';
+        import { addDoc, collection } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
-            const claimedPercentage = Math.round((claimedAirdrop / totalAirdrop) * 100);
-            const remainingPercentage = 100 - claimedPercentage;
+        // Show Tasks Section
+        function showTasks() {
+            document.getElementById("airdropGuide").classList.add("hidden");
+            document.getElementById("airdropTasks").classList.remove("hidden");
+        }
 
-            document.getElementById("progress-bar").style.width = `${claimedPercentage}%`;
-            document.getElementById("claimed").innerText = `${claimedPercentage}%`;
-            document.getElementById("remaining").innerText = `${remainingPercentage}%`;
-        });
+        // Submit Airdrop Request
+        async function submitAirdropRequest(event) {
+            event.preventDefault();
+
+            const wallet = document.getElementById("wallet").value.trim();
+            const twitterLink = document.getElementById("twitterLink").value.trim();
+            const telegramUsername = document.getElementById("telegramUsername").value.trim();
+
+            if (!wallet || !twitterLink || !telegramUsername) {
+                alert("Please complete all fields before submitting.");
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, "airdrop_requests"), {
+                    wallet,
+                    twitterLink,
+                    telegramUsername,
+                    submittedAt: new Date().toISOString(),
+                });
+
+                alert("✅ Airdrop request submitted successfully!");
+                document.getElementById("airdropForm").reset();
+                document.getElementById("confirmation").innerText = "✅ Request Submitted Successfully!";
+            } catch (error) {
+                console.error("Error submitting airdrop request:", error);
+                alert("❌ Failed to submit. Please try again later.");
+            }
+        }
     </script>
-    <script src="common.js"></script>
 </body>
 </html>
