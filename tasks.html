@@ -68,6 +68,9 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background 0.3s ease-in-out;
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
 
         .back-button:hover {
@@ -105,32 +108,4 @@
             const twitterLink = document.getElementById("twitterLink").value.trim();
             const telegramUsername = document.getElementById("telegramUsername").value.trim();
 
-            if (!wallet || !twitterLink || !telegramUsername) {
-                alert("Please fill out all fields!");
-                return;
-            }
-
-            try {
-                await addDoc(collection(db, "airdrop_tasks"), {
-                    wallet,
-                    twitterLink,
-                    telegramUsername,
-                    submittedAt: new Date().toISOString(),
-                });
-
-                alert("✅ Your tasks have been submitted successfully!");
-                document.getElementById("airdropForm").reset();
-                document.getElementById("confirmation").innerText = "✅ Proof Submitted Successfully!";
-            } catch (error) {
-                console.error("Error submitting tasks:", error);
-                alert("❌ Failed to submit tasks. Please try again.");
-            }
-        }
-
-        // Go Back to Guide
-        function goBack() {
-            window.location.href = "airdrop.html";
-        }
-    </script>
-</body>
-</html>
+            if (!wallet || !twitterLink || !telegramUsername
