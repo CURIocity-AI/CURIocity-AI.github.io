@@ -9,23 +9,33 @@
         import { db } from './auth.js';
         import { addDoc, collection } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
+        // Handle Task Completion Validation
+        function validateTasks() {
+            const tasks = document.querySelectorAll(".task-checkbox");
+            const allCompleted = Array.from(tasks).every(task => task.checked);
+
+            if (allCompleted) {
+                document.getElementById("proofForm").style.display = "block";
+                alert("✅ All tasks completed! Please submit your proof.");
+            } else {
+                alert("⚠️ Please complete all tasks before submitting proof.");
+            }
+        }
+
         // Handle Proof Submission
         async function submitProof(event) {
             event.preventDefault();
 
-            // Collect form data
             const wallet = document.getElementById("wallet").value.trim();
             const twitterLink = document.getElementById("twitterLink").value.trim();
             const telegramUsername = document.getElementById("telegramUsername").value.trim();
 
-            // Validate fields
             if (!wallet || !twitterLink || !telegramUsername) {
                 alert("Please complete all fields before submitting.");
                 return;
             }
 
             try {
-                // Save proof to Firestore
                 await addDoc(collection(db, "airdrop_proofs"), {
                     wallet,
                     twitterLink,
@@ -35,7 +45,8 @@
                 });
 
                 alert("✅ Proof submitted successfully!");
-                window.location.href = "success.html"; // Redirect to success page
+                document.getElementById("proofForm").reset();
+                window.location.href = "success.html"; // Redirect after submission
             } catch (error) {
                 console.error("Error submitting proof:", error);
                 alert("❌ Failed to submit proof. Please try again later.");
@@ -54,11 +65,10 @@
             background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
             color: white;
             padding: 20px;
-            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
         }
 
         .task-container {
-            max-width: 500px;
+            max-width: 600px;
             margin: auto;
             padding: 20px;
             background: rgba(255, 255, 255, 0.1);
@@ -66,12 +76,21 @@
             box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
         }
 
-        h1 {
+        h1, h2 {
             color: #ffdd57;
             margin-bottom: 20px;
         }
 
-        input {
+        .tasks-list {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .tasks-list input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        input, textarea {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -96,38 +115,4 @@
             background: #f4c542;
         }
 
-        .back-button {
-            margin-top: 20px;
-            display: inline-block;
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: bold;
-            background: #6a0dad;
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background 0.3s ease-in-out;
-        }
-
-        .back-button:hover {
-            background: #8a2be2;
-        }
-    </style>
-</head>
-<body>
-    <div class="task-container">
-        <h1>📋 Complete Your Airdrop Tasks</h1>
-        <form id="proofForm" onsubmit="submitProof(event)">
-            <input type="text" id="wallet" placeholder="Enter your Wallet Address" required>
-            <p>* Must be a valid ERC-20 wallet address</p>
-            <input type="text" id="twitterLink" placeholder="Twitter Retweet Link" required>
-            <p>* Retweet the pinned post on our Twitter</p>
-            <input type="text" id="telegramUsername" placeholder="Telegram Username" required>
-            <p>* Join our Telegram group</p>
-            <button type="submit">Submit Proof</button>
-        </form>
-        <button class="back-button" onclick="goBack()">Back to Guide</button>
-    </div>
-</body>
-</html>
+        #proof
