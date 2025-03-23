@@ -48,18 +48,21 @@
             display: none;
         }
 
-        .light-mode {
-            background: #f4f4f4;
-            color: #222;
-        }
-
-        .light-mode button {
-            background: #222;
+        .back-button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            background: #6a0dad;
             color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
         }
 
-        .light-mode button:hover {
-            background: #444;
+        .back-button:hover {
+            background: #8a2be2;
         }
     </style>
 </head>
@@ -75,6 +78,7 @@
         </ol>
         <p>Once you've completed the steps, you'll receive your share of the airdrop tokens.</p>
         <button onclick="showTasks()">🚀 Start Tasks</button>
+        <button class="back-button" onclick="goBack()">Back</button>
     </div>
 
     <!-- Tasks Section -->
@@ -87,6 +91,7 @@
             <button type="submit">Submit Airdrop Request</button>
         </form>
         <p id="confirmation"></p>
+        <button class="back-button" onclick="showGuide()">Back to Guide</button>
     </div>
 
     <script type="module">
@@ -97,6 +102,17 @@
         function showTasks() {
             document.getElementById("airdropGuide").classList.add("hidden");
             document.getElementById("airdropTasks").classList.remove("hidden");
+        }
+
+        // Show Guide Section
+        function showGuide() {
+            document.getElementById("airdropTasks").classList.add("hidden");
+            document.getElementById("airdropGuide").classList.remove("hidden");
+        }
+
+        // Go Back to Previous Page
+        function goBack() {
+            window.history.back();
         }
 
         // Submit Airdrop Request
