@@ -16,7 +16,7 @@
             overflow-x: hidden;
     }
 
-.dashboard-container {
+/*.dashboard-container {
     max-width: 1200px; /* Adjust width as needed */
     margin: 0 auto; /* Center the container horizontally on the page */
     padding: 20px; /* Add padding to prevent content from touching the edges */
@@ -24,7 +24,7 @@
     border-radius: 15px;
     box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
     text-align: center; /* Center-align text inside the container */
-}
+}*/
 
         .dashboard-header {
             text-align: center;
@@ -42,14 +42,63 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
-.starts-grid {
+/*.starts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
     gap: 50px; /* Space between grid items */
     justify-content: center; /* Center align the grid items horizontally */
     align-items: center; /* Center align the grid items vertically */
     padding: 20px; /* Add padding inside the grid to create spacing */
+}*/
+
+.dashboard-container {
+    max-width: 1200px; /* Adjust max width as needed */
+    margin: 0 auto; /* Center container horizontally */
+    padding: 20px; /* Add padding inside the container */
+    background: rgba(255, 255, 255, 0.05); /* Subtle background */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5); /* Shadow effect */
 }
+
+.starts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Flexible grid layout */
+    gap: 20px; /* Space between grid items */
+    justify-content: center; /* Center items horizontally */
+    padding: 20px; /* Add space inside the grid */
+}
+
+.starts-grid > div {
+    background: rgba(255, 255, 255, 0.1); /* Card background */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    padding: 20px; /* Add padding inside each card */
+    text-align: center; /* Center text inside cards */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.starts-grid > div:hover {
+    transform: translateY(-5px); /* Lift card slightly on hover */
+    box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.3); /* Enhanced shadow on hover */
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 15px; /* Reduce padding on smaller screens */
+    }
+
+    .starts-grid {
+        gap: 15px; /* Reduce gap between grid items */
+    }
+
+    .starts-grid > div {
+        padding: 15px; /* Reduce card padding */
+    }
+}
+
+
+
 
         .stat-card {
             background: rgba(255, 255, 255, 0.1);
