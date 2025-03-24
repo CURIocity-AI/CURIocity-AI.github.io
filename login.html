@@ -53,14 +53,16 @@
             background: #f4c542;
         }
 
-        .register-link {
+        .register-link,
+        .recovery-link {
             margin-top: 20px;
             display: inline-block;
             color: #ffdd57;
             text-decoration: none;
         }
 
-        .register-link:hover {
+        .register-link:hover,
+        .recovery-link:hover {
             color: white;
         }
 
@@ -91,6 +93,8 @@
             <button type="submit">Login</button>
         </form>
         <a href="register.html" class="register-link">Don't have an account? Register</a>
+        <br>
+        <a href="password-recovery.html" class="recovery-link">Forgot Password?</a>
     </div>
 
     <button class="back-button" onclick="goBack()">Back</button>
@@ -123,6 +127,6 @@
             window.history.back();
         }
     </script>
-<script src="common.js"></script>
+    <script src="common.js"></script>
 </body>
 </html>
