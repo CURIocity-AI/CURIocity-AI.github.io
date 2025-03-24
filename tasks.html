@@ -28,6 +28,12 @@
             margin-bottom: 20px;
         }
 
+        #countdown {
+            font-size: 18px;
+            color: #ffdd57;
+            margin-bottom: 20px;
+        }
+
         .tasks-list {
             text-align: left;
             margin-bottom: 20px;
@@ -54,15 +60,6 @@
             text-decoration: underline;
         }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 16px;
-            border-radius: 8px;
-            border: none;
-        }
-
         button {
             width: 100%;
             padding: 10px;
@@ -84,11 +81,6 @@
             background: #218838;
         }
 
-        #proofForm {
-            display: none; /* Hidden until tasks are completed */
-            margin-top: 20px;
-        }
-
         .back-button {
             margin-top: 20px;
             padding: 12px 25px;
@@ -105,60 +97,48 @@
         .back-button:hover {
             background: #8a2be2;
         }
-
     </style>
 </head>
 <body>
     <div class="task-container">
         <h1>🎁 Airdrop Tasks</h1>
         <h2>Complete the tasks below:</h2>
+        <p id="countdown">Loading next task timer...</p>
 
         <!-- Tasks Section -->
-        <div class="tasks-list">
-            <label>
-                <input type="checkbox" class="task-checkbox" onclick="validateTasks()"> Retweet our pinned post on
-                <a href="https://twitter.com" target="_blank">Twitter</a>
-            </label>
-            <label>
-                <input type="checkbox" class="task-checkbox" onclick="validateTasks()"> Join our
-                <a href="https://t.me" target="_blank">Telegram Group</a>
-            </label>
-            <label>
-                <input type="checkbox" class="task-checkbox" onclick="validateTasks()"> Follow us on
-                <a href="https://twitter.com" target="_blank">Twitter</a>
-            </label>
+        <div class="tasks-list" id="tasksList">
+            <!-- Dynamically Loaded Tasks -->
         </div>
 
         <!-- Proceed Button -->
         <button id="proceedButton" onclick="showProofForm()" disabled>Proceed</button>
 
-      <!-- Proof Submission Section -->
-<form id="proofForm" onsubmit="submitProof(event)">
-    <input type="text" id="wallet" placeholder="Enter your Wallet Address" required>
-    <input type="text" id="twitterLink" placeholder="Enter Twitter Retweet Link" required>
-    <input type="text" id="telegramUsername" placeholder="Enter Telegram Username" required>
-    <button type="submit">Submit Proof</button>
-</form>
-
-<!-- Status and Next Steps -->
-<div id="submissionStatus" style="display: none; margin-top: 20px;">
-    <p id="statusMessage" style="color: #28a745; font-weight: bold;"></p>
-    <div>
-        <button class="next-step-button" onclick="goToDashboard()">Go to Dashboard</button>
-        <button class="next-step-button" onclick="startMoreTasks()">Start More Tasks</button>
-    </div>
-</div>
-
-<!-- Spinner -->
-<div id="spinner" style="display: none; margin-top: 20px;">
-    <img src="spinner.gif" alt="Loading..." width="50">
-</div>
-
         <!-- Back Button -->
         <button class="back-button" onclick="goBack()">Back to Guide</button>
     </div>
 
-    <script>
+    <script type="module">
+        import { db } from './auth.js';
+        import { collection, getDocs, onSnapshot, doc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+
+        // Fetch and Display Tasks Dynamically
+        async function fetchTasks() {
+            const tasksList = document.getElementById("tasksList");
+            tasksList.innerHTML = ""; // Clear existing tasks
+
+            const tasksSnapshot = await getDocs(collection(db, "tasks"));
+            tasksSnapshot.forEach((doc) => {
+                const task = doc.data();
+                const taskElement = document.createElement("label");
+                taskElement.innerHTML = `
+                    <input type="checkbox" class="task-checkbox" onclick="validateTasks()">
+                    ${task.title}
+                    <a href="${task.link}" target="_blank">${task.link}</a>
+                `;
+                tasksList.appendChild(taskElement);
+            });
+        }
+
         // Validate tasks and enable Proceed button
         function validateTasks() {
             const tasks = document.querySelectorAll(".task-checkbox");
@@ -174,74 +154,43 @@
             }
         }
 
-        // Show Proof Submission Form
-        function showProofForm() {
-            const proofForm = document.getElementById("proofForm");
-            proofForm.style.display = "block";
-            window.scrollTo({ top: proofForm.offsetTop, behavior: "smooth" });
-        }
+        // Countdown Timer for Next Tasks
+        function startCountdown(endTime) {
+            const countdownElement = document.getElementById("countdown");
+            function updateTimer() {
+                const now = new Date().getTime();
+                const timeLeft = endTime - now;
 
-        // Handle Proof Submission
-        function submitProof(event) {
-            event.preventDefault();
+                if (timeLeft <= 0) {
+                    countdownElement.innerHTML = "New tasks available!";
+                    clearInterval(timer);
+                    fetchTasks(); // Fetch new tasks
+                    return;
+                }
 
-            const wallet = document.getElementById("wallet").value.trim();
-            const twitterLink = document.getElementById("twitterLink").value.trim();
-            const telegramUsername = document.getElementById("telegramUsername").value.trim();
-
-            if (!wallet || !twitterLink || !telegramUsername) {
-                alert("Please complete all fields before submitting.");
-                return;
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000)) / 1000);
+                countdownElement.innerHTML = `${hours}h ${minutes}m ${seconds}s`;
             }
 
-            alert("✅ Proof submitted successfully! We'll review your submission shortly.");
-            document.getElementById("proofForm").reset();
+            const timer = setInterval(updateTimer, 1000);
+            updateTimer();
         }
 
-function submitProof(event) {
-    event.preventDefault();
-
-    const wallet = document.getElementById("wallet").value.trim();
-    const twitterLink = document.getElementById("twitterLink").value.trim();
-    const telegramUsername = document.getElementById("telegramUsername").value.trim();
-    const statusMessage = document.getElementById("statusMessage");
-    const submissionStatus = document.getElementById("submissionStatus");
-    const spinner = document.getElementById("spinner");
-
-    // Validation
-    if (!wallet || !twitterLink || !telegramUsername) {
-        alert("❌ Please fill out all fields before submitting.");
-        return;
-    }
-
-    // Show spinner during processing
-    spinner.style.display = "block";
-
-    setTimeout(() => {
-        spinner.style.display = "none"; // Hide spinner
-
-        // Success confirmation
-        statusMessage.innerText = "✅ Proof submitted successfully! We'll review your submission shortly.";
-        submissionStatus.style.display = "block"; // Show next steps
-
-        // Reset the form
-        document.getElementById("proofForm").reset();
-    }, 2000); // Simulate 2 seconds of processing
-}
-
-function goToDashboard() {
-    window.location.href = "dashboard.html";
-}
-
-function startMoreTasks() {
-    alert("Redirecting to more tasks..."); // Replace with actual task page redirection
-    window.location.href = "tasks.html";
-}
+        // Real-Time Listener for Next Task Time
+        onSnapshot(doc(db, "settings", "nextTaskTime"), (doc) => {
+            const nextTaskTime = doc.data().timestamp;
+            startCountdown(new Date(nextTaskTime).getTime());
+        });
 
         // Back to Guide
         function goBack() {
-            window.history.back();
+            window.location.href = "guide.html"; // Replace with actual guide page URL
         }
+
+        // Fetch tasks on load
+        document.addEventListener("DOMContentLoaded", fetchTasks);
     </script>
 </body>
 </html>
