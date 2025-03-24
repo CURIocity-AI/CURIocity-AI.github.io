@@ -156,4 +156,74 @@
         async function loadTasks() {
             try {
                 const tasksList = document.getElementById("tasksList");
-                tasksList
+                tasksList.innerHTML = ""; // Clear previous tasks
+
+                const tasksRef = collection(db, "tasks");
+                const querySnapshot = await getDocs(tasksRef);
+
+                querySnapshot.forEach((doc) => {
+                    const task = doc.data();
+
+                    // Create task item
+                    const taskElement = document.createElement("label");
+                    taskElement.innerHTML = `
+                        <input type="checkbox" class="task-checkbox" onclick="validateTasks()">
+                        ${task.taskName}
+                        <a href="${task.url}" target="_blank">Go to Task</a>
+                    `;
+                    tasksList.appendChild(taskElement);
+                });
+            } catch (error) {
+                console.error("Error loading tasks:", error);
+            }
+        }
+
+        function startCountdownTimer(endDate) {
+            const timerElement = document.getElementById("countdown");
+
+            function updateTimer() {
+                const now = new Date();
+                const timeLeft = endDate - now;
+
+                if (timeLeft < 0) {
+                    timerElement.innerHTML = "Airdrop Ended!";
+                    clearInterval(timerInterval);
+                    return;
+                }
+
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000)) / 1000);
+
+                timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+
+            const timerInterval = setInterval(updateTimer, 1000);
+            updateTimer();
+        }
+
+        function validateTasks() {
+            const tasks = document.querySelectorAll(".task-checkbox");
+            const allCompleted = Array.from(tasks).every(task => task.checked);
+            const proceedButton = document.getElementById("proceedButton");
+
+            if (allCompleted) {
+                proceedButton.disabled = false;
+                proceedButton.classList.add("enabled");
+            } else {
+                proceedButton.disabled = true;
+                proceedButton.classList.remove("enabled");
+            }
+        }
+
+        function proceedTasks() {
+            alert("All tasks completed! Proceeding to next step...");
+        }
+
+        function goBack() {
+            window.location.href = "guide.html"; // Replace with actual guide page URL
+        }
+    </script>
+</body>
+</html>
