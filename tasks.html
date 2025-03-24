@@ -118,112 +118,65 @@
     </div>
 
     <script type="module">
-        import { db } from "./auth.js";
-        import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+     import { db } from "./auth.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
-        document.addEventListener("DOMContentLoaded", async () => {
-            try {
-                await loadAirdropSettings();
-                await loadTasks();
-            } catch (error) {
-                console.error("Error loading data:", error);
-            }
-        });
+document.addEventListener("DOMContentLoaded", async () => {
+    console.log("Page loaded. Fetching tasks...");
+    try {
+        await loadTasks();
+        console.log("Tasks loaded successfully.");
+    } catch (error) {
+        console.error("Error loading tasks:", error);
+    }
+});
 
-        async function loadAirdropSettings() {
-            try {
-                const docRef = doc(db, "settings", "airdropSettings");
-                const docSnap = await getDoc(docRef);
+async function loadTasks() {
+    console.log("Fetching tasks from Firestore...");
+    try {
+        const tasksList = document.getElementById("tasksList");
+        tasksList.innerHTML = ""; // Clear previous tasks
 
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    console.log("Airdrop Settings:", data);
+        const tasksRef = collection(db, "tasks");
+        const querySnapshot = await getDocs(tasksRef);
 
-                    // Update Timer
-                    const timestamp = data.timestamp.toDate();
-                    startCountdownTimer(timestamp);
+        if (!querySnapshot.empty) {
+            querySnapshot.forEach((doc) => {
+                const task = doc.data();
+                console.log("Task loaded:", task);
 
-                    // Display Batch Name
-                    document.getElementById("batchName").innerText = data.batchName;
-                } else {
-                    console.log("No settings found!");
-                }
-            } catch (error) {
-                console.error("Error loading settings:", error);
-            }
+                // Create a task item dynamically
+                const taskElement = document.createElement("label");
+                taskElement.innerHTML = `
+                    <input type="checkbox" class="task-checkbox" onclick="validateTasks()"> 
+                    ${task.taskName} (${task.reward} $CURI)
+                    <a href="${task.url}" target="_blank">Perform Task</a>
+                `;
+                tasksList.appendChild(taskElement);
+            });
+        } else {
+            console.warn("No tasks found in the 'tasks' collection.");
+            tasksList.innerHTML = "<p>No tasks available at the moment.</p>";
         }
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+    }
+}
 
-        async function loadTasks() {
-            try {
-                const tasksList = document.getElementById("tasksList");
-                tasksList.innerHTML = ""; // Clear previous tasks
+// Validate tasks and enable Proceed button
+function validateTasks() {
+    const tasks = document.querySelectorAll(".task-checkbox");
+    const allCompleted = Array.from(tasks).every((task) => task.checked);
+    const proceedButton = document.getElementById("proceedButton");
 
-                const tasksRef = collection(db, "tasks");
-                const querySnapshot = await getDocs(tasksRef);
-
-                querySnapshot.forEach((doc) => {
-                    const task = doc.data();
-
-                    // Create task item
-                    const taskElement = document.createElement("label");
-                    taskElement.innerHTML = `
-                        <input type="checkbox" class="task-checkbox" onclick="validateTasks()">
-                        ${task.taskName}
-                        <a href="${task.url}" target="_blank">Go to Task</a>
-                    `;
-                    tasksList.appendChild(taskElement);
-                });
-            } catch (error) {
-                console.error("Error loading tasks:", error);
-            }
-        }
-
-        function startCountdownTimer(endDate) {
-            const timerElement = document.getElementById("countdown");
-
-            function updateTimer() {
-                const now = new Date();
-                const timeLeft = endDate - now;
-
-                if (timeLeft < 0) {
-                    timerElement.innerHTML = "Airdrop Ended!";
-                    clearInterval(timerInterval);
-                    return;
-                }
-
-                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000)) / 1000);
-
-                timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-            }
-
-            const timerInterval = setInterval(updateTimer, 1000);
-            updateTimer();
-        }
-
-        function validateTasks() {
-            const tasks = document.querySelectorAll(".task-checkbox");
-            const allCompleted = Array.from(tasks).every(task => task.checked);
-            const proceedButton = document.getElementById("proceedButton");
-
-            if (allCompleted) {
-                proceedButton.disabled = false;
-                proceedButton.classList.add("enabled");
-            } else {
-                proceedButton.disabled = true;
-                proceedButton.classList.remove("enabled");
-            }
-        }
-
-        function proceedTasks() {
-            alert("All tasks completed! Proceeding to next step...");
-        }
-
-        function goBack() {
-            window.location.href = "guide.html"; // Replace with actual guide page URL
-        }
+    if (allCompleted) {
+        proceedButton.disabled = false;
+        proceedButton.classList.add("enabled");
+    } else {
+        proceedButton.disabled = true;
+        proceedButton.classList.remove("enabled");
+    }
+}   
     </script>
 </body>
 </html>
