@@ -188,7 +188,35 @@
         function goBack() {
             window.location.href = "guide.html"; // Replace with actual guide page URL
         }
+import { db } from './auth.js'; // Ensure Firebase is initialized in auth.js
+import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js';
 
+// Load tasks dynamically
+async function loadTasks() {
+    try {
+        const tasksRef = collection(db, 'tasks');
+        const tasksSnapshot = await getDocs(tasksRef);
+
+        const tasksContainer = document.getElementById('tasksContainer');
+        tasksContainer.innerHTML = ''; // Clear previous tasks
+
+        tasksSnapshot.forEach((doc) => {
+            const task = doc.data();
+            const taskElement = document.createElement('label');
+
+            taskElement.innerHTML = `
+                <input type="checkbox" class="task-checkbox" onclick="validateTasks()">
+                ${task.taskName} 
+                <a href="${task.url}" target="_blank">Go to Task</a>
+            `;
+            tasksContainer.appendChild(taskElement);
+        });
+    } catch (error) {
+        console.error('Error loading tasks:', error);
+    }
+}
+
+loadTasks();
         // Fetch tasks on load
         document.addEventListener("DOMContentLoaded", fetchTasks);
     </script>
