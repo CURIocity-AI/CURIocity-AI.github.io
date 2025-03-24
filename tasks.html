@@ -102,7 +102,7 @@
 <body>
     <div class="task-container">
         <h1>🎁 Airdrop Tasks</h1>
-        <h2>Complete the tasks below:</h2>
+        <h2 id="batchName">Loading Tasks...</h2>
         <p id="countdown">Loading next task timer...</p>
 
         <!-- Tasks Section -->
@@ -111,64 +111,49 @@
         </div>
 
         <!-- Proceed Button -->
-        <button id="proceedButton" onclick="showProofForm()" disabled>Proceed</button>
+        <button id="proceedButton" onclick="proceedTasks()" disabled>Proceed</button>
 
         <!-- Back Button -->
         <button class="back-button" onclick="goBack()">Back to Guide</button>
     </div>
-<script>
-import { db } from "./auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
-async function loadAirdropSettings() {
-    try {
-        const docRef = doc(db, "settings", "airdropSettings");
-        const docSnap = await getDoc(docRef);
+    <script type="module">
+        import { db } from "./auth.js";
+        import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            console.log("Airdrop Settings:", data);
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                await loadAirdropSettings();
+                await loadTasks();
+            } catch (error) {
+                console.error("Error loading data:", error);
+            }
+        });
 
-            // Update Timer
-            const timestamp = new Date(data.timestamp.toDate());
-            startCountdownTimer(timestamp);
+        async function loadAirdropSettings() {
+            try {
+                const docRef = doc(db, "settings", "airdropSettings");
+                const docSnap = await getDoc(docRef);
 
-            // Display Batch Name
-            document.getElementById("batchName").innerText = data.batchName;
-        } else {
-            console.log("No settings found!");
-        }
-    } catch (error) {
-        console.error("Error loading settings:", error);
-    }
-}
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    console.log("Airdrop Settings:", data);
 
-loadAirdropSettings();
+                    // Update Timer
+                    const timestamp = data.timestamp.toDate();
+                    startCountdownTimer(timestamp);
 
-function startCountdownTimer(endDate) {
-    const timerElement = document.getElementById("countdown");
-
-    function updateTimer() {
-        const now = new Date();
-        const timeLeft = endDate - now;
-
-        if (timeLeft < 0) {
-            timerElement.innerHTML = "Airdrop Ended!";
-            clearInterval(timerInterval);
-            return;
+                    // Display Batch Name
+                    document.getElementById("batchName").innerText = data.batchName;
+                } else {
+                    console.log("No settings found!");
+                }
+            } catch (error) {
+                console.error("Error loading settings:", error);
+            }
         }
 
-        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-        timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }
-
-    const timerInterval = setInterval(updateTimer, 1000);
-    updateTimer();
-}
-</script>
-</body>
-</html>
+        async function loadTasks() {
+            try {
+                const tasksList = document.getElementById("tasksList");
+                tasksList
