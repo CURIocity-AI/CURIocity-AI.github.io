@@ -116,8 +116,8 @@
         <!-- Back Button -->
         <button class="back-button" onclick="goBack()">Back to Guide</button>
     </div>
-
- import { db } from "./auth.js";
+<script>
+import { db } from "./auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
 async function loadAirdropSettings() {
@@ -169,5 +169,6 @@ function startCountdownTimer(endDate) {
     const timerInterval = setInterval(updateTimer, 1000);
     updateTimer();
 }
+</script>
 </body>
 </html>
