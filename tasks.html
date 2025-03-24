@@ -185,8 +185,9 @@
         });
 
         // Back to Guide
-        function goBack() {
-            window.location.href = "guide.html"; // Replace with actual guide page URL
+                function goBack() {
+            window.history.back();
+// Replace with actual guide page URL
         }
 import { db } from './auth.js'; // Ensure Firebase is initialized in auth.js
 import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js';
