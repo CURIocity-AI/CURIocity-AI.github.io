@@ -9,139 +9,23 @@
         /* General Styling */
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(145deg, #0f0f0f, #1a1a2e);
+            background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
             color: white;
-            margin: 0;
             padding: 20px;
-            overflow-x: hidden;
         }
 
         .dashboard-container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: auto;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.5);
-        }
-
-        .dashboard-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .dashboard-header h1 {
-            font-size: 2.5rem;
-            color: #ffdd57;
-            margin: 0;
-        }
-
-        .dashboard-header p {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
             padding: 20px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.3);
-        }
-
-        .stat-card h2 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: #ffdd57;
-        }
-
-        .stat-card p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .progress-container {
-            margin-top: 15px;
-        }
-
-        .progress-label {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 5px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 12px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: #ffdd57;
-            border-radius: 6px;
-            width: 0;
-            animation: fill-progress 2s ease-in-out forwards;
-        }
-
-        @keyframes fill-progress {
-            from {
-                width: 0;
-            }
-            to {
-                width: 50%; /* Example progress */
-            }
-        }
-
-        /* Logout Button */
-        .logout-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #ffdd57;
-            color: #222;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
-        }
-
-        .logout-button:hover {
-            background: #f4c542;
-            color: white;
-        }
-
-        /* Tasks Section */
-        .tasks-container {
-            margin-top: 30px;
             background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
             border-radius: 15px;
             box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
         }
 
-        .tasks-container h2 {
+        h1, h2 {
             color: #ffdd57;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .tasks-list label {
@@ -164,107 +48,140 @@
         .tasks-list a:hover {
             text-decoration: underline;
         }
+
+        .button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .button.disabled {
+            background: gray;
+            cursor: not-allowed;
+        }
+
+        .button.enabled {
+            background: #28a745;
+        }
+
+        .button.enabled:hover {
+            background: #218838;
+        }
+
+        .logout-button {
+            margin-top: 20px;
+            background: #ffdd57;
+            color: #222;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background: #f4c542;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <!-- Dashboard Container -->
     <div class="dashboard-container">
-        <div class="dashboard-header">
-            <h1>Dashboard</h1>
-            <p>Welcome back! Track your $CURI tokens, staking progress, and referrals below.</p>
+        <h1>Welcome to Your Dashboard</h1>
+        <h2>🎯 Airdrop Tasks</h2>
+        <p id="countdown">Loading next task timer...</p>
+
+        <!-- Task List -->
+        <div class="tasks-list" id="tasksList">
+            <p>Loading tasks...</p>
         </div>
 
-        <div class="stats-grid">
-            <!-- Token Balance Card -->
-            <div class="stat-card">
-                <h2>Token Balance</h2>
-                <p><span id="tokenBalance">0</span> $CURI</p>
-            </div>
-
-            <!-- Staking Progress Card -->
-            <div class="stat-card">
-                <h2>Staking Progress</h2>
-                <p>Rewards: <span id="stakingRewards">0.0000</span> $CURI</p>
-                <div class="progress-container">
-                    <div class="progress-label">50% Complete</div>
-                    <div class="progress-bar">
-                        <div class="progress-bar-fill" id="stakingProgress"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Referral Stats Card -->
-            <div class="stat-card">
-                <h2>Referral Stats</h2>
-                <p>Referrals: <span id="referrals">0</span></p>
-                <p>Rewards: <span id="referralRewards">0</span> $CURI</p>
-            </div>
-        </div>
-
-        <!-- Tasks Section -->
-        <div class="tasks-container">
-            <h2>Airdrop Tasks</h2>
-            <div id="tasksList">
-                Loading tasks...
-            </div>
-        </div>
+        <!-- Proceed Button -->
+        <button id="proceedButton" class="button disabled" onclick="proceedTasks()">Proceed</button>
 
         <!-- Logout Button -->
         <button class="logout-button" onclick="logout()">Logout</button>
     </div>
 
-    <script src="auth.js"></script>
-    <script>
-        // Restrict Access to Authenticated Users
-        firebase.auth().onAuthStateChanged((user) => {
-            if (!user) {
-                window.location.href = "login.html"; // Redirect if not logged in
+    <script type="module">
+        import { auth, db } from './auth.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+
+        // Monitor Authentication State
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                console.log("User authenticated:", user.email);
+                await loadTasks();
+            } else {
+                window.location.href = "login.html"; // Redirect unauthenticated users
             }
         });
 
+        // Load Tasks Dynamically
+        async function loadTasks() {
+            const tasksList = document.getElementById("tasksList");
+            tasksList.innerHTML = "";
+
+            const tasksRef = collection(db, "tasks");
+            const querySnapshot = await getDocs(tasksRef);
+
+            if (!querySnapshot.empty) {
+                querySnapshot.forEach((doc) => {
+                    const task = doc.data();
+                    const taskItem = `
+                        <label>
+                            <input type="checkbox" class="task-checkbox" onclick="validateTasks()"> 
+                            ${task.taskName} (${task.reward} $CURI)
+                            <a href="${task.url}" target="_blank">Perform Task</a>
+                        </label>
+                    `;
+                    tasksList.insertAdjacentHTML("beforeend", taskItem);
+                });
+            } else {
+                tasksList.innerHTML = "<p>No tasks available at the moment.</p>";
+            }
+        }
+
+        // Validate Tasks
+        function validateTasks() {
+            const checkboxes = document.querySelectorAll(".task-checkbox");
+            const allChecked = Array.from(checkboxes).every((checkbox) => checkbox.checked);
+            const proceedButton = document.getElementById("proceedButton");
+
+            if (allChecked) {
+                proceedButton.classList.remove("disabled");
+                proceedButton.classList.add("enabled");
+                proceedButton.disabled = false;
+            } else {
+                proceedButton.classList.add("disabled");
+                proceedButton.classList.remove("enabled");
+                proceedButton.disabled = true;
+            }
+        }
+
+        // Proceed Tasks
+        function proceedTasks() {
+            alert("Tasks completed! Proceeding to submit proof...");
+            // Redirect or open proof submission section
+        }
+
         // Logout Functionality
         function logout() {
-            firebase.auth().signOut()
+            auth.signOut()
                 .then(() => {
                     alert("Logged out successfully!");
                     window.location.href = "login.html";
                 })
                 .catch((error) => {
-                    alert(error.message);
+                    alert(`Error logging out: ${error.message}`);
                 });
         }
-
-        // Load Tasks from Firestore
-        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
-        import { db } from "./auth.js";
-
-        async function loadTasks() {
-            const tasksList = document.getElementById("tasksList");
-            tasksList.innerHTML = ""; // Clear previous tasks
-
-            try {
-                const querySnapshot = await getDocs(collection(db, "tasks"));
-                if (!querySnapshot.empty) {
-                    querySnapshot.forEach((doc) => {
-                        const task = doc.data();
-                        const taskElement = document.createElement("label");
-                        taskElement.innerHTML = `
-                            <input type="checkbox" class="task-checkbox"> 
-                            ${task.taskName} (${task.reward} $CURI)
-                            <a href="${task.url}" target="_blank">Perform Task</a>
-                        `;
-                        tasksList.appendChild(taskElement);
-                    });
-                } else {
-                    tasksList.innerHTML = "<p>No tasks available at the moment.</p>";
-                }
-            } catch (error) {
-                console.error("Error fetching tasks:", error);
-                tasksList.innerHTML = "<p>Error loading tasks. Please try again later.</p>";
-            }
-        }
-
-        loadTasks();
     </script>
 </body>
 </html>
