@@ -164,11 +164,35 @@
         .tasks-list a:hover {
             text-decoration: underline;
         }
+
+        .button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .button.disabled {
+            background: gray;
+            cursor: not-allowed;
+        }
+
+        .button.enabled {
+            background: #28a745;
+        }
+
+        .button.enabled:hover {
+            background: #218838;
+        }
     </style>
 </head>
 <body>
-    <!-- Dashboard Container -->
-    <div class="dashboard-container">
+
+  <div class="dashboard-container">
         <div class="dashboard-header">
             <h1>Dashboard</h1>
             <p>Welcome back! Track your $CURI tokens, staking progress, and referrals below.</p>
@@ -202,11 +226,22 @@
         </div>
 
         <!-- Tasks Section -->
-        <div class="tasks-container">
-            <h2>Airdrop Tasks</h2>
-            <div id="tasksList">
-                Loading tasks...
-            </div>
+    
+        <h2>🎯 Airdrop Tasks</h2>
+        <p id="countdown">Loading next task timer...</p>
+
+        <!-- Task List -->
+        <div class="tasks-list" id="tasksList">
+            <p>Loading tasks...</p>
+        </div>
+
+        <!-- Proceed Button -->
+        <button id="proceedButton" class="button disabled" onclick="proceedTasks()">Proceed</button>
+
+        <!-- Logout Button -->
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </div>
+
         </div>
 
         <!-- Logout Button -->
@@ -265,6 +300,82 @@
         }
 
         loadTasks();
+    </script>
+
+<script type="module">
+        import { auth, db } from './auth.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+
+        // Monitor Authentication State
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                console.log("User authenticated:", user.email);
+                await loadTasks();
+            } else {
+                window.location.href = "login.html"; // Redirect unauthenticated users
+            }
+        });
+
+        // Load Tasks Dynamically
+        async function loadTasks() {
+            const tasksList = document.getElementById("tasksList");
+            tasksList.innerHTML = "";
+
+            const tasksRef = collection(db, "tasks");
+            const querySnapshot = await getDocs(tasksRef);
+
+            if (!querySnapshot.empty) {
+                querySnapshot.forEach((doc) => {
+                    const task = doc.data();
+                    const taskItem = `
+                        <label>
+                            <input type="checkbox" class="task-checkbox" onclick="validateTasks()"> 
+                            ${task.taskName} (${task.reward} $CURI)
+                            <a href="${task.url}" target="_blank">Perform Task</a>
+                        </label>
+                    `;
+                    tasksList.insertAdjacentHTML("beforeend", taskItem);
+                });
+            } else {
+                tasksList.innerHTML = "<p>No tasks available at the moment.</p>";
+            }
+        }
+
+        // Validate Tasks
+        function validateTasks() {
+            const checkboxes = document.querySelectorAll(".task-checkbox");
+            const allChecked = Array.from(checkboxes).every((checkbox) => checkbox.checked);
+            const proceedButton = document.getElementById("proceedButton");
+
+            if (allChecked) {
+                proceedButton.classList.remove("disabled");
+                proceedButton.classList.add("enabled");
+                proceedButton.disabled = false;
+            } else {
+                proceedButton.classList.add("disabled");
+                proceedButton.classList.remove("enabled");
+                proceedButton.disabled = true;
+            }
+        }
+
+        // Proceed Tasks
+        function proceedTasks() {
+            alert("Tasks completed! Proceeding to submit proof...");
+            // Redirect or open proof submission section
+        }
+
+        // Logout Functionality
+        function logout() {
+            auth.signOut()
+                .then(() => {
+                    alert("Logged out successfully!");
+                    window.location.href = "login.html";
+                })
+                .catch((error) => {
+                    alert(`Error logging out: ${error.message}`);
+                });
+        }
     </script>
 </body>
 </html>
