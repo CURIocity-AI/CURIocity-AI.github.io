@@ -440,23 +440,6 @@
             alert("Tasks completed! Proceeding to submit proof...");
             // Redirect or open proof submission section
         }
-
-        // Logout Functionality
-        function logout() {
-            auth.signOut()
-                .then(() => {
-                    alert("Logged out successfully!");
-                    window.location.href = "login.html";
-                })
-                .catch((error) => {
-                    alert(`Error logging out: ${error.message}`);
-                });
-        }
-
-         function returnHome() {
-    console.log("Navigating to Home Page..."); // Debugging log
-    window.location.href = "index.html"; // Adjust this path if needed
-}
     </script>
 <script>
       function returnHome() {
