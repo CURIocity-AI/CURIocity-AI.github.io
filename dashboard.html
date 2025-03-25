@@ -1,455 +1,461 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Curiosity ($CURI)</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* General Styling */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(145deg, #0f0f0f, #1a1a2e);
-            color: white;
-            margin: 0;
-            padding: 20px;
-            overflow-x: hidden;
+!DOCTYPE html>
+
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Dashboard - Curiosity ($CURI)</title>  
+    <link rel="stylesheet" href="style.css">  
+    <style>  
+        /* General Styling */  
+        body {  
+            font-family: 'Poppins', sans-serif;  
+            background: linear-gradient(145deg, #0f0f0f, #1a1a2e);  
+            color: white;  
+            margin: 0;  
+            padding: 20px;  
+            overflow-x: hidden;  
+    }  /.dashboard-container {
+max-width: 1200px;  Adjust width as needed
+margin: 0 auto;  Center the container horizontally on the page
+padding: 20px; Add padding to prevent content from touching the edges
+background: rgba(255, 255, 255, 0.05);
+border-radius: 15px;
+box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
+text-align: center;  Center-align text inside the container
+}/
+
+.dashboard-header {  
+        text-align: center;  
+        margin-bottom: 30px;  
+    }  
+
+    .dashboard-header h1 {  
+        font-size: 2.5rem;  
+        color: #ffdd57;  
+        margin: 0;  
+    }  
+
+    .dashboard-header p {  
+        font-size: 1rem;  
+        color: rgba(255, 255, 255, 0.8);  
     }
 
-/*.dashboard-container {
-    max-width: 1200px;  Adjust width as needed 
-    margin: 0 auto;  Center the container horizontally on the page 
-    padding: 20px; Add padding to prevent content from touching the edges 
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
-    text-align: center;  Center-align text inside the container 
-}*/
-
-        .dashboard-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .dashboard-header h1 {
-            font-size: 2.5rem;
-            color: #ffdd57;
-            margin: 0;
-        }
-
-        .dashboard-header p {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-/*.starts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));  Responsive columns 
-    gap: 50px; Space between grid items 
-    justify-content: center;  Center align the grid items horizontally 
-    align-items: center;  Center align the grid items vertically 
-    padding: 20px; Add padding inside the grid to create spacing 
-}*/
+/.starts-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));  Responsive columns
+gap: 50px; Space between grid items
+justify-content: center;  Center align the grid items horizontally
+align-items: center;  Center align the grid items vertically
+padding: 20px; Add padding inside the grid to create spacing
+}/
 
 .dashboard-container {
-    max-width: 1200px; /* Adjust max width as needed */
-    margin: 0 auto; /* Center container horizontally */
-    padding: 20px; /* Add padding inside the container */
-    background: rgba(255, 255, 255, 0.05); /* Subtle background */
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5); /* Shadow effect */
+max-width: 1200px; /* Adjust max width as needed /
+margin: 0 auto; / Center container horizontally /
+padding: 20px; / Add padding inside the container /
+background: rgba(255, 255, 255, 0.05); / Subtle background /
+border-radius: 15px; / Rounded corners /
+box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5); / Shadow effect */
 }
 
 .starts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Flexible grid layout */
-    gap: 20px; /* Space between grid items */
-    justify-content: center; /* Center items horizontally */
-    padding: 20px; /* Add space inside the grid */
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Flexible grid layout /
+gap: 20px; / Space between grid items /
+justify-content: center; / Center items horizontally /
+padding: 20px; / Add space inside the grid */
 }
 
 .starts-grid > div {
-    background: rgba(255, 255, 255, 0.1); /* Card background */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    padding: 20px; /* Add padding inside each card */
-    text-align: center; /* Center text inside cards */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+background: rgba(255, 255, 255, 0.1); /* Card background /
+border-radius: 10px; / Rounded corners /
+box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); / Subtle shadow /
+padding: 20px; / Add padding inside each card /
+text-align: center; / Center text inside cards /
+transition: transform 0.3s ease, box-shadow 0.3s ease; / Smooth hover effect */
 }
 
 .starts-grid > div:hover {
-    transform: translateY(-5px); /* Lift card slightly on hover */
-    box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.3); /* Enhanced shadow on hover */
+transform: translateY(-5px); /* Lift card slightly on hover /
+box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.3); / Enhanced shadow on hover */
 }
 
-/* Media Query for Smaller Screens */
+/* Media Query for Smaller Screens /
 @media (max-width: 768px) {
-    .dashboard-container {
-        padding: 15px; /* Reduce padding on smaller screens */
-    }
-
-    .starts-grid {
-        gap: 15px; /* Reduce gap between grid items */
-    }
-
-    .starts-grid > div {
-        padding: 15px; /* Reduce card padding */
-    }
+.dashboard-container {
+padding: 15px; / Reduce padding on smaller screens */
 }
 
+.starts-grid {  
+    gap: 15px; /* Reduce gap between grid items */  
+}  
 
+.starts-grid > div {  
+    padding: 15px; /* Reduce card padding */  
+}
 
+}
 
-        .stat-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-bottom:10px;
-        }
+.stat-card {  
+        background: rgba(255, 255, 255, 0.1);  
+        border-radius: 15px;  
+        padding: 20px;  
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);  
+        position: relative;  
+        overflow: hidden;  
+        transition: transform 0.3s ease, box-shadow 0.3s ease;  
+        margin-bottom:10px;  
+    }  
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.3);
-        }
+    .stat-card:hover {  
+        transform: translateY(-5px);  
+        box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.3);  
+    }  
 
-        .stat-card h2 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: #ffdd57;
-        }
+    .stat-card h2 {  
+        font-size: 1.5rem;  
+        margin-bottom: 10px;  
+        color: #ffdd57;  
+    }  
 
-        .stat-card p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-        }
+    .stat-card p {  
+        font-size: 1.2rem;  
+        color: rgba(255, 255, 255, 0.9);  
+    }  
 
-        .progress-container {
-            margin-top: 15px;
-        }
+    .progress-container {  
+        margin-top: 15px;  
+    }  
 
-        .progress-label {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 5px;
-        }
+    .progress-label {  
+        font-size: 0.9rem;  
+        color: rgba(255, 255, 255, 0.7);  
+        margin-bottom: 5px;  
+    }  
 
-        .progress-bar {
-            width: 100%;
-            height: 12px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-        }
+    .progress-bar {  
+        width: 100%;  
+        height: 12px;  
+        background: rgba(255, 255, 255, 0.2);  
+        border-radius: 6px;  
+        overflow: hidden;  
+        position: relative;  
+    }  
 
-        .progress-bar-fill {
-            height: 100%;
-            background: #ffdd57;
-            border-radius: 6px;
-            width: 0;
-            animation: fill-progress 2s ease-in-out forwards;
-        }
+    .progress-bar-fill {  
+        height: 100%;  
+        background: #ffdd57;  
+        border-radius: 6px;  
+        width: 0;  
+        animation: fill-progress 2s ease-in-out forwards;  
+    }  
+@keyframes fill-progress {  
+        from {  
+            width: 0;  
+        }  
+        to {  
+            width: 50%; /* Example progress */  
+        }  
+    }  
 
-        @keyframes fill-progress {
-            from {
-                width: 0;
-            }
-            to {
-                width: 50%; /* Example progress */
-            }
-        }
+    /* Logout Button */  
+    .logout-button {  
+        display: inline-block;  
+        margin-top: 20px;  
+        padding: 10px 20px;  
+        background: #ffdd57;  
+        color: #222;  
+        font-size: 16px;  
+        font-weight: bold;  
+        border: none;  
+        border-radius: 8px;  
+        cursor: pointer;  
+        transition: background 0.3s ease-in-out, color 0.3s ease-in-out;  
+    }  
 
-        /* Logout Button */
-        .logout-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #ffdd57;
-            color: #222;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
-        }
+    .logout-button:hover {  
+        background: #f4c542;  
+        color: white;  
+    }  
 
-        .logout-button:hover {
-            background: #f4c542;
-            color: white;
-        }
+    /* Tasks Section */  
+    .tasks-container {  
+        margin-top: 30px;  
+        background: rgba(255, 255, 255, 0.1);  
+        padding: 20px;  
+        border-radius: 15px;  
+        box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);  
+    }  
 
-        /* Tasks Section */
-        .tasks-container {
-            margin-top: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
-        }
+    .tasks-container h2 {  
+        color: #ffdd57;  
+        margin-bottom: 15px;  
+    }  
 
-        .tasks-container h2 {
-            color: #ffdd57;
-            margin-bottom: 15px;
-        }
+    .tasks-list label {  
+        display: flex;  
+        align-items: center;  
+        margin-bottom: 15px;  
+    }  
 
-        .tasks-list label {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+    .tasks-list input[type="checkbox"] {  
+        margin-right: 10px;  
+    }  
 
-        .tasks-list input[type="checkbox"] {
-            margin-right: 10px;
-        }
+    .tasks-list a {  
+        margin-left: 10px;  
+        color: #ffdd57;  
+        text-decoration: none;  
+        font-weight: bold;  
+    }  
 
-        .tasks-list a {
-            margin-left: 10px;
-            color: #ffdd57;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    .tasks-list a:hover {  
+        text-decoration: underline;  
+    }  
 
-        .tasks-list a:hover {
-            text-decoration: underline;
-        }
+    .button {  
+        width: 100%;  
+        padding: 10px;  
+        font-size: 16px;  
+        font-weight: bold;  
+        border: none;  
+        border-radius: 8px;  
+        cursor: pointer;  
+        margin-top: 10px;  
+    }  
 
-        .button {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
+    .button.disabled {  
+        background: gray;  
+        cursor: not-allowed;  
+    }  
 
-        .button.disabled {
-            background: gray;
-            cursor: not-allowed;
-        }
+    .button.enabled {  
+        background: #28a745;  
+    }  
 
-        .button.enabled {
-            background: #28a745;
-        }
-
-        .button.enabled:hover {
-            background: #218838;
-        }
+    .button.enabled:hover {  
+        background: #218838;  
+    }
 
 .return-home {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: #6a0dad;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
-        }
-
-        .return-home:hover {
-            background: #8a2be2;
-        }
-
-        .light-mode .return-home {
-            background: #222;
-            color: white;
-        }
-
-        .light-mode .return-home:hover {
-            background: #444;
-        }
-    </style>
-</head>
-<body>
-<!-- Logout Button -->
-        <button id="logoutButton" class="logout-button">Logout</button>
-
-  <div class="dashboard-container">
-        <div class="dashboard-header">
-            <h1>Dashboard</h1>
-            <p>Welcome back! Track your $CURI tokens, staking progress, and referrals below.</p>
-        </div>
-
-        <div class="stats-grid">
-            <!-- Token Balance Card -->
-            <div class="stat-card">
-                <h2>Token Balance</h2>
-                <p><span id="tokenBalance">0</span> $CURI</p>
-            </div>
-
-            <!-- Staking Progress Card -->
-            <div class="stat-card">
-                <h2>Staking Progress</h2>
-                <p>Rewards: <span id="stakingRewards">0.0000</span> $CURI</p>
-                <div class="progress-container">
-                    <div class="progress-label">50% Complete</div>
-                    <div class="progress-bar">
-                        <div class="progress-bar-fill" id="stakingProgress"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Referral Stats Card -->
-            <div class="stat-card">
-                <h2>Referral Stats</h2>
-                <p>Referrals: <span id="referrals">0</span></p>
-                <p>Rewards: <span id="referralRewards">0</span> $CURI</p>
-            </div>
-
-        <!-- Tasks Section -->
-     <div class="stat-card">
-        <h2>🎯 Airdrop Tasks</h2>
-        <p id="countdown">Loading next task timer...</p>
-
-        <!-- Task List -->
-        <div class="tasks-list" id="tasksList">
-            <p>Loading tasks...</p>
-        </div>
-
-        <!-- Proceed Button -->
-        <button id="proceedButton" class="button disabled" onclick="proceedTasks()">Proceed</button>
-
-        </div>
-
-       <a class="return-home" onclick="returnHome()">🏠 Return to Home</a>
-  </div>
-  </div>
-
-    <script src="auth.js"></script>
-    <script>
-        // Restrict Access to Authenticated Users
-        firebase.auth().onAuthStateChanged((user) => {
-            if (!user) {
-                window.location.href = "login.html"; // Redirect if not logged in
-            }
-        });
-
-    // Logout Functionality
-    function logout() {
-        firebase.auth().signOut()
-            .then(() => {
-                alert("Logged out successfully!");
-                window.location.href = "login.html";
-            })
-            .catch((error) => {
-                alert(error.message);
-            });
-    }
-    // Load Tasks from Firestore
-        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
-        import { db } from "./auth.js";
-
-        async function loadTasks() {
-            const tasksList = document.getElementById("tasksList");
-            tasksList.innerHTML = ""; // Clear previous tasks
-
-            try {
-                const querySnapshot = await getDocs(collection(db, "tasks"));
-                if (!querySnapshot.empty) {
-                    querySnapshot.forEach((doc) => {
-                        const task = doc.data();
-                        const taskElement = document.createElement("label");
-                        taskElement.innerHTML = `
-                            <input type="checkbox" class="task-checkbox"> 
-                            ${task.taskName} (${task.reward} $CURI)
-                            <a href="${task.url}" target="_blank">Perform Task</a>
-                        `;
-                        tasksList.appendChild(taskElement);
-                    });
-                } else {
-                    tasksList.innerHTML = "<p>No tasks available at the moment.</p>";
-                }
-            } catch (error) {
-                console.error("Error fetching tasks:", error);
-                tasksList.innerHTML = "<p>Error loading tasks. Please try again later.</p>";
-            }
-        }
-
-        loadTasks();
-    </script>
-
-<script type="module">
-        import { auth, db } from './auth.js';
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
-        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
-
-        // Monitor Authentication State
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                console.log("User authenticated:", user.email);
-                await loadTasks();
-            } else {
-                window.location.href = "login.html"; // Redirect unauthenticated users
-            }
-        });
-
-        // Load Tasks Dynamically
-        async function loadTasks() {
-            const tasksList = document.getElementById("tasksList");
-            tasksList.innerHTML = "";
-
-            const tasksRef = collection(db, "tasks");
-            const querySnapshot = await getDocs(tasksRef);
-
-            if (!querySnapshot.empty) {
-                querySnapshot.forEach((doc) => {
-                    const task = doc.data();
-                    const taskItem = `
-                        <label>
-                            <input type="checkbox" class="task-checkbox" onclick="validateTasks()"> 
-                            ${task.taskName} (${task.reward} $CURI)
-                            <a href="${task.url}" target="_blank">Perform Task</a>
-                        </label>
-                    `;
-                    tasksList.insertAdjacentHTML("beforeend", taskItem);
-                });
-            } else {
-                tasksList.innerHTML = "<p>No tasks available at the moment.</p>";
-            }
-        }
-
-        // Validate Tasks
-        function validateTasks() {
-            const checkboxes = document.querySelectorAll(".task-checkbox");
-            const allChecked = Array.from(checkboxes).every((checkbox) => checkbox.checked);
-            const proceedButton = document.getElementById("proceedButton");
-
-            if (allChecked) {
-                proceedButton.classList.remove("disabled");
-                proceedButton.classList.add("enabled");
-                proceedButton.disabled = false;
-            } else {
-                proceedButton.classList.add("disabled");
-                proceedButton.classList.remove("enabled");
-                proceedButton.disabled = true;
-            }
-        }
-
-        // Proceed Tasks
-        function proceedTasks() {
-            alert("Tasks completed! Proceeding to submit proof...");
-            // Redirect or open proof submission section
-        }
-    </script>
-<script>
-      function returnHome() {
-    console.log("Navigating to Home Page..."); // Debugging log
-    window.location.href = "index.html"; // Adjust this path if needed
+display: inline-block;
+margin-top: 20px;
+padding: 12px 25px;
+background: #6a0dad;
+color: white;
+font-size: 16px;
+font-weight: bold;
+border-radius: 8px;
+text-decoration: none;
+transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 }
-   </script>
-<script src="script.js"></script>
 
-<script type="module">
-    import { logout } from './auth.js';
+.return-home:hover {  
+        background: #8a2be2;  
+    }  
+
+    .light-mode .return-home {  
+        background: #222;  
+        color: white;  
+    }  
+
+    .light-mode .return-home:hover {  
+        background: #444;  
+    }  
+</style>
+
+</head>  
+<body>  
+<!-- Logout Button -->  
+        <button id="logoutButton" class="logout-button">Logout</button>    <div class="dashboard-container">  
+        <div class="dashboard-header">  
+            <h1>Dashboard</h1>  
+            <p>Welcome back! Track your $CURI tokens, staking progress, and referrals below.</p>  
+        </div>  <div class="stats-grid">  
+        <!-- Token Balance Card -->  
+        <div class="stat-card">  
+            <h2>Token Balance</h2>  
+            <p><span id="tokenBalance">0</span> $CURI</p>  
+        </div>  
+
+        <!-- Staking Progress Card -->  
+        <div class="stat-card">  
+            <h2>Staking Progress</h2>  
+            <p>Rewards: <span id="stakingRewards">0.0000</span> $CURI</p>  
+            <div class="progress-container">  
+                <div class="progress-label">50% Complete</div>  
+                <div class="progress-bar">  
+                    <div class="progress-bar-fill" id="stakingProgress"></div>  
+                </div>  
+            </div>  
+        </div>  
+
+        <!-- Referral Stats Card -->  
+        <div class="stat-card">  
+            <h2>Referral Stats</h2>  
+            <p>Referrals: <span id="referrals">0</span></p>  
+            <p>Rewards: <span id="referralRewards">0</span> $CURI</p>  
+        </div>  
+
+    <!-- Tasks Section -->  
+ <div class="stat-card">  
+    <h2>🎯 Airdrop Tasks</h2>  
+    <p id="countdown">Loading next task timer...</p>  
+
+    <!-- Task List -->  
+    <div class="tasks-list" id="tasksList">  
+        <p>Loading tasks...</p>  
+    </div>  
+
+    <!-- Proceed Button -->  
+    <button id="proceedButton" class="button disabled" onclick="proceedTasks()">Proceed</button>  
+
+    </div>  
+
+   <a class="return-home" onclick="returnHome()">🏠 Return to Home</a>
+
+  </div>  
+  </div> 
+<script src="auth.js"></script>  
+<script>  
+    // Restrict Access to Authenticated Users  
+    firebase.auth().onAuthStateChanged((user) => {  
+        if (!user) {  
+            window.location.href = "login.html"; // Redirect if not logged in  
+        }  
+    });  
+
+    // Logout Functionality  
+    function logout() {  
+        firebase.auth().signOut()  
+            .then(() => {  
+                alert("Logged out successfully!");  
+                window.location.href = "login.html";  
+            })  
+            .catch((error) => {  
+                alert(error.message);  
+            });  
+    }  
+
+    // Load Tasks from Firestore  
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";  
+    import { db } from "./auth.js";  
+
+    async function loadTasks() {  
+        const tasksList = document.getElementById("tasksList");  
+        tasksList.innerHTML = ""; // Clear previous tasks  
+
+        try {  
+            const querySnapshot = await getDocs(collection(db, "tasks"));  
+            if (!querySnapshot.empty) {  
+                querySnapshot.forEach((doc) => {  
+                    const task = doc.data();  
+                    const taskElement = document.createElement("label");  
+                    taskElement.innerHTML = `  
+                        <input type="checkbox" class="task-checkbox">   
+                        ${task.taskName} (${task.reward} $CURI)  
+                        <a href="${task.url}" target="_blank">Perform Task</a>  
+                    `;  
+                    tasksList.appendChild(taskElement);  
+                });  
+            } else {  
+                tasksList.innerHTML = "<p>No tasks available at the moment.</p>";  
+            }  
+        } catch (error) {  
+            console.error("Error fetching tasks:", error);  
+            tasksList.innerHTML = "<p>Error loading tasks. Please try again later.</p>";  
+        }  
+    }  
+
+    loadTasks();  
 </script>
-</body>
+
+<script type="module">  
+        import { auth, db } from './auth.js';  
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";  
+        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";  
+  
+        // Monitor Authentication State  
+        onAuthStateChanged(auth, async (user) => {  
+            if (user) {  
+                console.log("User authenticated:", user.email);  
+                await loadTasks();  
+            } else {  
+                window.location.href = "login.html"; // Redirect unauthenticated users  
+            }  
+        });  
+  
+        // Load Tasks Dynamically  
+        async function loadTasks() {  
+            const tasksList = document.getElementById("tasksList");  
+            tasksList.innerHTML = "";  
+  
+            const tasksRef = collection(db, "tasks");  
+            const querySnapshot = await getDocs(tasksRef);  
+  
+            if (!querySnapshot.empty) {  
+                querySnapshot.forEach((doc) => {  
+                    const task = doc.data();  
+                    const taskItem = `  
+                        <label>  
+                            <input type="checkbox" class="task-checkbox" onclick="validateTasks()">   
+                            ${task.taskName} (${task.reward} $CURI)  
+                            <a href="${task.url}" target="_blank">Perform Task</a>  
+                        </label>  
+                    `;  
+                    tasksList.insertAdjacentHTML("beforeend", taskItem);  
+                });  
+            } else {  
+                tasksList.innerHTML = "<p>No tasks available at the moment.</p>";  
+            }  
+        }  
+  
+        // Validate Tasks  
+        function validateTasks() {  
+            const checkboxes = document.querySelectorAll(".task-checkbox");  
+            const allChecked = Array.from(checkboxes).every((checkbox) => checkbox.checked);  
+            const proceedButton = document.getElementById("proceedButton");  
+  
+            if (allChecked) {  
+                proceedButton.classList.remove("disabled");  
+                proceedButton.classList.add("enabled");  
+                proceedButton.disabled = false;  
+            } else {  
+                proceedButton.classList.add("disabled");  
+                proceedButton.classList.remove("enabled");  
+                proceedButton.disabled = true;  
+            }  
+        }  
+  
+        // Proceed Tasks  
+        function proceedTasks() {  
+            alert("Tasks completed! Proceeding to submit proof...");  
+            // Redirect or open proof submission section  
+        }  
+  
+        // Logout Functionality  
+        function logout() {  
+            auth.signOut()  
+                .then(() => {  
+                    alert("Logged out successfully!");  
+                    window.location.href = "login.html";  
+                })  
+                .catch((error) => {  
+                    alert(`Error logging out: ${error.message}`);  
+                });  
+        }  
+  
+         function returnHome() {  
+    console.log("Navigating to Home Page..."); // Debugging log  
+    window.location.href = "index.html"; // Adjust this path if needed  
+}  
+    </script>  <script>  
+      function returnHome() {  
+    console.log("Navigating to Home Page..."); // Debugging log  
+    window.location.href = "index.html"; // Adjust this path if needed  
+}  
+   </script>  <script src="script.js"></script>  <script type="module">  
+    import { logout } from './auth.js';  
+</script>  </body>  
 </html>
