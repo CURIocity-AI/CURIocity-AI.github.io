@@ -19,21 +19,26 @@ document.addEventListener("scroll", () => {
     });
 });
 
-import { auth } from './auth.js';
+import { auth } from "./auth.js"; // Ensure this is the correct path
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
-export function initializeJoinAirdropButton() {
+// Ensure DOM is fully loaded before attaching event listeners
+document.addEventListener("DOMContentLoaded", () => {
     const joinAirdropButton = document.getElementById("joinAirdrop");
+
     if (joinAirdropButton) {
+        // Add click event listener for the Join Airdrop button
         joinAirdropButton.addEventListener("click", () => {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    window.location.href = "guide.html"; // Redirect to the Airdrop Guide if authorized
+                    // If the user is logged in, redirect to the Airdrop Guide page
+                    window.location.href = "airdrop.html";
                 } else {
-                    alert("You need to log in or register to join the Airdrop.");
-                    window.location.href = "login.html"; // Redirect unauthorized users to login
+                    // If the user is not logged in, redirect to the Login page
+                    alert("You need to log in or register to join the airdrop!");
+                    window.location.href = "login.html";
                 }
             });
         });
     }
-}
+});
