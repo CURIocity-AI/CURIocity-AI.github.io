@@ -70,13 +70,26 @@
             <li>Submit your ERC-20 wallet address and proof of tasks.</li>
         </ol>
         <p>Once you've completed the steps, you'll receive your share of the airdrop tokens.</p>
-        <a href="tasks.html">
-            <button>🚀 Start Tasks</button>
+       <button class="button" id="startTasksButton">Start Tasks</button>
         </a>
         <button class="back-button" onclick="goBack()">Back</button>
     </div>
 
     <script>
+
+import { auth } from "./auth.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        alert("You need to log in to access the Airdrop Guide!");
+        window.location.href = "login.html";
+    }
+});
+
+document.getElementById("startTasksButton").addEventListener("click", () => {
+    window.location.href = "dashboard.html";
+});
         // Go Back to Previous Page
         function goBack() {
             window.history.back();
