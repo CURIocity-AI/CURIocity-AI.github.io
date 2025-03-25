@@ -82,18 +82,11 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/fi
 
 onAuthStateChanged(auth, (user) => {
     if (!user) {
+        // Redirect unauthorized users to Login
         alert("You need to log in to access the Airdrop Guide!");
         window.location.href = "login.html";
     }
 });
-
-document.getElementById("startTasksButton").addEventListener("click", () => {
-    window.location.href = "dashboard.html";
-});
-        // Go Back to Previous Page
-        function goBack() {
-            window.history.back();
-        }
     </script>
 <script src="common.js"></script>
 </body>
