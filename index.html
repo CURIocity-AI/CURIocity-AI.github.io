@@ -313,22 +313,7 @@
     }
     simulateTokenData();
 
-import { auth } from "./auth.js"; // Ensure this path is correct
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
-// Add click event listener for the Join Airdrop button
-document.getElementById("joinAirdrop").addEventListener("click", () => {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // If user is logged in, redirect to the Airdrop Guide page
-            window.location.href = "airdrop.html";
-        } else {
-            // If user is not logged in, redirect to the Login page
-            alert("You need to log in or register to join the airdrop!");
-            window.location.href = "login.html";
-        }
-    });
-});
   </script>
 
 
