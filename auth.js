@@ -85,13 +85,22 @@ async function updateTokenBalance(userId, newBalance) {
 
 export { registerUser, loginUser, updateTokenBalance };
 
-export function logout() {
-    firebase.auth().signOut()
-        .then(() => {
-            alert("Logged out successfully!");
-            window.location.href = "login.html"; // Redirect to login page
-        })
-        .catch((error) => {
-            alert(`Error logging out: ${error.message}`);
+import { auth } from "./auth.js"; // Ensure this path is correct
+
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutButton = document.getElementById("logoutButton");
+
+    if (logoutButton) {
+        logoutButton.addEventListener("click", () => {
+            auth.signOut()
+                .then(() => {
+                    alert("Logged out successfully!");
+                    window.location.href = "login.html"; // Redirect to login page
+                })
+                .catch((error) => {
+                    console.error("Error logging out:", error);
+                    alert(`Error logging out: ${error.message}`);
+                });
         });
-}
+    }
+});
