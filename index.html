@@ -313,21 +313,21 @@
     }
     simulateTokenData();
 
-document.getElementById("joinAirdropButton").addEventListener("click", (e) => {
-  e.preventDefault();
+import { auth } from "./auth.js"; // Ensure this path is correct
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
-  // Check if user is logged in using Firebase Authentication
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      // Redirect to Airdrop Guide if logged in
-      window.location.href = "airdrop.html";
-    } else {
-      // Redirect to Login page if not logged in
-      alert("You need to log in to access the Airdrop!");
-      window.location.href = "login.html";
-    }
-  });
-
+// Add click event listener for the Join Airdrop button
+document.getElementById("joinAirdrop").addEventListener("click", () => {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // If user is logged in, redirect to the Airdrop Guide page
+            window.location.href = "airdrop.html";
+        } else {
+            // If user is not logged in, redirect to the Login page
+            alert("You need to log in or register to join the airdrop!");
+            window.location.href = "login.html";
+        }
+    });
 });
   </script>
 
