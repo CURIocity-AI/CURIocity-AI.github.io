@@ -330,9 +330,16 @@ document.getElementById("joinAirdropButton").addEventListener("click", (e) => {
 });
   </script>
 
+
+<script type="module">
+    import { initializeJoinAirdropButton } from './script.js';
+    document.addEventListener("DOMContentLoaded", () => {
+        initializeJoinAirdropButton();
+    });
+</script>
 <!-- Twitter Widget Script -->
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script src="script.js"></script>
-</body>
 <script src="common.js"></script>
+</body>
 </html>
