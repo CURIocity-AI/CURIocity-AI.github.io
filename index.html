@@ -315,14 +315,14 @@
 
 });
 
-document.getElementById("joinAirdropButton").addEventListener("click", (e) => {
+document.getElementById("joinAirdrop").addEventListener("click", (e) => {
   e.preventDefault();
 
   // Check if user is logged in using Firebase Authentication
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       // Redirect to Airdrop Guide if logged in
-      window.location.href = "airdrop-guide.html";
+      window.location.href = "airdrop.html";
     } else {
       // Redirect to Login page if not logged in
       alert("You need to log in to access the Airdrop!");
