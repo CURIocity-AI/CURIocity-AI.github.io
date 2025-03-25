@@ -18,3 +18,23 @@ document.addEventListener("scroll", () => {
         }
     });
 });
+
+// Inside script.js or auth.js
+import { auth } from './auth.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+
+export function initializeJoinAirdropButton() {
+    const joinAirdropButton = document.getElementById("joinAirdrop");
+    if (joinAirdropButton) {
+        joinAirdropButton.addEventListener("click", () => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    window.location.href = "guide.html";
+                } else {
+                    alert("You need to log in or register to join the Airdrop.");
+                    window.location.href = "login.html";
+                }
+            });
+        });
+    }
+}
