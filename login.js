@@ -1,3 +1,4 @@
+import { loginUser } from './auth.js';
     // Handle form submission for login
     document.getElementById("loginForm").addEventListener("submit", (e) => {
         e.preventDefault();
