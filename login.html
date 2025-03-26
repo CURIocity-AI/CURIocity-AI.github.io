@@ -104,24 +104,23 @@
     <script type="module">
         import { loginUser } from './auth.js';
 
-        // Handle form submission for login
-        document.getElementById("loginForm").addEventListener("submit", (e) => {
-            e.preventDefault();
+       // Handle form submission for login
+document.getElementById("loginForm").addEventListener("submit", (e) => {
+    e.preventDefault();
 
-            // Collect form data
-            const email = document.getElementById("email").value.trim();
-            const password = document.getElementById("password").value.trim();
+    // Collect form data
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-            // Basic validation
-            if (!email || !password) {
-                alert("All fields are required!");
-                return;
-            }
+    // Basic validation
+    if (!email || !password) {
+        alert("All fields are required!");
+        return;
+    }
 
-            // Call loginUser function from auth.js
-            loginUser(email, password);
-        });
-
+    // Call loginUser function from auth.js
+    loginUser(email, password);
+});
         // Go back to the previous page
         function goBack() {
             window.history.back();
