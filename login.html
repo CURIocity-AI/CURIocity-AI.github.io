@@ -119,9 +119,12 @@
         // Call loginUser function from auth.js
         loginUser(email, password);
     });
+
+// Go back to the previous page
+    function goBack() {
+        window.history.back();}
 </script>
 
-    }
 <script>
     // Redirect to the Airdrop Guide if coming from the Airdrop button
     const urlParams = new URLSearchParams(window.location.search);
