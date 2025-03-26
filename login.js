@@ -45,3 +45,8 @@
     if (urlParams.get("redirect") === "airdrop") {
         window.location.href = "airdrop.html";
     }
+
+// Go back to the previous page
+    function goBack() {
+        window.history.back();
+}
