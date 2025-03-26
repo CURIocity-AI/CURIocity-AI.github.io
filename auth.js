@@ -56,10 +56,19 @@ async function loginUser(email, password) {
         window.location.href = "dashboard.html"; // Redirect to dashboard
     } catch (error) {
         console.error("Error during login:", error.message);
-        alert(`Error: ${error.message}`);
+        
+        // Check for specific error codes and provide appropriate messages
+        if (error.code === 'auth/user-not-found') {
+            if (confirm("User not found. Would you like to register?")) {
+                window.location.href = "register.html"; // Redirect to registration page
+            }
+        } else if (error.code === 'auth/wrong-password') {
+            alert("Invalid credentials. Please try again.");
+        } else {
+            alert(`Error: ${error.message}`);
+        }
     }
 }
-
 // Realtime Auth Listener
 onAuthStateChanged(auth, (user) => {
     if (user) {
