@@ -99,41 +99,39 @@
 
     <button class="back-button" onclick="goBack()">Back</button>
 
-    <!-- Import auth.js and handle login functionality -->
-      <script type="module">
+   <script type="module">
     import { loginUser } from './auth.js';
 
-    // Additional script content here
-</script>
-<script>
-       // Handle form submission for login
-document.getElementById("loginForm").addEventListener("submit", (e) => {
-    e.preventDefault();
+    // Handle form submission for login
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+        e.preventDefault();
 
-    // Collect form data
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
+        // Collect form data
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
 
-    // Basic validation
-    if (!email || !password) {
-        alert("All fields are required!");
-        return;
-    }
-
-    // Call loginUser function from auth.js
-    loginUser(email, password);
-});
-        // Go back to the previous page
-        function goBack() {
-            window.history.back();
+        // Basic validation
+        if (!email || !password) {
+            alert("All fields are required!");
+            return;
         }
 
-// Redirect to the Airdrop Guide if coming from the Airdrop button
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get("redirect") === "airdrop") {
-  window.location.href = "airdrop.html";
-}
-    </script>
+        // Call loginUser function from auth.js
+        loginUser(email, password);
+    });
+
+    // Go back to the previous page
+    function goBack() {
+        window.history.back();
+    }
+
+    // Redirect to the Airdrop Guide if coming from the Airdrop button
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("redirect") === "airdrop") {
+        window.location.href = "airdrop.html";
+    }
+</script>
+
     <script src="common.js"></script>
 </body>
 </html>
