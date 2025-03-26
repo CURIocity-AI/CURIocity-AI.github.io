@@ -15,3 +15,10 @@
         // Call loginUser function from auth.js
         loginUser(email, password);
     });
+
+
+    // Redirect to the Airdrop Guide if coming from the Airdrop button
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("redirect") === "airdrop") {
+        window.location.href = "airdrop.html";
+    }
