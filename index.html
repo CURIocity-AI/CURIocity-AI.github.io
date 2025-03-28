@@ -137,69 +137,63 @@
     }
 </style>
 
-</head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white">
-  <!-- Navigation -->
-  <nav class="flex justify-between items-center px-6 py-4 bg-gray-800 text-white">
-    <div class="text-2xl font-bold">
-      <a href="#" class="hover:text-blue-400">Curiosity ($CURI)</a>
+  <!-- Header -->
+  <header class="bg-gray-800 text-white py-4 px-6">
+    <div class="flex justify-between items-center">
+      <div class="text-2xl font-bold">
+        <a href="#" class="hover:text-blue-400">Curiosity ($CURI)</a>
+      </div>
+      <nav class="space-x-4">
+        <a href="#features" class="hover:text-blue-400">Features</a>
+        <a href="#roadmap" class="hover:text-blue-400">Roadmap</a>
+        <a href="#tokenomics" class="hover:text-blue-400">Tokenomics</a>
+        <a href="#nfts" class="hover:text-blue-400">NFTs</a>
+      </nav>
+      <button class="toggle bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600 transition">
+        Light/Dark Mode
+      </button>
     </div>
-    <div class="space-x-4">
-      <a href="#features" class="hover:text-blue-400">Features</a>
-      <a href="#roadmap" class="hover:text-blue-400">Roadmap</a>
-      <a href="#tokenomics" class="hover:text-blue-400">Tokenomics</a>
-      <a href="#nfts" class="hover:text-blue-400">NFTs</a>
-    </div>
-    <button class="toggle bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600 transition">
-      Light/Dark Mode
-    </button>
-  </nav>
+  </header>
 
   <!-- Hero Section -->
-  <div class="hero bg-gradient-to-br from-purple-700 to-blue-600 text-white text-center py-20">
-    <h1 class="text-5xl font-bold mb-4">Welcome to Curiosity ($CURI)</h1>
-    <p class="text-lg mb-8">The token that fuels your curiosity and drives innovation in Web3.</p>
-    <button class="btn bg-yellow-400 px-6 py-3 font-bold rounded-lg hover:bg-yellow-500 transition">
-      Explore Features
-    </button>
-  </div>
+  <section class="hero bg-gradient-to-br from-purple-800 to-blue-600 text-white text-center py-20">
+    <div class="container mx-auto px-4">
+      <h1 class="text-5xl font-bold mb-4 animate-bounce">Welcome to Curiosity ($CURI)</h1>
+      <p class="text-xl mb-8">Explore the future of Web3 with our meme token and ecosystem.</p>
+      <a href="#features" class="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-600 transition duration-300">
+        Explore Features
+      </a>
+    </div>
+  </section>
 
   <!-- Token Data Section -->
-  <div class="token-data py-12 bg-gray-200 dark:bg-gray-800 text-center">
-    <h3 class="text-3xl font-bold mb-6">Live Token Data</h3>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-        <h4 class="text-xl font-bold">Price</h4>
-        <p class="text-2xl text-green-500">$0.000 (placeholder)</p>
-      </div>
-      <div class="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-        <h4 class="text-xl font-bold">Market Cap</h4>
-        <p class="text-2xl text-green-500">$0 (placeholder)</p>
-      </div>
-      <div class="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-        <h4 class="text-xl font-bold">Total Supply</h4>
-        <p class="text-2xl text-green-500">500M CURI</p>
+  <section class="token-data py-12 bg-gray-100 dark:bg-gray-800">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">Live Token Data</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg">
+          <h3 class="text-lg font-bold text-gray-700 dark:text-white">Price</h3>
+          <p class="text-2xl font-semibold text-gray-800 dark:text-yellow-400">$0.00</p>
+        </div>
+        <div class="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg">
+          <h3 class="text-lg font-bold text-gray-700 dark:text-white">Market Cap</h3>
+          <p class="text-2xl font-semibold text-gray-800 dark:text-yellow-400">$0.00</p>
+        </div>
+        <div class="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg">
+          <h3 class="text-lg font-bold text-gray-700 dark:text-white">Total Supply</h3>
+          <p class="text-2xl font-semibold text-gray-800 dark:text-yellow-400">500,000,000</p>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Features Section -->
-  <div class="features bg-gray-100 dark:bg-gray-900 py-12" id="features">
-    <h2 class="text-3xl font-bold text-center mb-8">Features</h2>
-    <div class="space-y-4 px-6 md:px-16 lg:px-40">
-      <div class="feature-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-        ✅ Live Token Data: Price, Market Cap, Supply
-      </div>
-      <div class="feature-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-        ✅ Staking and Rewards with Transparency
-      </div>
-      <div class="feature-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-        ✅ Interactive Roadmap and Tokenomics
-      </div>
-      <div class="feature-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-        ✅ NFT Section: Browse, Buy, and Trade
-      </div>
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-6">
+    <div class="container mx-auto px-4 text-center">
+      <p>&copy; 2025 Curiosity ($CURI). All rights reserved.</p>
+      <p>Powered by Web3 Enthusiasts.</p>
     </div>
-  </div>
+  </footer>
 </body>
 </html>
