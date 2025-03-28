@@ -10,6 +10,7 @@
     --accent-color: #008c9e;
 }
 
+/* Global styles */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -17,8 +18,10 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     overflow-x: hidden;
+    width: 100%;
 }
 
+/* Navbar */
 nav {
     display: flex;
     justify-content: space-between;
@@ -28,6 +31,8 @@ nav {
     position: sticky;
     top: 0;
     z-index: 1000;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 nav a {
@@ -56,6 +61,7 @@ nav a:hover {
     background: #008c9e;
 }
 
+/* Hero Section */
 .hero {
     height: 100vh;
     display: flex;
@@ -64,6 +70,7 @@ nav a:hover {
     justify-content: center;
     text-align: center;
     padding: 2rem;
+    box-sizing: border-box;
 }
 
 .hero h1 {
@@ -107,6 +114,7 @@ nav a:hover {
     box-shadow: 0 5px 20px rgba(0, 140, 158, 0.6);
 }
 
+/* Token Data Section */
 .token-data {
     text-align: center;
     padding: 2rem;
@@ -116,6 +124,7 @@ nav a:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     width: 90%;
     max-width: 800px;
+    box-sizing: border-box;
 }
 
 .token-data h3 {
@@ -123,10 +132,13 @@ nav a:hover {
     margin-bottom: 1rem;
 }
 
+/* Features Section */
 .features {
     padding: 3rem 1rem;
     background: #1e293b;
     text-align: center;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .features h2 {
@@ -137,4 +149,33 @@ nav a:hover {
 .features .feature-item {
     font-size: 1.2rem;
     margin: 0.5rem 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav a {
+        margin: 0.5rem 0;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+    }
+
+    .btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .token-data h3 {
+        font-size: 1.5rem;
+    }
 }
