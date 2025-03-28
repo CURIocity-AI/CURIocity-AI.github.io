@@ -14,120 +14,83 @@
             overflow-x: hidden;
         }
 
-/* General Styles */
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background: #1e293b;
-    color: white;
-}
-
-.menu-items, .action-buttons {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.menu-items a, .action-buttons a {
-    text-decoration: none;
-    color: white;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-
-.menu-items a:hover, .action-buttons a:hover {
-    color: #00bcd4;
-}
-
-.btn {
-    background: #1e293b;
-    padding: 8px 15px;
-    border-radius: 5px;
-}
-
-.btn:hover {
-    background: #00bcd4;
-}
-
-.btn-outline {
-    border: 2px solid white;
-    padding: 8px 15px;
-    border-radius: 5px;
-}
-
-.btn-outline:hover {
-    background: white;
-    color: #1e293b;
-}
-
-.btn-primary {
-    background: #00bcd4;
-    padding: 8px 15px;
-    border-radius: 5px;
-}
-
-.btn-primary:hover {
-    background: #007a9e;
-}
-
-/* Hamburger Menu Icon */
-  .menu-icon {
         display: flex;
-        flex-direction: column;
         justify-content: space-between;
-        width: 35px;
-        height: 25px;
-        cursor: pointer;
-        position: relative;
+        align-items: center;
+        padding: 15px 30px;
+        background: rgba(15, 23, 42, 0.9);
+        position: sticky;
+        top: 0;
         z-index: 1000;
     }
 
-    .menu-icon span {
-        display: block;
-        height: 3px;
+    nav a {
+        color: #ffffff;
+        text-decoration: none;
+        margin: 0 15px;
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+        color: #00bcd4;
+    }
+
+    .menu-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    .menu-icon div {
         background: #ffffff;
+        height: 3px;
         border-radius: 2px;
         transition: all 0.3s ease;
-        transform-origin: center;
     }
 
-    .menu-icon span:nth-child(1) {
-        width: 100%;
+    .menu-items {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 30px;
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        padding: 10px 20px;
     }
 
-    .menu-icon span:nth-child(2) {
-        width: 85%;
+    .menu-items a {
+        margin: 10px 0;
     }
 
-    .menu-icon span:nth-child(3) {
-        width: 70%;
+    .menu-items.show {
+        display: flex;
     }
 
-    /* Add animation when toggled */
-    .menu-icon.open span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-        width: 100%;
-    }
-
-    .menu-icon.open span:nth-child(2) {
-        opacity: 0;
-    }
-
-    .menu-icon.open span:nth-child(3) {
-        transform: rotate(-45deg) translate(5px, -5px);
-        width: 100%;
-    }        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            position: relative;
+    @media (min-width: 768px) {
+        .menu-icon {
+            display: none;
         }
+
+        .menu-items {
+            display: flex;
+            flex-direction: row;
+            position: static;
+            background: none;
+            box-shadow: none;
+            padding: 0;
+        }
+
+        .menu-items a {
+            margin: 0 15px;
+        }
+    }
 
         .hero h1 {
             font-size: 4rem;
@@ -211,45 +174,21 @@ nav {
 
 
 <nav>
-    <div class="logo">
-        <a href="#">Curiosity ($CURI)</a>
+    <div><a href="#">Curiosity ($CURI)</a></div>
+    <div class="menu-icon" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
     </div>
-
-    <!-- Desktop Navigation -->
-    <div class="menu-items">
+    <div class="menu-items" id="menu-items">
         <a href="#features">Features</a>
         <a href="#roadmap">Roadmap</a>
         <a href="#tokenomics">Tokenomics</a>
         <a href="#nfts">NFTs</a>
+        <a href="#whitepaper">Whitepaper</a>
+        <a href="#airdrop">Airdrop</a>
     </div>
-
-    <!-- Desktop Action Buttons -->
-    <div class="action-buttons">
-        <a href="#community" class="btn">Community</a>
-        <a href="#login" class="btn-outline">Login</a>
-        <a href="#register" class="btn-primary">Register</a>
-    </div>
-
-    <!-- Hamburger Menu Icon -->
-  <div class="menu-icon" onclick="toggleMenu()">
-    <span></span>
-    <span></span>
-    <span></span>
-</div>
 </nav>
-
-<!-- Mobile Sidebar -->
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="sidebar" id="sidebar">
-    <a href="#features">Features</a>
-    <a href="#roadmap">Roadmap</a>
-    <a href="#tokenomics">Tokenomics</a>
-    <a href="#nfts">NFTs</a>
-    <a href="#community">Community</a>
-    <a href="#login">Login</a>
-    <a href="#register">Register</a>
-</div>
-
 
 <div class="hero">
     <h1>Welcome to Curiosity ($CURI)</h1>
@@ -271,11 +210,9 @@ nav {
     <div class="feature-item">✅ Interactive Roadmap and Tokenomics</div>
     <div class="feature-item">✅ NFT Section: Browse, Buy, and Trade</div>
 </div>
-<script>
+script>
     function toggleMenu() {
-        const menuIcon = document.querySelector(".menu-icon");
         const menuItems = document.getElementById("menu-items");
-        menuIcon.classList.toggle("open");
         menuItems.classList.toggle("show");
     }
 </script>
