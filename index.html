@@ -37,59 +37,51 @@ nav {
         color: #00bcd4;
     }
 
-    .menu-icon {
+   .menu-icon {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        width: 30px;
-        height: 20px;
+        width: 35px;
+        height: 25px;
         cursor: pointer;
+        position: relative;
+        z-index: 1000;
     }
 
-    .menu-icon div {
-        background: #ffffff;
+    .menu-icon span {
+        display: block;
         height: 3px;
+        background: #ffffff;
         border-radius: 2px;
         transition: all 0.3s ease;
+        transform-origin: center;
     }
 
-    .menu-items {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        right: 30px;
-        background: rgba(15, 23, 42, 0.9);
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        padding: 10px 20px;
+    .menu-icon span:nth-child(1) {
+        width: 100%;
     }
 
-    .menu-items a {
-        margin: 10px 0;
+    .menu-icon span:nth-child(2) {
+        width: 85%;
     }
 
-    .menu-items.show {
-        display: flex;
+    .menu-icon span:nth-child(3) {
+        width: 70%;
     }
 
-    @media (min-width: 768px) {
-        .menu-icon {
-            display: none;
-        }
+    /* Add animation when toggled */
+    .menu-icon.open span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+        width: 100%;
+    }
 
-        .menu-items {
-            display: flex;
-            flex-direction: row;
-            position: static;
-            background: none;
-            box-shadow: none;
-            padding: 0;
-        }
+    .menu-icon.open span:nth-child(2) {
+        opacity: 0;
+    }
 
-        .menu-items a {
-            margin: 0 15px;
-        }
+    .menu-icon.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+        width: 100%;
     }
         .hero {
             height: 100vh;
@@ -186,10 +178,10 @@ nav {
 <nav>
     <div><a href="#">Curiosity ($CURI)</a></div>
     <div class="menu-icon" onclick="toggleMenu()">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
     <div class="menu-items" id="menu-items">
         <a href="#features">Features</a>
         <a href="#roadmap">Roadmap</a>
@@ -223,8 +215,10 @@ nav {
 </div>
 
 <script>
-    function toggleMenu() {
+ function toggleMenu() {
+        const menuIcon = document.querySelector(".menu-icon");
         const menuItems = document.getElementById("menu-items");
+        menuIcon.classList.toggle("open");
         menuItems.classList.toggle("show");
     }
 </script>
