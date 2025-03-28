@@ -1,3 +1,6 @@
+import { registerUser } from './auth.js';
+
+
  // Helper functions for validation
         function displayError(id, message) {
             const errorElement = document.getElementById(id);
