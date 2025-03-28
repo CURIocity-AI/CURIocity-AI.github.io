@@ -11,7 +11,44 @@
             background: linear-gradient(135deg, #0f172a, #1e293b);
             color: #ffffff;
             overflow-x: hidden;
-        }.hero {
+        }nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background: rgba(15, 23, 42, 0.9);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    nav a {
+        color: #ffffff;
+        text-decoration: none;
+        margin: 0 15px;
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+        color: #00bcd4;
+    }
+
+    .toggle {
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 20px;
+        background: #00bcd4;
+        color: #ffffff;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .toggle:hover {
+        background: #008c9e;
+    }
+
+    .hero {
         height: 100vh;
         display: flex;
         flex-direction: column;
@@ -79,14 +116,47 @@
         margin: 10px 0;
     }
 
+    .token-data {
+        text-align: center;
+        padding: 30px 20px;
+        background: rgba(15, 23, 42, 0.8);
+        margin: 20px auto;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        width: 80%;
+    }
+
+    .token-data h3 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .token-data p {
+        font-size: 1.2rem;
+        margin: 5px 0;
+    }
 </style>
 
 </head>
-<body><div class="hero">
+<body><nav>
+    <div><a href="#">Curiosity ($CURI)</a></div>
+    <div>
+        <a href="#features">Features</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#tokenomics">Tokenomics</a>
+        <a href="#nfts">NFTs</a>
+    </div>
+    <button class="toggle">Light/Dark Mode</button>
+</nav><div class="hero">
     <h1>Welcome to Curiosity ($CURI)</h1>
     <p>The token that fuels your curiosity and drives innovation in Web3.</p>
     <button class="btn">Explore Features</button>
-</div><div class="features">
+</div><div class="token-data">
+    <h3>Live Token Data</h3>
+    <p>Price: $0.000 (placeholder)</p>
+    <p>Market Cap: $0 (placeholder)</p>
+    <p>Total Supply: 500M CURI</p>
+</div><div class="features" id="features">
     <h2>Features</h2>
     <div class="feature-item">✅ Live Token Data: Price, Market Cap, Supply</div>
     <div class="feature-item">✅ Staking and Rewards with Transparency</div>
