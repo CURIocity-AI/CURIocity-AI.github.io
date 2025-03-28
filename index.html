@@ -13,43 +13,83 @@
             color: #ffffff;
             overflow-x: hidden;
         }
+nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background: rgba(15, 23, 42, 0.9);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
 
-        nav {
+    nav a {
+        color: #ffffff;
+        text-decoration: none;
+        margin: 0 15px;
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+        color: #00bcd4;
+    }
+
+    .menu-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    .menu-icon div {
+        background: #ffffff;
+        height: 3px;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .menu-items {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 30px;
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        padding: 10px 20px;
+    }
+
+    .menu-items a {
+        margin: 10px 0;
+    }
+
+    .menu-items.show {
+        display: flex;
+    }
+
+    @media (min-width: 768px) {
+        .menu-icon {
+            display: none;
+        }
+
+        .menu-items {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            background: rgba(15, 23, 42, 0.9);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            flex-direction: row;
+            position: static;
+            background: none;
+            box-shadow: none;
+            padding: 0;
         }
 
-        nav a {
-            color: #ffffff;
-            text-decoration: none;
+        .menu-items a {
             margin: 0 15px;
-            font-size: 1.2rem;
-            transition: color 0.3s ease;
         }
-
-        nav a:hover {
-            color: #00bcd4;
-        }
-
-        .toggle {
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 20px;
-            background: #00bcd4;
-            color: #ffffff;
-            border: none;
-            transition: all 0.3s ease;
-        }
-
-        .toggle:hover {
-            background: #008c9e;
-        }
+    }
 
         .hero {
             height: 100vh;
@@ -142,15 +182,20 @@
 </head>
 <body>
 
-<nav>
+
+nav>
     <div><a href="#">Curiosity ($CURI)</a></div>
-    <div>
+    <div class="menu-icon" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="menu-items" id="menu-items">
         <a href="#features">Features</a>
         <a href="#roadmap">Roadmap</a>
         <a href="#tokenomics">Tokenomics</a>
         <a href="#nfts">NFTs</a>
     </div>
-    <button class="toggle">Light/Dark Mode</button>
 </nav>
 
 <div class="hero">
@@ -173,6 +218,13 @@
     <div class="feature-item">✅ Interactive Roadmap and Tokenomics</div>
     <div class="feature-item">✅ NFT Section: Browse, Buy, and Trade</div>
 </div>
+
+<script>
+    function toggleMenu() {
+        const menuItems = document.getElementById("menu-items");
+        menuItems.classList.toggle("show");
+    }
+</script>
 
 </body>
 </html>
