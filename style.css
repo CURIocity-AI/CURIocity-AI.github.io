@@ -19,6 +19,7 @@ body {
     color: var(--text-color);
     overflow-x: hidden;
     width: 100%;
+    line-height: 1.6;
 }
 
 /* Navbar */
@@ -74,7 +75,7 @@ nav a:hover {
 }
 
 .hero h1 {
-    font-size: 4rem;
+    font-size: 3.5rem;
     margin: 0 0 1.5rem;
     background: linear-gradient(90deg, #00bcd4, #008c9e);
     -webkit-background-clip: text;
@@ -151,31 +152,15 @@ nav a:hover {
     margin: 0.5rem 0;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    nav {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    nav a {
-        margin: 0.5rem 0;
-    }
-
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-
-    .hero p {
-        font-size: 1.2rem;
-    }
-
-    .btn {
-        padding: 0.8rem 1.5rem;
-        font-size: 1rem;
-    }
-
-    .token-data h3 {
-        font-size: 1.5rem;
-    }
+/* Footer */
+footer {
+    background: var(--bg-color);
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* Responsive Design */
+@media (max-width: 1024
