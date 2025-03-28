@@ -14,206 +14,110 @@
             overflow-x: hidden;
         }
 
-nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 30px;
-        background: rgba(15, 23, 42, 0.9);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-    }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(15, 23, 42, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-    nav a {
-        color: #ffffff;
-        text-decoration: none;
-        margin: 0 15px;
-        font-size: 1.2rem;
-        transition: color 0.3s ease;
-    }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
 
-    nav a:hover {
-        color: #00bcd4;
-    }
+        nav a:hover {
+            color: #00bcd4;
+        }
 
-    .menu-icon {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        width: 30px;
-        height: 20px;
-        cursor: pointer;
-    }
-
-    .menu-icon div {
-        background: #ffffff;
-        height: 3px;
-        border-radius: 2px;
-        transition: all 0.3s ease;
-    }
-
-    .menu-items {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        right: 30px;
-        background: rgba(15, 23, 42, 0.9);
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        padding: 10px 20px;
-    }
-
-    .menu-items a {
-        margin: 10px 0;
-    }
-
-    .menu-items.show {
-        display: flex;
-    }
-
-    @media (min-width: 768px) {
         .menu-icon {
             display: none;
-        }
-
-        .menu-items {
-            display: flex;
-            flex-direction: row;
-            position: static;
-            background: none;
-            box-shadow: none;
-            padding: 0;
-        }
-
-        .menu-items a {
-            margin: 0 15px;
-        }
-    }
-
-        .hero h1 {
-            font-size: 4rem;
-            margin: 0 0 20px;
-            background: linear-gradient(90deg, #00bcd4, #008c9e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: glow 3s infinite alternate;
-        }
-
-        @keyframes glow {
-            0% {
-                text-shadow: 0 0 5px #00bcd4, 0 0 10px #008c9e, 0 0 20px #00bcd4;
-            }
-            100% {
-                text-shadow: 0 0 20px #00bcd4, 0 0 30px #008c9e, 0 0 40px #00bcd4;
-            }
-        }
-
-        .hero p {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-        }
-
-        .btn {
-            background: #00bcd4;
-            color: #ffffff;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
             cursor: pointer;
+        }
+
+        .menu-icon div {
+            width: 25px;
+            height: 3px;
+            background: #ffffff;
+            margin: 4px 0;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.4);
         }
 
-        .btn:hover {
-            background: #008c9e;
-            transform: scale(1.1);
-            box-shadow: 0 5px 20px rgba(0, 140, 158, 0.6);
-        }
-
-        .features {
-            padding: 50px 20px;
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            height: 100%;
+            width: 250px;
             background: #1e293b;
-            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            padding: 20px;
         }
 
-        .features h2 {
-            font-size: 3rem;
-            margin-bottom: 20px;
+        .sidebar.active {
+            left: 0;
         }
 
-        .features .feature-item {
+        .sidebar a {
+            color: #ffffff;
+            text-decoration: none;
+            display: block;
+            margin: 15px 0;
             font-size: 1.2rem;
-            margin: 10px 0;
+            transition: color 0.3s ease;
         }
 
-        .token-data {
-            text-align: center;
-            padding: 30px 20px;
-            background: rgba(15, 23, 42, 0.8);
-            margin: 20px auto;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            width: 80%;
+        .sidebar a:hover {
+            color: #00bcd4;
         }
 
-        .token-data h3 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
+        @media screen and (max-width: 768px) {
+            nav div {
+                display: none;
+            }
 
-        .token-data p {
-            font-size: 1.2rem;
-            margin: 5px 0;
+            .menu-icon {
+                display: block;
+            }
         }
     </style>
 </head>
 <body>
 
-
 <nav>
     <div><a href="#">Curiosity ($CURI)</a></div>
-    <div class="menu-icon" onclick="toggleMenu()">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-    <div class="menu-items" id="menu-items">
+    <div>
         <a href="#features">Features</a>
         <a href="#roadmap">Roadmap</a>
         <a href="#tokenomics">Tokenomics</a>
         <a href="#nfts">NFTs</a>
-        <a href="#whitepaper">Whitepaper</a>
-        <a href="#airdrop">Airdrop</a>
+    </div>
+    <div class="menu-icon" onclick="toggleSidebar()">
+        <div></div>
+        <div></div>
+        <div></div>
     </div>
 </nav>
 
-<div class="hero">
-    <h1>Welcome to Curiosity ($CURI)</h1>
-    <p>The token that fuels your curiosity and drives innovation in Web3.</p>
-    <button class="btn">Explore Features</button>
+<div class="sidebar" id="sidebar">
+    <a href="#features">Features</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#tokenomics">Tokenomics</a>
+    <a href="#nfts">NFTs</a>
 </div>
 
-<div class="token-data">
-    <h3>Live Token Data</h3>
-    <p>Price: $0.000 (placeholder)</p>
-    <p>Market Cap: $0 (placeholder)</p>
-    <p>Total Supply: 500M CURI</p>
-</div>
-
-<div class="features" id="features">
-    <h2>Features</h2>
-    <div class="feature-item">✅ Live Token Data: Price, Market Cap, Supply</div>
-    <div class="feature-item">✅ Staking and Rewards with Transparency</div>
-    <div class="feature-item">✅ Interactive Roadmap and Tokenomics</div>
-    <div class="feature-item">✅ NFT Section: Browse, Buy, and Trade</div>
-</div>
 <script>
-    function toggleMenu() {
-        const menuItems = document.getElementById("menu-items");
-        menuItems.classList.toggle("show");
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('active');
     }
 </script>
 
