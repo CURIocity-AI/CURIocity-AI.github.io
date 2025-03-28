@@ -28,13 +28,25 @@
             color: #ffdd57;
         }
 
-        input {
+        form input {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
             font-size: 1rem;
             border-radius: 8px;
             border: none;
+        }
+
+        form input:focus {
+            outline: 2px solid #ffdd57;
+            box-shadow: 0px 0px 5px #ffdd57;
+        }
+
+        form .error {
+            color: #ff4d4d;
+            font-size: 0.9rem;
+            text-align: left;
+            margin-bottom: 10px;
         }
 
         button {
@@ -85,10 +97,16 @@
 <body>
     <div class="register-container">
         <h1>Create an Account</h1>
-        <form id="registerForm">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
+        <form id="registerForm" novalidate>
+            <div id="usernameError" class="error"></div>
+            <input type="text" id="username" placeholder="Username" required aria-label="Username">
+            
+            <div id="emailError" class="error"></div>
+            <input type="email" id="email" placeholder="Email" required aria-label="Email">
+            
+            <div id="passwordError" class="error"></div>
+            <input type="password" id="password" placeholder="Password" required aria-label="Password">
+            
             <button type="submit">Register</button>
         </form>
         <a href="login.html" class="login-link">Already have an account? Login</a>
@@ -96,28 +114,64 @@
 
     <button class="back-button" onclick="goBack()">Back</button>
 
-    <!-- Import auth.js and use registerUser -->
+    <!-- Import auth.js for backend communication -->
     <script type="module" src="auth.js"></script>
     <script type="module">
         import { registerUser } from './auth.js';
 
-        // Handle form submission for registration
-        document.getElementById("registerForm").addEventListener("submit", (e) => {
+        // Helper functions for validation
+        function displayError(id, message) {
+            const errorElement = document.getElementById(id);
+            errorElement.textContent = message;
+        }
+
+        function clearErrors() {
+            displayError('usernameError', '');
+            displayError('emailError', '');
+            displayError('passwordError', '');
+        }
+
+        // Form submission handler
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-            
+
+            // Clear any previous error messages
+            clearErrors();
+
             // Collect form data
             const username = document.getElementById("username").value.trim();
             const email = document.getElementById("email").value.trim();
             const password = document.getElementById("password").value.trim();
 
             // Basic validation
-            if (!username || !email || !password) {
-                alert("All fields are required!");
-                return;
+            let isValid = true;
+
+            if (username.length < 3) {
+                displayError('usernameError', 'Username must be at least 3 characters long.');
+                isValid = false;
             }
 
-            // Call registerUser function from auth.js
-            registerUser(email, password, username);
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                displayError('emailError', 'Please enter a valid email address.');
+                isValid = false;
+            }
+
+            if (password.length < 6) {
+                displayError('passwordError', 'Password must be at least 6 characters long.');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Call the backend registration function
+            try {
+                await registerUser(email, password, username);
+                alert("Registration successful! Redirecting to login page...");
+                window.location.href = "login.html"; // Redirect to login on success
+            } catch (error) {
+                alert("Registration failed: " + error.message);
+            }
         });
 
         // Go back to the previous page
@@ -125,7 +179,5 @@
             window.history.back();
         }
     </script>
-
-<script src="common.js"></script>
 </body>
 </html>
