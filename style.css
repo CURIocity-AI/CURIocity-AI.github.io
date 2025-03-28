@@ -1,142 +1,140 @@
+:root {
+    --bg-color: #0f172a;
+    --text-color: #ffffff;
+    --accent-color: #00bcd4;
+}
+
+[data-theme="light"] {
+    --bg-color: #ffffff;
+    --text-color: #0f172a;
+    --accent-color: #008c9e;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 20px;
-    background-color: #f4f4f4;
-    color: #333;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
 }
 
-h1 {
-    color: #6a0dad;
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(15, 23, 42, 0.9);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-.container {
-    max-width: 800px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-
-.navbar {
-    background: #6a0dad;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.navbar a {
-    color: white;
+nav a {
+    color: var(--text-color);
     text-decoration: none;
-    margin: 10px;
-    font-size: 18px;
+    margin: 0 1rem;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
 }
 
-.button {
-    display: inline-block;
-    padding: 10px 20px;
-    margin-top: 10px;
-    background: #6a0dad;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
+nav a:hover {
+    color: var(--accent-color);
 }
 
-#whitepaper {
-    text-align: center;
-    padding: 50px 20px;
-    background: #f4f4f4;
-    color: #333;
-    border-radius: 10px;
-    margin-top: 20px;
-}
-
-#whitepaper h2 {
-    font-size: 2rem;
-    color: #6a0dad;
-}
-
-.cta-button {
-    display: inline-block;
-    padding: 12px 25px;
-    background: #6a0dad;
-    color: white;
-    font-size: 18px;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: 0.3s;
-}
-
-.cta-button:hover {
-    background: #8a2be2;
-}
-
-/* General Animation Styles */
-.hidden {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* For Hover Effects */
-.glow-effect {
-    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-.glow-effect:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 5px 20px rgba(255, 223, 0, 0.7);
-}
-
-.back-button {
-    position: fixed; /* Keep it in a fixed position */
-    top: 20px; /* Adjust placement from the top of the page */
-    left: 20px; /* Adjust placement from the left of the page */
-    padding: 8px 12px; /* Smaller padding for a compact look */
-    background: #ffdd57;
-    color: #222;
-    font-size: 14px; /* Slightly smaller font */
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
+.toggle {
     cursor: pointer;
-    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
-    z-index: 1000; /* Ensure it appears above other elements */
-    width: auto; /* Adjust width based on content */
-    min-width: 60px; /* Ensure a minimum width */
-    text-align: center; /* Center-align the text */
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    background: var(--accent-color);
+    color: var(--text-color);
+    border: none;
+    transition: all 0.3s ease;
 }
 
-.back-button:hover {
-    background: #f4c542;
-    color: white;
+.toggle:hover {
+    background: #008c9e;
 }
 
-@media (max-width: 768px) {
-    .back-button {
-        font-size: 12px; /* Adjust font size for smaller screens */
-        padding: 6px 10px; /* Adjust padding for smaller screens */
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin: 0 0 1.5rem;
+    background: linear-gradient(90deg, #00bcd4, #008c9e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glow 3s infinite alternate;
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 5px #00bcd4, 0 0 10px #008c9e, 0 0 20px #00bcd4;
+    }
+    100% {
+        text-shadow: 0 0 20px #00bcd4, 0 0 30px #008c9e, 0 0 40px #00bcd4;
     }
 }
 
-.next-step-button {
-    margin: 10px 5px;
-    padding: 10px 20px;
-    background: #6a0dad;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
+.hero p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
 }
-.next-step-button:hover {
-    background: #8a2be2;
+
+.btn {
+    background: var(--accent-color);
+    color: var(--text-color);
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 188, 212, 0.4);
+}
+
+.btn:hover {
+    background: #008c9e;
+    transform: scale(1.1);
+    box-shadow: 0 5px 20px rgba(0, 140, 158, 0.6);
+}
+
+.token-data {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(15, 23, 42, 0.8);
+    margin: 2rem auto;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 800px;
+}
+
+.token-data h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.features {
+    padding: 3rem 1rem;
+    background: #1e293b;
+    text-align: center;
+}
+
+.features h2 {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.features .feature-item {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
 }
