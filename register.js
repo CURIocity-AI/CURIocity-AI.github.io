@@ -1,45 +1,54 @@
-// register.js
-
-// Wait until the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", () => {
-    const registerForm = document.getElementById("registerForm");
-    const errorMessage = document.getElementById("errorMessage");
-
-    // Handle form submission
-    registerForm.addEventListener("submit", (e) => {
-        e.preventDefault(); // Prevent form from reloading the page
-
-        // Collect input values
-        const username = document.getElementById("username").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
-
-        // Validate inputs
-        if (!username || !email || !password) {
-            displayError("All fields are required!");
-            return;
+ // Helper functions for validation
+        function displayError(id, message) {
+            const errorElement = document.getElementById(id);
+            errorElement.textContent = message;
         }
 
-        // Check for existing users
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        const userExists = users.some(user => user.email === email);
-
-        if (userExists) {
-            displayError("A user with this email is already registered. Please log in.");
-            return;
+        function clearErrors() {
+            displayError('usernameError', '');
+            displayError('emailError', '');
+            displayError('passwordError', '');
         }
 
-        // Save new user to local storage
-        users.push({ username, email, password });
-        localStorage.setItem("users", JSON.stringify(users));
+        // Form submission handler
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-        // Success message and redirect
-        alert("Registration successful! Redirecting to login page...");
-        window.location.href = "login.html";
-    });
+            // Clear any previous error messages
+            clearErrors();
 
-    // Function to display error messages
-    function displayError(message) {
-        errorMessage.textContent = message;
-    }
-});
+            // Collect form data
+            const username = document.getElementById("username").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            // Basic validation
+            let isValid = true;
+
+            if (username.length < 3) {
+                displayError('usernameError', 'Username must be at least 3 characters long.');
+                isValid = false;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                displayError('emailError', 'Please enter a valid email address.');
+                isValid = false;
+            }
+
+            if (password.length < 6) {
+                displayError('passwordError', 'Password must be at least 6 characters long.');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Call the backend registration function
+            try {
+                await registerUser(email, password, username);
+                alert("Registration successful! Redirecting to login page...");
+                window.location.href = "login.html"; // Redirect to login on success
+            } catch (error) {
+                alert("Registration failed: " + error.message);
+            }
+        });
