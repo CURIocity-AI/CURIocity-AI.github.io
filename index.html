@@ -138,6 +138,39 @@
             font-size: 1.2rem;
             margin: 5px 0;
         }
+
+/* Glassmorphism Effect Styles */
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #1f1f1f, #3a3a3a);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    width: 300px;
+    color: white;
+    text-align: center;
+}
+
+.glass-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.glass-card p {
+    font-size: 1rem;
+    margin: 5px 0;
+}
+
     </style>
 </head>
 <body>
@@ -159,12 +192,18 @@
     <button class="btn">Explore Features</button>
 </div>
 
-<div class="token-data">
-    <h3>Live Token Data</h3>
-    <p>Price: $0.000 (placeholder)</p>
-    <p>Market Cap: $0 (placeholder)</p>
-    <p>Total Supply: 500M CURI</p>
-</div>
+<body>
+    <!-- Other sections -->
+    <div class="card-container">
+        <div class="glass-card">
+            <h2>Token Data</h2>
+            <p>Price: $0.00</p>
+            <p>Market Cap: $0.00</p>
+            <p>Supply: 500,000,000</p>
+        </div>
+    </div>
+    <!-- Other sections -->
+</body>
 
 <div class="features" id="features">
     <h2>Features</h2>
