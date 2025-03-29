@@ -264,13 +264,14 @@ footer {
   overflow: hidden;
   position: relative;
   padding: 50px 0;
-  justify-content: space-between;
+  
 }
 
 .slideshow-container {
   display: flex;
   width: calc(300% + 300%); /* Adjusted for infinite looping */
   animation: infinite-slide 30s linear infinite;
+justify-content: space-between;
 }
 
 .slide {
