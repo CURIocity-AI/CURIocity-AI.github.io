@@ -23,7 +23,7 @@
         flex-direction: column;
         align-items: center;
         transform-style: preserve-3d;
-        animation: rotateStep 10s linear infinite;
+        animation: rotateStep 10s steps(10, end) infinite;
     }
 
     @keyframes rotateStep {
@@ -71,6 +71,7 @@
     const items = [];
     const itemCount = 10;
     const radius = 80;
+    let currentIndex = 0;
 
     for (let i = 0; i < itemCount; i++) {
         let item = document.createElement("div");
@@ -82,11 +83,15 @@
         items.push(item);
     }
 
+    function rotateStep() {
+        currentIndex = (currentIndex + 1) % itemCount;
+        picker.style.transform = `rotateX(${-currentIndex * 36}deg)`;
+        updateSelection();
+    }
+
     function updateSelection() {
-        let angle = Math.abs(parseInt(getComputedStyle(picker).transform.split(',')[5])) % 360;
-        let index = Math.round(angle / 36) % itemCount;
         items.forEach((item, i) => {
-            if (i === index) {
+            if (i === currentIndex) {
                 item.classList.add("selected");
             } else {
                 item.classList.remove("selected");
@@ -94,7 +99,7 @@
         });
     }
 
-    setInterval(updateSelection, 1000);
+    setInterval(rotateStep, 1000); // Delay each step by 1 second
 </script>
 
 </body>
