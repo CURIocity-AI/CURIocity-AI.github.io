@@ -11,7 +11,7 @@
             height: 100vh;
             background: #0f172a;
             perspective: 800px;
-         }.picker-container {
+        }.picker-container {
         width: 200px;
         height: 200px;
         overflow: hidden;
@@ -86,21 +86,17 @@
     }
 
     function startAutoRotate() {
-        autoRotate = setInterval(() => rotateStep(1), 1000);
+        autoRotate = setInterval(() => rotateStep(1), 2000);
     }
 
     function stopAutoRotate() {
         clearInterval(autoRotate);
     }
 
-    pickerContainer.addEventListener("mouseenter", () => {
-        stopAutoRotate();
-        isUserInteracting = true;
-    });
-    pickerContainer.addEventListener("mouseleave", () => {
-        isUserInteracting = false;
-        startAutoRotate();
-    });
+    startAutoRotate();
+
+    pickerContainer.addEventListener("mouseenter", stopAutoRotate);
+    pickerContainer.addEventListener("mouseleave", startAutoRotate);
     pickerContainer.addEventListener("wheel", (event) => {
         event.preventDefault();
         rotateStep(event.deltaY > 0 ? 1 : -1);
@@ -110,7 +106,6 @@
     pickerContainer.addEventListener("touchstart", (event) => {
         touchStartY = event.touches[0].clientY;
         stopAutoRotate();
-        isUserInteracting = true;
     });
 
     pickerContainer.addEventListener("touchmove", (event) => {
@@ -123,12 +118,7 @@
         }
     });
 
-    pickerContainer.addEventListener("touchend", () => {
-        isUserInteracting = false;
-        startAutoRotate();
-    });
-
-    startAutoRotate();
+    pickerContainer.addEventListener("touchend", startAutoRotate);
 </script>
 
 </body>
