@@ -278,7 +278,10 @@ footer {
   padding: 40px 20px;
   box-sizing: border-box;
   background: var(--background-color);
-  
+  border-style: solid;
+  border-radius: 6px;
+  border-width: 1px;
+  border-color: white;
 }
 
 .slide h1 {
