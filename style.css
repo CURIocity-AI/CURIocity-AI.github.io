@@ -259,7 +259,8 @@ footer {
 
 /* Slideshow Container / .slideshow { background: linear-gradient(135deg, #0f172a, #1e293b); / Matches the page theme / color: #ffffff; / Matches the page theme */ overflow: hidden; position: relative; padding: 50px 0; }
 
-.slideshow-container { display: flex; width: 300%; /* Adjusted for proper sliding */ transition: transform 0.5s ease-in-out; justify-content: space-between; overflow: hidden; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+.slideshow-container { display: flex;
+flex-direction: row; width: 300%; /* Adjusted for proper sliding */ transition: transform 0.5s ease-in-out; justify-content: space-between; overflow: hidden; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
 
 .slide { flex: 1; min-width: 50%; /* Increased width / height: 200px; / Reduced height / box-sizing: border-box; background: rgba(15, 23, 42, 0.9); / Matches theme */ border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3); padding: 20px; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; scroll-snap-align: start; }
 
