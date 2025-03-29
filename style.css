@@ -264,6 +264,7 @@ footer {
   overflow: hidden;
   position: relative;
   padding: 50px 0;
+  justify-content: space-between;
 }
 
 .slideshow-container {
@@ -277,10 +278,9 @@ footer {
   display: flex;
   flex-direction: column;
   text-align: center;
-  margin: 15px;
   width: 50px
   box-sizing: border-box;
-  background-color: blue;
+  background-color: black;
   border-style: solid;
   border-radius: 6px;
   border-width: 1px;
