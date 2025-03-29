@@ -37,56 +37,106 @@
             color: #00bcd4;
         }
 
-        .menu-icon {
-            display: none;
+        .toggle {
             cursor: pointer;
-        }
-
-        .menu-icon div {
-            width: 25px;
-            height: 3px;
-            background: #ffffff;
-            margin: 4px 0;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -250px;
-            height: 100%;
-            width: 250px;
-            background: #1e293b;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-            padding: 20px;
-        }
-
-        .sidebar.active {
-            left: 0;
-        }
-
-        .sidebar a {
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #00bcd4;
             color: #ffffff;
-            text-decoration: none;
-            display: block;
-            margin: 15px 0;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .toggle:hover {
+            background: #008c9e;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin: 0 0 20px;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 5px #00bcd4, 0 0 10px #008c9e, 0 0 20px #00bcd4;
+            }
+            100% {
+                text-shadow: 0 0 20px #00bcd4, 0 0 30px #008c9e, 0 0 40px #00bcd4;
+            }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: #00bcd4;
+            color: #ffffff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
             font-size: 1.2rem;
-            transition: color 0.3s ease;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.4);
         }
 
-        .sidebar a:hover {
-            color: #00bcd4;
+        .btn:hover {
+            background: #008c9e;
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(0, 140, 158, 0.6);
         }
 
-        @media screen and (max-width: 768px) {
-            nav div {
-                display: none;
-            }
+        .features {
+            padding: 50px 20px;
+            background: #1e293b;
+            text-align: center;
+        }
 
-            .menu-icon {
-                display: block;
-            }
+        .features h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .features .feature-item {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .token-data {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(15, 23, 42, 0.8);
+            margin: 20px auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 80%;
+        }
+
+        .token-data h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .token-data p {
+            font-size: 1.2rem;
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -100,26 +150,29 @@
         <a href="#tokenomics">Tokenomics</a>
         <a href="#nfts">NFTs</a>
     </div>
-    <div class="menu-icon" onclick="toggleSidebar()">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+    <button class="toggle">Light/Dark Mode</button>
 </nav>
 
-<div class="sidebar" id="sidebar">
-    <a href="#features">Features</a>
-    <a href="#roadmap">Roadmap</a>
-    <a href="#tokenomics">Tokenomics</a>
-    <a href="#nfts">NFTs</a>
+<div class="hero">
+    <h1>Welcome to Curiosity ($CURI)</h1>
+    <p>The token that fuels your curiosity and drives innovation in Web3.</p>
+    <button class="btn">Explore Features</button>
 </div>
 
-<script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('active');
-    }
-</script>
+<div class="token-data">
+    <h3>Live Token Data</h3>
+    <p>Price: $0.000 (placeholder)</p>
+    <p>Market Cap: $0 (placeholder)</p>
+    <p>Total Supply: 500M CURI</p>
+</div>
+
+<div class="features" id="features">
+    <h2>Features</h2>
+    <div class="feature-item">✅ Live Token Data: Price, Market Cap, Supply</div>
+    <div class="feature-item">✅ Staking and Rewards with Transparency</div>
+    <div class="feature-item">✅ Interactive Roadmap and Tokenomics</div>
+    <div class="feature-item">✅ NFT Section: Browse, Buy, and Trade</div>
+</div>
 
 </body>
 </html>
