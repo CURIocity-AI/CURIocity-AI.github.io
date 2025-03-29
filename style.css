@@ -272,6 +272,8 @@ footer {
   width: calc(300% + 300%); /* Adjusted for infinite looping */
   animation: infinite-slide 30s linear infinite;
 justify-content: space-between;
+overflow: hidden;
+
 }
 
 .slide {
