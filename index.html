@@ -7,6 +7,27 @@
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
+
+/* Ensure no scrolling bars */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit; /* Ensure consistent box model */
+}
+
+/* Prevent footer from overflowing */
+footer {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
