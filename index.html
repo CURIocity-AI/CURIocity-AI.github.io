@@ -364,112 +364,101 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Footer Styling */
-.footer {
-  background: linear-gradient(135deg, #2a2a2a, #121212); /* Gradient background */
+footer {
+  background-color: #1a1a1a;
   color: #ffffff;
   padding: 40px 20px;
-  font-family: "Arial", sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 .footer-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.footer-section {
-  flex: 1 1 220px; /* Flexible layout for responsiveness */
-  margin: 10px;
+.footer-column {
+  display: flex;
+  flex-direction: column;
 }
 
-.footer-section h3,
-.footer-section h4 {
-  font-size: 1.2rem;
+.footer-column h3 {
   margin-bottom: 15px;
-  color: #00e0ff;
+  font-size: 1.2em;
+  color: #e0e0e0;
 }
 
-.footer-section p {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: #cccccc;
-}
-
-.footer-section ul {
+.footer-column ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.footer-section ul li {
-  margin: 10px 0;
+.footer-column ul li {
+  margin-bottom: 10px;
 }
 
-.footer-section ul li a {
+.footer-column ul li a {
+  color: #b3b3b3;
   text-decoration: none;
-  color: #00e0ff;
-  font-size: 0.9rem;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 
-.footer-section ul li a:hover {
-  color: #00b8e6;
+.footer-column ul li a:hover {
+  color: #ffffff;
+}
+
+.newsletter {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.newsletter input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.newsletter button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #4caf50;
+  color: #ffffff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.newsletter button:hover {
+  background-color: #45a049;
 }
 
 .social-icons {
+  margin-top: 20px;
   display: flex;
   gap: 15px;
 }
 
 .social-icons a {
-  font-size: 1.5rem;
-  color: #ffffff;
-  transition: transform 0.3s, color 0.3s;
+  color: #b3b3b3;
+  font-size: 1.5em;
+  transition: color 0.3s ease;
 }
 
 .social-icons a:hover {
-  color: #00e0ff;
-  transform: scale(1.2);
-}
-
-.newsletter-form {
-  display: flex;
-  gap: 10px;
-}
-
-.newsletter-form input {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 20px;
-  font-size: 0.9rem;
-}
-
-.newsletter-form button {
-  background: #00e0ff;
-  color: #121212;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s;
-}
-
-.newsletter-form button:hover {
-  background: #00b8e6;
+  color: #ffffff;
 }
 
 .footer-bottom {
-  text-align: center;
   margin-top: 30px;
+  text-align: center;
+  font-size: 0.9em;
   border-top: 1px solid #333;
-  padding-top: 10px;
-  font-size: 0.8rem;
-  color: #999999;
+  padding-top: 15px;
 }
     </style>
 </head>
@@ -569,53 +558,45 @@ html {
   </div>
 </section>
 
-<footer class="footer">
+<footer>
   <div class="footer-container">
-    <!-- About Section -->
-    <div class="footer-section about">
-      <h3>Curiosity ($CURI)</h3>
-      <p>
-        Discover the world of Web3 with Curiosity. Explore, earn, and grow with
-        our innovative platform.
-      </p>
+    <div class="footer-column">
+      <h3>About Us</h3>
+      <p>We are dedicated to fostering curiosity and discovery through the Curiosity ($CURI) ecosystem.</p>
     </div>
-
-    <!-- Quick Links -->
-    <div class="footer-section links">
-      <h4>Quick Links</h4>
+    <div class="footer-column">
+      <h3>Quick Links</h3>
       <ul>
-        <li><a href="#about-us">About Us</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+        <li><a href="#tokenomics">Tokenomics</a></li>
+        <li><a href="#nfts">NFTs</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Support</h3>
+      <ul>
         <li><a href="#faqs">FAQs</a></li>
         <li><a href="#contact-us">Contact Us</a></li>
         <li><a href="#privacy-policy">Privacy Policy</a></li>
-        <li><a href="#terms-of-service">Terms of Service</a></li>
+        <li><a href="#terms">Terms of Service</a></li>
       </ul>
     </div>
-
-    <!-- Social Media -->
-    <div class="footer-section social">
-      <h4>Follow Us</h4>
+    <div class="footer-column">
+      <h3>Stay Connected</h3>
+      <form class="newsletter">
+        <input type="email" placeholder="Subscribe to our newsletter" />
+        <button type="submit">Subscribe</button>
+      </form>
       <div class="social-icons">
         <a href="#"><i class="fab fa-twitter"></i></a>
         <a href="#"><i class="fab fa-telegram"></i></a>
         <a href="#"><i class="fab fa-discord"></i></a>
       </div>
     </div>
-
-    <!-- Newsletter -->
-    <div class="footer-section newsletter">
-      <h4>Newsletter</h4>
-      <p>Stay updated with our latest updates and airdrops!</p>
-      <form class="newsletter-form">
-        <input type="email" placeholder="Enter your email" required />
-        <button type="submit">Subscribe</button>
-      </form>
-    </div>
   </div>
-
-  <!-- Copyright -->
   <div class="footer-bottom">
-    <p>© 2025 Curiosity ($CURI). All rights reserved.</p>
+    <p>&copy; 2025 Curiosity ($CURI). All rights reserved.</p>
   </div>
 </footer>
  <script>
