@@ -23,7 +23,7 @@
             width: 100%;
             height: 100%;
             transform-style: preserve-3d;
-            transition: transform 0.5s;
+            animation: rotate 10s infinite linear;
         }
         .card {
             position: absolute;
@@ -38,6 +38,14 @@
             justify-content: center;
             border-radius: 10px;
             transform-origin: center;
+        }
+        @keyframes rotate {
+            from {
+                transform: rotateX(0deg);
+            }
+            to {
+                transform: rotateX(360deg);
+            }
         }
     </style>
 </head>
@@ -59,12 +67,6 @@
         card.style.transform = `translateZ(${z}px) translateY(${y}px) rotateX(${angle}deg)`;
         carousel.appendChild(card);
     }
-
-    let currentAngle = 0;
-    window.addEventListener("wheel", (event) => {
-        currentAngle += event.deltaY > 0 ? angleStep : -angleStep;
-        carousel.style.transform = `rotateX(${currentAngle}deg)`;
-    });
 </script>
 
 </body>
