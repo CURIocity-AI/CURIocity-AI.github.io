@@ -257,12 +257,12 @@ footer {
             margin: 5px 0;
         }
 
+
 /* Slideshow Container / .slideshow { background: linear-gradient(135deg, #0f172a, #1e293b); / Matches the page theme / color: #ffffff; / Matches the page theme */ overflow: hidden; position: relative; padding: 50px 0; }
 
-.slideshow-container { display: flex;
-flex-direction: row; width: 300%; /* Adjusted for proper sliding */ transition: transform 0.5s ease-in-out; justify-content: space-between; overflow: hidden; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+.slideshow-container { display: flex; width: max-content; /* Ensure it only expands as needed / transition: transform 0.5s ease-in-out; overflow: hidden; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; gap: 20px; / Add spacing between cards */ }
 
-.slide { flex: 1; min-width: 50%; /* Increased width / height: 200px; / Reduced height / box-sizing: border-box; background: rgba(15, 23, 42, 0.9); / Matches theme */ border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3); padding: 20px; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; scroll-snap-align: start; }
+.slide { min-width: 80%; /* One card visible at a time / height: 200px; / Reduced height / box-sizing: border-box; background: rgba(15, 23, 42, 0.9); / Matches theme */ border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3); padding: 20px; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; scroll-snap-align: center; }
 
 .slide:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0, 188, 212, 0.5); }
 
@@ -280,7 +280,7 @@ flex-direction: row; width: 300%; /* Adjusted for proper sliding */ transition: 
 
 .slideshow-container:not(:hover) { animation: infiniteScroll 10s linear infinite; }
 
-/* Responsive Design */ @media (max-width: 768px) { .slide h1 { font-size: 1.5rem; } .slide p { font-size: 1rem; } .slide { min-width: 80%; } }
+/* Responsive Design */ @media (max-width: 768px) { .slide h1 { font-size: 1.5rem; } .slide p { font-size: 1rem; } .slide { min-width: 90%; } }
 
 
 
