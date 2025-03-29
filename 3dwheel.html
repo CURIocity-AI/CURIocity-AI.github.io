@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple-Style Date Picker</title>
+    <title>Apple-Style Infinite Scrolling Picker</title>
     <style>
         body {
             display: flex;
@@ -16,7 +16,7 @@
             perspective: 1000px;
             overflow: hidden;
             height: 150px;
-            width: 120px;
+            width: 150px;
             position: relative;
         }
         .picker {
@@ -33,6 +33,7 @@
             transform-origin: center center;
             font-size: 20px;
             color: white;
+            text-align: center;
             transition: opacity 0.3s;
             opacity: 0.5;
         }
@@ -49,55 +50,32 @@
     </div>
     <script>
         const picker = document.getElementById("picker");
-        const items = [];
-        const totalItems = 10;
+        const words = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
+        const totalItems = words.length;
         let angle = 0;
-        let selectedIndex = 5;for (let i = 0; i < totalItems; i++) {
-        const div = document.createElement("div");
-        div.classList.add("picker-item");
-        div.style.setProperty("--rotate", `${(i - selectedIndex) * 36}deg`);
-        div.textContent = i;
-        picker.appendChild(div);
-        items.push(div);
+        let selectedIndex = 0;function createItems() {
+        picker.innerHTML = "";
+        words.forEach((word, i) => {
+            const div = document.createElement("div");
+            div.classList.add("picker-item");
+            div.style.setProperty("--rotate", `${i * (360 / totalItems)}deg`);
+            div.textContent = word;
+            picker.appendChild(div);
+        });
     }
 
     function updatePicker() {
-        items.forEach((item, index) => {
-            let rotation = (index - selectedIndex) * 36;
-            item.style.setProperty("--rotate", `${rotation}deg`);
-            item.classList.toggle("selected", index === selectedIndex);
-        });
-        picker.style.transform = `translateY(-50%) rotateX(${-selectedIndex * 36}deg)`;
+        angle -= 36; 
+        picker.style.transform = `translateY(-50%) rotateX(${angle}deg)`;
     }
 
-    let startY = 0, currentY = 0, isDragging = false;
-
-    function onDragStart(event) {
-        isDragging = true;
-        startY = event.touches ? event.touches[0].clientY : event.clientY;
-    }
-
-    function onDragMove(event) {
-        if (!isDragging) return;
-        currentY = event.touches ? event.touches[0].clientY : event.clientY;
-        let delta = (startY - currentY) / 5;
-        selectedIndex = Math.max(0, Math.min(totalItems - 1, selectedIndex + Math.sign(delta)));
+    function autoRotate() {
         updatePicker();
-        startY = currentY;
+        setTimeout(autoRotate, 1000);
     }
 
-    function onDragEnd() {
-        isDragging = false;
-    }
-
-    document.addEventListener("mousedown", onDragStart);
-    document.addEventListener("mousemove", onDragMove);
-    document.addEventListener("mouseup", onDragEnd);
-    document.addEventListener("touchstart", onDragStart);
-    document.addEventListener("touchmove", onDragMove);
-    document.addEventListener("touchend", onDragEnd);
-
-    updatePicker();
+    createItems();
+    autoRotate();
 </script>
 
 </body>
