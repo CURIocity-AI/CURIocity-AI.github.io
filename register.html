@@ -2,137 +2,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple-Style 3D Date Picker</title>
+    <title>3D Rotating Picker</title>
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: #0f172a;
-            perspective: 800px;
-        }.picker-container {
-        width: 200px;
-        height: 200px;
-        overflow: hidden;
-        position: relative;
-    }
-
-    .picker {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        transform-style: preserve-3d;
-        animation: rotatePicker 5s linear infinite;
-    }
-
-    @keyframes rotatePicker {
-        from {
-            transform: rotateX(0deg);
+            background: #111;
+            perspective: 1000px;
         }
-        to {
-            transform: rotateX(-360deg);
+        .picker-container {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            overflow: hidden;
         }
-    }
-
-    .item {
-        position: absolute;
-        width: 100%;
-        text-align: center;
-        font-size: 24px;
-        color: white;
-        transform-origin: center;
-        opacity: 0.4;
-        transition: opacity 0.3s ease-out, font-size 0.3s ease-out, font-weight 0.3s ease-out;
-    }
-
-    .selected {
-        font-size: 36px;
-        font-weight: bold;
-        opacity: 1;
-    }
-</style>
-
+        .picker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-style: preserve-3d;
+            transform: translate(-50%, -50%) rotateX(0deg);
+            animation: rotate 10s linear infinite;
+        }
+        @keyframes rotate {
+            from {
+                transform: translate(-50%, -50%) rotateX(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotateX(360deg);
+            }
+        }
+        .item {
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            background: white;
+            text-align: center;
+            line-height: 50px;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <div class="picker-container" id="picker-container">
+    <div class="picker-container">
         <div class="picker" id="picker"></div>
-    </div><script>
-    const picker = document.getElementById("picker");
-    const pickerContainer = document.getElementById("picker-container");
-    const items = [];
-    const itemCount = 10;
-    const radius = 80;
-    let currentAngle = 0;
-    let touchStartY = 0;
-
-    for (let i = 0; i < itemCount; i++) {
+    </div>
+    <script>
+        const picker = document.getElementById("picker");
+        const itemCount = 10;
+        const radius = 120;for (let i = 0; i < itemCount; i++) {
         let item = document.createElement("div");
         item.classList.add("item");
         item.textContent = `Item ${i + 1}`;
-        let theta = (i / itemCount) * 360;
-        item.style.transform = `rotateX(${theta}deg) translateZ(${radius}px)`;
+        let angle = (i / itemCount) * 360;
+        item.style.transform = `rotateX(${angle}deg) translateZ(${radius}px)`;
         picker.appendChild(item);
-        items.push(item);
     }
-
-    function updateSelection() {
-        let minDiff = 360;
-        let selectedItem = null;
-        
-        items.forEach((item) => {
-            let rect = item.getBoundingClientRect();
-            let centerY = window.innerHeight / 2;
-            let diff = Math.abs(rect.top + rect.height / 2 - centerY);
-            
-            if (diff < minDiff) {
-                minDiff = diff;
-                selectedItem = item;
-            }
-        });
-        
-        items.forEach(item => item.classList.remove("selected"));
-        if (selectedItem) selectedItem.classList.add("selected");
-    }
-
-    function rotatePickerManually(delta) {
-        currentAngle += delta;
-        picker.style.transform = `rotateX(${currentAngle}deg)`;
-        updateSelection();
-    }
-
-    let autoRotate = setInterval(() => {
-        rotatePickerManually(-3.6);
-    }, 100);
-
-    pickerContainer.addEventListener("mouseenter", () => clearInterval(autoRotate));
-    pickerContainer.addEventListener("mouseleave", () => {
-        autoRotate = setInterval(() => {
-            rotatePickerManually(-3.6);
-        }, 100);
-    });
-
-    pickerContainer.addEventListener("wheel", (event) => {
-        rotatePickerManually(event.deltaY > 0 ? -36 : 36);
-    });
-
-    pickerContainer.addEventListener("touchstart", (event) => {
-        touchStartY = event.touches[0].clientY;
-        clearInterval(autoRotate);
-    });
-
-    pickerContainer.addEventListener("touchmove", (event) => {
-        let touchEndY = event.touches[0].clientY;
-        let deltaY = touchStartY - touchEndY;
-        rotatePickerManually(deltaY * 0.5);
-        touchStartY = touchEndY;
-    });
-
-    pickerContainer.addEventListener("touchend", () => {
-        autoRotate = setInterval(() => {
-            rotatePickerManually(-3.6);
-        }, 100);
-    });
 </script>
 
 </body>
