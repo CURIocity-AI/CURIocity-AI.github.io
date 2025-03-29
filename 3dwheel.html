@@ -15,31 +15,33 @@
         .picker-container {
             perspective: 1000px;
             overflow: hidden;
-            height: 200px;
-            width: 300px; /* Increased width */
+            height: 250px;
+            width: 350px; /* Increased width for visibility */
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .picker {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%) rotateX(0deg);
+            position: relative;
             transform-style: preserve-3d;
             transition: transform 1s linear;
         }
         .picker-item {
             position: absolute;
             left: 50%;
-            transform: translateX(-50%) rotateX(var(--rotate)) translateZ(120px);
+            transform: translateX(-50%) rotateX(var(--rotate)) translateZ(150px);
             transform-origin: center center;
-            font-size: 24px;
+            font-size: 28px; /* Increased font size */
             color: white;
             text-align: center;
             transition: opacity 0.3s;
-            opacity: 0.7;
+            opacity: 0.8;
+            width: 100%; /* Ensuring full width */
         }
         .selected {
             opacity: 1;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
         }
     </style>
@@ -66,7 +68,7 @@
     function updatePicker() {
         angle -= 36; 
         picker.style.transition = "transform 1s linear"; /* Smooth continuous rotation */
-        picker.style.transform = `translateY(-50%) rotateX(${angle}deg)`;
+        picker.style.transform = `rotateX(${angle}deg)`;
     }
 
     function autoRotate() {
