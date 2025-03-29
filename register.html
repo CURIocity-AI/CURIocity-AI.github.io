@@ -23,8 +23,16 @@
         flex-direction: column;
         align-items: center;
         transform-style: preserve-3d;
-        transform: rotateX(0deg);
-        transition: transform 0.3s ease-out;
+        animation: rotateInfinite 10s linear infinite;
+    }
+
+    @keyframes rotateInfinite {
+        from { transform: rotateX(0deg); }
+        to { transform: rotateX(360deg); }
+    }
+
+    .picker:hover {
+        animation-play-state: paused;
     }
 
     .item {
@@ -54,7 +62,6 @@
     const items = [];
     const itemCount = 10;
     const radius = 80;
-    let angle = 0;
 
     for (let i = 0; i < itemCount; i++) {
         let item = document.createElement("div");
@@ -65,31 +72,6 @@
         picker.appendChild(item);
         items.push(item);
     }
-
-    let currentIndex = 0;
-
-    function updatePicker(index) {
-        angle = -index * (360 / itemCount);
-        picker.style.transform = `rotateX(${angle}deg)`;
-        items.forEach((item, i) => {
-            if (i === index) {
-                item.classList.add("selected");
-            } else {
-                item.classList.remove("selected");
-            }
-        });
-    }
-
-    window.addEventListener("wheel", (event) => {
-        if (event.deltaY > 0) {
-            currentIndex = (currentIndex + 1) % itemCount;
-        } else {
-            currentIndex = (currentIndex - 1 + itemCount) % itemCount;
-        }
-        updatePicker(currentIndex);
-    });
-
-    updatePicker(currentIndex);
 </script>
 
 </body>
