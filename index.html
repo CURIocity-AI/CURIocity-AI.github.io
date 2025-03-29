@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () { const slides = docum
 function updateSlides() {
     const angle = 360 / totalSlides;
     slides.forEach((slide, index) => {
-        const rotation = angle * (index - currentIndex);
+        const rotation = angle * index;
         slide.style.transform = `rotateY(${rotation}deg) translateZ(300px)`;
     });
 }
@@ -182,7 +182,7 @@ function updateSlides() {
 function startAutoRotate() {
     autoRotate = setInterval(() => {
         currentIndex = (currentIndex + 1) % totalSlides;
-        updateSlides();
+        slideshowContainer.style.transform = `rotateY(-${currentIndex * (360 / totalSlides)}deg)`;
     }, 3000);
 }
 
@@ -200,14 +200,13 @@ document.addEventListener("keydown", (event) => {
     } else if (event.key === "ArrowLeft") {
         currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
     }
-    updateSlides();
+    slideshowContainer.style.transform = `rotateY(-${currentIndex * (360 / totalSlides)}deg)`;
 });
 
 updateSlides();
 startAutoRotate();
 
 });
-
 
 </script>
 </body>
