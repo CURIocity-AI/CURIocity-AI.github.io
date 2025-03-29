@@ -23,7 +23,16 @@
         flex-direction: column;
         align-items: center;
         transform-style: preserve-3d;
-        transition: transform 0.5s ease-out;
+        animation: rotatePicker 5s linear infinite;
+    }
+
+    @keyframes rotatePicker {
+        from {
+            transform: rotateX(0deg);
+        }
+        to {
+            transform: rotateX(-360deg);
+        }
     }
 
     .item {
@@ -54,10 +63,7 @@
     const items = [];
     const itemCount = 10;
     const radius = 80;
-    let currentIndex = 0;
-    let autoRotate;
     let touchStartY = 0;
-    let isUserInteracting = false;
 
     for (let i = 0; i < itemCount; i++) {
         let item = document.createElement("div");
@@ -69,57 +75,23 @@
         items.push(item);
     }
 
-    function rotateStep(direction) {
-        currentIndex = (currentIndex + direction + itemCount) % itemCount;
-        picker.style.transform = `rotateX(${-currentIndex * 36}deg)`;
-        updateSelection();
-    }
-
-    function updateSelection() {
-        items.forEach((item, i) => {
-            if (i === currentIndex) {
-                item.classList.add("selected");
-            } else {
-                item.classList.remove("selected");
-            }
-        });
-    }
-
-    function startAutoRotate() {
-        autoRotate = setInterval(() => rotateStep(1), 2000);
-    }
-
-    function stopAutoRotate() {
-        clearInterval(autoRotate);
-    }
-
-    startAutoRotate();
-
-    pickerContainer.addEventListener("mouseenter", stopAutoRotate);
-    pickerContainer.addEventListener("mouseleave", startAutoRotate);
-    pickerContainer.addEventListener("wheel", (event) => {
-        event.preventDefault();
-        rotateStep(event.deltaY > 0 ? 1 : -1);
-    });
-
     // Touch support for mobile users
     pickerContainer.addEventListener("touchstart", (event) => {
         touchStartY = event.touches[0].clientY;
-        stopAutoRotate();
+        picker.style.animationPlayState = "paused";
     });
 
     pickerContainer.addEventListener("touchmove", (event) => {
         let touchEndY = event.touches[0].clientY;
         let deltaY = touchStartY - touchEndY;
-
-        if (Math.abs(deltaY) > 10) {
-            rotateStep(deltaY > 0 ? 1 : -1);
-            touchStartY = touchEndY;
-        }
+        picker.style.transform = `rotateX(${deltaY}deg)`;
+        touchStartY = touchEndY;
     });
 
-    pickerContainer.addEventListener("touchend", startAutoRotate);
+    pickerContainer.addEventListener("touchend", () => {
+        picker.style.animationPlayState = "running";
+    });
 </script>
 
 </body>
-</html> 
+</html>
