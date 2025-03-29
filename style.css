@@ -273,10 +273,12 @@ footer {
 }
 
 .slide {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   text-align: center;
-  padding: ;
+  margin: 15px;
+  width: 50px
   box-sizing: border-box;
   background-color: blue;
   border-style: solid;
