@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Rotating Picker</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .picker-container {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            perspective: 1000px; /* Moved perspective here */
+        }
+        .picker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-style: preserve-3d;
+            transform: translate(-50%, -50%) rotateY(0deg);
+            animation: rotate 10s linear infinite;
+        }
+        @keyframes rotate {
+            from {
+                transform: translate(-50%, -50%) rotateY(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotateY(360deg);
+            }
+        }
+        .item {
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            font-size: 18px;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            border: 1px solid #2980b9;
+            transform-origin: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="picker-container">
+        <div class="picker" id="picker"></div>
+    </div>
+    <script>
+        const picker = document.getElementById("picker");
+        const itemCount = 10;
+        const radius = 120;
+
+        for (let i = 0; i < itemCount; i++) {
+            let item = document.createElement("div");
+            item.classList.add("item");
+            item.textContent = `Item ${i + 1}`;
+            let angle = (i / itemCount) * 360;
+            item.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+            picker.appendChild(item);
+        }
+    </script>
+</body>
+</html>
