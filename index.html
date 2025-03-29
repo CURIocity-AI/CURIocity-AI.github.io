@@ -271,26 +271,22 @@ footer {
 .slideshow {
   background: var(--background-color); /* Matches the page theme */
   color: var(--text-color); /* Matches the page theme */
-  text-align: center;
-  padding: 50px 20px;
   overflow: hidden;
   position: relative;
+  padding: 50px 0;
 }
 
 .slideshow-container {
   display: flex;
-  width: 300%;
-  animation: slide 15s infinite;
-  transition: transform 0.6s ease-in-out;
+  width: calc(300% + 300%); /* Adjusted for infinite looping */
+  animation: infinite-slide 30s linear infinite;
 }
 
 .slide {
-  flex: 1 0 100%;
+  flex: 1 0 33.33%;
+  text-align: center;
   padding: 40px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  box-sizing: border-box;
 }
 
 .slide h1 {
@@ -305,17 +301,14 @@ footer {
   margin-top: 10px;
 }
 
-/* Keyframes for smooth slideshow animation */
-@keyframes slide {
-  0% { transform: translateX(0); }
-  33% { transform: translateX(-100%); }
-  66% { transform: translateX(-200%); }
-  100% { transform: translateX(0); }
-}
-
-/* Pause animation on hover */
-.slideshow-container:hover {
-  animation-play-state: paused;
+/* Keyframes for infinite sliding to the left */
+@keyframes infinite-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
 
 /* Responsive Design */
@@ -486,6 +479,19 @@ footer {
 </div>
 <section class="slideshow">
   <div class="slideshow-container">
+    <div class="slide">
+      <h1>The Power of Curiosity</h1>
+      <p>Unlocking innovation through questions and discovery.</p>
+    </div>
+    <div class="slide">
+      <h1>The Power of W?at, W?y, W?ere, W?en, and ?oW</h1>
+      <p>Driving deeper insights with the questions that matter.</p>
+    </div>
+    <div class="slide">
+      <h1>The Road to Web5</h1>
+      <p>Building the future of decentralized innovation and collaboration.</p>
+    </div>
+    <!-- Duplicate slides for seamless infinite scrolling -->
     <div class="slide">
       <h1>The Power of Curiosity</h1>
       <p>Unlocking innovation through questions and discovery.</p>
