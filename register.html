@@ -23,7 +23,7 @@
         flex-direction: column;
         align-items: center;
         transform-style: preserve-3d;
-        animation: rotatePicker 5s linear infinite;
+        animation: rotatePicker 5s linear infinite steps(10);
     }
 
     @keyframes rotatePicker {
@@ -43,11 +43,11 @@
         color: white;
         transform-origin: center;
         opacity: 0.4;
-        transition: opacity 0.3s ease-out, font-size 0.3s ease-out;
+        transition: opacity 0.3s ease-out, font-size 0.3s ease-out, font-weight 0.3s ease-out;
     }
 
     .selected {
-        font-size: 32px;
+        font-size: 36px;
         font-weight: bold;
         opacity: 1;
     }
@@ -63,6 +63,7 @@
     const items = [];
     const itemCount = 10;
     const radius = 80;
+    let currentIndex = 0;
     let touchStartY = 0;
 
     for (let i = 0; i < itemCount; i++) {
@@ -74,6 +75,22 @@
         picker.appendChild(item);
         items.push(item);
     }
+
+    function updateSelection() {
+        items.forEach((item, i) => {
+            if (i === currentIndex) {
+                item.classList.add("selected");
+            } else {
+                item.classList.remove("selected");
+            }
+        });
+    }
+
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % itemCount;
+        picker.style.transform = `rotateX(${-currentIndex * 36}deg)`;
+        updateSelection();
+    }, 500);
 
     // Touch support for mobile users
     pickerContainer.addEventListener("touchstart", (event) => {
