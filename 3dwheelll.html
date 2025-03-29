@@ -26,7 +26,7 @@
         .picker {
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.5s ease-out;
+            transition: transform 1s linear;
         }
         .picker-item {
             position: absolute;
@@ -35,7 +35,7 @@
             font-size: 28px;
             color: white;
             text-align: center;
-            transition: transform 0.5s ease-out, opacity 0.5s ease-out, font-weight 0.5s ease-out;
+            transition: transform 1s linear, opacity 1s linear, font-weight 1s linear;
             opacity: 0.3;
             font-weight: 300;
             backface-visibility: hidden;
@@ -55,8 +55,8 @@
         const picker = document.getElementById("picker");
         const words = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
         const totalItems = words.length;
-        let currentIndex = 0;
-        let touchStartY = 0;
+        let angle = 0;
+        let autoRotate = true;
 
         function createItems() {
             picker.innerHTML = "";
@@ -73,18 +73,18 @@
             words.forEach((word, i) => {
                 const div = document.createElement("div");
                 div.classList.add("picker-item");
-                let positionOffset = i - currentIndex;
-                let rotation = positionOffset * 36;
+                let rotation = i * (360 / totalItems);
+                let itemAngle = rotation - angle;
+                let radian = (itemAngle * Math.PI) / 180;
 
-                // Scaling and opacity logic
-                let scale = 1 - Math.abs(positionOffset) * 0.1;
-                let opacity = Math.max(0.3, 1 - Math.abs(positionOffset) * 0.3);
+                let scale = 1 + 0.3 * Math.cos(radian);
+                let opacity = 0.3 + 0.7 * Math.cos(radian);
 
                 div.style.transform = `translateX(-50%) rotateX(${rotation}deg) translateZ(150px) scale(${scale})`;
                 div.style.opacity = opacity;
                 div.textContent = word;
 
-                if (i === currentIndex) {
+                if (Math.abs(itemAngle) < 18) {
                     div.classList.add("highlight");
                 }
 
@@ -92,30 +92,30 @@
             });
         }
 
-        function rotatePicker(direction) {
-            currentIndex = (currentIndex + direction + totalItems) % totalItems;
-            updatePicker();
+        function rotatePicker() {
+            if (autoRotate) {
+                angle = (angle + 1) % 360;
+                picker.style.transform = `rotateX(${angle}deg)`;
+                updatePicker();
+            }
+            requestAnimationFrame(rotatePicker);
         }
 
-        // Mouse Wheel Support (Scroll to Rotate)
+        function stopRotationTemporarily() {
+            autoRotate = false;
+            setTimeout(() => autoRotate = true, 3000);
+        }
+
         document.addEventListener("wheel", (event) => {
-            rotatePicker(event.deltaY > 0 ? 1 : -1);
+            stopRotationTemporarily();
         });
 
-        // Touch Swipe Support (Swipe to Rotate)
         document.addEventListener("touchstart", (event) => {
-            touchStartY = event.touches[0].clientY;
-        });
-
-        document.addEventListener("touchend", (event) => {
-            let touchEndY = event.changedTouches[0].clientY;
-            let diff = touchStartY - touchEndY;
-            if (Math.abs(diff) > 30) {
-                rotatePicker(diff > 0 ? 1 : -1);
-            }
+            stopRotationTemporarily();
         });
 
         createItems();
+        rotatePicker();
     </script>
 </body>
 </html>
