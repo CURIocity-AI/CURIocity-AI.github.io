@@ -361,6 +361,45 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* Footer Section */
+.footer {
+  background-color: #222; /* Dark background */
+  color: #fff; /* White text */
+  padding: 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap; /* Ensures responsiveness */
+  justify-content: center; /* Center-align the links */
+  gap: 15px; /* Space between links */
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  color: #007BFF; /* Light blue links */
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #0056b3; /* Darker blue on hover */
+}
+
+.footer-copyright {
+  font-size: 0.8rem;
+  color: #aaa; /* Lighter gray for copyright text */
+  margin-top: 10px;
+}
     </style>
 </head>
 <body>
@@ -458,6 +497,20 @@ html {
     </div>
   </div>
 </section>
+
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-links">
+      <a href="#about-us">About Us</a>
+      <a href="#faqs">FAQs</a>
+      <a href="#contact-us">Contact Us</a>
+      <a href="#privacy-policy">Privacy Policy</a>
+      <a href="#terms-of-service">Terms of Service</a>
+    </div>
+    <p class="footer-copyright">© 2025 Curiosity ($CURI). All rights reserved.</p>
+  </div>
+</footer>
  <script>
     function toggleMenu() {
         const menuIcon = document.querySelector(".menu-icon");
