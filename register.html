@@ -77,14 +77,22 @@
     }
 
     function updateSelection() {
-        let selectedIndex = Math.round(-currentAngle / 36) % itemCount;
-        items.forEach((item, i) => {
-            if (i === selectedIndex) {
-                item.classList.add("selected");
-            } else {
-                item.classList.remove("selected");
+        let minDiff = 360;
+        let selectedItem = null;
+        
+        items.forEach((item) => {
+            let rect = item.getBoundingClientRect();
+            let centerY = window.innerHeight / 2;
+            let diff = Math.abs(rect.top + rect.height / 2 - centerY);
+            
+            if (diff < minDiff) {
+                minDiff = diff;
+                selectedItem = item;
             }
         });
+        
+        items.forEach(item => item.classList.remove("selected"));
+        if (selectedItem) selectedItem.classList.add("selected");
     }
 
     function rotatePickerManually(delta) {
