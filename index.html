@@ -168,46 +168,5 @@ container.addEventListener('animationiteration', () => {
   container.style.transition = 'none'; // Reset transition for auto-slide
 });
 </script>
-<script>
-document.addEventListener("DOMContentLoaded", function () { const slides = document.querySelectorAll(".slide"); const slideshowContainer = document.querySelector(".slideshow-container"); let currentIndex = 0; const totalSlides = slides.length; let autoRotate;
-
-function updateSlides() {
-    const angle = 360 / totalSlides;
-    slides.forEach((slide, index) => {
-        const rotation = angle * index;
-        slide.style.transform = `rotateY(${rotation}deg) translateZ(300px)`;
-    });
-}
-
-function startAutoRotate() {
-    autoRotate = setInterval(() => {
-        currentIndex = (currentIndex + 1) % totalSlides;
-        slideshowContainer.style.transform = `rotateY(-${currentIndex * (360 / totalSlides)}deg)`;
-    }, 3000);
-}
-
-slideshowContainer.addEventListener("mouseenter", () => {
-    clearInterval(autoRotate);
-});
-
-slideshowContainer.addEventListener("mouseleave", () => {
-    startAutoRotate();
-});
-
-document.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowRight") {
-        currentIndex = (currentIndex + 1) % totalSlides;
-    } else if (event.key === "ArrowLeft") {
-        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-    }
-    slideshowContainer.style.transform = `rotateY(-${currentIndex * (360 / totalSlides)}deg)`;
-});
-
-updateSlides();
-startAutoRotate();
-
-});
-
-</script>
 </body>
 </html>
