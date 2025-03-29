@@ -56,8 +56,8 @@
     const radius = 80;
     let currentIndex = 0;
     let autoRotate;
-    let startY = 0;
     let touchStartY = 0;
+    let isUserInteracting = false;
 
     for (let i = 0; i < itemCount; i++) {
         let item = document.createElement("div");
@@ -93,8 +93,14 @@
         clearInterval(autoRotate);
     }
 
-    pickerContainer.addEventListener("mouseenter", stopAutoRotate);
-    pickerContainer.addEventListener("mouseleave", startAutoRotate);
+    pickerContainer.addEventListener("mouseenter", () => {
+        stopAutoRotate();
+        isUserInteracting = true;
+    });
+    pickerContainer.addEventListener("mouseleave", () => {
+        isUserInteracting = false;
+        startAutoRotate();
+    });
     pickerContainer.addEventListener("wheel", (event) => {
         event.preventDefault();
         rotateStep(event.deltaY > 0 ? 1 : -1);
@@ -104,6 +110,7 @@
     pickerContainer.addEventListener("touchstart", (event) => {
         touchStartY = event.touches[0].clientY;
         stopAutoRotate();
+        isUserInteracting = true;
     });
 
     pickerContainer.addEventListener("touchmove", (event) => {
@@ -116,7 +123,10 @@
         }
     });
 
-    pickerContainer.addEventListener("touchend", startAutoRotate);
+    pickerContainer.addEventListener("touchend", () => {
+        isUserInteracting = false;
+        startAutoRotate();
+    });
 
     startAutoRotate();
 </script>
