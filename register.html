@@ -1,125 +1,96 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Curiosity ($CURI)</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Apple-Style 3D Date Picker</title>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
-            color: white;
-            padding: 20px;
-        }
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #0f172a;
+            perspective: 800px;
+        }.picker-container {
+        width: 200px;
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+    }
 
-        .register-container {
-            max-width: 400px;
-            margin: auto;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
-        }
+    .picker {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transform-style: preserve-3d;
+        transform: rotateX(0deg);
+        transition: transform 0.3s ease-out;
+    }
 
-        h1 {
-            font-size: 2rem;
-            color: #ffdd57;
-        }
+    .item {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        font-size: 24px;
+        color: white;
+        transform-origin: center;
+        opacity: 0.4;
+        transition: opacity 0.3s ease-out;
+    }
 
-        form input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 1rem;
-            border-radius: 8px;
-            border: none;
-        }
+    .selected {
+        font-size: 28px;
+        font-weight: bold;
+        opacity: 1;
+    }
+</style>
 
-        form input:focus {
-            outline: 2px solid #ffdd57;
-            box-shadow: 0px 0px 5px #ffdd57;
-        }
-
-        form .error {
-            color: #ff4d4d;
-            font-size: 0.9rem;
-            text-align: left;
-            margin-bottom: 10px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            font-size: 1rem;
-            font-weight: bold;
-            background: #ffdd57;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease-in-out;
-        }
-
-        button:hover {
-            background: #f4c542;
-        }
-
-        .login-link {
-            margin-top: 20px;
-            display: inline-block;
-            color: #ffdd57;
-            text-decoration: none;
-        }
-
-        .login-link:hover {
-            color: white;
-        }
-
-        .back-button {
-            margin-top: 20px;
-            padding: 12px 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            background: #6a0dad;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease-in-out;
-        }
-
-        .back-button:hover {
-            background: #8a2be2;
-        }
-    </style>
 </head>
 <body>
-    <div class="register-container">
-        <h1>Create an Account</h1>
-        <form id="registerForm" novalidate>
-            <div id="usernameError" class="error"></div>
-            <input type="text" id="username" placeholder="Username" required aria-label="Username">
-            
-            <div id="emailError" class="error"></div>
-            <input type="email" id="email" placeholder="Email" required aria-label="Email">
-            
-            <div id="passwordError" class="error"></div>
-            <input type="password" id="password" placeholder="Password" required aria-label="Password">
-            
-            <button type="submit" id="registerForm">Register</button>
-        </form>
-        <a href="login.html" class="login-link">Already have an account? Login</a>
-    </div>
+    <div class="picker-container">
+        <div class="picker" id="picker"></div>
+    </div><script>
+    const picker = document.getElementById("picker");
+    const items = [];
+    const itemCount = 10;
+    const radius = 80;
+    let angle = 0;
 
-    <button class="back-button" onclick="goBack()">Back</button>
-  <script>
-        // Go back to the previous page
-        function goBack() {
-            window.history.back();
+    for (let i = 0; i < itemCount; i++) {
+        let item = document.createElement("div");
+        item.classList.add("item");
+        item.textContent = `Item ${i + 1}`;
+        let theta = (i / itemCount) * 360;
+        item.style.transform = `rotateX(${theta}deg) translateZ(${radius}px)`;
+        picker.appendChild(item);
+        items.push(item);
+    }
+
+    let currentIndex = 0;
+
+    function updatePicker(index) {
+        angle = -index * (360 / itemCount);
+        picker.style.transform = `rotateX(${angle}deg)`;
+        items.forEach((item, i) => {
+            if (i === index) {
+                item.classList.add("selected");
+            } else {
+                item.classList.remove("selected");
+            }
+        });
+    }
+
+    window.addEventListener("wheel", (event) => {
+        if (event.deltaY > 0) {
+            currentIndex = (currentIndex + 1) % itemCount;
+        } else {
+            currentIndex = (currentIndex - 1 + itemCount) % itemCount;
         }
-    </script>
-<script type="module" src="auth.js"></script>
-<script type="module" src="register.js"></script>
+        updatePicker(currentIndex);
+    });
+
+    updatePicker(currentIndex);
+</script>
+
 </body>
 </html>
