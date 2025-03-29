@@ -279,7 +279,7 @@ footer {
 .slideshow-container {
   display: flex;
   width: calc(300% + 300%); /* Adjusted for infinite looping */
-  transition: transform 0.5s ease-in-out; /* Smooth transition */
+  animation: infinite-slide 30s linear infinite;
 }
 
 .slide {
@@ -301,6 +301,16 @@ footer {
   margin-top: 10px;
 }
 
+/* Keyframes for infinite sliding to the left */
+@keyframes infinite-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .slide h1 {
@@ -310,7 +320,6 @@ footer {
     font-size: 1rem;
   }
 }
-
 /* Footer Styling */
 .footer {
   background: linear-gradient(135deg, #2a2a2a, #121212); /* Gradient background */
@@ -469,7 +478,7 @@ footer {
 </div>
 
 <section class="slideshow">
-  <div class="slideshow-container" id="slideshow-container">
+  <div class="slideshow-container">
     <div class="slide">
       <h1>The Power of Curiosity</h1>
       <p>Unlocking innovation through questions and discovery.</p>
@@ -558,32 +567,22 @@ footer {
 </script>
 
 <script>
-const container = document.getElementById("slideshow-container");
-let isHovered = false;
-let scrollAmount = 0;
+let slideIndex = 0;
 
-// Hover control for sliding left
-container.addEventListener("mouseenter", () => {
-  isHovered = true;
-});
+function changeSlide(step) {
+  const slides = document.querySelectorAll('.slide');
+  slideIndex = (slideIndex + step + slides.length) % slides.length;
+  
+  const container = document.querySelector('.slideshow-container');
+  container.style.transition = 'transform 0.5s ease-in-out';
+  container.style.transform = `translateX(-${slideIndex * 100}%)`;
+}
 
-container.addEventListener("mousemove", (e) => {
-  if (isHovered) {
-    const containerWidth = container.offsetWidth;
-    const mouseX = e.clientX;
-
-    // Calculate direction and speed based on mouse position
-    const scrollSpeed = 5; // Adjust for faster/slower sliding
-    const direction = mouseX < containerWidth / 2 ? -1 : 1;
-    scrollAmount += direction * scrollSpeed;
-
-    // Apply the transform to slide
-    container.style.transform = `translateX(${scrollAmount}px)`;
-  }
-});
-
-container.addEventListener("mouseleave", () => {
-  isHovered = false;
+// Reset animation on hover to maintain auto-slide functionality
+const container = document.querySelector('.slideshow-container');
+container.addEventListener('animationiteration', () => {
+  slideIndex = (slideIndex + 1) % document.querySelectorAll('.slide').length;
+  container.style.transition = 'none'; // Reset transition for auto-slide
 });
 </script>
 </body>
