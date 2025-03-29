@@ -36,9 +36,13 @@
             color: white;
             text-align: center;
             transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease-in-out, font-weight 1s ease-in-out;
-            opacity: 0.8;
-            font-weight: 400;
+            opacity: 0.5;
+            font-weight: 300;
             backface-visibility: hidden;
+        }
+        .highlight {
+            opacity: 1 !important;
+            font-weight: 700 !important;
         }
     </style>
 </head>
@@ -65,7 +69,7 @@
         }
 
         function updatePicker() {
-            angle -= 36;
+            angle += 36;
             picker.style.transition = "transform 1s cubic-bezier(0.4, 0, 0.2, 1)";
             picker.style.transform = `rotateX(${angle}deg)`;
 
@@ -75,13 +79,15 @@
                 let radian = (itemAngle * Math.PI) / 180;
 
                 let scale = 1 + 0.3 * Math.cos(radian);
-                let opacity = 0.8 + 0.2 * Math.cos(radian);
-                let weight = 400 + (300 * Math.cos(radian));
+                let opacity = 0.5 + 0.5 * Math.cos(radian);
+                let weight = 300 + (400 * Math.cos(radian));
 
                 item.style.transition = "transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease-in-out, font-weight 1s ease-in-out";
                 item.style.transform = `translateX(-50%) rotateX(${itemAngle}deg) translateZ(150px) scale(${scale})`;
                 item.style.opacity = opacity;
                 item.style.fontWeight = weight;
+
+                item.classList.toggle("highlight", Math.abs(itemAngle) < 18);
             });
         }
 
@@ -91,7 +97,7 @@
         }
 
         createItems();
-        autoRotate();
+        setTimeout(autoRotate, 1000);
     </script>
 </body>
 </html>
