@@ -23,25 +23,7 @@
         flex-direction: column;
         align-items: center;
         transform-style: preserve-3d;
-        animation: rotateStep 10s steps(10, end) infinite;
-    }
-
-    @keyframes rotateStep {
-        0% { transform: rotateX(0deg); }
-        10% { transform: rotateX(-36deg); }
-        20% { transform: rotateX(-72deg); }
-        30% { transform: rotateX(-108deg); }
-        40% { transform: rotateX(-144deg); }
-        50% { transform: rotateX(-180deg); }
-        60% { transform: rotateX(-216deg); }
-        70% { transform: rotateX(-252deg); }
-        80% { transform: rotateX(-288deg); }
-        90% { transform: rotateX(-324deg); }
-        100% { transform: rotateX(-360deg); }
-    }
-
-    .picker:hover {
-        animation-play-state: paused;
+        transition: transform 0.5s ease-out;
     }
 
     .item {
@@ -64,14 +46,18 @@
 
 </head>
 <body>
-    <div class="picker-container">
+    <div class="picker-container" id="picker-container">
         <div class="picker" id="picker"></div>
     </div><script>
     const picker = document.getElementById("picker");
+    const pickerContainer = document.getElementById("picker-container");
     const items = [];
     const itemCount = 10;
     const radius = 80;
     let currentIndex = 0;
+    let autoRotate;
+    let startY = 0;
+    let touchStartY = 0;
 
     for (let i = 0; i < itemCount; i++) {
         let item = document.createElement("div");
@@ -83,8 +69,8 @@
         items.push(item);
     }
 
-    function rotateStep() {
-        currentIndex = (currentIndex + 1) % itemCount;
+    function rotateStep(direction) {
+        currentIndex = (currentIndex + direction + itemCount) % itemCount;
         picker.style.transform = `rotateX(${-currentIndex * 36}deg)`;
         updateSelection();
     }
@@ -99,7 +85,40 @@
         });
     }
 
-    setInterval(rotateStep, 1000); // Delay each step by 1 second
+    function startAutoRotate() {
+        autoRotate = setInterval(() => rotateStep(1), 1000);
+    }
+
+    function stopAutoRotate() {
+        clearInterval(autoRotate);
+    }
+
+    pickerContainer.addEventListener("mouseenter", stopAutoRotate);
+    pickerContainer.addEventListener("mouseleave", startAutoRotate);
+    pickerContainer.addEventListener("wheel", (event) => {
+        event.preventDefault();
+        rotateStep(event.deltaY > 0 ? 1 : -1);
+    });
+
+    // Touch support for mobile users
+    pickerContainer.addEventListener("touchstart", (event) => {
+        touchStartY = event.touches[0].clientY;
+        stopAutoRotate();
+    });
+
+    pickerContainer.addEventListener("touchmove", (event) => {
+        let touchEndY = event.touches[0].clientY;
+        let deltaY = touchStartY - touchEndY;
+
+        if (Math.abs(deltaY) > 10) {
+            rotateStep(deltaY > 0 ? 1 : -1);
+            touchStartY = touchEndY;
+        }
+    });
+
+    pickerContainer.addEventListener("touchend", startAutoRotate);
+
+    startAutoRotate();
 </script>
 
 </body>
