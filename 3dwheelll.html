@@ -26,7 +26,7 @@
         .picker {
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.8s ease-in-out;
+            transition: transform 0.5s ease-out;
         }
         .picker-item {
             position: absolute;
@@ -35,14 +35,15 @@
             font-size: 28px;
             color: white;
             text-align: center;
-            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out, font-weight 0.8s ease-in-out;
-            opacity: 0.5;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out, font-weight 0.5s ease-out;
+            opacity: 0.3;
             font-weight: 300;
             backface-visibility: hidden;
         }
         .highlight {
             opacity: 1 !important;
             font-weight: 700 !important;
+            transform: translateX(-50%) rotateX(0deg) translateZ(200px) scale(1.2) !important;
         }
     </style>
 </head>
@@ -54,7 +55,7 @@
         const picker = document.getElementById("picker");
         const words = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
         const totalItems = words.length;
-        let angle = 0;
+        let currentIndex = 0;
         let touchStartY = 0;
 
         function createItems() {
@@ -62,68 +63,59 @@
             words.forEach((word, i) => {
                 const div = document.createElement("div");
                 div.classList.add("picker-item");
-                let rotation = i * (360 / totalItems);
-                div.style.transform = `translateX(-50%) rotateX(${rotation}deg) translateZ(150px)`;
+                picker.appendChild(div);
+            });
+            updatePicker();
+        }
+
+        function updatePicker() {
+            picker.innerHTML = "";
+            words.forEach((word, i) => {
+                const div = document.createElement("div");
+                div.classList.add("picker-item");
+                let positionOffset = i - currentIndex;
+                let rotation = positionOffset * 36;
+
+                // Scaling and opacity logic
+                let scale = 1 - Math.abs(positionOffset) * 0.1;
+                let opacity = Math.max(0.3, 1 - Math.abs(positionOffset) * 0.3);
+
+                div.style.transform = `translateX(-50%) rotateX(${rotation}deg) translateZ(150px) scale(${scale})`;
+                div.style.opacity = opacity;
                 div.textContent = word;
+
+                if (i === currentIndex) {
+                    div.classList.add("highlight");
+                }
+
                 picker.appendChild(div);
             });
         }
 
-        function updatePicker() {
-            picker.style.transform = `rotateX(${angle}deg)`;
-            let items = document.querySelectorAll(".picker-item");
-
-            items.forEach((item, index) => {
-                let itemAngle = (index * (360 / totalItems)) - angle;
-                let radian = (itemAngle * Math.PI) / 180;
-
-                let scale = 1 + 0.3 * Math.cos(radian);
-                let opacity = 0.5 + 0.5 * Math.cos(radian);
-                let weight = 300 + (400 * Math.cos(radian));
-
-                item.style.transform = `translateX(-50%) rotateX(${itemAngle}deg) translateZ(150px) scale(${scale})`;
-                item.style.opacity = opacity;
-                item.style.fontWeight = weight;
-
-                item.classList.toggle("highlight", Math.abs(itemAngle) < 18);
-            });
-        }
-
         function rotatePicker(direction) {
-            angle += direction * (360 / totalItems);
+            currentIndex = (currentIndex + direction + totalItems) % totalItems;
             updatePicker();
         }
 
-        // Mouse Wheel Support
+        // Mouse Wheel Support (Scroll to Rotate)
         document.addEventListener("wheel", (event) => {
             rotatePicker(event.deltaY > 0 ? 1 : -1);
         });
 
-        // Touch Swipe Support
+        // Touch Swipe Support (Swipe to Rotate)
         document.addEventListener("touchstart", (event) => {
             touchStartY = event.touches[0].clientY;
         });
 
-        document.addEventListener("touchmove", (event) => {
-            let touchEndY = event.touches[0].clientY;
+        document.addEventListener("touchend", (event) => {
+            let touchEndY = event.changedTouches[0].clientY;
             let diff = touchStartY - touchEndY;
             if (Math.abs(diff) > 30) {
                 rotatePicker(diff > 0 ? 1 : -1);
-                touchStartY = touchEndY;
-            }
-        });
-
-        // Keyboard Support
-        document.addEventListener("keydown", (event) => {
-            if (event.key === "ArrowUp") {
-                rotatePicker(-1);
-            } else if (event.key === "ArrowDown") {
-                rotatePicker(1);
             }
         });
 
         createItems();
-        updatePicker();
     </script>
 </body>
 </html>
