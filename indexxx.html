@@ -2,139 +2,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curiosity ($CURI)</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #0f172a, #1e293b);
-        color: white;
-        overflow-x: hidden;
-    }
+    <title>Curiosity ($CURI)</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"><style>
 
-    nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 30px;
-        background: rgba(15, 23, 42, 0.9);
-        position: sticky;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-    }
+html, body { margin: 0; padding: 0; overflow-x: hidden; box-sizing: border-box; }
 
-    .menu-items {
-        display: flex;
-        gap: 15px;
-    }
+*, *::before, *::after { box-sizing: inherit; }
 
-    .menu-items a {
-        color: white;
-        text-decoration: none;
-        font-size: 1.2rem;
-        transition: color 0.3s;
-    }
+footer { width: 100%; max-width: 100%; overflow: hidden; }
 
-    .menu-items a:hover {
-        color: #00bcd4;
-    }
+body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #0f172a, #1e293b); color: #ffffff; overflow-x: hidden; }
 
-    .nav-buttons {
-        display: flex;
-        gap: 10px;
-    }
+nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: rgba(15, 23, 42, 0.9); position: sticky; top: 0; z-index: 1000; }
 
-    .btn-nav {
-        padding: 10px 20px;
-        border-radius: 25px;
-        border: none;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: 0.3s;
-    }
+nav a { color: #ffffff; text-decoration: none; margin: 0 15px; font-size: 1.2rem; transition: color 0.3s ease; }
 
-    .btn-login {
-        background: transparent;
-        color: white;
-        border: 1px solid #00bcd4;
-    }
+nav a:hover { color: #00bcd4; }
 
-    .btn-login:hover {
-        background: #00bcd4;
-        color: white;
-    }
+.menu-icon { display: flex; flex-direction: column; justify-content: space-between; width: 35px; height: 25px; cursor: pointer; position: relative; z-index: 1000; }
 
-    .btn-get-started {
-        background: #00bcd4;
-        color: white;
-    }
+.menu-icon span { display: block; height: 3px; background: #ffffff; border-radius: 2px; transition: all 0.3s ease; transform-origin: center; }
 
-    .btn-get-started:hover {
-        background: #008c9e;
-    }
+.menu-items { display: none; flex-direction: column; position: absolute; top: 100%; right: 30px; background: rgba(15, 23, 42, 0.9); border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); padding: 10px 20px; }
 
-    .hero {
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 20px;
-    }
+.menu-items a { margin: 10px 0; }
 
-    .hero h1 {
-        font-size: 3rem;
-        background: linear-gradient(90deg, #00bcd4, #008c9e);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+.menu-items.show { display: flex; }
 
-    .hero p {
-        font-size: 1.5rem;
-        margin-bottom: 30px;
-    }
+@media (min-width: 768px) { .menu-icon { display: none; }
 
-    .token-data {
-        text-align: center;
-        padding: 30px 20px;
-        background: rgba(15, 23, 42, 0.8);
-        margin: 20px auto;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        width: 80%;
-    }
+.menu-items {
+    display: flex;
+    flex-direction: row;
+    position: static;
+    background: none;
+    box-shadow: none;
+    padding: 0;
+}
 
-    .token-data h3 {
-        font-size: 2rem;
-    }
+.menu-items a {
+    margin: 0 15px;
+}
 
-    @media (max-width: 768px) {
-        .menu-items {
-            display: none;
-            flex-direction: column;
-            position: absolute;
-            right: 30px;
-            top: 60px;
-            background: rgba(15, 23, 42, 0.9);
-            padding: 10px;
-            border-radius: 10px;
-        }
+}
 
-        .menu-items.show {
-            display: flex;
-        }
-    }
-</style>
+.hero { min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; position: relative; }
+
+@media (min-width: 1024px) { .hero { min-height: 70vh; } }
+
+.hero h1 { font-size: 4rem; margin: 0 0 20px; background: linear-gradient(90deg, #00bcd4, #008c9e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: glow 3s infinite alternate; }
+
+@keyframes glow { 0% { text-shadow: 0 0 5px #00bcd4, 0 0 10px #008c9e, 0 0 20px #00bcd4; } 100% { text-shadow: 0 0 20px #00bcd4, 0 0 30px #008c9e, 0 0 40px #00bcd4; } }
+
+.hero p { font-size: 1.5rem; margin-bottom: 30px; }
+
+.btn { background: #00bcd4; color: #ffffff; padding: 15px 30px; border: none; border-radius: 50px; font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; }
+
+.btn:hover { background: #008c9e; transform: scale(1.1); }
+
+.token-data { text-align: center; padding: 30px 20px; background: rgba(15, 23, 42, 0.8); margin: 20px auto; border-radius: 15px; width: 80%; } </style>
 
 </head>
 <body><nav>
     <div><a href="#">Curiosity ($CURI)</a></div>
+   <div class="menu-icon" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
     <div class="menu-items" id="menu-items">
         <a href="#features">Features</a>
         <a href="#roadmap">Roadmap</a>
@@ -143,14 +77,10 @@
         <a href="#whitepaper">Whitepaper</a>
         <a href="#airdrop">Airdrop</a>
     </div>
-    <div class="nav-buttons">
-        <button class="btn-nav btn-get-started">Get Started</button>
-        <button class="btn-nav btn-login">Login</button>
-    </div>
 </nav><div class="hero">
     <h1>Welcome to Curiosity ($CURI)</h1>
     <p>The token that fuels your curiosity and drives innovation in Web3.</p>
-    <button class="btn-get-started">Explore Features</button>
+    <button class="btn">Explore Features</button>
 </div><div class="token-data">
     <h3>Live Token Data</h3>
     <p>Price: $0.000 (placeholder)</p>
