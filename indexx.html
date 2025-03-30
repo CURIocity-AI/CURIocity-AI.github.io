@@ -18,7 +18,7 @@
 .slideshow-container {
     overflow: hidden;
     width: 100%;
-    height: 400px; /* Increased height */
+    height: 450px; /* Increased height for better visibility */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,7 +32,8 @@
 }
 
 .slide {
-    width: 80vw; /* Responsive width */
+    width: 100vw; /* Full device width */
+    max-width: 100%; /* Prevents overflow */
     height: 100%; /* Full height of the container */
     box-sizing: border-box;
     padding: 20px;
@@ -42,7 +43,6 @@
     text-align: center;
     color: white;
     flex-shrink: 0; /* Prevents resizing in flex */
-    margin: 0 10px;
 }
 
 /* Infinite scroll animation */
@@ -51,9 +51,9 @@
     100% { transform: translateX(-100%); }
 }
 
-/* Duplicate slides for smooth looping */
+/* Pause animation on hover */
 .slideshow:hover {
-    animation-play-state: paused; /* Pause on hover */
+    animation-play-state: paused;
 }
     </style>
 </head>
