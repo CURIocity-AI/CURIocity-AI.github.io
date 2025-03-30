@@ -167,20 +167,6 @@ footer {
         .menu-items a {
             margin: 0 15px;
         }
-
- nav .menu-items {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 60px;
-        right: 30px;
-        background: rgba(15, 23, 42, 0.9);
-        padding: 10px;
-        border-radius: 10px;
-    }
-    nav .menu-items.show {
-        display: flex;
-    }
     .hero h1 {
         font-size: 2.5rem;
         white-space: normal;
