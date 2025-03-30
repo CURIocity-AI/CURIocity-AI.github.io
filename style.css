@@ -257,8 +257,9 @@ footer {
             margin: 5px 0;
         }
 .rotation {
-          display: flex;
-          flex-direction: row;
+                  display: flex; /* Align elements horizontally */
+            gap: 10px; /* Adjust spacing */
+            justify-content: center; /* Center items */
 }
 
 .slideshow {
