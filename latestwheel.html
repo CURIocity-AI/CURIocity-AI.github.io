@@ -58,7 +58,7 @@
         const totalItems = words.length;
         let angle = 0;
         let autoRotating = true;
-        let speed = 0.15; // Moderate speed with ease
+        let speed = 0.7; // Moderate speed with ease
         let manualControl = false;
         let scrollTimeout;
         const stepAngle = 360 / totalItems;
@@ -102,7 +102,7 @@
             manualControl = true;
             autoRotating = false;
             angle += direction * stepAngle;
-            picker.style.transition = "transform 0.12s ease-in-out"; // Smooth manual movement
+            picker.style.transition = "transform 0.6s ease-in-out"; // Smooth manual movement
             picker.style.transform = `rotateX(${angle}deg)`;
             updateSelection();
 
