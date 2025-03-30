@@ -7,9 +7,265 @@
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
-<link rel="stylesheet" href="style.css">
     <style>
+/* Ensure no scrolling bars */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  box-sizing: border-box;
+}
 
+*,
+*::before,
+*::after {
+  box-sizing: inherit; /* Ensure consistent box model */
+}
+
+/* Prevent footer from overflowing */
+footer {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+         nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background: rgba(15, 23, 42, 0.9);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    nav a {
+        color: #ffffff;
+        text-decoration: none;
+        margin: 0 15px;
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+        color: #00bcd4;
+    }
+
+  .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .btn-nav {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #00bcd4;
+        }
+
+        .btn-login:hover {
+            background: #00bcd4;
+            color: #ffffff;
+        }
+
+        .btn-get-started {
+            background: #00bcd4;
+            color: #ffffff;
+        }
+
+        .btn-get-started:hover {
+            background: #008c9e;
+        }
+   .menu-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 35px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+        z-index: 1000;
+    }
+
+    .menu-icon span {
+        display: block;
+        height: 3px;
+        background: #ffffff;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        transform-origin: center;
+    }
+
+    .menu-icon span:nth-child(1) {
+        width: 100%;
+    }
+
+    .menu-icon span:nth-child(2) {
+        width: 85%;
+    }
+
+    .menu-icon span:nth-child(3) {
+        width: 70%;
+    }
+
+    /* Add animation when toggled */
+    .menu-icon.open span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+        width: 100%;
+    }
+
+    .menu-icon.open span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-icon.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+        width: 100%;
+    }
+    .menu-items {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 30px;
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        padding: 10px 20px;
+    }
+
+    .menu-items a {
+        margin: 10px 0;
+    }
+
+    .menu-items.show {
+        display: flex;
+    }
+
+    @media (min-width: 768px) {
+        .menu-icon {
+            display: none;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: row;
+            position: static;
+            background: none;
+            box-shadow: none;
+            padding: 0;
+        }
+
+        .menu-items a {
+            margin: 0 15px;
+        }
+    }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin: 0 0 20px;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 5px #00bcd4, 0 0 10px #008c9e, 0 0 20px #00bcd4;
+            }
+            100% {
+                text-shadow: 0 0 20px #00bcd4, 0 0 30px #008c9e, 0 0 40px #00bcd4;
+            }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: #00bcd4;
+            color: #ffffff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.4);
+        }
+
+        .btn:hover {
+            background: #008c9e;
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(0, 140, 158, 0.6);
+        }
+
+        .features {
+            padding: 50px 20px;
+            background: #1e293b;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .features .feature-item {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .token-data {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(15, 23, 42, 0.8);
+            margin: 20px auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 80%;
+        }
+
+        .token-data h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .token-data p {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
