@@ -10,6 +10,10 @@
             padding: 0;
             overflow-x: hidden;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }*, *::before, *::after {
         box-sizing: inherit;
     }
@@ -18,20 +22,23 @@
         font-family: 'Arial', sans-serif;
         background: linear-gradient(135deg, #0f172a, #1e293b);
         color: #ffffff;
+        width: 100%;
     }
 
     .container {
-        max-width: 1200px;
+        max-width: 1100px;
+        width: 100%;
         margin: 0 auto;
-        padding: 0 20px;
+        padding: 0 15px;
     }
 
     nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px 30px;
+        padding: 15px 20px;
         background: rgba(15, 23, 42, 0.9);
+        width: 100%;
         position: sticky;
         top: 0;
         z-index: 1000;
@@ -39,13 +46,13 @@
 
     .menu-items {
         display: flex;
-        gap: 15px;
+        gap: 10px;
     }
 
     .menu-items a {
         color: #ffffff;
         text-decoration: none;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         transition: color 0.3s ease;
     }
 
@@ -59,57 +66,58 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        height: 100vh;
-        max-width: 900px;
-        margin: 0 auto;
+        height: 90vh;
+        max-width: 800px;
+        width: 100%;
         padding: 20px;
     }
 
     .hero h1 {
-        font-size: 3rem;
+        font-size: 2.8rem;
         background: linear-gradient(90deg, #00bcd4, #008c9e);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
     .hero p {
-        font-size: 1.5rem;
-        margin-bottom: 30px;
+        font-size: 1.3rem;
+        margin-bottom: 25px;
     }
 
     .btn {
         background: #00bcd4;
         color: #ffffff;
-        padding: 15px 30px;
+        padding: 12px 25px;
         border: none;
         border-radius: 50px;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         cursor: pointer;
         transition: all 0.3s ease;
     }
 
     .btn:hover {
         background: #008c9e;
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 
     .token-data {
         text-align: center;
-        padding: 30px;
-        background: rgba(15, 23, 42, 0.8);
-        margin: 20px auto;
-        border-radius: 15px;
-        max-width: 900px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        padding: 25px;
+        background: rgba(15, 23, 42, 0.85);
+        margin: 15px auto;
+        border-radius: 12px;
+        max-width: 800px;
+        width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
     @media (max-width: 768px) {
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 2.4rem;
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
     }
 </style>
