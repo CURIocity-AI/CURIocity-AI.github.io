@@ -271,7 +271,7 @@ footer {
 .slideshow-container {
     overflow: hidden;
     width: 100%;
-    height: 450px;
+    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -301,6 +301,7 @@ footer {
     text-align: center;
     color: white;
     flex-shrink: 0;
+    margin: 10px;
 }
 
 /* Pause animation on hover */
