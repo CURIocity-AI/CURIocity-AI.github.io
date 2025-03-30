@@ -256,7 +256,10 @@ footer {
             font-size: 1.2rem;
             margin: 5px 0;
         }
-
+.rotation {
+          display: flex;
+          flex-direction: row;
+}
 
 .slideshow {
     display: flex;
