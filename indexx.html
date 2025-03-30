@@ -9,7 +9,30 @@
 
 <link rel="stylesheet" href="style.css">
     <style>
+.slideshow-container {
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.slideshow {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 600%; /* Adjust based on the number of slides */
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    background: linear-gradient(135deg, #1e1e1e, #292929);
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: white;
+}
     </style>
 </head>
 <body>
@@ -66,34 +89,34 @@
     </div>
 
 </section>
-<section class="slideshow">
-  <div class="slideshow-container">
-    <div class="slide">
-        <h1>The Power of Curiosity</h1>
-        <p>Driving deeper insights with the questions that matter.</p>
+<section class="slideshow-container">
+    <div class="slideshow">
+        <div class="slide">
+            <h1>The Power of Curiosity</h1>
+            <p>Driving deeper insights with the questions that matter.</p>
+        </div>
+        <div class="slide">
+            <h1>The Power of What, Why, Where, When, and How</h1>
+            <p>Driving deeper insights with the questions that matter.</p>
+        </div>
+        <div class="slide">
+            <h1>The Road to Web5</h1>
+            <p>Building the future of decentralized innovation and collaboration.</p>
+        </div>
+        <!-- Duplicate slides for seamless infinite scrolling -->
+        <div class="slide">
+            <h1>The Power of Curiosity</h1>
+            <p>Unlocking innovation through questions and discovery.</p>
+        </div>
+        <div class="slide">
+            <h1>The Power of When and How</h1>
+            <p>Driving deeper insights with the questions that matter.</p>
+        </div>
+        <div class="slide">
+            <h1>The Road to Web5</h1>
+            <p>Building the future of decentralized innovation and collaboration.</p>
+        </div>
     </div>
-    <div class="slide">
-      <h1>The Power of W?at, W?y, W?ere, W?en, and ?oW</h1>
-      <p>Driving deeper insights with the questions that matter.</p>
-    </div>
-    <div class="slide">
-      <h1>The Road to Web5</h1>
-      <p>Building the future of decentralized innovation and collaboration.</p>
-    </div>
-    <!-- Duplicate slides for seamless infinite scrolling -->
-    <div class="slide">
-      <h1>The Power of Curiosity</h1>
-      <p>Unlocking innovation through questions and discovery.</p>
-    </div>
-    <div class="slide">
-      <h1>The Power of When, and hoW</h1>
-      <p>Driving deeper insights with the questions that matter.</p>
-    </div>
-    <div class="slide">
-      <h1>The Road to Web5</h1>
-      <p>Building the future of decentralized innovation and collaboration.</p>
-    </div>
-  </div>
 </section>
 
 <footer class="footer">
@@ -273,5 +296,18 @@ container.addEventListener('animationiteration', () => {
         createItems();
         rotatePicker();
     </script>
+
+<script>
+    let currentIndex = 0;
+    const slides = document.querySelectorAll(".slide");
+    const totalSlides = slides.length;
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        document.querySelector(".slideshow").style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    setInterval(nextSlide, 3000); // Change slide every 3 seconds
+</script>
 </body>
 </html>
