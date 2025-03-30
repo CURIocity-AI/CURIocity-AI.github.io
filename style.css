@@ -265,7 +265,7 @@ footer {
 .slideshow-container {
     overflow: hidden;
     width: 100%;
-    height: 200px; /* Increased height for better visibility */
+    height: 300px; /* Increased height for better visibility */
     display: flex;
     justify-content: center;
     align-items: center;
