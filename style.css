@@ -438,7 +438,7 @@ footer {
         .picker-container {
             perspective: 1000px;
             height: 200px;
-            width: 200px;
+            width: 50px;
             position: relative;
             display: flex;
             align-items: center;
