@@ -104,7 +104,7 @@
         // Manual scrolling using the mouse wheel (desktop)
         pickerContainer.addEventListener("wheel", (e) => {
             e.preventDefault(); // Prevent page scrolling
-            const direction = e.deltaY > 0 ? -1 : 1;
+            const direction = e.deltaY > 0 ? 1 : -1; // Scroll down moves down, scroll up moves up
             rotatePicker(direction);
             
             // Reset auto-rotation timeout to prevent quick restart
@@ -126,7 +126,7 @@
         pickerContainer.addEventListener("touchend", () => {
             let deltaY = touchStartY - touchEndY;
             if (Math.abs(deltaY) > 20) { // Minimum swipe distance
-                let direction = deltaY > 0 ? -1 : 1; // Swipe up = -1, Swipe down = 1
+                let direction = deltaY > 0 ? 1 : -1; // Swipe up moves up, swipe down moves down
                 rotatePicker(direction);
             }
 
