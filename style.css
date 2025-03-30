@@ -169,40 +169,27 @@ footer {
         }
     }
 
-        .hero {
-            height: 100vh;
+                .hero {
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             text-align: center;
-            padding: 20px;
-            position: relative;
+            padding: 50px 20px;
         }
-
         .hero h1 {
             font-size: 4rem;
-            margin: 0 0 20px;
             background: linear-gradient(90deg, #00bcd4, #008c9e);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: glow 3s infinite alternate;
+            border-right: 2px solid #00bcd4;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
         }
-
-        @keyframes glow {
-            0% {
-                text-shadow: 0 0 5px #00bcd4, 0 0 10px #008c9e, 0 0 20px #00bcd4;
-            }
-            100% {
-                text-shadow: 0 0 20px #00bcd4, 0 0 30px #008c9e, 0 0 40px #00bcd4;
-            }
-        }
-
         .hero p {
             font-size: 1.5rem;
-            margin-bottom: 30px;
         }
-
         .btn {
             background: #00bcd4;
             color: #ffffff;
@@ -212,14 +199,42 @@ footer {
             font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.4);
         }
-
         .btn:hover {
             background: #008c9e;
             transform: scale(1.1);
-            box-shadow: 0 5px 20px rgba(0, 140, 158, 0.6);
         }
+
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .btn-nav {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-login {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #00bcd4;
+        }
+        .btn-login:hover {
+            background: #00bcd4;
+        }
+        .btn-get-started {
+            background: #00bcd4;
+            color: #ffffff;
+        }
+        .btn-get-started:hover {
+            background: #008c9e;
+        }
+
 
         .features {
             padding: 50px 20px;
