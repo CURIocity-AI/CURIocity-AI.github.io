@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curiosity ($CURI)</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+    <style>
+
+    </style>
+</head>
+<body>
+
+
+<nav>
+    <div><a href="#">Curiosity ($CURI)</a></div>
+   <div class="menu-icon" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+    <div class="menu-items" id="menu-items">
+        <a href="#features">Features</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#tokenomics">Tokenomics</a>
+        <a href="#nfts">NFTs</a>
+        <a href="#whitepaper">Whitepaper</a>
+        <a href="#airdrop">Airdrop</a>
+    </div>
+
+
+
+</nav>
+
+<div class="hero">
+    <h1>Welcome to Curiosity ($CURI)</h1>
+    <p>The token that fuels your curiosity and drives innovation in Web3.</p>
+    <button class="btn">Explore Features</button>
+<div class="nav-buttons">
+<button class="btn-nav btn-get-started">Get Started</button>
+ <button class="btn-nav btn-login">Login</button>
+    </div>
+</div>
+
+<div class="token-data">
+    <h3>Live Token Data</h3>
+    <p>Price: $0.000 (placeholder)</p>
+    <p>Market Cap: $0 (placeholder)</p>
+    <p>Total Supply: 500M CURI</p>
+</div>
+
+<div class="features" id="features">
+    <h2>Features</h2>
+    <div class="feature-item">✅ Live Token Data: Price, Market Cap, Supply</div>
+    <div class="feature-item">✅ Staking and Rewards with Transparency</div>
+    <div class="feature-item">✅ Interactive Roadmap and Tokenomics</div>
+    <div class="feature-item">✅ NFT Section: Browse, Buy, and Trade</div>
+</div>
+<section class="rotation">
+
+    <div class="picker-container" id="pickerContainer">
+        <div class="picker" id="picker"></div>
+    </div>
+
+</section>
+<section class="slideshow">
+  <div class="slideshow-container">
+    <div class="slide">
+        <h1>The Power of Curiosity</h1>
+        <p>Driving deeper insights with the questions that matter.</p>
+    </div>
+    <div class="slide">
+      <h1>The Power of W?at, W?y, W?ere, W?en, and ?oW</h1>
+      <p>Driving deeper insights with the questions that matter.</p>
+    </div>
+    <div class="slide">
+      <h1>The Road to Web5</h1>
+      <p>Building the future of decentralized innovation and collaboration.</p>
+    </div>
+    <!-- Duplicate slides for seamless infinite scrolling -->
+    <div class="slide">
+      <h1>The Power of Curiosity</h1>
+      <p>Unlocking innovation through questions and discovery.</p>
+    </div>
+    <div class="slide">
+      <h1>The Power of When, and hoW</h1>
+      <p>Driving deeper insights with the questions that matter.</p>
+    </div>
+    <div class="slide">
+      <h1>The Road to Web5</h1>
+      <p>Building the future of decentralized innovation and collaboration.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-container">
+    <!-- About Section -->
+    <div class="footer-section about">
+      <h3>Curiosity ($CURI)</h3>
+      <p>
+        Discover the world of Web3 with Curiosity. Explore, earn, and grow with
+        our innovative platform.
+      </p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-section links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#about-us">About Us</a></li>
+        <li><a href="#faqs">FAQs</a></li>
+        <li><a href="#contact-us">Contact Us</a></li>
+        <li><a href="#privacy-policy">Privacy Policy</a></li>
+        <li><a href="#terms-of-service">Terms of Service</a></li>
+      </ul>
+    </div>
+
+    <!-- Social Media -->
+    <div class="footer-section social">
+      <h4>Follow Us</h4>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-telegram"></i></a>
+        <a href="#"><i class="fab fa-discord"></i></a>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="footer-section newsletter">
+      <h4>Newsletter</h4>
+      <p>Stay updated with our latest updates and airdrops!</p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Enter your email" required />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-bottom">
+    <p>© 2025 Curiosity ($CURI). All rights reserved.</p>
+  </div>
+</footer>
+ <script>
+    function toggleMenu() {
+        const menuIcon = document.querySelector(".menu-icon");
+        const menuItems = document.getElementById("menu-items");
+        menuIcon.classList.toggle("open");
+        menuItems.classList.toggle("show");
+    }
+
+</script>
+
+<script>
+let slideIndex = 0;
+
+function changeSlide(step) {
+  const slides = document.querySelectorAll('.slide');
+  slideIndex = (slideIndex + step + slides.length) % slides.length;
+
+  const container = document.querySelector('.slideshow-container');
+  container.style.transition = 'transform 0.5s ease-in-out';
+  container.style.transform = `translateX(-${slideIndex * 100}%)`;
+}
+
+// Reset animation on hover to maintain auto-slide functionality
+const container = document.querySelector('.slideshow-container');
+container.addEventListener('animationiteration', () => {
+  slideIndex = (slideIndex + 1) % document.querySelectorAll('.slide').length;
+  container.style.transition = 'none'; // Reset transition for auto-slide
+});
+</script>
+
+    <script>
+        const picker = document.getElementById("picker");
+        const pickerContainer = document.getElementById("pickerContainer");
+        const words = ["Don't", "Worry", "Babe", "All", "Will", "Be", "Fine", "I", "Love", "You"];
+        const totalItems = words.length;
+        let angle = 0;
+        let autoRotating = true;
+        let speed = 0.2; // Increased rotation speed
+        let manualControl = false;
+        let scrollTimeout;
+        const stepAngle = 360 / totalItems;
+
+        function createItems() {
+            picker.innerHTML = "";
+            words.forEach((word, i) => {
+                const div = document.createElement("div");
+                div.classList.add("picker-item");
+                div.style.setProperty("--rotate", `${i * stepAngle}deg`);
+                div.textContent = word;
+                picker.appendChild(div);
+            });
+            updateSelection();
+        }
+
+        function updateSelection() {
+            const items = document.querySelectorAll(".picker-item");
+            let selectedIndex = Math.round((-angle % 360) / stepAngle) % totalItems;
+            if (selectedIndex < 0) selectedIndex += totalItems;
+
+            items.forEach((item, i) => {
+                item.classList.toggle("selected", i === selectedIndex);
+            });
+        }
+
+        function rotatePicker() {
+            if (autoRotating) {
+                angle -= speed;
+                picker.style.transform = `rotateX(${angle}deg)`;
+
+                if (Math.abs(angle % stepAngle) < 1) {
+                    updateSelection();
+                }
+
+                requestAnimationFrame(rotatePicker);
+            }
+        }
+
+        function manualRotate(direction) {
+            manualControl = true;
+            autoRotating = false;
+            angle += direction * stepAngle;
+            picker.style.transition = "transform 0.2s ease-out";
+            picker.style.transform = `rotateX(${angle}deg)`;
+            updateSelection();
+
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                autoRotating = true;
+                rotatePicker();
+            }, 3000);
+        }
+
+        // Mouse Scroll Control
+        pickerContainer.addEventListener("wheel", (e) => {
+            e.preventDefault();
+            let direction = e.deltaY > 0 ? 1 : -1;
+            manualRotate(direction);
+        });
+
+        // Touch Control
+        let touchStartY = 0, touchEndY = 0;
+        pickerContainer.addEventListener("touchstart", (e) => {
+            manualControl = true;
+            autoRotating = false;
+            touchStartY = e.touches[0].clientY;
+        });
+
+        pickerContainer.addEventListener("touchend", () => {
+            let deltaY = touchStartY - touchEndY;
+            if (Math.abs(deltaY) > 20) {
+                let direction = deltaY > 0 ? 1 : -1;
+                manualRotate(direction);
+            }
+
+            scrollTimeout = setTimeout(() => {
+                autoRotating = true;
+                rotatePicker();
+            }, 3000);
+        });
+
+        pickerContainer.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+            touchEndY = e.touches[0].clientY;
+        });
+
+        createItems();
+        rotatePicker();
+    </script>
+</body>
+</html>
