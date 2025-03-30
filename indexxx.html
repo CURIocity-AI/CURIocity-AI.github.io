@@ -5,119 +5,129 @@
     <title>Curiosity ($CURI)</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        html, body {
+        * {
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
             box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }*, *::before, *::after {
-        box-sizing: inherit;
-    }
-
-    body {
-        font-family: 'Arial', sans-serif;
+        }body {
+        font-family: Arial, sans-serif;
         background: linear-gradient(135deg, #0f172a, #1e293b);
-        color: #ffffff;
-        width: 100%;
-    }
-
-    .container {
-        max-width: 1100px;
-        width: 100%;
-        margin: 0 auto;
-        padding: 0 15px;
+        color: white;
+        overflow-x: hidden;
     }
 
     nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px 20px;
+        padding: 15px 30px;
         background: rgba(15, 23, 42, 0.9);
-        width: 100%;
         position: sticky;
         top: 0;
+        width: 100%;
         z-index: 1000;
     }
 
     .menu-items {
         display: flex;
-        gap: 10px;
+        gap: 15px;
     }
 
     .menu-items a {
-        color: #ffffff;
+        color: white;
         text-decoration: none;
-        font-size: 1.1rem;
-        transition: color 0.3s ease;
+        font-size: 1.2rem;
+        transition: color 0.3s;
     }
 
     .menu-items a:hover {
         color: #00bcd4;
     }
 
+    .nav-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-nav {
+        padding: 10px 20px;
+        border-radius: 25px;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: 0.3s;
+    }
+
+    .btn-login {
+        background: transparent;
+        color: white;
+        border: 1px solid #00bcd4;
+    }
+
+    .btn-login:hover {
+        background: #00bcd4;
+        color: white;
+    }
+
+    .btn-get-started {
+        background: #00bcd4;
+        color: white;
+    }
+
+    .btn-get-started:hover {
+        background: #008c9e;
+    }
+
     .hero {
+        height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
-        height: 90vh;
-        max-width: 800px;
-        width: 100%;
         padding: 20px;
     }
 
     .hero h1 {
-        font-size: 2.8rem;
+        font-size: 3rem;
         background: linear-gradient(90deg, #00bcd4, #008c9e);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
     .hero p {
-        font-size: 1.3rem;
-        margin-bottom: 25px;
-    }
-
-    .btn {
-        background: #00bcd4;
-        color: #ffffff;
-        padding: 12px 25px;
-        border: none;
-        border-radius: 50px;
-        font-size: 1.1rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .btn:hover {
-        background: #008c9e;
-        transform: scale(1.05);
+        font-size: 1.5rem;
+        margin-bottom: 30px;
     }
 
     .token-data {
         text-align: center;
-        padding: 25px;
-        background: rgba(15, 23, 42, 0.85);
-        margin: 15px auto;
-        border-radius: 12px;
-        max-width: 800px;
-        width: 100%;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        padding: 30px 20px;
+        background: rgba(15, 23, 42, 0.8);
+        margin: 20px auto;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        width: 80%;
+    }
+
+    .token-data h3 {
+        font-size: 2rem;
     }
 
     @media (max-width: 768px) {
-        .hero h1 {
-            font-size: 2.4rem;
+        .menu-items {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            right: 30px;
+            top: 60px;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 10px;
+            border-radius: 10px;
         }
 
-        .hero p {
-            font-size: 1.1rem;
+        .menu-items.show {
+            display: flex;
         }
     }
 </style>
@@ -125,7 +135,7 @@
 </head>
 <body><nav>
     <div><a href="#">Curiosity ($CURI)</a></div>
-    <div class="menu-items">
+    <div class="menu-items" id="menu-items">
         <a href="#features">Features</a>
         <a href="#roadmap">Roadmap</a>
         <a href="#tokenomics">Tokenomics</a>
@@ -133,10 +143,14 @@
         <a href="#whitepaper">Whitepaper</a>
         <a href="#airdrop">Airdrop</a>
     </div>
+    <div class="nav-buttons">
+        <button class="btn-nav btn-get-started">Get Started</button>
+        <button class="btn-nav btn-login">Login</button>
+    </div>
 </nav><div class="hero">
     <h1>Welcome to Curiosity ($CURI)</h1>
     <p>The token that fuels your curiosity and drives innovation in Web3.</p>
-    <button class="btn">Explore Features</button>
+    <button class="btn-get-started">Explore Features</button>
 </div><div class="token-data">
     <h3>Live Token Data</h3>
     <p>Price: $0.000 (placeholder)</p>
