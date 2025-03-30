@@ -167,6 +167,12 @@ footer {
         .menu-items a {
             margin: 0 15px;
         }
+
+ .hero h1 {
+        font-size: 2.5rem;
+        white-space: normal;
+        border-right: none;
+        }
     }
 
                 .hero {
