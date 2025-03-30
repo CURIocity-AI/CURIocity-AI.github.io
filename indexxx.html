@@ -29,10 +29,13 @@
             top: 0;
             z-index: 1000;
         }
+        nav .menu-items {
+            display: flex;
+            gap: 20px;
+        }
         nav a {
             color: #ffffff;
             text-decoration: none;
-            margin: 0 15px;
             font-size: 1.2rem;
             transition: color 0.3s ease;
         }
@@ -40,16 +43,17 @@
             color: #00bcd4;
         }
         .hero {
-            min-height: 70vh; /* Reduced height */
+            min-height: auto;
+            height: auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0; /* Remove excess padding */
+            padding: 50px 20px;
         }
         .hero h1, .hero p {
-            margin: 10px 0; /* Ensure no extra margin */
+            margin: 10px 0;
         }
         .hero h1 {
             font-size: 4rem;
@@ -111,11 +115,39 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             width: 80%;
         }
+        @media (max-width: 768px) {
+            nav .menu-items {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                right: 30px;
+                background: rgba(15, 23, 42, 0.9);
+                padding: 10px;
+                border-radius: 10px;
+            }
+            nav .menu-items.show {
+                display: flex;
+            }
+        }
     </style>
+    <script>
+        function toggleMenu() {
+            document.getElementById('menu-items').classList.toggle('show');
+        }
+    </script>
 </head>
 <body>
     <nav>
         <div><a href="#">Curiosity ($CURI)</a></div>
+        <div class="menu-items" id="menu-items">
+            <a href="#features">Features</a>
+            <a href="#roadmap">Roadmap</a>
+            <a href="#tokenomics">Tokenomics</a>
+            <a href="#nfts">NFTs</a>
+            <a href="#whitepaper">Whitepaper</a>
+            <a href="#airdrop">Airdrop</a>
+        </div>
     </nav>
     <div class="hero">
         <h1>Welcome to Curiosity ($CURI)</h1>
