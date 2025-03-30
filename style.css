@@ -265,7 +265,7 @@ footer {
 .slideshow-container {
     overflow: hidden;
     width: 100%;
-    height: 80px; /* Increased height for better visibility */
+    height: 100px; /* Increased height for better visibility */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -290,7 +290,7 @@ footer {
     text-align: center;
     color: white;
     flex-shrink: 0; /* Prevents resizing in flex */
-    gap: 10;
+    margin: 10px;
 }
 
 /* Infinite scroll animation */
