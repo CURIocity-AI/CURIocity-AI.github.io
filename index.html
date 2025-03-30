@@ -172,5 +172,104 @@ container.addEventListener('animationiteration', () => {
   container.style.transition = 'none'; // Reset transition for auto-slide
 });
 </script>
+
+    <script>
+        const picker = document.getElementById("picker");
+        const pickerContainer = document.getElementById("pickerContainer");
+        const words = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
+        const totalItems = words.length;
+        let angle = 0;
+        let autoRotating = true;
+        let speed = 0.2; // Increased rotation speed
+        let manualControl = false;
+        let scrollTimeout;
+        const stepAngle = 360 / totalItems;
+
+        function createItems() {
+            picker.innerHTML = "";
+            words.forEach((word, i) => {
+                const div = document.createElement("div");
+                div.classList.add("picker-item");
+                div.style.setProperty("--rotate", `${i * stepAngle}deg`);
+                div.textContent = word;
+                picker.appendChild(div);
+            });
+            updateSelection();
+        }
+
+        function updateSelection() {
+            const items = document.querySelectorAll(".picker-item");
+            let selectedIndex = Math.round((-angle % 360) / stepAngle) % totalItems;
+            if (selectedIndex < 0) selectedIndex += totalItems;
+
+            items.forEach((item, i) => {
+                item.classList.toggle("selected", i === selectedIndex);
+            });
+        }
+
+        function rotatePicker() {
+            if (autoRotating) {
+                angle -= speed;
+                picker.style.transform = `rotateX(${angle}deg)`;
+
+                if (Math.abs(angle % stepAngle) < 1) {
+                    updateSelection();
+                }
+
+                requestAnimationFrame(rotatePicker);
+            }
+        }
+
+        function manualRotate(direction) {
+            manualControl = true;
+            autoRotating = false;
+            angle += direction * stepAngle;
+            picker.style.transition = "transform 0.2s ease-out";
+            picker.style.transform = `rotateX(${angle}deg)`;
+            updateSelection();
+
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                autoRotating = true;
+                rotatePicker();
+            }, 3000);
+        }
+
+        // Mouse Scroll Control
+        pickerContainer.addEventListener("wheel", (e) => {
+            e.preventDefault();
+            let direction = e.deltaY > 0 ? 1 : -1;
+            manualRotate(direction);
+        });
+
+        // Touch Control
+        let touchStartY = 0, touchEndY = 0;
+        pickerContainer.addEventListener("touchstart", (e) => {
+            manualControl = true;
+            autoRotating = false;
+            touchStartY = e.touches[0].clientY;
+        });
+
+        pickerContainer.addEventListener("touchend", () => {
+            let deltaY = touchStartY - touchEndY;
+            if (Math.abs(deltaY) > 20) {
+                let direction = deltaY > 0 ? 1 : -1;
+                manualRotate(direction);
+            }
+
+            scrollTimeout = setTimeout(() => {
+                autoRotating = true;
+                rotatePicker();
+            }, 3000);
+        });
+
+        pickerContainer.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+            touchEndY = e.touches[0].clientY;
+        });
+
+        createItems();
+        rotatePicker();
+    </script>
 </body>
 </html>
