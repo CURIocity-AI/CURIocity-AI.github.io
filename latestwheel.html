@@ -36,7 +36,7 @@
             font-size: 24px;
             color: white;
             opacity: 0.5;
-            transition: opacity 0.4s ease-in-out, font-size 0.4s ease-in-out, font-weight 0.4s ease-in-out;
+            transition: opacity 0.25s ease-in-out, font-size 0.25s ease-in-out, font-weight 0.25s ease-in-out;
         }
         .selected {
             opacity: 1;
@@ -58,7 +58,7 @@
         const totalItems = words.length;
         let angle = 0;
         let autoRotating = true;
-        let speed = 0.5; // Increased speed
+        let speed = 0.5; // Faster rotation
         let manualControl = false;
         let scrollTimeout;
         const stepAngle = 360 / totalItems;
@@ -102,7 +102,7 @@
             manualControl = true;
             autoRotating = false;
             angle += direction * stepAngle;
-            picker.style.transition = "transform 0.25s ease-out"; // Smooth manual movement
+            picker.style.transition = "transform 0.2s ease-out"; // Smooth manual movement
             picker.style.transform = `rotateX(${angle}deg)`;
             updateSelection();
 
