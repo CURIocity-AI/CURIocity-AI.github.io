@@ -57,8 +57,8 @@
 </div>
 <section class="rotation">
 
-    <div class="picker-container" id="pickerContainer">
-        <div class="picker" id="picker"></div>
+    <div class="picker-containerr" id="pickerContainerr">
+        <div class="pickerr" id="pickerr"></div>
     </div>
 
 </section>
@@ -271,8 +271,8 @@ container.addEventListener('animationiteration', () => {
     </script>
 
 <script>
-        const picker = document.getElementById("picker");
-        const pickerContainer = document.getElementById("pickerContainer");
+        const pickerr = document.getElementById("pickerr");
+        const pickerContainerr = document.getElementById("pickerContainerr");
         const words = ["Don't", "Worry", "Babe", "All", "Will", "Be", "Fine", "I", "Love", "You"];
         const totalItems = words.length;
         let angle = 0;
@@ -283,10 +283,10 @@ container.addEventListener('animationiteration', () => {
         const stepAngle = 360 / totalItems;
 
         function createItems() {
-            picker.innerHTML = "";
+            pickerr.innerHTML = "";
             words.forEach((word, i) => {
                 const div = document.createElement("div");
-                div.classList.add("picker-item");
+                div.classList.add("pickerr-item");
                 div.style.setProperty("--rotate", `${i * stepAngle}deg`);
                 div.textContent = word;
                 picker.appendChild(div);
@@ -295,7 +295,7 @@ container.addEventListener('animationiteration', () => {
         }
 
         function updateSelection() {
-            const items = document.querySelectorAll(".picker-item");
+            const items = document.querySelectorAll(".pickerr-item");
             let selectedIndex = Math.round((-angle % 360) / stepAngle) % totalItems;
             if (selectedIndex < 0) selectedIndex += totalItems;
 
@@ -304,7 +304,7 @@ container.addEventListener('animationiteration', () => {
             });
         }
 
-        function rotatePicker() {
+        function rotatePickerr() {
             if (autoRotating) {
                 angle -= speed;
                 picker.style.transform = `rotateX(${angle}deg)`;
@@ -313,7 +313,7 @@ container.addEventListener('animationiteration', () => {
                     updateSelection();
                 }
 
-                requestAnimationFrame(rotatePicker);
+                requestAnimationFrame(rotatePickerr);
             }
         }
 
@@ -321,8 +321,8 @@ container.addEventListener('animationiteration', () => {
             manualControl = true;
             autoRotating = false;
             angle += direction * stepAngle;
-            picker.style.transition = "transform 0.2s ease-out";
-            picker.style.transform = `rotateX(${angle}deg)`;
+            pickerr.style.transition = "transform 0.2s ease-out";
+            pickerr.style.transform = `rotateX(${angle}deg)`;
             updateSelection();
 
             clearTimeout(scrollTimeout);
@@ -333,7 +333,7 @@ container.addEventListener('animationiteration', () => {
         }
 
         // Mouse Scroll Control
-        pickerContainer.addEventListener("wheel", (e) => {
+        pickerContainerr.addEventListener("wheel", (e) => {
             e.preventDefault();
             let direction = e.deltaY > 0 ? 1 : -1;
             manualRotate(direction);
@@ -341,13 +341,13 @@ container.addEventListener('animationiteration', () => {
 
         // Touch Control
         let touchStartY = 0, touchEndY = 0;
-        pickerContainer.addEventListener("touchstart", (e) => {
+        pickerContainerr.addEventListener("touchstart", (e) => {
             manualControl = true;
             autoRotating = false;
             touchStartY = e.touches[0].clientY;
         });
 
-        pickerContainer.addEventListener("touchend", () => {
+        pickerContainerr.addEventListener("touchend", () => {
             let deltaY = touchStartY - touchEndY;
             if (Math.abs(deltaY) > 20) {
                 let direction = deltaY > 0 ? 1 : -1;
@@ -360,13 +360,13 @@ container.addEventListener('animationiteration', () => {
             }, 3000);
         });
 
-        pickerContainer.addEventListener("touchmove", (e) => {
+        pickerContainerr.addEventListener("touchmove", (e) => {
             e.preventDefault();
             touchEndY = e.touches[0].clientY;
         });
 
         createItems();
-        rotatePicker();
+        rotatePickerr();
     </script>
 
 </body>
