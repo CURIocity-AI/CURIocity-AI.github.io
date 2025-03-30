@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Scrolling Picker</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #222;
+            overflow: hidden;
+        }
+        .picker-container {
+            perspective: 1000px;
+            height: 250px;
+            width: 200px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            touch-action: none; /* Prevents default touch gestures */
+        }
+        .picker {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease-out;
+        }
+        .picker-item {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) rotateX(var(--rotate)) translateZ(120px);
+            font-size: 24px;
+            color: white;
+            opacity: 0.5;
+            transition: opacity 0.5s, font-size 0.5s, font-weight 0.5s;
+        }
+        .selected {
+            opacity: 1;
+            font-size: 36px;
+            font-weight: bold;
+            color: yellow;
+            text-shadow: 0px 0px 10px rgba(255, 255, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="picker-container" id="pickerContainer">
+        <div class="picker" id="picker"></div>
+    </div>
+    <script>
+        const picker = document.getElementById("picker");
+        const pickerContainer = document.getElementById("pickerContainer");
+        const words = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
+        const totalItems = words.length;
+        let angle = 0;
+        let autoRotating = true;
+        const stepAngle = 360 / totalItems;
+        let scrollTimeout;
+
+        function createItems() {
+            picker.innerHTML = "";
+            words.forEach((word, i) => {
+                const div = document.createElement("div");
+                div.classList.add("picker-item");
+                div.style.setProperty("--rotate", `${i * stepAngle}deg`);
+                div.textContent = word;
+                picker.appendChild(div);
+            });
+            updateSelection();
+        }
+
+        function updateSelection() {
+            const items = document.querySelectorAll(".picker-item");
+            const selectedIndex = Math.round((360 - (angle % 360)) / stepAngle) % totalItems;
+            items.forEach((item, i) => {
+                item.classList.toggle("selected", i === selectedIndex);
+            });
+        }
+
+        function rotatePicker(direction = -1) {
+            angle += direction * stepAngle;
+            picker.style.transform = `rotateX(${angle}deg)`;
+            updateSelection();
+        }
+
+        function autoRotate() {
+            if (autoRotating) {
+                rotatePicker();
+                setTimeout(autoRotate, 1500);
+            }
+        }
+
+        // Pause auto rotation on hover (desktop)
+        pickerContainer.addEventListener("mouseenter", () => autoRotating = false);
+        pickerContainer.addEventListener("mouseleave", () => {
+            autoRotating = true;
+            autoRotate();
+        });
+
+        // Manual scrolling using the mouse wheel (desktop)
+        pickerContainer.addEventListener("wheel", (e) => {
+            e.preventDefault(); // Prevent page scrolling
+            const direction = e.deltaY > 0 ? -1 : 1;
+            rotatePicker(direction);
+            
+            // Reset auto-rotation timeout to prevent quick restart
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                autoRotating = true;
+                autoRotate();
+            }, 3000); // Resume auto-rotation after 3 seconds
+        });
+
+        // Manual scrolling using touch gestures (mobile)
+        let touchStartY = 0;
+        let touchEndY = 0;
+        pickerContainer.addEventListener("touchstart", (e) => {
+            autoRotating = false;
+            touchStartY = e.touches[0].clientY;
+        });
+
+        pickerContainer.addEventListener("touchend", () => {
+            let deltaY = touchStartY - touchEndY;
+            if (Math.abs(deltaY) > 20) { // Minimum swipe distance
+                let direction = deltaY > 0 ? -1 : 1; // Swipe up = -1, Swipe down = 1
+                rotatePicker(direction);
+            }
+
+            // Resume auto-rotation after 3 seconds
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                autoRotating = true;
+                autoRotate();
+            }, 3000);
+        });
+
+        pickerContainer.addEventListener("touchmove", (e) => {
+            e.preventDefault(); // Prevent scrolling the page
+            touchEndY = e.touches[0].clientY;
+        });
+
+        createItems();
+        autoRotate();
+    </script>
+</body>
+</html>
