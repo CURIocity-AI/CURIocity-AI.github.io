@@ -43,6 +43,93 @@
         nav a:hover {
             color: #00bcd4;
         }
+
+
+           .menu-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 35px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+        z-index: 1000;
+    }
+
+    .menu-icon span {
+        display: block;
+        height: 3px;
+        background: #ffffff;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        transform-origin: center;
+    }
+
+    .menu-icon span:nth-child(1) {
+        width: 100%;
+    }
+
+    .menu-icon span:nth-child(2) {
+        width: 85%;
+    }
+
+    .menu-icon span:nth-child(3) {
+        width: 70%;
+    }
+
+    /* Add animation when toggled */
+    .menu-icon.open span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+        width: 100%;
+    }
+
+    .menu-icon.open span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-icon.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+        width: 100%;
+    }
+    .menu-items {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 30px;
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        padding: 10px 20px;
+    }
+
+    .menu-items a {
+        margin: 10px 0;
+    }
+
+    .menu-items.show {
+        display: flex;
+    }
+
+    @media (min-width: 768px) {
+        .menu-icon {
+            display: none;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: row;
+            position: static;
+            background: none;
+            box-shadow: none;
+            padding: 0;
+        }
+
+        .menu-items a {
+            margin: 0 15px;
+        }
+    }
+
         .hero {
             display: flex;
             flex-direction: column;
