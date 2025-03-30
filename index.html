@@ -66,35 +66,7 @@
     </div>
 
 </section>
-<section class="slideshow">
-  <div class="slideshow-container">
-    <div class="slide">
-        <h1>The Power of Curiosity</h1>
-        <p>Driving deeper insights with the questions that matter.</p>
-    </div>
-    <div class="slide">
-      <h1>The Power of W?at, W?y, W?ere, W?en, and ?oW</h1>
-      <p>Driving deeper insights with the questions that matter.</p>
-    </div>
-    <div class="slide">
-      <h1>The Road to Web5</h1>
-      <p>Building the future of decentralized innovation and collaboration.</p>
-    </div>
-    <!-- Duplicate slides for seamless infinite scrolling -->
-    <div class="slide">
-      <h1>The Power of Curiosity</h1>
-      <p>Unlocking innovation through questions and discovery.</p>
-    </div>
-    <div class="slide">
-      <h1>The Power of When, and hoW</h1>
-      <p>Driving deeper insights with the questions that matter.</p>
-    </div>
-    <div class="slide">
-      <h1>The Road to Web5</h1>
-      <p>Building the future of decentralized innovation and collaboration.</p>
-    </div>
-  </div>
-</section>
+
 
 <footer class="footer">
   <div class="footer-container">
@@ -155,25 +127,7 @@
 
 </script>
 
-<script>
-let slideIndex = 0;
 
-function changeSlide(step) {
-  const slides = document.querySelectorAll('.slide');
-  slideIndex = (slideIndex + step + slides.length) % slides.length;
-  
-  const container = document.querySelector('.slideshow-container');
-  container.style.transition = 'transform 0.5s ease-in-out';
-  container.style.transform = `translateX(-${slideIndex * 100}%)`;
-}
-
-// Reset animation on hover to maintain auto-slide functionality
-const container = document.querySelector('.slideshow-container');
-container.addEventListener('animationiteration', () => {
-  slideIndex = (slideIndex + 1) % document.querySelectorAll('.slide').length;
-  container.style.transition = 'none'; // Reset transition for auto-slide
-});
-</script>
 
     <script>
         const picker = document.getElementById("picker");
