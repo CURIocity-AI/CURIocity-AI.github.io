@@ -267,6 +267,12 @@ footer {
     transition: transform 0.5s ease-in-out;
 }
 
+.slideshow-container {
+    display: flex; /* Align elements horizontally */
+            gap: 10px; /* Adjust spacing */
+            justify-content: center; /* Center items */
+}
+
 .slide {
     min-width: 100%;
     box-sizing: border-box;
