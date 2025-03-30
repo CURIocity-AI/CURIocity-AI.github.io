@@ -117,26 +117,30 @@
 
         // Manual scrolling using touch gestures (mobile)
         let touchStartY = 0;
+        let touchEndY = 0;
         pickerContainer.addEventListener("touchstart", (e) => {
             autoRotating = false;
             touchStartY = e.touches[0].clientY;
         });
 
-        pickerContainer.addEventListener("touchmove", (e) => {
-            e.preventDefault(); // Prevent scrolling the page
-            let touchEndY = e.touches[0].clientY;
-            let direction = touchEndY > touchStartY ? 1 : -1; // Swipe down = 1, Swipe up = -1
-            rotatePicker(direction);
-            touchStartY = touchEndY;
-        });
-
         pickerContainer.addEventListener("touchend", () => {
+            let deltaY = touchStartY - touchEndY;
+            if (Math.abs(deltaY) > 20) { // Minimum swipe distance
+                let direction = deltaY > 0 ? -1 : 1; // Swipe up = -1, Swipe down = 1
+                rotatePicker(direction);
+            }
+
             // Resume auto-rotation after 3 seconds
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
                 autoRotating = true;
                 autoRotate();
             }, 3000);
+        });
+
+        pickerContainer.addEventListener("touchmove", (e) => {
+            e.preventDefault(); // Prevent scrolling the page
+            touchEndY = e.touches[0].clientY;
         });
 
         createItems();
