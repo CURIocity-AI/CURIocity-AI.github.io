@@ -279,7 +279,15 @@
     </div>
 
 
+ <script>
+    function toggleMenu() {
+        const menuIcon = document.querySelector(".menu-icon");
+        const menuItems = document.getElementById("menu-items");
+        menuIcon.classList.toggle("open");
+        menuItems.classList.toggle("show");
+    }
 
+</script>
 
     <script>
         const picker = document.getElementById("picker");
