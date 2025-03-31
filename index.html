@@ -517,12 +517,20 @@
 </footer>
 
  <script>
-    function toggleMenu() {
-        const menuIcon = document.querySelector(".menu-icon");
-        const menuItems = document.getElementById("menu-items");
-        menuIcon.classList.toggle("open");
-        menuItems.classList.toggle("show");
-    }
+        function toggleMenu() {
+    const menuIcon = document.querySelector(".menu-icon");
+    const menuItems = document.getElementById("menu-items");
+
+    menuIcon.classList.toggle("open");
+    menuItems.classList.toggle("show");
+}
+
+document.querySelectorAll(".menu-items a").forEach(link => {
+    link.addEventListener("click", () => {
+        document.querySelector(".menu-icon").classList.remove("open");
+        document.getElementById("menu-items").classList.remove("show");
+    });
+});
 
 </script>
 
