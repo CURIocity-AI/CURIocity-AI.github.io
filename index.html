@@ -1,14 +1,400 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curiosity ($CURI)</title>
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
-<link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #ffffff;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(15, 23, 42, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav .menu-items {
+            display: flex;
+            gap: 20px;
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #00bcd4;
+        }
+
+
+           .menu-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 35px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+        z-index: 1000;
+    }
+
+    .menu-icon span {
+        display: block;
+        height: 3px;
+        background: #ffffff;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        transform-origin: center;
+    }
+
+    .menu-icon span:nth-child(1) {
+        width: 100%;
+    }
+
+    .menu-icon span:nth-child(2) {
+        width: 85%;
+    }
+
+    .menu-icon span:nth-child(3) {
+        width: 70%;
+    }
+
+    /* Add animation when toggled */
+    .menu-icon.open span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+        width: 100%;
+    }
+
+    .menu-icon.open span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-icon.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+        width: 100%;
+    }
+    .menu-items {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 30px;
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        padding: 10px 20px;
+    }
+
+    .menu-items a {
+        margin: 10px 0;
+    }
+
+    .menu-items.show {
+        display: flex;
+    }
+
+    @media (min-width: 768px) {
+        .menu-icon {
+            display: none;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: row;
+            position: static;
+            background: none;
+            box-shadow: none;
+            padding: 0;
+        }
+
+        .menu-items a {
+            margin: 0 15px;
+        }
+    }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-right: 2px solid #00bcd4;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .hero p {
+            font-size: 1.5rem;
+        }
+        .btn {
+            background: #00bcd4;
+            color: #ffffff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #008c9e;
+            transform: scale(1.1);
+        }
+
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .btn-nav {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-login {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #00bcd4;
+        }
+        .btn-login:hover {
+            background: #00bcd4;
+        }
+        .btn-get-started {
+            background: #00bcd4;
+            color: #ffffff;
+        }
+        .btn-get-started:hover {
+            background: #008c9e;
+        }
+
+        .features {
+            padding: 35px 20px;
+            background: #1e293b;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .features .feature-item {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+
+        .token-data {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(15, 23, 42, 0.8);
+            margin: 20px auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 80%;
+        }
+        @media (max-width: 768px) {
+            nav .menu-items {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                right: 30px;
+                background: rgba(15, 23, 42, 0.9);
+                padding: 10px;
+                border-radius: 10px;
+            }
+            nav .menu-items.show {
+                display: flex;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+                white-space: normal;
+                border-right: none;
+            }
+        }
+
+       .rotation {
+                  display: flex; /* Align elements horizontally */
+            gap: 10px; /* Adjust spacing */
+            justify-content: center; /* Center items */
+}
+
+        .picker-container {
+            perspective: 1000px;
+            height: 200px;
+            width: 200px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            touch-action: none;
+        }
+        .picker {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.15s linear;
+
+        }
+        .picker-item {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) rotateX(var(--rotate)) translateZ(120px);
+            font-size: 24px;
+            color: white;
+            opacity: 0.5;
+            transition: opacity 0.1s, font-size 0.1s, font-weight 0.1s;
+            border-style: solid;
+            border-width: 1px;
+            border-color: white;
+            border-radius: 5px;
+        }
+        .selected {
+            opacity: 1;
+            font-size: 36px;
+            font-weight: bold;
+            color: yellow;
+            text-shadow: 0px 0px 10px rgba(255, 255, 0, 0.8);
+        }
+
+/* Footer Styling */
+.footer {
+  background: #1e293b; /* Gradient background */
+  color: #ffffff;
+  padding: 40px 20px;
+  font-family: "Arial", sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1 1 220px; /* Flexible layout for responsiveness */
+  margin: 10px;
+}
+
+.footer-section h3,
+.footer-section h4 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #00e0ff;
+}
+
+.footer-section p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #cccccc;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 10px 0;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  color: #00e0ff;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: #00b8e6;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons a {
+  font-size: 1.5rem;
+  color: #ffffff;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #00e0ff;
+  transform: scale(1.2);
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 10px;
+}
+
+.newsletter-form input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.newsletter-form button {
+  background: #00e0ff;
+  color: #121212;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.newsletter-form button:hover {
+  background: #00b8e6;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  border-top: 1px solid #333;
+  padding-top: 10px;
+  font-size: 0.8rem;
+  color: #999999;
+}
+
 
     </style>
     <script>
@@ -27,31 +413,25 @@
             typeWriter();
         });
     </script>
-
 </head>
 <body>
-
-
-<nav>
+    <nav>
     <div><a href="#">Curiosity ($CURI)</a></div>
    <div class="menu-icon" onclick="toggleMenu()">
     <span></span>
     <span></span>
     <span></span>
 </div>
-    <div class="menu-items" id="menu-items">
-        <a href="#features">Features</a>
-        <a href="#roadmap">Roadmap</a>
-        <a href="#tokenomics">Tokenomics</a>
-        <a href="#nfts">NFTs</a>
-        <a href="#whitepaper">Whitepaper</a>
-        <a href="#airdrop">Airdrop</a>
-    </div>
 
-       
-        
-</nav>
-
+     <div class="menu-items" id="menu-items">
+            <a href="#features">Features</a>
+            <a href="#roadmap">Roadmap</a>
+            <a href="#tokenomics">Tokenomics</a>
+            <a href="#nfts">NFTs</a>
+            <a href="#whitepaper">Whitepaper</a>
+            <a href="#airdrop">Airdrop</a>
+        </div>
+    </nav>
     <div class="hero">
         <h1 id="typing-text"></h1>
         <p>The token that fuels your curiosity and drives innovation in Web3.</p>
@@ -62,13 +442,12 @@
             <button class="btn-nav btn-login">Login</button>
         </div>
     </div>
-
-<div class="token-data">
-    <h3>Live Token Data</h3>
-    <p>Price: $0.000 (placeholder)</p>
-    <p>Market Cap: $0 (placeholder)</p>
-    <p>Total Supply: 500M CURI</p>
-</div>
+    <div class="token-data">
+        <h3>Live Token Data</h3>
+        <p>Price: $0.000 (placeholder)</p>
+        <p>Market Cap: $0 (placeholder)</p>
+        <p>Total Supply: 500M CURI</p>
+    </div>
 
 <div class="features" id="features">
     <h2>Features</h2>
@@ -77,6 +456,7 @@
     <div class="feature-item">✅ Interactive Roadmap and Tokenomics</div>
     <div class="feature-item">✅ NFT Section: Browse, Buy, and Trade</div>
 </div>
+
 <section class="rotation">
 
     <div class="picker-container" id="pickerContainer">
@@ -135,6 +515,7 @@
     <p>© 2025 Curiosity ($CURI). All rights reserved.</p>
   </div>
 </footer>
+
  <script>
     function toggleMenu() {
         const menuIcon = document.querySelector(".menu-icon");
@@ -144,8 +525,6 @@
     }
 
 </script>
-
-
 
     <script>
         const picker = document.getElementById("picker");
