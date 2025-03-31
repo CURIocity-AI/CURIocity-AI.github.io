@@ -398,20 +398,24 @@
 
     </style>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const text = "Welcome to Curiosity ($CURI)";
-            let i = 0;
-            const speed = 100;
-            const heading = document.getElementById("typing-text");
-            function typeWriter() {
-                if (i < text.length) {
-                    heading.innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, speed);
-                }
-            }
-            typeWriter();
-        });
+        document.addEventListener("DOMContentLoaded", function () {
+    const text = "Welcome to Curiosity ($CURI)";
+    let i = 0;
+    const speed = 100;
+    const heading = document.getElementById("typing-text");
+
+    function typeWriter() {
+        if (i === 0) {
+            heading.innerHTML = ""; // Clear previous text
+        }
+        if (i < text.length) {
+            heading.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, speed);
+        }
+    }
+    typeWriter();
+});
     </script>
 </head>
 <body>
