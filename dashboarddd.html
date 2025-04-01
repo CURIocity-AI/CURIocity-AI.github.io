@@ -79,6 +79,7 @@
             text-align: center;
             opacity: 0;
             pointer-events: none;
+            transform: translateY(50px);
             transition: opacity 0.3s ease-out, transform 0.5s ease-out;
         }
 
@@ -190,16 +191,18 @@
                 if (menuVisible) {
                     actionItems.style.opacity = '1';
                     actionItems.style.transform = 'translateY(0)';
-                    Array.from(items).forEach((item, index) => {
+                    Array.from(items).reverse().forEach((item, index) => {
                         setTimeout(() => {
                             item.classList.add("visible");
-                        }, index * 100); // Staggered animation
+                        }, index * 100); // Staggered animation, starting from the bottom item
                     });
                 } else {
                     actionItems.style.opacity = '0';
                     actionItems.style.transform = 'translateY(100%)';
-                    Array.from(items).forEach((item) => {
-                        item.classList.remove("visible");
+                    Array.from(items).reverse().forEach((item, index) => {
+                        setTimeout(() => {
+                            item.classList.remove("visible");
+                        }, index * 100); // Reverse order of removal
                     });
                 }
             });
