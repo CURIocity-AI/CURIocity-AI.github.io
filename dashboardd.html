@@ -1,73 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProjectName - Logged In</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-</head>
-<body class="bg-gray-900 text-white">
-    <!-- Top Navigation -->
-    <header class="flex items-center justify-between px-4 py-3 bg-gray-800 sticky top-0">
-        <h1 class="text-lg font-bold">$CURI</h1>
-        <div class="flex gap-4">
-            <button id="notification" class="text-xl">
-                <i class="fas fa-bell"></i> <!-- Facebook-like notification icon -->
-            </button>
-            <button id="profile" class="text-xl">
-                <i class="fas fa-user-circle"></i> <!-- Facebook-like profile icon -->
-            </button>
+import React from "react";
+import { FaBell, FaWallet, FaHome, FaTasks, FaUser } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
+
+export default function LoggedInLanding() {
+  return (
+    <div className="flex flex-col h-screen bg-gray-900 text-white">
+      {/* Top Navigation */}
+      <header className="flex items-center justify-between px-6 py-4 bg-gray-800 sticky top-0 shadow-md">
+        <h1 className="text-lg font-bold">ProjectName</h1>
+        <div className="flex gap-6">
+          <FaBell className="text-xl" />
+          <FaUser className="text-xl" />
         </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto p-4">
-        <!-- Dashboard Preview -->
-        <div class="bg-gray-700 p-4 rounded-xl mb-4">
-            <h2 class="text-lg">Welcome Back, User!</h2>
-            <p>Balance: <span class="font-bold">1000 TOKEN</span></p>
-        </div>
-
-        <!-- Quick Actions (Enhanced Buttons) -->
-        <div class="grid grid-cols-2 gap-4 mb-4">
-            <!-- Claim Airdrop Button -->
-            <button class="bg-gradient-to-r from-green-500 to-green-700 text-white p-4 rounded-lg shadow-lg hover:bg-green-700 transform hover:scale-105 transition-all">
-                Claim Airdrop
-            </button>
-
-            <!-- Stake Tokens Button -->
-            <button class="bg-gradient-to-r from-green-500 to-green-700 text-white p-4 rounded-lg shadow-lg hover:bg-green-700 transform hover:scale-105 transition-all">
-                Stake Tokens
-            </button>
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="bg-gray-700 p-4 rounded-xl">
-            <h3 class="text-md font-semibold">Recent Transactions</h3>
-            <ul class="mt-2 text-sm">
-                <li>✔ Staked 500 TOKEN</li>
-                <li>✔ Claimed 200 TOKEN</li>
+      </header>
+      
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar for Desktop */}
+        <aside className="hidden md:flex flex-col w-64 bg-gray-800 p-6 space-y-6">
+          <FaHome className="text-xl" />
+          <FaTasks className="text-xl" />
+          <FaWallet className="text-xl" />
+          <FaUser className="text-xl" />
+        </aside>
+        
+        {/* Main Content */}
+        <main className="flex-1 overflow-y-auto p-6">
+          {/* Dashboard Preview */}
+          <div className="bg-gray-700 p-6 rounded-xl mb-6 shadow-lg">
+            <h2 className="text-xl">Welcome Back, User!</h2>
+            <p>Balance: <span className="font-bold">1000 TOKEN</span></p>
+          </div>
+          
+          {/* Quick Actions */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+            <Button className="bg-cyan-600 p-4 text-lg rounded-lg shadow-md hover:bg-cyan-700 transition-all">Claim Airdrop</Button>
+            <Button className="bg-green-600 p-4 text-lg rounded-lg shadow-md hover:bg-green-700 transition-all">Stake Tokens</Button>
+          </div>
+          
+          {/* Recent Activity */}
+          <div className="bg-gray-700 p-6 rounded-xl shadow-lg">
+            <h3 className="text-lg font-semibold">Recent Transactions</h3>
+            <ul className="mt-3 text-sm space-y-2">
+              <li>✔ Staked 500 TOKEN</li>
+              <li>✔ Claimed 200 TOKEN</li>
             </ul>
-        </div>
-    </main>
-
-    <!-- Bottom Navigation (Fixed to the bottom) -->
-    <nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full">
-        <button class="text-xl">
-            <i class="fas fa-home"></i> <!-- Facebook-like home icon -->
-        </button>
-        <button class="text-xl">
-            <i class="fas fa-tasks"></i> <!-- Tasks icon -->
-        </button>
-        <button class="text-xl">
-            <i class="fas fa-wallet"></i> <!-- Wallet icon -->
-        </button>
-        <button class="text-xl">
-            <i class="fas fa-user"></i> <!-- Profile icon -->
-        </button>
-    </nav>
-
-    <script src="app.js"></script>
-</body>
-</html>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
