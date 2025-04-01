@@ -6,7 +6,6 @@
     <title>ProjectName - Logged In</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 </head>
 <body class="bg-gray-900 text-white">
     <!-- Top Navigation -->
@@ -39,10 +38,17 @@
 
         <!-- Quick Actions -->
         <div class="fixed bottom-20 right-6">
-            <!-- Professional Floating Action Button -->
+            <!-- Floating Action Button -->
             <button id="quickActions" class="bg-gradient-to-r from-green-500 to-green-700 p-5 rounded-full shadow-lg text-white text-2xl hover:scale-110 transform transition-all duration-200 focus:outline-none tooltip" data-tooltip="Quick Actions">
                 <i class="fas fa-plus"></i>
             </button>
+
+            <!-- Action Dropdown Menu -->
+            <div id="actionMenu" class="hidden absolute bottom-24 right-8 bg-gray-800 p-4 rounded-lg shadow-lg space-y-2 w-48">
+                <button id="claimAirdrop" class="w-full bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-600 transition">Claim Airdrop</button>
+                <button id="stakeTokens" class="w-full bg-yellow-500 p-3 rounded-lg text-white hover:bg-yellow-600 transition">Stake Tokens</button>
+                <button id="viewTransactions" class="w-full bg-purple-500 p-3 rounded-lg text-white hover:bg-purple-600 transition">View Transactions</button>
+            </div>
         </div>
 
         <!-- Recent Activity -->
@@ -82,14 +88,26 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
+            const actionMenu = document.getElementById("actionMenu");
+            const quickActionsButton = document.getElementById("quickActions");
+            const claimAirdropButton = document.getElementById("claimAirdrop");
+            const stakeTokensButton = document.getElementById("stakeTokens");
+            const viewTransactionsButton = document.getElementById("viewTransactions");
+
             const transactionList = document.getElementById("transactionList");
             const confirmationModal = document.getElementById("confirmationModal");
             const modalMessage = document.getElementById("modalMessage");
             const confirmAction = document.getElementById("confirmAction");
             const cancelAction = document.getElementById("cancelAction");
-            const toastContainer = document.getElementById("toastContainer");
+
             let currentAction = null;
 
+            // Show Action Menu on Button Click
+            quickActionsButton.addEventListener("click", () => {
+                actionMenu.classList.toggle("hidden");
+            });
+
+            // Add a new transaction to the list
             async function addTransaction(action, amount) {
                 const now = new Date().toLocaleTimeString();
                 const listItem = document.createElement("li");
@@ -101,6 +119,7 @@
                 transactionList.prepend(listItem);
             }
 
+            // Show Modal for Confirmation
             function showModal(action, callback) {
                 modalMessage.textContent = `Confirm ${action}?`;
                 confirmationModal.classList.remove("hidden");
@@ -108,6 +127,7 @@
                 currentAction = callback;
             }
 
+            // Show Toast Notification
             function showToast(type) {
                 const toast = document.getElementById(`toast${type}`);
                 toast.classList.remove("hidden");
@@ -115,6 +135,27 @@
                     toast.classList.add("hidden");
                 }, 3000);
             }
+
+            // Actions for the Menu Buttons
+            claimAirdropButton.addEventListener("click", () => {
+                showModal("Claim Airdrop", async () => {
+                    addTransaction("Claimed Airdrop", "500");
+                    showToast("Success");
+                });
+            });
+
+            stakeTokensButton.addEventListener("click", () => {
+                showModal("Stake Tokens", async () => {
+                    addTransaction("Staked Tokens", "200");
+                    showToast("Success");
+                });
+            });
+
+            viewTransactionsButton.addEventListener("click", () => {
+                showModal("View Transactions", async () => {
+                    showToast("Info");
+                });
+            });
 
             confirmAction.addEventListener("click", () => {
                 if (currentAction) currentAction();
@@ -124,26 +165,6 @@
 
             cancelAction.addEventListener("click", () => {
                 confirmationModal.classList.add("hidden");
-            });
-
-            document.getElementById("quickActions").addEventListener("click", () => {
-                showModal("Perform a Quick Action", async () => {
-                    addTransaction("Quick Action", "100");
-                    showToast("Success");
-                });
-            });
-
-            document.querySelectorAll("nav button").forEach(btn => {
-                btn.addEventListener("click", () => {
-                    document.querySelectorAll("nav button").forEach(b => b.classList.remove("text-blue-400"));
-                    btn.classList.add("text-blue-400");
-                });
-            });
-
-            // Toast for wallet connection
-            document.getElementById("connectWallet").addEventListener("click", () => {
-                document.getElementById("walletStatus").textContent = "Connected";
-                showToast("Info");
             });
         });
     </script>
