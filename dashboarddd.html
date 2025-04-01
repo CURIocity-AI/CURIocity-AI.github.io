@@ -58,14 +58,15 @@
         /* Action Items Styling */
         .action-items {
             position: absolute;
-            top: -250px;
-            right: 0;
+            right: 20px;
+            bottom: 130px; /* Above the + button */
             width: 200px;
-            transition: top 0.5s ease-out;
             display: flex;
             flex-direction: column;
             gap: 10px;
             opacity: 0;
+            transform: translateY(100%);
+            transition: all 0.5s ease-out;
         }
 
         .action-item {
@@ -78,18 +79,13 @@
             text-align: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease-out;
+            transition: opacity 0.3s ease-out, transform 0.5s ease-out;
         }
 
         .action-item.visible {
             opacity: 1;
             pointer-events: auto;
-        }
-
-        /* Transition for action items flying out */
-        .action-items.visible {
-            top: -120px;
-            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Transaction History */
@@ -114,7 +110,6 @@
         .transaction-history ul li {
             margin-bottom: 10px;
         }
-
     </style>
 </head>
 <body>
@@ -193,13 +188,16 @@
                 menuVisible = !menuVisible;
 
                 if (menuVisible) {
-                    actionItems.classList.add("visible");
+                    actionItems.style.opacity = '1';
+                    actionItems.style.transform = 'translateY(0)';
                     Array.from(items).forEach((item, index) => {
-                        item.classList.add("visible");
-                        item.style.animation = `fadeIn ${0.3 + index * 0.1}s ease-out forwards`;
+                        setTimeout(() => {
+                            item.classList.add("visible");
+                        }, index * 100); // Staggered animation
                     });
                 } else {
-                    actionItems.classList.remove("visible");
+                    actionItems.style.opacity = '0';
+                    actionItems.style.transform = 'translateY(100%)';
                     Array.from(items).forEach((item) => {
                         item.classList.remove("visible");
                     });
