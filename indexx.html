@@ -531,10 +531,30 @@
 
 document.querySelectorAll(".menu-items a").forEach(link => {
     link.addEventListener("click", () => {
-        document.querySelector(".menu-icon").classList.remove("open");
-        document.getElementById("menu-items").classList.remove("show");
+        closeMenu();
     });
 });
+
+// Close menu on scroll
+window.addEventListener("scroll", () => {
+    closeMenu();
+});
+
+// Close menu when clicking anywhere outside the menu
+document.addEventListener("click", (event) => {
+    const menuIcon = document.querySelector(".menu-icon");
+    const menuItems = document.getElementById("menu-items");
+
+    // Check if the clicked element is NOT inside the menu or the menu icon
+    if (!menuItems.contains(event.target) && !menuIcon.contains(event.target)) {
+        closeMenu();
+    }
+});
+
+function closeMenu() {
+    document.querySelector(".menu-icon").classList.remove("open");
+    document.getElementById("menu-items").classList.remove("show");
+}
 
 </script>
 
