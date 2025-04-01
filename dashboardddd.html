@@ -65,7 +65,7 @@
             flex-direction: column;
             gap: 10px;
             opacity: 0;
-            transform: translateY(100%);
+            transform: translateX(100%); /* Initially placed off-screen to the right */
             transition: all 0.5s ease-out;
         }
 
@@ -190,7 +190,7 @@
 
                 if (menuVisible) {
                     actionItems.style.opacity = '1';
-                    actionItems.style.transform = 'translateY(0)';
+                    actionItems.style.transform = 'translateX(0)'; // Move from right to left
                     Array.from(items).reverse().forEach((item, index) => {
                         setTimeout(() => {
                             item.classList.add("visible");
@@ -198,7 +198,7 @@
                     });
                 } else {
                     actionItems.style.opacity = '0';
-                    actionItems.style.transform = 'translateY(100%)';
+                    actionItems.style.transform = 'translateX(100%)'; // Slide back to the right
                     Array.from(items).reverse().forEach((item, index) => {
                         setTimeout(() => {
                             item.classList.remove("visible");
