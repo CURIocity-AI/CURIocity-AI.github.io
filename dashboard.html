@@ -5,69 +5,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProjectName - Logged In</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body class="bg-gray-900 text-white">
     <!-- Top Navigation -->
-    <header class="flex items-center justify-between px-4 py-3 bg-gray-800 sticky top-0">
-        <h1 class="text-lg font-bold">$CURI</h1>
+    <header class="flex items-center justify-between px-6 py-4 bg-gray-800 sticky top-0 shadow-md">
+        <h1 class="text-xl font-bold">$CURI</h1>
         <div class="flex gap-4">
-            <button id="notification" class="text-xl">
-                <i class="fas fa-bell"></i> <!-- Facebook-like notification icon -->
+            <button id="notification" class="text-xl cursor-pointer">
+                <i class="fas fa-bell"></i>
             </button>
-            <button id="profile" class="text-xl">
-                <i class="fas fa-user-circle"></i> <!-- Facebook-like profile icon -->
+            <button id="profile" class="text-xl cursor-pointer">
+                <i class="fas fa-user-circle"></i>
             </button>
         </div>
     </header>
 
+    <!-- Wallet Connection -->
+    <section class="p-6 text-center">
+        <button id="connectWallet" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Connect Wallet</button>
+        <p id="walletStatus" class="mt-2 text-sm text-gray-400">Not connected</p>
+    </section>
+
     <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto p-4">
+    <main class="flex-1 overflow-y-auto p-6">
         <!-- Dashboard Preview -->
-        <div class="bg-gray-700 p-4 rounded-xl mb-4">
-            <h2 class="text-lg">Welcome Back, User!</h2>
-            <p>Balance: <span class="font-bold">1000 TOKEN</span></p>
+        <div class="bg-gray-700 p-6 rounded-xl mb-4 shadow-lg">
+            <h2 class="text-lg font-semibold">Welcome Back, User!</h2>
+            <p>Balance: <span id="tokenBalance" class="font-bold">Loading...</span></p>
+            <p>Token Price: <span id="tokenPrice" class="text-green-400">Fetching...</span></p>
         </div>
 
-        <!-- Quick Actions (Enhanced Buttons) -->
-        <div class="grid grid-cols-2 gap-4 mb-4">
-            <!-- Claim Airdrop Button -->
-            <button class="bg-gradient-to-r from-green-500 to-green-700 text-white p-4 rounded-lg shadow-lg hover:bg-green-700 transform hover:scale-105 transition-all">
-                Claim Airdrop
+        <!-- Quick Actions -->
+        <div class="fixed bottom-20 right-6">
+            <!-- Floating Action Button -->
+            <button id="quickActions" class="bg-gradient-to-r from-green-500 to-green-700 p-5 rounded-full shadow-lg text-white text-2xl hover:scale-110 transform transition-all duration-200 focus:outline-none tooltip" data-tooltip="Quick Actions">
+                <i class="fas fa-plus"></i>
             </button>
 
-            <!-- Stake Tokens Button -->
-            <button class="bg-gradient-to-r from-green-500 to-green-700 text-white p-4 rounded-lg shadow-lg hover:bg-green-700 transform hover:scale-105 transition-all">
-                Stake Tokens
-            </button>
+            <!-- Action Dropdown Menu -->
+            <div id="actionMenu" class="hidden absolute bottom-24 right-8 bg-gray-800 p-4 rounded-lg shadow-lg space-y-2 w-48">
+                <button id="claimAirdrop" class="w-full bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-600 transition">Claim Airdrop</button>
+                <button id="stakeTokens" class="w-full bg-yellow-500 p-3 rounded-lg text-white hover:bg-yellow-600 transition">Stake Tokens</button>
+                <button id="viewTransactions" class="w-full bg-purple-500 p-3 rounded-lg text-white hover:bg-purple-600 transition">View Transactions</button>
+            </div>
         </div>
 
         <!-- Recent Activity -->
-        <div class="bg-gray-700 p-4 rounded-xl">
-            <h3 class="text-md font-semibold">Recent Transactions</h3>
-            <ul class="mt-2 text-sm">
-                <li>✔ Staked 500 TOKEN</li>
-                <li>✔ Claimed 200 TOKEN</li>
+        <div class="bg-gray-700 p-6 rounded-xl shadow-lg">
+            <h3 class="text-md font-semibold mb-2">Recent Transactions</h3>
+            <ul id="transactionList" class="text-sm divide-y divide-gray-600 overflow-y-auto max-h-48">
+                <li class="py-2">No recent transactions</li>
             </ul>
         </div>
     </main>
 
-    <!-- Bottom Navigation (Fixed to the bottom) -->
-    <nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full">
-        <button class="text-xl">
-            <i class="fas fa-home"></i> <!-- Facebook-like home icon -->
-        </button>
-        <button class="text-xl">
-            <i class="fas fa-tasks"></i> <!-- Tasks icon -->
-        </button>
-        <button class="text-xl">
-            <i class="fas fa-wallet"></i> <!-- Wallet icon -->
-        </button>
-        <button class="text-xl">
-            <i class="fas fa-user"></i> <!-- Profile icon -->
-        </button>
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg text-center w-80 animate-scale">
+            <p class="text-lg mb-4" id="modalMessage">Are you sure?</p>
+            <div class="flex justify-around">
+                <button id="confirmAction" class="bg-green-500 px-4 py-2 rounded-lg">Confirm</button>
+                <button id="cancelAction" class="bg-red-500 px-4 py-2 rounded-lg">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="fixed bottom-4 left-4 space-y-2">
+        <div id="toastSuccess" class="toast bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm hidden">Transaction Successful!</div>
+        <div id="toastError" class="toast bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm hidden">Transaction Failed!</div>
+        <div id="toastInfo" class="toast bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm hidden">Wallet Connected</div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full shadow-md">
+        <button class="text-xl cursor-pointer active-tab"><i class="fas fa-home"></i></button>
+        <button class="text-xl cursor-pointer"><i class="fas fa-tasks"></i></button>
+        <button class="text-xl cursor-pointer"><i class="fas fa-wallet"></i></button>
+        <button class="text-xl cursor-pointer"><i class="fas fa-user"></i></button>
     </nav>
 
-    <script src="app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const actionMenu = document.getElementById("actionMenu");
+            const quickActionsButton = document.getElementById("quickActions");
+            const claimAirdropButton = document.getElementById("claimAirdrop");
+            const stakeTokensButton = document.getElementById("stakeTokens");
+            const viewTransactionsButton = document.getElementById("viewTransactions");
+
+            const transactionList = document.getElementById("transactionList");
+            const confirmationModal = document.getElementById("confirmationModal");
+            const modalMessage = document.getElementById("modalMessage");
+            const confirmAction = document.getElementById("confirmAction");
+            const cancelAction = document.getElementById("cancelAction");
+
+            let currentAction = null;
+
+            // Show Action Menu on Button Click
+            quickActionsButton.addEventListener("click", () => {
+                actionMenu.classList.toggle("hidden");
+            });
+
+            // Add a new transaction to the list
+            async function addTransaction(action, amount) {
+                const now = new Date().toLocaleTimeString();
+                const listItem = document.createElement("li");
+                listItem.className = "py-2 flex justify-between items-center";
+                listItem.innerHTML = `
+                    <span class="text-sm">✔ ${action} ${amount} TOKEN</span>
+                    <span class="text-xs text-gray-400">${now}</span>
+                `;
+                transactionList.prepend(listItem);
+            }
+
+            // Show Modal for Confirmation
+            function showModal(action, callback) {
+                modalMessage.textContent = `Confirm ${action}?`;
+                confirmationModal.classList.remove("hidden");
+                confirmationModal.classList.add("opacity-100");
+                currentAction = callback;
+            }
+
+            // Show Toast Notification
+            function showToast(type) {
+                const toast = document.getElementById(`toast${type}`);
+                toast.classList.remove("hidden");
+                setTimeout(() => {
+                    toast.classList.add("hidden");
+                }, 3000);
+            }
+
+            // Actions for the Menu Buttons
+            claimAirdropButton.addEventListener("click", () => {
+                showModal("Claim Airdrop", async () => {
+                    addTransaction("Claimed Airdrop", "500");
+                    showToast("Success");
+                });
+            });
+
+            stakeTokensButton.addEventListener("click", () => {
+                showModal("Stake Tokens", async () => {
+                    addTransaction("Staked Tokens", "200");
+                    showToast("Success");
+                });
+            });
+
+            viewTransactionsButton.addEventListener("click", () => {
+                showModal("View Transactions", async () => {
+                    showToast("Info");
+                });
+            });
+
+            confirmAction.addEventListener("click", () => {
+                if (currentAction) currentAction();
+                confirmationModal.classList.add("hidden");
+                showToast("Success");
+            });
+
+            cancelAction.addEventListener("click", () => {
+                confirmationModal.classList.add("hidden");
+            });
+        });
+    </script>
 </body>
 </html>
