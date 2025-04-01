@@ -7,33 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        /* Base Styles */
         body {
             background-color: #1a202c;
             color: white;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-        }
-
-        /* Bottom Navigation */
-        nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #2d3748;
-            display: flex;
-            justify-content: space-around;
-            padding: 1rem;
-            z-index: 10;
-        }
-
-        nav button {
-            color: white;
-            font-size: 1.5rem;
         }
 
         /* Floating Action Button */
@@ -42,11 +18,16 @@
             right: 20px;
             bottom: 80px;
             background-color: #38a169;
-            padding: 1rem;
-            border-radius: 50%; /* Perfectly rounded */
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             color: white;
             font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             transition: all 0.3s ease;
             z-index: 20;
         }
@@ -57,95 +38,43 @@
 
         /* Action Items Styling */
         .action-items {
-            position: absolute;
-            right: 20px;
-            bottom: 130px; /* Above the + button */
-            width: 200px; /* Fixed width */
+            position: fixed;
+            right: 30px;
+            bottom: 150px;
             display: flex;
-            flex-direction: column;
+            flex-direction: column-reverse;
             gap: 10px;
             opacity: 0;
-            transform: translateX(100%); /* Initially placed off-screen to the right */
-            transition: all 0.5s ease-out;
+            transform: translateX(100%);
+            transition: opacity 0.3s ease-out, transform 0.5s ease-out;
+            z-index: 19;
         }
 
         .action-item {
             background-color: #2d3748;
-            padding: 1rem;
+            padding: 0.8rem 1rem;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             color: white;
             font-size: 1rem;
             text-align: center;
             opacity: 0;
-            pointer-events: none;
-            transform: translateY(50px);
-            transition: opacity 0.3s ease-out, transform 0.5s ease-out;
+            transform: translateX(50px);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
 
-        .action-item.visible {
+        .action-items.visible {
             opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
+            transform: translateX(0);
         }
 
-        /* Transaction History */
-        .transaction-history {
-            background-color: #2d3748;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        .transaction-history h3 {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .transaction-history ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .transaction-history ul li {
-            margin-bottom: 10px;
+        .action-items.visible .action-item {
+            opacity: 1;
+            transform: translateX(0);
         }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <header class="flex items-center justify-between px-6 py-4 bg-gray-800 sticky top-0 shadow-md">
-        <h1 class="text-xl font-bold">$CURI</h1>
-        <div class="flex gap-4">
-            <button id="notification" class="text-xl cursor-pointer">
-                <i class="fas fa-bell"></i>
-            </button>
-            <button id="profile" class="text-xl cursor-pointer">
-                <i class="fas fa-user-circle"></i>
-            </button>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="container mt-20">
-        <!-- Dashboard Preview -->
-        <div class="bg-gray-700 p-6 rounded-xl mb-4 shadow-lg">
-            <h2 class="text-lg font-semibold">Welcome Back, User!</h2>
-            <p>Balance: <span id="tokenBalance" class="font-bold">Loading...</span></p>
-            <p>Token Price: <span id="tokenPrice" class="text-green-400">Fetching...</span></p>
-        </div>
-
-        <!-- Transaction History -->
-        <div class="transaction-history">
-            <h3>Recent Transactions</h3>
-            <ul>
-                <li>✔ Staked 500 TOKEN</li>
-                <li>✔ Claimed 200 TOKEN</li>
-            </ul>
-        </div>
-    </main>
-
     <!-- Floating Action Button -->
     <button id="quickActions">
         <i class="fas fa-plus"></i>
@@ -162,52 +91,21 @@
         <button class="action-item">Logout</button>
     </div>
 
-    <!-- Bottom Navigation -->
-    <nav>
-        <button>
-            <i class="fas fa-home"></i>
-        </button>
-        <button>
-            <i class="fas fa-tasks"></i>
-        </button>
-        <button>
-            <i class="fas fa-wallet"></i>
-        </button>
-        <button>
-            <i class="fas fa-user"></i>
-        </button>
-    </nav>
-
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const quickActionsButton = document.getElementById("quickActions");
             const actionItems = document.getElementById("actionItems");
-            const items = actionItems.children;
             let menuVisible = false;
 
             quickActionsButton.addEventListener("click", () => {
                 menuVisible = !menuVisible;
-
                 if (menuVisible) {
-                    actionItems.style.opacity = '1';
-                    actionItems.style.transform = 'translateX(0)'; // Move from right to left
-                    Array.from(items).reverse().forEach((item, index) => {
-                        setTimeout(() => {
-                            item.classList.add("visible");
-                        }, index * 100); // Staggered animation, starting from the bottom item
-                    });
+                    actionItems.classList.add("visible");
                 } else {
-                    actionItems.style.opacity = '0';
-                    actionItems.style.transform = 'translateX(100%)'; // Slide back to the right
-                    Array.from(items).reverse().forEach((item, index) => {
-                        setTimeout(() => {
-                            item.classList.remove("visible");
-                        }, index * 100); // Reverse order of removal
-                    });
+                    actionItems.classList.remove("visible");
                 }
             });
         });
     </script>
-
 </body>
 </html>
