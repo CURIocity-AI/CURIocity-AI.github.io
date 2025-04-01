@@ -44,10 +44,14 @@
             </button>
 
             <!-- Action Dropdown Menu -->
-            <div id="actionMenu" class="hidden absolute bottom-24 right-8 bg-gray-800 p-4 rounded-lg shadow-lg space-y-2 w-48">
+            <div id="actionMenu" class="hidden absolute bottom-24 right-8 bg-gray-800 p-4 rounded-lg shadow-lg space-y-2 w-48 max-h-72 overflow-y-auto">
                 <button id="claimAirdrop" class="w-full bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-600 transition">Claim Airdrop</button>
                 <button id="stakeTokens" class="w-full bg-yellow-500 p-3 rounded-lg text-white hover:bg-yellow-600 transition">Stake Tokens</button>
                 <button id="viewTransactions" class="w-full bg-purple-500 p-3 rounded-lg text-white hover:bg-purple-600 transition">View Transactions</button>
+                <button id="viewTasks" class="w-full bg-teal-500 p-3 rounded-lg text-white hover:bg-teal-600 transition">View Tasks</button>
+                <button id="rewards" class="w-full bg-pink-500 p-3 rounded-lg text-white hover:bg-pink-600 transition">Rewards</button>
+                <button id="profileSettings" class="w-full bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-600 transition">Profile Settings</button>
+                <button id="logout" class="w-full bg-red-500 p-3 rounded-lg text-white hover:bg-red-600 transition">Logout</button>
             </div>
         </div>
 
@@ -93,6 +97,10 @@
             const claimAirdropButton = document.getElementById("claimAirdrop");
             const stakeTokensButton = document.getElementById("stakeTokens");
             const viewTransactionsButton = document.getElementById("viewTransactions");
+            const viewTasksButton = document.getElementById("viewTasks");
+            const rewardsButton = document.getElementById("rewards");
+            const profileSettingsButton = document.getElementById("profileSettings");
+            const logoutButton = document.getElementById("logout");
 
             const transactionList = document.getElementById("transactionList");
             const confirmationModal = document.getElementById("confirmationModal");
@@ -153,6 +161,30 @@
 
             viewTransactionsButton.addEventListener("click", () => {
                 showModal("View Transactions", async () => {
+                    showToast("Info");
+                });
+            });
+
+            viewTasksButton.addEventListener("click", () => {
+                showModal("View Tasks", async () => {
+                    showToast("Info");
+                });
+            });
+
+            rewardsButton.addEventListener("click", () => {
+                showModal("View Rewards", async () => {
+                    showToast("Info");
+                });
+            });
+
+            profileSettingsButton.addEventListener("click", () => {
+                showModal("Profile Settings", async () => {
+                    showToast("Info");
+                });
+            });
+
+            logoutButton.addEventListener("click", () => {
+                showModal("Logout", async () => {
                     showToast("Info");
                 });
             });
