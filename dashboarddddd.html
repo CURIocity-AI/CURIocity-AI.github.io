@@ -40,7 +40,7 @@
         .action-items {
             position: fixed;
             right: 30px;
-            bottom: 150px; /* Position last item just above the + button */
+            bottom: 150px; /* Position items above the + button */
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -69,19 +69,14 @@
             transform: translateY(0);
         }
 
-        .action-items.visible .action-item {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         /* Fly-out effect for action items */
         .action-items.visible .action-item:nth-child(1) { transition-delay: 0s; }
-        .action-items.visible .action-item:nth-child(2) { transition-delay: 0.05s; }
-        .action-items.visible .action-item:nth-child(3) { transition-delay: 0.1s; }
-        .action-items.visible .action-item:nth-child(4) { transition-delay: 0.15s; }
-        .action-items.visible .action-item:nth-child(5) { transition-delay: 0.2s; }
-        .action-items.visible .action-item:nth-child(6) { transition-delay: 0.25s; }
-        .action-items.visible .action-item:nth-child(7) { transition-delay: 0.3s; }
+        .action-items.visible .action-item:nth-child(2) { transition-delay: 0.1s; }
+        .action-items.visible .action-item:nth-child(3) { transition-delay: 0.2s; }
+        .action-items.visible .action-item:nth-child(4) { transition-delay: 0.3s; }
+        .action-items.visible .action-item:nth-child(5) { transition-delay: 0.4s; }
+        .action-items.visible .action-item:nth-child(6) { transition-delay: 0.5s; }
+        .action-items.visible .action-item:nth-child(7) { transition-delay: 0.6s; }
 
         /* Hover Effects for Action Items */
         .action-item:hover {
