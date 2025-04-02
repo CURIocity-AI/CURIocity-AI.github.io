@@ -32,15 +32,15 @@
 
         /* Active state styles */
         .active {
-            color: #ffffff;  /* White for active state */
-            background-color: #4CAF50;  /* Green for active state */
-            transform: scale(1.1);  /* Slight zoom effect */
+            color: #fff;  /* White text for active state */
+            background-color: #4CAF50;  /* Green background for active state */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Shadow for depth */
         }
 
         /* Hover Effects */
         button:hover {
-            color: #FF9800;  /* Orange on hover */
+            color: #FF9800;  /* Orange color on hover */
+            background-color: rgba(255, 152, 0, 0.1); /* Orange hover background */
         }
 
         /* Ripple Effect */
@@ -134,19 +134,19 @@
 <!-- Bottom Navigation -->
 <nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full rounded-t-xl">
     <button class="ripple" id="homeBtn" title="Home">
-        <i class="fas fa-home text-xl"></i>
+        <i class="fas fa-home text-xl text-gray-300"></i>
         <div class="tooltip">Home</div>
     </button>
     <button class="ripple" id="tasksBtn" title="Tasks">
-        <i class="fas fa-tasks text-xl"></i>
+        <i class="fas fa-tasks text-xl text-gray-300"></i>
         <div class="tooltip">Tasks</div>
     </button>
     <button class="ripple" id="walletBtn" title="Wallet">
-        <i class="fas fa-wallet text-xl"></i>
+        <i class="fas fa-wallet text-xl text-gray-300"></i>
         <div class="tooltip">Wallet</div>
     </button>
     <button class="ripple" id="userBtn" title="Profile">
-        <i class="fas fa-user text-xl"></i>
+        <i class="fas fa-user text-xl text-gray-300"></i>
         <div class="tooltip">Profile</div>
     </button>
 </nav>
