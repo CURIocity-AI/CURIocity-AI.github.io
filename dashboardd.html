@@ -1,197 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Banking Dashboard</title>
-    <!-- Tailwind CSS Integration -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Bottom Navigation Bar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
+        /* General body and background styling */
+        body {
+            background: linear-gradient(135deg, rgba(238, 238, 238, 1) 0%, rgba(211, 211, 211, 1) 100%);
+            font-family: 'Arial', sans-serif;
         }
 
-        .card {
-            background-color: #1e3a8a;
-            border-radius: 10px;
+        /* Smooth transition for content area changes */
+        #content {
+            transition: all 0.5s ease;
             padding: 20px;
-            color: white;
-            margin: 10px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-top: 80px;
         }
 
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 600;
+        /* General button transition */
+        button {
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
-        .card-value {
-            font-size: 2rem;
-            font-weight: 700;
+        /* Active state styles */
+        .active {
+            color: #ffffff;  /* White for active state */
+            background-color: #4CAF50;  /* Green for active state */
+            transform: scale(1.1);  /* Slight zoom effect */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Shadow for depth */
         }
 
-        .cta-btn {
-            background-color: #3b82f6;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            text-align: center;
-            cursor: pointer;
-            font-weight: bold;
+        /* Hover Effects */
+        button:hover {
+            color: #FF9800;  /* Orange on hover */
         }
 
-        /* Custom styles */
-        .dashboard-header {
-            background: linear-gradient(90deg, rgba(33, 99, 171, 1) 0%, rgba(58, 123, 213, 1) 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
+        /* Ripple Effect */
+        .ripple {
+            position: relative;
+            overflow: hidden;
         }
 
-        .transaction-status {
+        .ripple:after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Icon hover effect */
+        button:hover i {
+            transform: scale(1.2);  /* Slight zoom effect on hover */
+        }
+
+        /* Tooltip styling */
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 40px;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #fff;
             padding: 5px 10px;
-            border-radius: 20px;
+            border-radius: 5px;
+            font-size: 12px;
         }
 
-        .transaction-pending {
-            background-color: #f59e0b;
-            color: white;
+        button:hover .tooltip {
+            visibility: visible;
         }
 
-        .transaction-successful {
-            background-color: #10b981;
-            color: white;
+        /* Bouncing effect for wallet icon */
+        .bounce {
+            animation: bounce 0.3s;
         }
 
-        .transaction-failed {
-            background-color: #ef4444;
-            color: white;
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+            100% { transform: translateY(0); }
         }
+
+        /* General section styling with soft 3D perspective */
+        .section-header {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-content {
+            font-size: 1rem;
+            color: #666666;
+            line-height: 1.6;
+        }
+
+        .list-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-item:hover {
+            background-color: #eeeeee;
+            cursor: pointer;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
     </style>
 </head>
+<body>
 
-<body class="bg-gray-50">
+<!-- Bottom Navigation -->
+<nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full rounded-t-xl">
+    <button class="ripple" id="homeBtn" title="Home">
+        <i class="fas fa-home text-xl"></i>
+        <div class="tooltip">Home</div>
+    </button>
+    <button class="ripple" id="tasksBtn" title="Tasks">
+        <i class="fas fa-tasks text-xl"></i>
+        <div class="tooltip">Tasks</div>
+    </button>
+    <button class="ripple" id="walletBtn" title="Wallet">
+        <i class="fas fa-wallet text-xl"></i>
+        <div class="tooltip">Wallet</div>
+    </button>
+    <button class="ripple" id="userBtn" title="Profile">
+        <i class="fas fa-user text-xl"></i>
+        <div class="tooltip">Profile</div>
+    </button>
+</nav>
 
-    <!-- Sidebar -->
-    <div class="flex h-screen">
-        <nav class="bg-blue-900 text-white w-1/4 p-5">
-            <div class="text-center mb-10">
-                <h1 class="text-2xl font-bold">CryptoBank</h1>
-            </div>
-            <ul class="space-y-6">
-                <li><a href="#dashboard" class="hover:bg-blue-700 p-3 rounded">Dashboard</a></li>
-                <li><a href="#transactions" class="hover:bg-blue-700 p-3 rounded">Transactions</a></li>
-                <li><a href="#staking" class="hover:bg-blue-700 p-3 rounded">Staking</a></li>
-                <li><a href="#profile" class="hover:bg-blue-700 p-3 rounded">Profile</a></li>
-            </ul>
-        </nav>
+<!-- Content Section -->
+<div id="content" class="pt-20 p-6">
+    <!-- Default content here if needed -->
+    <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
+    <p class="section-content">Select an option from the navigation bar.</p>
+</div>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-10">
-            
-            <!-- Dashboard Header -->
-            <section id="dashboard" class="dashboard-header">
-                <div class="container mx-auto">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-4xl font-semibold">Welcome to Your CryptoBank Dashboard</h2>
-                        <button class="cta-btn">Connect Wallet</button>
-                    </div>
-                    <div class="mt-5 grid grid-cols-3 gap-4">
-                        <div class="card">
-                            <h3 class="card-title">Total Balance</h3>
-                            <p class="card-value">1500 USD</p>
-                        </div>
-                        <div class="card">
-                            <h3 class="card-title">Available Balance</h3>
-                            <p class="card-value">1000 USD</p>
-                        </div>
-                        <div class="card">
-                            <h3 class="card-title">Staked Balance</h3>
-                            <p class="card-value">500 USD</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+<script>
+    // JavaScript to add active class dynamically and show content based on clicked button
+    document.querySelectorAll('nav button').forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            button.classList.add('active');
 
-            <!-- Transactions Section -->
-            <section id="transactions" class="mt-10">
-                <h2 class="text-3xl font-semibold mb-5">Transaction History</h2>
-                <div class="bg-white p-5 rounded-lg shadow-md">
-                    <div class="flex justify-between mb-5">
-                        <input type="text" class="border rounded p-2 w-1/4" placeholder="Search Transactions">
-                        <button class="cta-btn">Filter</button>
-                    </div>
+            // Optional: Bouncing effect on wallet button click
+            if (button.id === 'walletBtn') {
+                button.classList.add('bounce');
+                setTimeout(() => {
+                    button.classList.remove('bounce');
+                }, 300);
+            }
 
-                    <ul class="space-y-4">
-                        <li class="flex justify-between">
-                            <div class="flex items-center">
-                                <p>Sent 100 USD to 0x1...2a</p>
-                            </div>
-                            <span class="transaction-status transaction-successful">Successful</span>
-                        </li>
-                        <li class="flex justify-between">
-                            <div class="flex items-center">
-                                <p>Received 500 USD from 0x3...4b</p>
-                            </div>
-                            <span class="transaction-status transaction-successful">Successful</span>
-                        </li>
-                        <li class="flex justify-between">
-                            <div class="flex items-center">
-                                <p>Sent 200 USD to 0x5...6d</p>
-                            </div>
-                            <span class="transaction-status transaction-pending">Pending</span>
-                        </li>
-                        <li class="flex justify-between">
-                            <div class="flex items-center">
-                                <p>Received 150 USD from 0x7...8e</p>
-                            </div>
-                            <span class="transaction-status transaction-failed">Failed</span>
-                        </li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Staking Section -->
-            <section id="staking" class="mt-10">
-                <h2 class="text-3xl font-semibold mb-5">Staking</h2>
-                <div class="bg-white p-5 rounded-lg shadow-md">
-                    <div class="flex justify-between mb-5">
-                        <p class="text-lg">Stake USD Tokens</p>
-                        <p class="text-xl font-bold">APY: 10%</p>
-                    </div>
-                    <input type="number" placeholder="Amount to Stake" class="border rounded p-2 w-1/2">
-                    <button class="cta-btn mt-5">Stake Now</button>
-                </div>
-            </section>
-
-            <!-- Profile Section -->
-            <section id="profile" class="mt-10">
-                <h2 class="text-3xl font-semibold mb-5">Profile</h2>
-                <div class="bg-white p-5 rounded-lg shadow-md">
-                    <p class="font-semibold">Name: John Doe</p>
-                    <p>Email: johndoe@email.com</p>
-                    <p>Account Status: Verified</p>
-                    <button class="cta-btn mt-5">Edit Profile</button>
-                </div>
-            </section>
-
-        </div>
-    </div>
-
-    <script>
-        // Add smooth scroll for navigation
-        document.querySelectorAll('a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+            // Change content based on button clicked
+            const content = document.getElementById('content');
+            switch (button.id) {
+                case 'homeBtn':
+                    content.innerHTML = `
+                        <h1 class="section-header">Home</h1>
+                        <p class="section-content">Overview of your Web3 dashboard, including balance, transactions, and stats.</p>
+                        <div class="list-item">Wallet Address: 0x1234...ABCD</div>
+                        <div class="list-item">Total ETH: 3.5 ETH</div>
+                        <div class="list-item">Latest Transaction: Sent 0.2 ETH</div>
+                    `;
+                    break;
+                case 'tasksBtn':
+                    content.innerHTML = `
+                        <h1 class="section-header">Tasks</h1>
+                        <p class="section-content">Pending tasks for you to review or approve.</p>
+                        <div class="list-item">Governance Proposal: Vote on Proposal #24</div>
+                        <div class="list-item">Claim Staking Rewards: 1.2 ETH</div>
+                        <div class="list-item">Approve Token Swap: Approve USDT -> ETH</div>
+                    `;
+                    break;
+                case 'walletBtn':
+                    content.innerHTML = `
+                        <h1 class="section-header">Wallet</h1>
+                        <p class="section-content">Your wallet and assets overview.</p>
+                        <div class="list-item">Balance: 3.5 ETH</div>
+                        <div class="list-item">ERC-20 Tokens: USDT, DAI</div>
+                        <div class="list-item">Transactions: 25 (Recent: Sent 0.2 ETH)</div>
+                    `;
+                    break;
+                case 'userBtn':
+                    content.innerHTML = `
+                        <h1 class="section-header">Profile</h1>
+                        <p class="section-content">Manage your Web3 identity and profile settings.</p>
+                        <div class="list-item">Address: 0x1234...ABCD</div>
+                        <div class="list-item">Connected Networks: Ethereum, Binance Smart Chain</div>
+                        <div class="list-item">Profile: @yourUsername (Linked to GitHub)</div>
+                    `;
+                    break;
+                default:
+                    content.innerHTML = `
+                        <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
+                        <p class="section-content">Select an option from the navigation bar.</p>
+                    `;
+            }
         });
-    </script>
-</body>
+    });
+</script>
 
+</body>
 </html>
