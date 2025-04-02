@@ -244,7 +244,94 @@
     </script>
 
 
+<script>
+    // JavaScript to add active class dynamically and show content based on clicked button
+    document.querySelectorAll('nav button').forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            button.classList.add('active');
 
+// Optional: Bouncing effect on home button click
+            if (button.id === 'homeBtn') {
+                button.classList.add('bounce');
+                setTimeout(() => {
+                    button.classList.remove('bounce');
+                }, 300);
+            }
+// Optional: Bouncing effect on task button click
+            if (button.id === 'tasksBtn') {
+                button.classList.add('bounce');
+                setTimeout(() => {
+                    button.classList.remove('bounce');
+                }, 300);
+            }
+
+            // Optional: Bouncing effect on wallet button click
+            if (button.id === 'walletBtn') {
+                button.classList.add('bounce');
+                setTimeout(() => {
+                    button.classList.remove('bounce');
+                }, 300);
+            }
+
+// Optional: Bouncing effect on user button click
+            if (button.id === 'userBtn') {
+                button.classList.add('bounce');
+                setTimeout(() => {
+                    button.classList.remove('bounce');
+                }, 300);
+            }
+
+            // Change content based on button clicked
+            const content = document.getElementById('content');
+            switch (button.id) {
+                case 'homeBtn':
+                    content.innerHTML = `
+                        <h1 class="section-header">Home</h1>
+                        <p class="section-content">Overview of your Web3 dashboard, including balance, transactions, and stats.</p>
+                        <div class="list-item">Wallet Address: 0x1234...ABCD</div>
+                        <div class="list-item">Total ETH: 3.5 ETH</div>
+                        <div class="list-item">Latest Transaction: Sent 0.2 ETH</div>
+                    `;
+                    break;
+                case 'tasksBtn':
+                    content.innerHTML = `
+                        <h1 class="section-header">Tasks</h1>
+                        <p class="section-content">Pending tasks for you to review or approve.</p>
+                        <div class="list-item">Governance Proposal: Vote on Proposal #24</div>
+                        <div class="list-item">Claim Staking Rewards: 1.2 ETH</div>
+                        <div class="list-item">Approve Token Swap: Approve USDT -> ETH</div>
+                    `;
+                    break;
+                case 'walletBtn':
+                    content.innerHTML = `
+                        <h1 class="section-header">Wallet</h1>
+                        <p class="section-content">Your wallet and assets overview.</p>
+                        <div class="list-item">Balance: 3.5 ETH</div>
+                        <div class="list-item">ERC-20 Tokens: USDT, DAI</div>
+                        <div class="list-item">Transactions: 25 (Recent: Sent 0.2 ETH)</div>
+                    `;
+                    break;
+                case 'userBtn':
+                    content.innerHTML = `
+                        <h1 class="section-header">Profile</h1>
+                        <p class="section-content">Manage your Web3 identity and profile settings.</p>
+                        <div class="list-item">Address: 0x1234...ABCD</div>
+                        <div class="list-item">Connected Networks: Ethereum, Binance Smart Chain</div>
+                        <div class="list-item">Profile: @yourUsername (Linked to GitHub)</div>
+                    `;
+                    break;
+                default:
+                    content.innerHTML = `
+                        <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
+                        <p class="section-content">Select an option from the navigation bar.</p>
+                    `;
+            }
+        });
+    });
+</script>
 
 
 </body>
