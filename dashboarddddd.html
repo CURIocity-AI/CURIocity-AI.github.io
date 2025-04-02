@@ -102,21 +102,82 @@
     </button>
 </nav>
 
+<!-- Content Section -->
+<div id="content" class="pt-20 p-6">
+    <!-- Default content here if needed -->
+    <h1 class="text-2xl font-bold text-gray-800">Welcome to the Web3 Dashboard</h1>
+    <p class="text-gray-600">Select an option from the navigation bar.</p>
+</div>
+
 <script>
-    // JavaScript to add active class dynamically
+    // JavaScript to add active class dynamically and show content based on clicked button
     document.querySelectorAll('nav button').forEach(button => {
         button.addEventListener('click', function() {
             // Remove active class from all buttons
             document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
             // Add active class to clicked button
             button.classList.add('active');
-            
+
             // Optional: Bouncing effect on wallet button click
             if (button.id === 'walletBtn') {
                 button.classList.add('bounce');
                 setTimeout(() => {
                     button.classList.remove('bounce');
                 }, 300);
+            }
+
+            // Change content based on button clicked
+            const content = document.getElementById('content');
+            switch (button.id) {
+                case 'homeBtn':
+                    content.innerHTML = `
+                        <h1 class="text-2xl font-bold text-gray-800">Home</h1>
+                        <p class="text-gray-600">Overview of your Web3 dashboard, including balance, transactions, and stats.</p>
+                        <ul>
+                            <li>Wallet Address: 0x1234...ABCD</li>
+                            <li>Total ETH: 3.5 ETH</li>
+                            <li>Latest Transaction: Sent 0.2 ETH</li>
+                        </ul>
+                    `;
+                    break;
+                case 'tasksBtn':
+                    content.innerHTML = `
+                        <h1 class="text-2xl font-bold text-gray-800">Tasks</h1>
+                        <p class="text-gray-600">Pending tasks for you to review or approve.</p>
+                        <ul>
+                            <li>Governance Proposal: Vote on Proposal #24</li>
+                            <li>Claim Staking Rewards: 1.2 ETH</li>
+                            <li>Approve Token Swap: Approve USDT -> ETH</li>
+                        </ul>
+                    `;
+                    break;
+                case 'walletBtn':
+                    content.innerHTML = `
+                        <h1 class="text-2xl font-bold text-gray-800">Wallet</h1>
+                        <p class="text-gray-600">Your wallet and assets overview.</p>
+                        <ul>
+                            <li>Balance: 3.5 ETH</li>
+                            <li>ERC-20 Tokens: USDT, DAI</li>
+                            <li>Transactions: 25 (Recent: Sent 0.2 ETH)</li>
+                        </ul>
+                    `;
+                    break;
+                case 'userBtn':
+                    content.innerHTML = `
+                        <h1 class="text-2xl font-bold text-gray-800">Profile</h1>
+                        <p class="text-gray-600">Manage your Web3 identity and profile settings.</p>
+                        <ul>
+                            <li>Address: 0x1234...ABCD</li>
+                            <li>Connected Networks: Ethereum, Binance Smart Chain</li>
+                            <li>Profile: @yourUsername (Linked to GitHub)</li>
+                        </ul>
+                    `;
+                    break;
+                default:
+                    content.innerHTML = `
+                        <h1 class="text-2xl font-bold text-gray-800">Welcome to the Web3 Dashboard</h1>
+                        <p class="text-gray-600">Select an option from the navigation bar.</p>
+                    `;
             }
         });
     });
