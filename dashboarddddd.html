@@ -145,8 +145,31 @@
             // Add active class to clicked button
             button.classList.add('active');
 
+// Optional: Bouncing effect on home button click
+            if (button.id === 'homeBtn') {
+                button.classList.add('bounce');
+                setTimeout(() => {
+                    button.classList.remove('bounce');
+                }, 300);
+            }
+// Optional: Bouncing effect on task button click
+            if (button.id === 'tasksBtn') {
+                button.classList.add('bounce');
+                setTimeout(() => {
+                    button.classList.remove('bounce');
+                }, 300);
+            }
+
             // Optional: Bouncing effect on wallet button click
             if (button.id === 'walletBtn') {
+                button.classList.add('bounce');
+                setTimeout(() => {
+                    button.classList.remove('bounce');
+                }, 300);
+            }
+
+// Optional: Bouncing effect on user button click
+            if (button.id === 'userBtn') {
                 button.classList.add('bounce');
                 setTimeout(() => {
                     button.classList.remove('bounce');
