@@ -1,89 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProjectName - Logged In</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title>Crypto Banking Dashboard</title>
+    <!-- Tailwind CSS Integration -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @keyframes slideInFromRight {
-            0% { transform: translateX(100%); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        
-        @keyframes slideOutToRight {
-            0% { transform: translateX(0); opacity: 1; }
-            100% { transform: translateX(100%); opacity: 0; }
+
+        .card {
+            background-color: #1e3a8a;
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            margin: 10px;
         }
-        
-        .action-menu {
-            visibility: hidden;
-            opacity: 0;
-            transform: translateX(100%);
-            transition: opacity 0.5s, visibility 0.5s, transform 0.5s;
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
         }
-        
-        .action-menu.visible {
-            visibility: visible;
-            opacity: 1;
-            transform: translateX(0);
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 700;
         }
-        
-        .action-item {
-            opacity: 0;
-            transform: translateX(100%);
-            animation: slideInFromRight 0.5s ease-out forwards;
+
+        .cta-btn {
+            background-color: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
         }
-        
-        .action-item.hidden {
-            animation: slideOutToRight 0.5s ease-out forwards;
+
+        /* Custom styles */
+        .dashboard-header {
+            background: linear-gradient(90deg, rgba(33, 99, 171, 1) 0%, rgba(58, 123, 213, 1) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .transaction-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .transaction-pending {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .transaction-successful {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .transaction-failed {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1e3a8a;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+            z-index: 10;
+        }
+
+        .bottom-nav a {
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 1.2rem;
+        }
+
+        .bottom-nav a:hover {
+            background-color: #3b82f6;
+            border-radius: 50%;
+        }
+
+        .bottom-nav a.active {
+            background-color: #3b82f6;
+            border-radius: 50%;
+            color: white;
+        }
+
+        /* Adjust content margin for bottom navigation */
+        .content {
+            margin-bottom: 80px; /* to give space for the bottom nav */
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
-    <main class="flex-1 p-6">
-        <div class="bg-gray-700 p-6 rounded-xl mb-4 shadow-lg">
-            <h2 class="text-lg font-semibold">Welcome Back, User!</h2>
-            <p>Balance: <span id="tokenBalance" class="font-bold">Loading...</span></p>
-            <p>Token Price: <span id="tokenPrice" class="text-green-400">Fetching...</span></p>
-        </div>
 
-        <div class="fixed bottom-20 right-6">
-            <button id="quickActions" class="bg-green-600 p-5 rounded-full shadow-lg text-white text-2xl focus:outline-none">
-                <i class="fas fa-plus"></i>
-            </button>
-            <div id="actionMenu" class="action-menu absolute bottom-24 right-8 bg-gray-800 p-4 rounded-lg shadow-lg w-48">
-                <button class="action-item bg-blue-500 p-3 rounded-lg text-white">Claim Airdrop</button>
-                <button class="action-item bg-yellow-500 p-3 rounded-lg text-white">Stake Tokens</button>
-                <button class="action-item bg-purple-500 p-3 rounded-lg text-white">View Transactions</button>
-                <button class="action-item bg-red-500 p-3 rounded-lg text-white">Logout</button>
+<body class="bg-gray-50">
+
+    <!-- Main Content -->
+    <div class="content flex flex-col h-screen">
+        <section id="dashboard" class="dashboard-header">
+            <div class="container mx-auto">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-4xl font-semibold">Welcome to Your CryptoBank Dashboard</h2>
+                    <button class="cta-btn">Connect Wallet</button>
+                </div>
+                <div class="mt-5 grid grid-cols-3 gap-4">
+                    <div class="card">
+                        <h3 class="card-title">Total Balance</h3>
+                        <p class="card-value">1500 USD</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Available Balance</h3>
+                        <p class="card-value">1000 USD</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Staked Balance</h3>
+                        <p class="card-value">500 USD</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </main>
+        </section>
+
+        <!-- Transactions Section -->
+        <section id="transactions" class="mt-10">
+            <h2 class="text-3xl font-semibold mb-5">Transaction History</h2>
+            <div class="bg-white p-5 rounded-lg shadow-md">
+                <div class="flex justify-between mb-5">
+                    <input type="text" class="border rounded p-2 w-1/4" placeholder="Search Transactions">
+                    <button class="cta-btn">Filter</button>
+                </div>
+
+                <ul class="space-y-4">
+                    <li class="flex justify-between">
+                        <div class="flex items-center">
+                            <p>Sent 100 USD to 0x1...2a</p>
+                        </div>
+                        <span class="transaction-status transaction-successful">Successful</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <div class="flex items-center">
+                            <p>Received 500 USD from 0x3...4b</p>
+                        </div>
+                        <span class="transaction-status transaction-successful">Successful</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <div class="flex items-center">
+                            <p>Sent 200 USD to 0x5...6d</p>
+                        </div>
+                        <span class="transaction-status transaction-pending">Pending</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <div class="flex items-center">
+                            <p>Received 150 USD from 0x7...8e</p>
+                        </div>
+                        <span class="transaction-status transaction-failed">Failed</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Staking Section -->
+        <section id="staking" class="mt-10">
+            <h2 class="text-3xl font-semibold mb-5">Staking</h2>
+            <div class="bg-white p-5 rounded-lg shadow-md">
+                <div class="flex justify-between mb-5">
+                    <p class="text-lg">Stake USD Tokens</p>
+                    <p class="text-xl font-bold">APY: 10%</p>
+                </div>
+                <input type="number" placeholder="Amount to Stake" class="border rounded p-2 w-1/2">
+                <button class="cta-btn mt-5">Stake Now</button>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="mt-10">
+            <h2 class="text-3xl font-semibold mb-5">Profile</h2>
+            <div class="bg-white p-5 rounded-lg shadow-md">
+                <p class="font-semibold">Name: John Doe</p>
+                <p>Email: johndoe@email.com</p>
+                <p>Account Status: Verified</p>
+                <button class="cta-btn mt-5">Edit Profile</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="#dashboard" class="active" onclick="changeActiveTab(event)">
+            <span class="material-icons">dashboard</span>
+            <p class="text-xs">Dashboard</p>
+        </a>
+        <a href="#transactions" onclick="changeActiveTab(event)">
+            <span class="material-icons">swap_horiz</span>
+            <p class="text-xs">Transactions</p>
+        </a>
+        <a href="#staking" onclick="changeActiveTab(event)">
+            <span class="material-icons">attach_money</span>
+            <p class="text-xs">Staking</p>
+        </a>
+        <a href="#profile" onclick="changeActiveTab(event)">
+            <span class="material-icons">person</span>
+            <p class="text-xs">Profile</p>
+        </a>
+    </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const quickActionsButton = document.getElementById("quickActions");
-            const actionMenu = document.getElementById("actionMenu");
-            const actionItems = document.querySelectorAll(".action-item");
-
-            quickActionsButton.addEventListener("click", () => {
-                if (actionMenu.classList.contains("visible")) {
-                    actionItems.forEach((item, index) => {
-                        item.style.animationDelay = `${index * 0.1}s`;
-                        item.classList.add("hidden");
-                    });
-                    setTimeout(() => actionMenu.classList.remove("visible"), 500);
-                } else {
-                    actionMenu.classList.add("visible");
-                    actionItems.forEach((item, index) => {
-                        item.classList.remove("hidden");
-                        item.style.animationDelay = `${index * 0.1}s`;
-                    });
-                }
-            });
-        });
+        // Change the active tab on click
+        function changeActiveTab(event) {
+            const tabs = document.querySelectorAll('.bottom-nav a');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.closest('a').classList.add('active');
+        }
     </script>
+
 </body>
+
 </html>
