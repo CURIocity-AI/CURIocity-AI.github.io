@@ -8,66 +8,33 @@
     <!-- Tailwind CSS Integration -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
+        /* Custom 3D effect styles */
         .card {
-            background-color: #1e3a8a;
-            border-radius: 10px;
-            padding: 20px;
-            color: white;
-            margin: 10px;
+            background: #1E3A8A;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease-in-out;
         }
 
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .card-value {
-            font-size: 2rem;
-            font-weight: 700;
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
         }
 
         .cta-btn {
-            background-color: #3b82f6;
+            background-color: #3B82F6;
             color: white;
-            padding: 10px 20px;
+            padding: 15px 35px;
             border-radius: 50px;
-            text-align: center;
-            cursor: pointer;
             font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out;
         }
 
-        /* Custom styles */
-        .dashboard-header {
-            background: linear-gradient(90deg, rgba(33, 99, 171, 1) 0%, rgba(58, 123, 213, 1) 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .transaction-status {
-            padding: 5px 10px;
-            border-radius: 20px;
-        }
-
-        .transaction-pending {
-            background-color: #f59e0b;
-            color: white;
-        }
-
-        .transaction-successful {
-            background-color: #10b981;
-            color: white;
-        }
-
-        .transaction-failed {
-            background-color: #ef4444;
-            color: white;
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
         .bottom-nav {
@@ -75,35 +42,46 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: #1e3a8a;
+            background: linear-gradient(135deg, rgba(33, 99, 171, 1) 0%, rgba(58, 123, 213, 1) 100%);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 10px 0;
-            z-index: 10;
+            padding: 15px 0;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
         }
 
         .bottom-nav a {
             color: white;
+            font-size: 18px;
             text-align: center;
             padding: 10px;
-            font-size: 1.2rem;
+            transition: all 0.3s ease;
         }
 
         .bottom-nav a:hover {
-            background-color: #3b82f6;
+            background-color: #3B82F6;
             border-radius: 50%;
+            transform: translateY(-3px);
         }
 
         .bottom-nav a.active {
-            background-color: #3b82f6;
+            background-color: #2563EB;
             border-radius: 50%;
+            transform: translateY(-3px);
             color: white;
         }
 
-        /* Adjust content margin for bottom navigation */
         .content {
-            margin-bottom: 80px; /* to give space for the bottom nav */
+            margin-bottom: 80px; /* to give space for bottom nav */
+        }
+
+        .dashboard-header {
+            background: linear-gradient(90deg, rgba(33, 99, 171, 1) 0%, rgba(58, 123, 213, 1) 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -112,24 +90,26 @@
 
     <!-- Main Content -->
     <div class="content flex flex-col h-screen">
-        <section id="dashboard" class="dashboard-header">
+
+        <!-- Dashboard Header -->
+        <section id="dashboard" class="dashboard-header mb-10">
             <div class="container mx-auto">
                 <div class="flex justify-between items-center">
                     <h2 class="text-4xl font-semibold">Welcome to Your CryptoBank Dashboard</h2>
                     <button class="cta-btn">Connect Wallet</button>
                 </div>
-                <div class="mt-5 grid grid-cols-3 gap-4">
+                <div class="mt-10 grid grid-cols-3 gap-8">
                     <div class="card">
-                        <h3 class="card-title">Total Balance</h3>
-                        <p class="card-value">1500 USD</p>
+                        <h3 class="text-lg text-gray-300">Total Balance</h3>
+                        <p class="text-3xl text-white font-bold">1500 USD</p>
                     </div>
                     <div class="card">
-                        <h3 class="card-title">Available Balance</h3>
-                        <p class="card-value">1000 USD</p>
+                        <h3 class="text-lg text-gray-300">Available Balance</h3>
+                        <p class="text-3xl text-white font-bold">1000 USD</p>
                     </div>
                     <div class="card">
-                        <h3 class="card-title">Staked Balance</h3>
-                        <p class="card-value">500 USD</p>
+                        <h3 class="text-lg text-gray-300">Staked Balance</h3>
+                        <p class="text-3xl text-white font-bold">500 USD</p>
                     </div>
                 </div>
             </div>
@@ -138,36 +118,36 @@
         <!-- Transactions Section -->
         <section id="transactions" class="mt-10">
             <h2 class="text-3xl font-semibold mb-5">Transaction History</h2>
-            <div class="bg-white p-5 rounded-lg shadow-md">
-                <div class="flex justify-between mb-5">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex justify-between mb-6">
                     <input type="text" class="border rounded p-2 w-1/4" placeholder="Search Transactions">
                     <button class="cta-btn">Filter</button>
                 </div>
 
-                <ul class="space-y-4">
+                <ul class="space-y-6">
                     <li class="flex justify-between">
                         <div class="flex items-center">
-                            <p>Sent 100 USD to 0x1...2a</p>
+                            <p class="text-lg">Sent 100 USD to 0x1...2a</p>
                         </div>
-                        <span class="transaction-status transaction-successful">Successful</span>
+                        <span class="text-green-500">Successful</span>
                     </li>
                     <li class="flex justify-between">
                         <div class="flex items-center">
-                            <p>Received 500 USD from 0x3...4b</p>
+                            <p class="text-lg">Received 500 USD from 0x3...4b</p>
                         </div>
-                        <span class="transaction-status transaction-successful">Successful</span>
+                        <span class="text-green-500">Successful</span>
                     </li>
                     <li class="flex justify-between">
                         <div class="flex items-center">
-                            <p>Sent 200 USD to 0x5...6d</p>
+                            <p class="text-lg">Sent 200 USD to 0x5...6d</p>
                         </div>
-                        <span class="transaction-status transaction-pending">Pending</span>
+                        <span class="text-yellow-500">Pending</span>
                     </li>
                     <li class="flex justify-between">
                         <div class="flex items-center">
-                            <p>Received 150 USD from 0x7...8e</p>
+                            <p class="text-lg">Received 150 USD from 0x7...8e</p>
                         </div>
-                        <span class="transaction-status transaction-failed">Failed</span>
+                        <span class="text-red-500">Failed</span>
                     </li>
                 </ul>
             </div>
@@ -176,7 +156,7 @@
         <!-- Staking Section -->
         <section id="staking" class="mt-10">
             <h2 class="text-3xl font-semibold mb-5">Staking</h2>
-            <div class="bg-white p-5 rounded-lg shadow-md">
+            <div class="bg-white p-6 rounded-lg shadow-md">
                 <div class="flex justify-between mb-5">
                     <p class="text-lg">Stake USD Tokens</p>
                     <p class="text-xl font-bold">APY: 10%</p>
@@ -189,10 +169,10 @@
         <!-- Profile Section -->
         <section id="profile" class="mt-10">
             <h2 class="text-3xl font-semibold mb-5">Profile</h2>
-            <div class="bg-white p-5 rounded-lg shadow-md">
-                <p class="font-semibold">Name: John Doe</p>
-                <p>Email: johndoe@email.com</p>
-                <p>Account Status: Verified</p>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="text-lg font-semibold">Name: John Doe</p>
+                <p class="text-lg">Email: johndoe@email.com</p>
+                <p class="text-lg">Account Status: Verified</p>
                 <button class="cta-btn mt-5">Edit Profile</button>
             </div>
         </section>
