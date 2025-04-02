@@ -188,13 +188,25 @@
         <button class="action-item">Logout</button>
     </div>
 
-    <!-- Bottom Navigation -->
-    <nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full">
-        <button class="text-xl"><i class="fas fa-home"></i></button>
-        <button class="text-xl"><i class="fas fa-tasks"></i></button>
-        <button class="text-xl"><i class="fas fa-wallet"></i></button>
-        <button class="text-xl"><i class="fas fa-user"></i></button>
-    </nav>
+<!-- Bottom Navigation -->
+<nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full rounded-t-xl">
+    <button class="ripple" id="homeBtn" title="Home">
+        <i class="fas fa-home text-xl"></i>
+        <div class="tooltip">Home</div>
+    </button>
+    <button class="ripple" id="tasksBtn" title="Tasks">
+        <i class="fas fa-tasks text-xl"></i>
+        <div class="tooltip">Tasks</div>
+    </button>
+    <button class="ripple" id="walletBtn" title="Wallet">
+        <i class="fas fa-wallet text-xl"></i>
+        <div class="tooltip">Wallet</div>
+    </button>
+    <button class="ripple" id="userBtn" title="Profile">
+        <i class="fas fa-user text-xl"></i>
+        <div class="tooltip">Profile</div>
+    </button>
+</nav>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
