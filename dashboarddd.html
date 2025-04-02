@@ -85,19 +85,6 @@
     transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.nav-item.active {
-    color: #4CAF50;  /* Active color (can be customized) */
-    transform: scale(1.2);  /* Slightly enlarge the icon */
-}
-
-.nav-item i {
-    transition: transform 0.3s ease;
-}
-
-.nav-item.active i {
-    transform: rotate(20deg);  /* Slight rotation animation when active */
-}
-
 
     </style>
 </head>
@@ -157,16 +144,6 @@
     </script>
 
 <script>
-
-// JavaScript to handle active state toggle
-const navItems = document.querySelectorAll('.nav-item');
-
-navItems.forEach(item => {
-    item.addEventListener('click', () => {
-        navItems.forEach(nav => nav.classList.remove('active')); // Remove active class from all
-        item.classList.add('active'); // Add active class to the clicked item
-    });
-});
 
 </script>
 </body>
