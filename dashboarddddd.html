@@ -7,48 +7,44 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        /* Transition for smooth animations */
+        /* General body and background styling */
+        body {
+            background: linear-gradient(135deg, rgba(238, 238, 238, 1) 0%, rgba(211, 211, 211, 1) 100%);
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Smooth transition for content area changes */
+        #content {
+            transition: all 0.5s ease;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-top: 80px;
+        }
+
+        /* General button transition */
         button {
             transition: all 0.3s ease;
             position: relative;
+            z-index: 1;
+        }
+
+        /* Active state styles for button */
+        button.active i {
+            color: #fff;  /* White color for active icon */
+        }
+
+        /* Hover Effects */
+        button:hover i {
+            transform: scale(1.2);  /* Zoom effect on hover */
         }
 
         /* Active state styles */
         .active {
-            color: #4CAF50;  /* Green for active state */
-            transform: scale(1.1);  /* Slight zoom effect */
-        }
-
-        /* Hover Effects */
-        button:hover {
-            color: #FF9800;  /* Orange on hover */
-        }
-
-        /* Ripple Effect */
-        .ripple {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ripple:after {
-            content: '';
-            position: absolute;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            transform: scale(0);
-            animation: ripple-animation 0.6s linear;
-        }
-
-        @keyframes ripple-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-
-        /* Icon hover effect */
-        button:hover i {
-            transform: scale(1.2);  /* Slight zoom effect on hover */
+            color: #fff;  /* White text for active state */
+            background-color: #4CAF50;  /* Green background for active state */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Shadow for depth */
         }
 
         /* Tooltip styling */
@@ -78,26 +74,56 @@
             100% { transform: translateY(0); }
         }
 
+        /* General section styling with soft 3D perspective */
+        .section-header {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-content {
+            font-size: 1rem;
+            color: #666666;
+            line-height: 1.6;
+        }
+
+        .list-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-item:hover {
+            background-color: #eeeeee;
+            cursor: pointer;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
     </style>
 </head>
-<body class="bg-gray-100">
+<body>
 
 <!-- Bottom Navigation -->
 <nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full rounded-t-xl">
     <button class="ripple" id="homeBtn" title="Home">
-        <i class="fas fa-home text-xl"></i>
+        <i class="fas fa-home text-xl text-gray-300"></i>
         <div class="tooltip">Home</div>
     </button>
     <button class="ripple" id="tasksBtn" title="Tasks">
-        <i class="fas fa-tasks text-xl"></i>
+        <i class="fas fa-tasks text-xl text-gray-300"></i>
         <div class="tooltip">Tasks</div>
     </button>
     <button class="ripple" id="walletBtn" title="Wallet">
-        <i class="fas fa-wallet text-xl"></i>
+        <i class="fas fa-wallet text-xl text-gray-300"></i>
         <div class="tooltip">Wallet</div>
     </button>
     <button class="ripple" id="userBtn" title="Profile">
-        <i class="fas fa-user text-xl"></i>
+        <i class="fas fa-user text-xl text-gray-300"></i>
         <div class="tooltip">Profile</div>
     </button>
 </nav>
@@ -105,8 +131,8 @@
 <!-- Content Section -->
 <div id="content" class="pt-20 p-6">
     <!-- Default content here if needed -->
-    <h1 class="text-2xl font-bold text-gray-800">Welcome to the Web3 Dashboard</h1>
-    <p class="text-gray-600">Select an option from the navigation bar.</p>
+    <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
+    <p class="section-content">Select an option from the navigation bar.</p>
 </div>
 
 <script>
@@ -131,52 +157,44 @@
             switch (button.id) {
                 case 'homeBtn':
                     content.innerHTML = `
-                        <h1 class="text-2xl font-bold text-gray-800">Home</h1>
-                        <p class="text-gray-600">Overview of your Web3 dashboard, including balance, transactions, and stats.</p>
-                        <ul>
-                            <li>Wallet Address: 0x1234...ABCD</li>
-                            <li>Total ETH: 3.5 ETH</li>
-                            <li>Latest Transaction: Sent 0.2 ETH</li>
-                        </ul>
+                        <h1 class="section-header">Home</h1>
+                        <p class="section-content">Overview of your Web3 dashboard, including balance, transactions, and stats.</p>
+                        <div class="list-item">Wallet Address: 0x1234...ABCD</div>
+                        <div class="list-item">Total ETH: 3.5 ETH</div>
+                        <div class="list-item">Latest Transaction: Sent 0.2 ETH</div>
                     `;
                     break;
                 case 'tasksBtn':
                     content.innerHTML = `
-                        <h1 class="text-2xl font-bold text-gray-800">Tasks</h1>
-                        <p class="text-gray-600">Pending tasks for you to review or approve.</p>
-                        <ul>
-                            <li>Governance Proposal: Vote on Proposal #24</li>
-                            <li>Claim Staking Rewards: 1.2 ETH</li>
-                            <li>Approve Token Swap: Approve USDT -> ETH</li>
-                        </ul>
+                        <h1 class="section-header">Tasks</h1>
+                        <p class="section-content">Pending tasks for you to review or approve.</p>
+                        <div class="list-item">Governance Proposal: Vote on Proposal #24</div>
+                        <div class="list-item">Claim Staking Rewards: 1.2 ETH</div>
+                        <div class="list-item">Approve Token Swap: Approve USDT -> ETH</div>
                     `;
                     break;
                 case 'walletBtn':
                     content.innerHTML = `
-                        <h1 class="text-2xl font-bold text-gray-800">Wallet</h1>
-                        <p class="text-gray-600">Your wallet and assets overview.</p>
-                        <ul>
-                            <li>Balance: 3.5 ETH</li>
-                            <li>ERC-20 Tokens: USDT, DAI</li>
-                            <li>Transactions: 25 (Recent: Sent 0.2 ETH)</li>
-                        </ul>
+                        <h1 class="section-header">Wallet</h1>
+                        <p class="section-content">Your wallet and assets overview.</p>
+                        <div class="list-item">Balance: 3.5 ETH</div>
+                        <div class="list-item">ERC-20 Tokens: USDT, DAI</div>
+                        <div class="list-item">Transactions: 25 (Recent: Sent 0.2 ETH)</div>
                     `;
                     break;
                 case 'userBtn':
                     content.innerHTML = `
-                        <h1 class="text-2xl font-bold text-gray-800">Profile</h1>
-                        <p class="text-gray-600">Manage your Web3 identity and profile settings.</p>
-                        <ul>
-                            <li>Address: 0x1234...ABCD</li>
-                            <li>Connected Networks: Ethereum, Binance Smart Chain</li>
-                            <li>Profile: @yourUsername (Linked to GitHub)</li>
-                        </ul>
+                        <h1 class="section-header">Profile</h1>
+                        <p class="section-content">Manage your Web3 identity and profile settings.</p>
+                        <div class="list-item">Address: 0x1234...ABCD</div>
+                        <div class="list-item">Connected Networks: Ethereum, Binance Smart Chain</div>
+                        <div class="list-item">Profile: @yourUsername (Linked to GitHub)</div>
                     `;
                     break;
                 default:
                     content.innerHTML = `
-                        <h1 class="text-2xl font-bold text-gray-800">Welcome to the Web3 Dashboard</h1>
-                        <p class="text-gray-600">Select an option from the navigation bar.</p>
+                        <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
+                        <p class="section-content">Select an option from the navigation bar.</p>
                     `;
             }
         });
