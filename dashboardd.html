@@ -3,246 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web3 Banking Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title>Crypto Project</title>
+    <!-- Tailwind CSS Integration (via CDN for simplicity) -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom styles for the dashboard */
-        body {
-            background-color: #1a202c;
-            color: #edf2f7;
+        /* Custom Styles */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .card {
-            background-color: #2d3748;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+        section {
+            padding-top: 40px;
+            padding-bottom: 40px;
         }
-        .card-header {
-            font-size: 1.25rem;
-            font-weight: 600;
+
+        h2, h3 {
+            font-family: 'Arial', sans-serif;
         }
-        .balance {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #48bb78;
+
+        /* Smooth transition for buttons */
+        a {
+            transition: all 0.3s ease-in-out;
         }
-        .token-price {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #f6ad55;
-        }
-        .action-button {
-            background-color: #48bb78;
-            color: #fff;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            transition: background-color 0.3s;
-        }
-        .action-button:hover {
-            background-color: #38a169;
-        }
-        .modal {
-            background-color: rgba(0, 0, 0, 0.5);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            background-color: #2d3748;
-            padding: 2rem;
-            border-radius: 0.5rem;
-            text-align: center;
-        }
-        .modal-buttons {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 1.5rem;
-        }
-        .modal-button {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-        }
-        .modal-button.confirm {
-            background-color: #48bb78;
-            color: #fff;
-        }
-        .modal-button.cancel {
-            background-color: #e53e3e;
-            color: #fff;
+
+        a:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
-<body class="font-sans leading-normal tracking-normal">
-    <!-- Top Navigation -->
-    <header class="flex items-center justify-between px-6 py-4 bg-gray-800 shadow-md">
-        <h1 class="text-xl font-bold">Web3 Bank</h1>
-        <div class="flex gap-4">
-            <button id="notification" class="text-xl cursor-pointer" aria-label="Notifications">
-                <i class="fas fa-bell"></i>
-            </button>
-            <button id="profile" class="text-xl cursor-pointer" aria-label="Profile">
-                <i class="fas fa-user-circle"></i>
-            </button>
+<body class="bg-gray-100 font-sans text-gray-900">
+
+    <!-- Header -->
+    <header class="w-full py-4 bg-blue-900 text-white">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="logo">
+                <h1 class="text-2xl font-bold">CryptoProject</h1>
+            </div>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="hover:text-blue-400">Home</a></li>
+                    <li><a href="#about" class="hover:text-blue-400">About</a></li>
+                    <li><a href="#tokenomics" class="hover:text-blue-400">Tokenomics</a></li>
+                    <li><a href="#roadmap" class="hover:text-blue-400">Roadmap</a></li>
+                    <li><a href="#contact" class="hover:text-blue-400">Contact</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="p-6">
-        <!-- Dashboard Preview -->
-        <div class="card mb-6">
-            <div class="card-header">Welcome Back, User!</div>
-            <div class="mt-4">
-                <div>Balance: <span id="tokenBalance" class="balance">Loading...</span></div>
-                <div>Token Price: <span id="tokenPrice" class="token-price">Fetching...</span></div>
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen bg-cover bg-center" style="background-image: url('your-image.jpg');">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="container mx-auto text-center text-white relative z-10 py-32">
+            <h2 class="text-5xl font-bold mb-4">Revolutionizing Crypto Transactions</h2>
+            <p class="text-xl mb-8">Join the next wave of financial freedom and security with our blockchain project.</p>
+            <a href="#tokenomics" class="bg-blue-500 hover:bg-blue-700 text-white py-3 px-8 rounded-full text-lg">Get Started</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold text-blue-900 mb-8">About Us</h2>
+            <p class="text-lg max-w-2xl mx-auto">We are building the future of decentralized finance, ensuring security, scalability, and seamless user experiences for everyone in the crypto space.</p>
+        </div>
+    </section>
+
+    <!-- Tokenomics Section -->
+    <section id="tokenomics" class="py-20 bg-blue-900 text-white">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8">Tokenomics</h2>
+            <div class="flex justify-center space-x-8">
+                <div class="w-1/3">
+                    <h3 class="text-2xl font-semibold mb-4">Token Distribution</h3>
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <p>50% ICO, 30% Staking, 20% Team and Advisors.</p>
+                    </div>
+                </div>
+                <div class="w-1/3">
+                    <h3 class="text-2xl font-semibold mb-4">Utility</h3>
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <p>Used for transactions, governance, and staking rewards.</p>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <!-- Quick Actions -->
-        <div class="flex justify-end mb-6">
-            <button id="quickActions" class="action-button">Quick Actions</button>
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-900 text-white py-6">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2025 CryptoProject. All rights reserved.</p>
         </div>
-        <div id="actionMenu" class="hidden flex flex-col space-y-4">
-            <button id="claimAirdrop" class="action-button">Claim Airdrop</button>
-            <button id="stakeTokens" class="action-button">Stake Tokens</button>
-            <button id="viewTransactions" class="action-button">View Transactions</button>
-            <button id="viewTasks" class="action-button">View Tasks</button>
-            <button id="rewards" class="action-button">Rewards</button>
-            <button id="profileSettings" class="action-button">Profile Settings</button>
-            <button id="logout" class="action-button">Logout</button>
-        </div>
+    </footer>
 
-        <!-- Recent Activity -->
-        <div class="card">
-            <div class="card-header">Recent Transactions</div>
-            <ul id="transactionList" class="mt-4 space-y-2">
-                <li class="py-2">No recent transactions</li>
-            </ul>
-        </div>
-    </main>
-
-    <!-- Confirmation Modal -->
-    <div id="confirmationModal" class="modal">
-        <div class="modal-content">
-            <p id="modalMessage">Are you sure?</p>
-            <div class="modal-buttons mt-4">
-                <button id="confirmAction" class="modal-button confirm">Confirm</button>
-                <button id="cancelAction" class="modal-button cancel">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notifications -->
-    <div id="toastContainer" class="fixed bottom-4 left-4 space-y-2" aria-live="polite">
-        <div id="toastSuccess" class="toast bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm hidden">Transaction Successful!</div>
-        <div id="toastError" class="toast bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm hidden">Transaction Failed!</div>
-        <div id="toastInfo" class="toast bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm hidden">Wallet Connected</div>
-    </div>
-
-    <!-- Bottom Navigation -->
-    <nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full shadow-md">
-        <button class="text-xl cursor-pointer"><i class="fas fa-home"></i></button>
-        <button class="text-xl cursor-pointer"><i class="fas fa-tasks"></i></button>
-        <button class="text-xl cursor-pointer"><i class="fas fa-wallet"></i></button>
-        <button class="text-xl cursor-pointer"><i class="fas fa-user"></i></button>
-    </nav>
-
+    <!-- JavaScript -->
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            const actionMenu = document.getElementById("actionMenu");
-            const quickActionsButton = document.getElementById("quickActions");
-
-            const claimAirdropButton = document.getElementById("claimAirdrop");
-            const stakeTokensButton = document.getElementById("stakeTokens");
-            const viewTransactionsButton = document.getElementById("viewTransactions");
-            const viewTasksButton = document.getElementById("viewTasks");
-            const rewardsButton = document.getElementById("rewards");
-            const profileSettingsButton = document.getElementById("profileSettings");
-            const logoutButton = document.getElementById("logout");
-
-            const transactionList = document.getElementById("transactionList");
-            const confirmationModal = document.getElementById("confirmationModal");
-            const modalMessage = document.getElementById("modalMessage");
-            const confirmAction = document.getElementById("confirmAction");
-            const cancelAction = document.getElementById("cancelAction");
-
-            let currentAction = null;
-
-            // Show Action Menu when Button is clicked
-            quickActionsButton.addEventListener("click", () => {
-                if (actionMenu.classList.contains("hidden")) {
-                    actionMenu.classList.remove("hidden");
-                } else {
-                    actionMenu.classList.add("hidden");
-                }
-            });
-
-            // Close menu when clicking outside
-            window.addEventListener("click", (e) => {
-                if (!actionMenu.contains(e.target) && !quickActionsButton.contains(e.target)) {
-                    actionMenu.classList.add("hidden");
-                }
-            });
-
-            // Example function to add transaction
-            async function addTransaction(action, amount) {
-                const now = new Date().toLocaleTimeString();
-                const listItem = document.createElement("li");
-                listItem.className = "py-2 flex justify-between items-center";
-                listItem.innerHTML = `
-                    <span class="text-sm">✔ ${action} ${amount ? amount + " TOKEN" : ""}</span>
-                    <span class="text-xs text-gray-400">${now}</span>
-                `;
-                transactionList.prepend(listItem);
-            }
-
-            // Show Modal for Confirmation
-            function showModal(action, callback) {
-");
-            });
-
-            cancelAction.addEventListener("click", () => {
-                confirmationModal.classList.remove("active");
-            });
-
-            function showToast(type) {
-                const toast = document.getElementById(`toast${type}`);
-                toast.classList.remove("hidden");
-                setTimeout(() => toast.classList.add("hidden"), 3000);
-            }
-
-            const buttons = [
-                { id: "claimAirdrop", action: "Claim Airdrop", amount: "500" },
-                { id: "stakeTokens", action: "Stake Tokens", amount: "200" },
-                { id: "viewTransactions", action: "View Transactions" },
-                { id: "viewTasks", action: "View Tasks" },
-                { id: "rewards", action: "View Rewards" },
-                { id: "profileSettings", action: "Profile Settings" },
-                { id: "logout", action: "Logout" },
-            ];
-
-            buttons.forEach(button => {
-                const btnElement = document.getElementById(button.id);
-                btnElement.addEventListener("click", () => {
-                    showModal(button.action, async () => {
-                        if (button.amount) {
-                            await addTransaction(button.action, button.amount);
-                        }
-                        showToast(button.action.includes("View") ? "Info" : "Success");
-                    });
+        // Smooth Scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
                 });
             });
         });
