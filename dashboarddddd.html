@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Banking Dashboard</title>
+    <title>Crypto Dashboard</title>
     <!-- Tailwind CSS Integration -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom 3D effect styles */
+        /* 3D Effect Cards */
         .card {
             background: #1E3A8A;
             border-radius: 15px;
-            padding: 30px;
+            padding: 25px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
             transition: all 0.3s ease-in-out;
         }
@@ -22,21 +22,7 @@
             box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
         }
 
-        .cta-btn {
-            background-color: #3B82F6;
-            color: white;
-            padding: 15px 35px;
-            border-radius: 50px;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s ease-in-out;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
+        /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -76,135 +62,199 @@
             margin-bottom: 80px; /* to give space for bottom nav */
         }
 
-        .dashboard-header {
+        /* Responsive Top Nav */
+        .top-nav {
             background: linear-gradient(90deg, rgba(33, 99, 171, 1) 0%, rgba(58, 123, 213, 1) 100%);
             color: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .top-nav input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px;
+        }
+
+        .top-nav .icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Personalized Feed */
+        .feed {
+            margin-top: 30px;
+        }
+
+        .feed-post {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .feed-post .post-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .feed-post .post-content {
+            margin-bottom: 15px;
+        }
+
+        .feed-post .post-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .feed-post button {
+            background-color: #3B82F6;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            transition: background-color 0.3s ease;
+        }
+
+        .feed-post button:hover {
+            background-color: #2563EB;
+        }
+
+        /* Modal Styling */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 15px;
         }
     </style>
 </head>
 
 <body class="bg-gray-50">
 
-    <!-- Main Content -->
-    <div class="content flex flex-col h-screen">
-
-        <!-- Dashboard Header -->
-        <section id="dashboard" class="dashboard-header mb-10">
-            <div class="container mx-auto">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-4xl font-semibold">Welcome to Your CryptoBank Dashboard</h2>
-                    <button class="cta-btn">Connect Wallet</button>
-                </div>
-                <div class="mt-10 grid grid-cols-3 gap-8">
-                    <div class="card">
-                        <h3 class="text-lg text-gray-300">Total Balance</h3>
-                        <p class="text-3xl text-white font-bold">1500 USD</p>
-                    </div>
-                    <div class="card">
-                        <h3 class="text-lg text-gray-300">Available Balance</h3>
-                        <p class="text-3xl text-white font-bold">1000 USD</p>
-                    </div>
-                    <div class="card">
-                        <h3 class="text-lg text-gray-300">Staked Balance</h3>
-                        <p class="text-3xl text-white font-bold">500 USD</p>
-                    </div>
-                </div>
+    <!-- Top Navigation Bar -->
+    <div class="top-nav">
+        <div class="logo">CryptoBank</div>
+        <div class="icons">
+            <input type="text" placeholder="Search...">
+            <div class="profile">
+                <img src="https://via.placeholder.com/40" alt="Profile" class="rounded-full">
             </div>
-        </section>
-
-        <!-- Transactions Section -->
-        <section id="transactions" class="mt-10">
-            <h2 class="text-3xl font-semibold mb-5">Transaction History</h2>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <div class="flex justify-between mb-6">
-                    <input type="text" class="border rounded p-2 w-1/4" placeholder="Search Transactions">
-                    <button class="cta-btn">Filter</button>
-                </div>
-
-                <ul class="space-y-6">
-                    <li class="flex justify-between">
-                        <div class="flex items-center">
-                            <p class="text-lg">Sent 100 USD to 0x1...2a</p>
-                        </div>
-                        <span class="text-green-500">Successful</span>
-                    </li>
-                    <li class="flex justify-between">
-                        <div class="flex items-center">
-                            <p class="text-lg">Received 500 USD from 0x3...4b</p>
-                        </div>
-                        <span class="text-green-500">Successful</span>
-                    </li>
-                    <li class="flex justify-between">
-                        <div class="flex items-center">
-                            <p class="text-lg">Sent 200 USD to 0x5...6d</p>
-                        </div>
-                        <span class="text-yellow-500">Pending</span>
-                    </li>
-                    <li class="flex justify-between">
-                        <div class="flex items-center">
-                            <p class="text-lg">Received 150 USD from 0x7...8e</p>
-                        </div>
-                        <span class="text-red-500">Failed</span>
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Staking Section -->
-        <section id="staking" class="mt-10">
-            <h2 class="text-3xl font-semibold mb-5">Staking</h2>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <div class="flex justify-between mb-5">
-                    <p class="text-lg">Stake USD Tokens</p>
-                    <p class="text-xl font-bold">APY: 10%</p>
-                </div>
-                <input type="number" placeholder="Amount to Stake" class="border rounded p-2 w-1/2">
-                <button class="cta-btn mt-5">Stake Now</button>
-            </div>
-        </section>
-
-        <!-- Profile Section -->
-        <section id="profile" class="mt-10">
-            <h2 class="text-3xl font-semibold mb-5">Profile</h2>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <p class="text-lg font-semibold">Name: John Doe</p>
-                <p class="text-lg">Email: johndoe@email.com</p>
-                <p class="text-lg">Account Status: Verified</p>
-                <button class="cta-btn mt-5">Edit Profile</button>
-            </div>
-        </section>
+        </div>
     </div>
 
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <a href="#dashboard" class="active" onclick="changeActiveTab(event)">
-            <span class="material-icons">dashboard</span>
-            <p class="text-xs">Dashboard</p>
-        </a>
-        <a href="#transactions" onclick="changeActiveTab(event)">
-            <span class="material-icons">swap_horiz</span>
-            <p class="text-xs">Transactions</p>
-        </a>
-        <a href="#staking" onclick="changeActiveTab(event)">
-            <span class="material-icons">attach_money</span>
-            <p class="text-xs">Staking</p>
-        </a>
-        <a href="#profile" onclick="changeActiveTab(event)">
-            <span class="material-icons">person</span>
-            <p class="text-xs">Profile</p>
-        </a>
+    <div class="content flex flex-col h-screen">
+        <!-- Personalized Feed -->
+        <section class="feed mx-auto px-4 w-full">
+            <div class="card mb-6">
+                <div class="feed-post">
+                    <div class="post-header">
+                        John Doe <span class="text-gray-400 text-sm">3 hours ago</span>
+                    </div>
+                    <div class="post-content">
+                        Just completed a staking transaction of 1000 USD! Feeling bullish.
+                    </div>
+                    <div class="post-actions">
+                        <button>Like</button>
+                        <button>Comment</button>
+                        <button>Share</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-6">
+                <div class="feed-post">
+                    <div class="post-header">
+                        Jane Smith <span class="text-gray-400 text-sm">5 hours ago</span>
+                    </div>
+                    <div class="post-content">
+                        Staked 2000 USD into a high APY pool. Let’s see those rewards!
+                    </div>
+                    <div class="post-actions">
+                        <button>Like</button>
+                        <button>Comment</button>
+                        <button>Share</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="#dashboard" class="active" onclick="changeActiveTab(event)">
+                <span class="material-icons">home</span>
+                <p class="text-xs">Home</p>
+            </a>
+            <a href="#transactions" onclick="changeActiveTab(event)">
+                <span class="material-icons">swap_horiz</span>
+                <p class="text-xs">Transactions</p>
+            </a>
+            <a href="#staking" onclick="changeActiveTab(event)">
+                <span class="material-icons">attach_money</span>
+                <p class="text-xs">Staking</p>
+            </a>
+            <a href="#profile" onclick="changeActiveTab(event)">
+                <span class="material-icons">person</span>
+                <p class="text-xs">Profile</p>
+            </a>
+        </div>
+
+        <!-- Modal Example -->
+        <div class="modal" id="postModal">
+            <div class="modal-content">
+                <h3>Create a Post</h3>
+                <textarea rows="4" class="w-full p-2 mb-4" placeholder="What's on your mind?"></textarea>
+                <button class="w-full bg-blue-500 text-white py-2 rounded" onclick="closeModal()">Post</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Change the active tab on click
+        // Change active tab for bottom navigation
         function changeActiveTab(event) {
             const tabs = document.querySelectorAll('.bottom-nav a');
             tabs.forEach(tab => tab.classList.remove('active'));
             event.target.closest('a').classList.add('active');
         }
+
+        // Open/Close Modal
+        function openModal() {
+            document.getElementById('postModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('postModal').classList.remove('active');
+        }
+
+        // Trigger modal on profile click (example)
+        document.querySelector('.profile').addEventListener('click', openModal);
     </script>
 
 </body>
