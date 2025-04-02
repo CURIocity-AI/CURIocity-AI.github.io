@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectName - Logged In</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #1a202c;
+            color: white;
+        }
+
+        /* Floating Action Button */
+        #quickActions {
+            position: fixed;
+            right: 20px;
+            bottom: 80px;
+            background-color: #38a169;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+
+        #quickActions:hover {
+            transform: scale(1.1);
+        }
+
+        /* Action Items Styling */
+        .action-items {
+            position: fixed;
+            right: 30px;
+            bottom: 90px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(100%);
+            transition: opacity 0.3s ease-out, transform 0.5s ease-out;
+            z-index: 19;
+        }
+
+        .action-item {
+            background-color: #2d3748;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            cursor: pointer;
+        }
+
+        .action-items.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .action-items.visible .action-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .action-items.visible .action-item:nth-child(1) { transition-delay: 0.05s; }
+        .action-items.visible .action-item:nth-child(2) { transition-delay: 0.1s; }
+        .action-items.visible .action-item:nth-child(3) { transition-delay: 0.15s; }
+        .action-items.visible .action-item:nth-child(4) { transition-delay: 0.2s; }
+        .action-items.visible .action-item:nth-child(5) { transition-delay: 0.25s; }
+        .action-items.visible .action-item:nth-child(6) { transition-delay: 0.3s; }
+        .action-items.visible .action-item:nth-child(7) { transition-delay: 0.35s; }
+
+        /* Hover Effects for Action Items */
+        .action-item:hover {
+            background-color: #38a169;
+        }
+
+        /* Bottom Navigation */
+        nav button:hover {
+            background-color: #2d3748;
+            transform: scale(1.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .action-items {
+                right: 15px;
+                bottom: 70px;
+            }
+            #quickActions {
+                right: 15px;
+                bottom: 70px;
+            }
+            nav {
+                display: none; /* Hide bottom nav on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <header class="flex items-center justify-between px-4 py-3 bg-gray-800 sticky top-0">
+        <h1 class="text-lg font-bold">$CURI</h1>
+        <div class="flex gap-4">
+            <button id="notification" class="text-xl">
+                <i class="fas fa-bell"></i>
+            </button>
+            <button id="profile" class="text-xl">
+                <i class="fas fa-user-circle"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Floating Action Button -->
+    <button id="quickActions">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Action Items -->
+    <div id="actionItems" class="action-items">
+        <button class="action-item" onclick="alert('Claim Airdrop')">Claim Airdrop</button>
+        <button class="action-item" onclick="alert('Stake Tokens')">Stake Tokens</button>
+        <button class="action-item" onclick="alert('View Transactions')">View Transactions</button>
+        <button class="action-item" onclick="alert('View Tasks')">View Tasks</button>
+        <button class="action-item" onclick="alert('Rewards')">Rewards</button>
+        <button class="action-item" onclick="alert('Profile Settings')">Profile Settings</button>
+        <button class="action-item" onclick="alert('Logout')">Logout</button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full">
+        <button class="text-xl"><i class="fas fa-home"></i></button>
+        <button class="text-xl"><i class="fas fa-tasks"></i></button>
+        <button class="text-xl"><i class="fas fa-wallet"></i></button>
+        <button class="text-xl"><i class="fas fa-user"></i></button>
+    </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const quickActionsButton = document.getElementById("quickActions");
+            const actionItems = document.getElementById("actionItems");
+            let menuVisible = false;
+
+            quickActionsButton.addEventListener("click", () => {
+                menuVisible = !menuVisible;
+                if (menuVisible) {
+                    actionItems.classList.add("visible");
+                } else {
+                    actionItems.classList.remove("visible");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
