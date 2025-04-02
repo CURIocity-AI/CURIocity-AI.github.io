@@ -91,7 +91,81 @@
             position: relative;
         }
 
-        
+              /* Active state styles for button */
+        button.active i {
+            color: #4CAF50;  /* White color for active icon */
+        }
+
+        /* Hover Effects */
+        button:hover i {
+            transform: scale(1.5);  /* Zoom effect on hover */
+        }
+
+            /* Active state styles */
+        .active {
+            color: #fff;  /* White text for active state */
+            background-color: ;  /* Green background for active state */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Shadow for depth */
+        }
+
+
+        /* Tooltip styling */
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 40px;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        button:hover .tooltip {
+            visibility: visible;
+        }
+
+        /* Bouncing effect for wallet icon */
+        .bounce {
+            animation: bounce 0.3s;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* General section styling with soft 3D perspective */
+        .section-header {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-content {
+            font-size: 1rem;
+            color: #666666;
+            line-height: 1.6;
+        }
+
+        .list-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-item:hover {
+            background-color: #eeeeee;
+            cursor: pointer;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+  
 
     </style>
 </head>
