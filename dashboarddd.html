@@ -91,70 +91,7 @@
             position: relative;
         }
 
-        /* Active state styles */
-        .active {
-            color: #4CAF50;  /* Green for active state */
-            transform: scale(1.1);  /* Slight zoom effect */
-        }
-
-        /* Hover Effects */
-        button:hover {
-            color: #FF9800;  /* Orange on hover */
-        }
-
-        /* Ripple Effect */
-        .ripple {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ripple:after {
-            content: '';
-            position: absolute;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            transform: scale(0);
-            animation: ripple-animation 0.6s linear;
-        }
-
-        @keyframes ripple-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-
-        /* Icon hover effect */
-        button:hover i {
-            transform: scale(1.2);  /* Slight zoom effect on hover */
-        }
-
-        /* Tooltip styling */
-        .tooltip {
-            visibility: hidden;
-            position: absolute;
-            bottom: 40px;
-            background-color: rgba(0, 0, 0, 0.75);
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-        }
-
-        button:hover .tooltip {
-            visibility: visible;
-        }
-
-        /* Bouncing effect for wallet icon */
-        .bounce {
-            animation: bounce 0.3s;
-        }
-
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
-            100% { transform: translateY(0); }
-        }
+        
 
     </style>
 </head>
@@ -225,24 +162,9 @@
         });
     </script>
 
-<script>
-    // JavaScript to add active class dynamically
-    document.querySelectorAll('nav button').forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
-            button.classList.add('active');
 
-            // Optional: Bouncing effect on wallet button click
-            if (button.id === 'walletBtn') {
-                button.classList.add('bounce');
-                setTimeout(() => {
-                    button.classList.remove('bounce');
-                }, 300);
-            }
-        });
-    });
-</script>
+
+
+
 </body>
 </html>
