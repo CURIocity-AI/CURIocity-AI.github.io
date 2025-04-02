@@ -1,262 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Dashboard</title>
-    <!-- Tailwind CSS Integration -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>ProjectName - Logged In</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        /* 3D Effect Cards */
-        .card {
-            background: #1E3A8A;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease-in-out;
+        body {
+            background-color: #1a202c;
+            color: white;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Bottom Navigation Bar */
-        .bottom-nav {
+        /* Floating Action Button */
+        #quickActions {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, rgba(33, 99, 171, 1) 0%, rgba(58, 123, 213, 1) 100%);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 15px 0;
-            border-radius: 15px 15px 0 0;
-            box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .bottom-nav a {
-            color: white;
-            font-size: 18px;
-            text-align: center;
-            padding: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .bottom-nav a:hover {
-            background-color: #3B82F6;
+            right: 20px;
+            bottom: 80px;
+            background-color: #38a169;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            transform: translateY(-3px);
-        }
-
-        .bottom-nav a.active {
-            background-color: #2563EB;
-            border-radius: 50%;
-            transform: translateY(-3px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             color: white;
-        }
-
-        .content {
-            margin-bottom: 80px; /* to give space for bottom nav */
-        }
-
-        /* Responsive Top Nav */
-        .top-nav {
-            background: linear-gradient(90deg, rgba(33, 99, 171, 1) 0%, rgba(58, 123, 213, 1) 100%);
-            color: white;
-            padding: 15px 30px;
+            font-size: 2rem;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-        }
-
-        .top-nav .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .top-nav input {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 300px;
-        }
-
-        .top-nav .icons {
-            display: flex;
-            gap: 15px;
-        }
-
-        /* Personalized Feed */
-        .feed {
-            margin-top: 30px;
-        }
-
-        .feed-post {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .feed-post .post-header {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .feed-post .post-content {
-            margin-bottom: 15px;
-        }
-
-        .feed-post .post-actions {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .feed-post button {
-            background-color: #3B82F6;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 25px;
-            transition: background-color 0.3s ease;
-        }
-
-        .feed-post button:hover {
-            background-color: #2563EB;
-        }
-
-        /* Modal Styling */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            display: none;
             justify-content: center;
-            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 20;
         }
 
-        .modal.active {
+        #quickActions:hover {
+            transform: scale(1.1);
+        }
+
+        /* Action Items Styling */
+        .action-items {
+            position: fixed;
+            right: 30px;
+            bottom: 90px;
             display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(100%);
+            transition: opacity 0.3s ease-out, transform 0.5s ease-out;
+            z-index: 19;
         }
 
-        .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 400px;
+        .action-item {
+            background-color: #2d3748;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
 
-        .modal-content h3 {
-            margin-bottom: 15px;
+        .action-items.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .action-items.visible .action-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .action-items.visible .action-item:nth-child(1) { transition-delay: 0.05s; }
+        .action-items.visible .action-item:nth-child(2) { transition-delay: 0.1s; }
+        .action-items.visible .action-item:nth-child(3) { transition-delay: 0.15s; }
+        .action-items.visible .action-item:nth-child(4) { transition-delay: 0.2s; }
+        .action-items.visible .action-item:nth-child(5) { transition-delay: 0.25s; }
+        .action-items.visible .action-item:nth-child(6) { transition-delay: 0.3s; }
+        .action-items.visible .action-item:nth-child(7) { transition-delay: 0.35s; }
+
+        /* Wallet Dropdown Styling */
+        .wallet-dropdown {
+            display: none;
+            position: absolute;
+            bottom: 50px;
+            right: 0;
+            background-color: #2d3748;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            border-radius: 8px;
+            width: 200px;
+            z-index: 10;
+        }
+
+        .wallet-dropdown.visible {
+            display: block;
+        }
+
+        .wallet-dropdown button {
+            width: 100%;
+            padding: 10px;
+            background-color: transparent;
+            color: white;
+            border: none;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .wallet-dropdown button:hover {
+            background-color: #38a169;
+        }
+
+        .wallet-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .wallet-info p {
+            margin: 0;
+            padding: 0;
         }
     </style>
 </head>
-
-<body class="bg-gray-50">
-
-    <!-- Top Navigation Bar -->
-    <div class="top-nav">
-        <div class="logo">CryptoBank</div>
-        <div class="icons">
-            <input type="text" placeholder="Search...">
-            <div class="profile">
-                <img src="https://via.placeholder.com/40" alt="Profile" class="rounded-full">
-            </div>
+<body>
+    <!-- Top Navigation -->
+    <header class="flex items-center justify-between px-4 py-3 bg-gray-800 sticky top-0">
+        <h1 class="text-lg font-bold">$CURI</h1>
+        <div class="flex gap-4">
+            <button id="notification" class="text-xl">
+                <i class="fas fa-bell"></i>
+            </button>
+            <button id="profile" class="text-xl">
+                <i class="fas fa-user-circle"></i>
+            </button>
         </div>
+    </header>
+
+    <!-- Floating Action Button -->
+    <button id="quickActions">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Action Items -->
+    <div id="actionItems" class="action-items">
+        <button class="action-item">Claim Airdrop</button>
+        <button class="action-item">Stake Tokens</button>
+        <button class="action-item">View Transactions</button>
+        <button class="action-item">View Tasks</button>
+        <button class="action-item">Rewards</button>
+        <button class="action-item">Profile Settings</button>
+        <button class="action-item">Logout</button>
     </div>
 
-    <div class="content flex flex-col h-screen">
-        <!-- Personalized Feed -->
-        <section class="feed mx-auto px-4 w-full">
-            <div class="card mb-6">
-                <div class="feed-post">
-                    <div class="post-header">
-                        John Doe <span class="text-gray-400 text-sm">3 hours ago</span>
-                    </div>
-                    <div class="post-content">
-                        Just completed a staking transaction of 1000 USD! Feeling bullish.
-                    </div>
-                    <div class="post-actions">
-                        <button>Like</button>
-                        <button>Comment</button>
-                        <button>Share</button>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-6">
-                <div class="feed-post">
-                    <div class="post-header">
-                        Jane Smith <span class="text-gray-400 text-sm">5 hours ago</span>
-                    </div>
-                    <div class="post-content">
-                        Staked 2000 USD into a high APY pool. Let’s see those rewards!
-                    </div>
-                    <div class="post-actions">
-                        <button>Like</button>
-                        <button>Comment</button>
-                        <button>Share</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- Bottom Navigation -->
+    <nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full">
+        <button class="text-xl"><i class="fas fa-home"></i></button>
+        <button class="text-xl"><i class="fas fa-tasks"></i></button>
+        <button id="walletIcon" class="text-xl relative">
+            <i class="fas fa-wallet"></i>
+            <div id="walletBalance" class="absolute top-0 right-0 text-xs text-green-400">0.00 $CURI</div>
+        </button>
+        <button class="text-xl"><i class="fas fa-user"></i></button>
+    </nav>
 
-        <!-- Bottom Navigation Bar -->
-        <div class="bottom-nav">
-            <a href="#dashboard" class="active" onclick="changeActiveTab(event)">
-                <span class="material-icons">home</span>
-                <p class="text-xs">Home</p>
-            </a>
-            <a href="#transactions" onclick="changeActiveTab(event)">
-                <span class="material-icons">swap_horiz</span>
-                <p class="text-xs">Transactions</p>
-            </a>
-            <a href="#staking" onclick="changeActiveTab(event)">
-                <span class="material-icons">attach_money</span>
-                <p class="text-xs">Staking</p>
-            </a>
-            <a href="#profile" onclick="changeActiveTab(event)">
-                <span class="material-icons">person</span>
-                <p class="text-xs">Profile</p>
-            </a>
-        </div>
-
-        <!-- Modal Example -->
-        <div class="modal" id="postModal">
-            <div class="modal-content">
-                <h3>Create a Post</h3>
-                <textarea rows="4" class="w-full p-2 mb-4" placeholder="What's on your mind?"></textarea>
-                <button class="w-full bg-blue-500 text-white py-2 rounded" onclick="closeModal()">Post</button>
-            </div>
-        </div>
+    <!-- Wallet Dropdown -->
+    <div id="walletDropdown" class="wallet-dropdown">
+        <button id="usdtWallet">USDT Wallet - 1000.00 USDT</button>
+        <button id="solanaWallet">Solana Wallet - 2.5 SOL</button>
+        <button id="ethereumWallet">Ethereum Wallet - 0.75 ETH</button>
     </div>
 
     <script>
-        // Change active tab for bottom navigation
-        function changeActiveTab(event) {
-            const tabs = document.querySelectorAll('.bottom-nav a');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            event.target.closest('a').classList.add('active');
-        }
+        document.addEventListener("DOMContentLoaded", () => {
+            const quickActionsButton = document.getElementById("quickActions");
+            const actionItems = document.getElementById("actionItems");
+            const walletIcon = document.getElementById("walletIcon");
+            const walletDropdown = document.getElementById("walletDropdown");
+            const walletBalance = document.getElementById("walletBalance");
 
-        // Open/Close Modal
-        function openModal() {
-            document.getElementById('postModal').classList.add('active');
-        }
+            let menuVisible = false;
+            let walletVisible = false;
 
-        function closeModal() {
-            document.getElementById('postModal').classList.remove('active');
-        }
+            quickActionsButton.addEventListener("click", () => {
+                menuVisible = !menuVisible;
+                if (menuVisible) {
+                    actionItems.classList.add("visible");
+                } else {
+                    actionItems.classList.remove("visible");
+                }
+            });
 
-        // Trigger modal on profile click (example)
-        document.querySelector('.profile').addEventListener('click', openModal);
+            walletIcon.addEventListener("click", () => {
+                walletVisible = !walletVisible;
+                if (walletVisible) {
+                    walletDropdown.classList.add("visible");
+                } else {
+                    walletDropdown.classList.remove("visible");
+                }
+            });
+
+            // Handle wallet selection
+            document.getElementById("usdtWallet").addEventListener("click", () => {
+                walletBalance.textContent = "1000.00 USDT";
+                walletVisible = false;
+                walletDropdown.classList.remove("visible");
+            });
+
+            document.getElementById("solanaWallet").addEventListener("click", () => {
+                walletBalance.textContent = "2.5 SOL";
+                walletVisible = false;
+                walletDropdown.classList.remove("visible");
+            });
+
+            document.getElementById("ethereumWallet").addEventListener("click", () => {
+                walletBalance.textContent = "0.75 ETH";
+                walletVisible = false;
+                walletDropdown.classList.remove("visible");
+            });
+        });
     </script>
-
 </body>
-
 </html>
