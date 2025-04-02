@@ -226,7 +226,23 @@
     </script>
 
 <script>
+    // JavaScript to add active class dynamically
+    document.querySelectorAll('nav button').forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            button.classList.add('active');
 
+            // Optional: Bouncing effect on wallet button click
+            if (button.id === 'walletBtn') {
+                button.classList.add('bounce');
+                setTimeout(() => {
+                    button.classList.remove('bounce');
+                }, 300);
+            }
+        });
+    });
 </script>
 </body>
 </html>
