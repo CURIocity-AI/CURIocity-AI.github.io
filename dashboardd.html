@@ -1,108 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Project</title>
-    <!-- Tailwind CSS Integration (via CDN for simplicity) -->
+    <title>Crypto Banking Dashboard</title>
+    <!-- Tailwind CSS Integration -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom Styles */
         .container {
             width: 90%;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        section {
-            padding-top: 40px;
-            padding-bottom: 40px;
+        .card {
+            background-color: #1e3a8a;
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            margin: 10px;
         }
 
-        h2, h3 {
-            font-family: 'Arial', sans-serif;
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
         }
 
-        /* Smooth transition for buttons */
-        a {
-            transition: all 0.3s ease-in-out;
+        .card-value {
+            font-size: 2rem;
+            font-weight: 700;
         }
 
-        a:hover {
-            transform: scale(1.05);
+        .cta-btn {
+            background-color: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Custom styles */
+        .dashboard-header {
+            background: linear-gradient(90deg, rgba(33, 99, 171, 1) 0%, rgba(58, 123, 213, 1) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .transaction-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .transaction-pending {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .transaction-successful {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .transaction-failed {
+            background-color: #ef4444;
+            color: white;
         }
     </style>
 </head>
-<body class="bg-gray-100 font-sans text-gray-900">
 
-    <!-- Header -->
-    <header class="w-full py-4 bg-blue-900 text-white">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="logo">
-                <h1 class="text-2xl font-bold">CryptoProject</h1>
+<body class="bg-gray-50">
+
+    <!-- Sidebar -->
+    <div class="flex h-screen">
+        <nav class="bg-blue-900 text-white w-1/4 p-5">
+            <div class="text-center mb-10">
+                <h1 class="text-2xl font-bold">CryptoBank</h1>
             </div>
-            <nav>
-                <ul class="flex space-x-6">
-                    <li><a href="#home" class="hover:text-blue-400">Home</a></li>
-                    <li><a href="#about" class="hover:text-blue-400">About</a></li>
-                    <li><a href="#tokenomics" class="hover:text-blue-400">Tokenomics</a></li>
-                    <li><a href="#roadmap" class="hover:text-blue-400">Roadmap</a></li>
-                    <li><a href="#contact" class="hover:text-blue-400">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+            <ul class="space-y-6">
+                <li><a href="#dashboard" class="hover:bg-blue-700 p-3 rounded">Dashboard</a></li>
+                <li><a href="#transactions" class="hover:bg-blue-700 p-3 rounded">Transactions</a></li>
+                <li><a href="#staking" class="hover:bg-blue-700 p-3 rounded">Staking</a></li>
+                <li><a href="#profile" class="hover:bg-blue-700 p-3 rounded">Profile</a></li>
+            </ul>
+        </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="relative h-screen bg-cover bg-center" style="background-image: url('your-image.jpg');">
-        <div class="absolute inset-0 bg-black opacity-50"></div>
-        <div class="container mx-auto text-center text-white relative z-10 py-32">
-            <h2 class="text-5xl font-bold mb-4">Revolutionizing Crypto Transactions</h2>
-            <p class="text-xl mb-8">Join the next wave of financial freedom and security with our blockchain project.</p>
-            <a href="#tokenomics" class="bg-blue-500 hover:bg-blue-700 text-white py-3 px-8 rounded-full text-lg">Get Started</a>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-white">
-        <div class="container mx-auto text-center">
-            <h2 class="text-4xl font-bold text-blue-900 mb-8">About Us</h2>
-            <p class="text-lg max-w-2xl mx-auto">We are building the future of decentralized finance, ensuring security, scalability, and seamless user experiences for everyone in the crypto space.</p>
-        </div>
-    </section>
-
-    <!-- Tokenomics Section -->
-    <section id="tokenomics" class="py-20 bg-blue-900 text-white">
-        <div class="container mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-8">Tokenomics</h2>
-            <div class="flex justify-center space-x-8">
-                <div class="w-1/3">
-                    <h3 class="text-2xl font-semibold mb-4">Token Distribution</h3>
-                    <div class="bg-gray-700 p-6 rounded-lg">
-                        <p>50% ICO, 30% Staking, 20% Team and Advisors.</p>
+        <!-- Main Content -->
+        <div class="flex-1 p-10">
+            
+            <!-- Dashboard Header -->
+            <section id="dashboard" class="dashboard-header">
+                <div class="container mx-auto">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-4xl font-semibold">Welcome to Your CryptoBank Dashboard</h2>
+                        <button class="cta-btn">Connect Wallet</button>
+                    </div>
+                    <div class="mt-5 grid grid-cols-3 gap-4">
+                        <div class="card">
+                            <h3 class="card-title">Total Balance</h3>
+                            <p class="card-value">1500 USD</p>
+                        </div>
+                        <div class="card">
+                            <h3 class="card-title">Available Balance</h3>
+                            <p class="card-value">1000 USD</p>
+                        </div>
+                        <div class="card">
+                            <h3 class="card-title">Staked Balance</h3>
+                            <p class="card-value">500 USD</p>
+                        </div>
                     </div>
                 </div>
-                <div class="w-1/3">
-                    <h3 class="text-2xl font-semibold mb-4">Utility</h3>
-                    <div class="bg-gray-700 p-6 rounded-lg">
-                        <p>Used for transactions, governance, and staking rewards.</p>
+            </section>
+
+            <!-- Transactions Section -->
+            <section id="transactions" class="mt-10">
+                <h2 class="text-3xl font-semibold mb-5">Transaction History</h2>
+                <div class="bg-white p-5 rounded-lg shadow-md">
+                    <div class="flex justify-between mb-5">
+                        <input type="text" class="border rounded p-2 w-1/4" placeholder="Search Transactions">
+                        <button class="cta-btn">Filter</button>
                     </div>
+
+                    <ul class="space-y-4">
+                        <li class="flex justify-between">
+                            <div class="flex items-center">
+                                <p>Sent 100 USD to 0x1...2a</p>
+                            </div>
+                            <span class="transaction-status transaction-successful">Successful</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <div class="flex items-center">
+                                <p>Received 500 USD from 0x3...4b</p>
+                            </div>
+                            <span class="transaction-status transaction-successful">Successful</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <div class="flex items-center">
+                                <p>Sent 200 USD to 0x5...6d</p>
+                            </div>
+                            <span class="transaction-status transaction-pending">Pending</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <div class="flex items-center">
+                                <p>Received 150 USD from 0x7...8e</p>
+                            </div>
+                            <span class="transaction-status transaction-failed">Failed</span>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- Footer -->
-    <footer id="contact" class="bg-gray-900 text-white py-6">
-        <div class="container mx-auto text-center">
-            <p>&copy; 2025 CryptoProject. All rights reserved.</p>
-        </div>
-    </footer>
+            <!-- Staking Section -->
+            <section id="staking" class="mt-10">
+                <h2 class="text-3xl font-semibold mb-5">Staking</h2>
+                <div class="bg-white p-5 rounded-lg shadow-md">
+                    <div class="flex justify-between mb-5">
+                        <p class="text-lg">Stake USD Tokens</p>
+                        <p class="text-xl font-bold">APY: 10%</p>
+                    </div>
+                    <input type="number" placeholder="Amount to Stake" class="border rounded p-2 w-1/2">
+                    <button class="cta-btn mt-5">Stake Now</button>
+                </div>
+            </section>
 
-    <!-- JavaScript -->
+            <!-- Profile Section -->
+            <section id="profile" class="mt-10">
+                <h2 class="text-3xl font-semibold mb-5">Profile</h2>
+                <div class="bg-white p-5 rounded-lg shadow-md">
+                    <p class="font-semibold">Name: John Doe</p>
+                    <p>Email: johndoe@email.com</p>
+                    <p>Account Status: Verified</p>
+                    <button class="cta-btn mt-5">Edit Profile</button>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
     <script>
-        // Smooth Scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        // Add smooth scroll for navigation
+        document.querySelectorAll('a').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 
@@ -113,4 +193,5 @@
         });
     </script>
 </body>
+
 </html>
