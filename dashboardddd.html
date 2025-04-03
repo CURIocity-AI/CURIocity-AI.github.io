@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bottom Navigation Bar</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -34,9 +34,16 @@
             border: none;
         }
 
-        /* Icon color change on active state */
+        /* Add green color highlight to active button */
+        button.active {
+            background-color: transparent; /* Transparent background */
+            box-shadow: 0 4px 8px rgba(0, 255, 0, 0.4);  /* Green shadow to indicate active state */
+            border-radius: 50%;
+        }
+
+        /* Icon color change for active state */
         button.active i {
-            color: white;  /* White color for active icon */
+            color: green; /* Change icon color to green when active */
         }
 
         /* Tooltip styling with 3D effects */
