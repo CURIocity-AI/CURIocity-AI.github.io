@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -225,17 +225,31 @@
                         <p class="section-content">Select an option from the navigation bar.</p>
                     `;
             }
+
+            // Reset all tooltips to invisible and hide after 3 seconds
+            document.querySelectorAll('.tooltip').forEach(tooltip => {
+                tooltip.style.visibility = 'hidden';
+                tooltip.style.opacity = 0;
+                tooltip.style.transform = 'scale(0.8)';
+            });
+            setTimeout(() => {
+                document.querySelectorAll('.tooltip').forEach(tooltip => {
+                    tooltip.style.visibility = 'visible';
+                    tooltip.style.opacity = 1;
+                    tooltip.style.transform = 'scale(1)';
+                });
+            }, 10);
+
+            // Function to hide tooltips after a few seconds
+            setTimeout(() => {
+                document.querySelectorAll('.tooltip').forEach(tooltip => {
+                    tooltip.style.visibility = 'hidden';
+                    tooltip.style.opacity = 0;
+                    tooltip.style.transform = 'scale(0.8)';
+                });
+            }, 3000); // Hides tooltips after 3 seconds
         });
     });
-
-    // Function to hide tooltips after a few seconds
-    setInterval(() => {
-        document.querySelectorAll('.tooltip').forEach(tooltip => {
-            tooltip.style.visibility = 'hidden';
-            tooltip.style.opacity = 0;
-            tooltip.style.transform = 'scale(0.8)';
-        });
-    }, 3000); // Hides tooltips after 3 seconds
 </script>
 
 </body>
