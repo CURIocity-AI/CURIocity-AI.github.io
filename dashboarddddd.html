@@ -23,12 +23,12 @@
             margin-top: 80px;
         }
 
-        /* General button transition */
+        /* General button transition 
         button {
             transition: all 0.3s ease;
             position: relative;
             z-index: 1;
-        }
+        }*/
 
         /* Floating Action Button */
         #quickActions {
@@ -109,48 +109,68 @@
             position: relative;
         }
 
-              /* Active state styles for button */
+                      /* General button transition */
+        button {
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            background-color: transparent; /* Make the background transparent */
+            border: none;
+        }
+
+        /* Add green color highlight to active button */
+        button.active {
+            background-color: transparent; /* Transparent background */
+            box-shadow: none; /* Remove box-shadow when active */
+        }
+
+        /* Icon color change for active state */
         button.active i {
-            color: #4CAF50;  /* White color for active icon */
+            color: #4CAF50; /* Change icon color to green when active */
+            animation: bounce-zoom 0.5s ease-out; /* Add bounce and zoom animation */
         }
 
-        /* Hover Effects */
-        button:hover i {
-            transform: scale(1.5);  /* Zoom effect on hover */
+        /* Bounce and zoom effect */
+        @keyframes bounce-zoom {
+            0% {
+                transform: scale(1) translateY(0);
+            }
+            50% {
+                transform: scale(1.2) translateY(-5px); /* Zoom in and bounce up */
+            }
+            100% {
+                transform: scale(1) translateY(0); /* Reset to normal size */
+            }
         }
 
-            /* Active state styles */
-        .active {
-            color: #fff;  /* White text for active state */
-            background-color: ;  /* Green background for active state */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Shadow for depth */
-        }
-
-
-        /* Tooltip styling */
+        /* Tooltip styling with 3D effects */
         .tooltip {
             visibility: hidden;
             position: absolute;
             bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.8); /* Initial scaling and positioning */
             background-color: rgba(0, 0, 0, 0.75);
             color: #fff;
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
+        /* Tooltip shows up with 3D effect and bounce */
         button:hover .tooltip {
             visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) scale(1) translateZ(10px); /* Tooltip scale to normal and with Z-axis */
+            animation: bounce-tooltip 0.3s ease-in-out; /* Bounce animation */
         }
 
-        /* Bouncing effect for wallet icon */
-        .bounce {
-            animation: bounce 0.3s;
-        }
-
-        @keyframes bounce {
+        /* Keyframe for bounce effect on tooltip */
+        @keyframes bounce-tooltip {
             0% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
+            50% { transform: translateY(-6px); }
             100% { transform: translateY(0); }
         }
 
@@ -184,7 +204,18 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
 
-
+        /* Fixed bottom navigation bar */
+        nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
     </style>
 </head>
 <body>
