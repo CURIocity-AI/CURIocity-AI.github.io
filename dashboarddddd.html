@@ -297,19 +297,35 @@
     const actionItems = document.getElementById("actionItems");
     let menuVisible = false;
 
-    quickActionsButton.addEventListener("click", () => {
+    // Toggle the menu visibility when the quick action button is clicked
+    quickActionsButton.addEventListener("click", (e) => {
+        // Prevent the event from propagating to the document
+        e.stopPropagation();
+        
         menuVisible = !menuVisible;
 
-        // Toggle the zoom class for zoom effect
+        // Toggle the zoom effect on the button
         quickActionsButton.classList.toggle("zoom");
 
         // Switch the button icon between "+" and "X"
         if (menuVisible) {
-            quickActionsButton.classList.add("x"); // Change to 'X'
+            quickActionsButton.classList.add("x");
             actionItems.classList.add("visible");
         } else {
-            quickActionsButton.classList.remove("x"); // Revert to '+'
+            quickActionsButton.classList.remove("x");
             actionItems.classList.remove("visible");
+        }
+    });
+
+    // Hide the action items when clicking anywhere outside the button or action items
+    document.addEventListener("click", (e) => {
+        if (!quickActionsButton.contains(e.target) && !actionItems.contains(e.target)) {
+            // If the click is outside both the button and action items, hide the action items
+            if (menuVisible) {
+                menuVisible = false;
+                quickActionsButton.classList.remove("x");
+                actionItems.classList.remove("visible");
+            }
         }
     });
 });
