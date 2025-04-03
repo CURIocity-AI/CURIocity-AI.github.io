@@ -11,6 +11,7 @@
         body {
             background: linear-gradient(135deg, rgba(238, 238, 238, 1) 0%, rgba(211, 211, 211, 1) 100%);
             font-family: 'Arial', sans-serif;
+            perspective: 1000px; /* Adding a perspective for depth */
         }
 
         /* Smooth transition for content area changes */
@@ -43,7 +44,7 @@
         /* Active state styles */
         .active {
             color: #fff;  /* White text for active state */
-            background-color: ;  /* Green background for active state */
+            background-color: #4CAF50;  /* Green background for active state */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Shadow for depth */
         }
 
@@ -52,20 +53,22 @@
             visibility: hidden;
             position: absolute;
             bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.8) rotateY(-10deg);  /* Initial state with slight rotation */
             background-color: rgba(0, 0, 0, 0.75);
             color: #fff;
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 12px;
             opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 0.3s, transform 0.3s; /* Smooth fade-in and scaling */
+            transition: opacity 0.3s ease, transform 0.4s ease; /* Smooth fade-in and scaling */
         }
 
+        /* Hover state for tooltips with 3D effect */
         button:hover .tooltip {
             visibility: visible;
             opacity: 1;
-            transform: scale(1); /* Tooltip grows slightly */
+            transform: translateX(-50%) scale(1) rotateY(0deg) translateZ(10px); /* Tooltip grows and rotates into view */
         }
 
         /* Bouncing effect for wallet icon */
