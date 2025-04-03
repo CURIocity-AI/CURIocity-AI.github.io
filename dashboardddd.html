@@ -30,20 +30,33 @@
             transition: all 0.3s ease;
             position: relative;
             z-index: 1;
-            background-color: transparent;
+            background-color: transparent; /* Make the background transparent */
             border: none;
         }
 
         /* Add green color highlight to active button */
         button.active {
             background-color: transparent; /* Transparent background */
-            box-shadow: 0 4px 8px rgba(0, 255, 0, 0.4);  /* Green shadow to indicate active state */
-            border-radius: 50%;
+            box-shadow: none; /* Remove box-shadow when active */
         }
 
         /* Icon color change for active state */
         button.active i {
             color: green; /* Change icon color to green when active */
+            animation: bounce-zoom 0.5s ease-out; /* Add bounce and zoom animation */
+        }
+
+        /* Bounce and zoom effect */
+        @keyframes bounce-zoom {
+            0% {
+                transform: scale(1) translateY(0);
+            }
+            50% {
+                transform: scale(1.2) translateY(-5px); /* Zoom in and bounce up */
+            }
+            100% {
+                transform: scale(1) translateY(0); /* Reset to normal size */
+            }
         }
 
         /* Tooltip styling with 3D effects */
@@ -75,23 +88,6 @@
             0% { transform: translateY(0); }
             50% { transform: translateY(-6px); }
             100% { transform: translateY(0); }
-        }
-
-        /* Bouncing effect for wallet icon */
-        .bounce {
-            animation: bounce 0.3s;
-        }
-
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
-            100% { transform: translateY(0); }
-        }
-
-        /* Active state styles for button */
-        .active {
-            background-color: transparent;  /* Make background transparent */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Add subtle shadow for depth */
         }
 
         /* General section styling with soft 3D perspective */
