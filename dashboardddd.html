@@ -3,26 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProjectName - Logged In</title>
+    <title>Quick Action Floating Button</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-         /* General body and background styling */
-        body {
-            background: #fff;
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* Smooth transition for content area changes */
-        #content {
-            transition: all 0.5s ease;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            margin-top: 80px;
-        }
-
         /* Floating Action Button */
         #quickActions {
             position: fixed;
@@ -39,31 +23,27 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            z-index: 1000;
             transition: all 0.3s ease;
-            z-index: 20;
         }
 
-        #quickActions:hover {
-            transform: scale(1.1);
-        }
-
-        /* Action Items Styling */
-        .action-items {
+        /* Action Items Container */
+        #actionItems {
             position: fixed;
             right: 30px;
             bottom: 150px;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 10px;
             opacity: 0;
             transform: translateX(100%);
             transition: opacity 0.3s ease-out, transform 0.5s ease-out;
-            z-index: 19;
         }
 
+        /* Action Items */
         .action-item {
             background-color: #2d3748;
-            padding: 0.8rem 1rem;
+            padding: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             color: white;
@@ -74,61 +54,20 @@
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
 
-        .action-items.visible .action-item {
+        /* Visible action items when button clicked */
+        .visible .action-item {
             opacity: 1;
             transform: translateX(0);
         }
 
-        /* Quick action button disappearing */
+        /* Quick action button disappearing with ease-out */
         #quickActions.hidden {
             opacity: 0;
             transform: scale(0);
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
 
-        /* General section styling with soft 3D perspective */
-        .section-header {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #333333;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .section-content {
-            font-size: 1rem;
-            color: #666666;
-            line-height: 1.6;
-        }
-
-        .list-item {
-            margin: 10px 0;
-            padding: 10px;
-            background: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .list-item:hover {
-            background-color: #eeeeee;
-            cursor: pointer;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Fixed bottom navigation bar */
-        nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #333;
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-around;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-        }
-
+        /* Tooltips for icons */
         .tooltip {
             visibility: hidden;
             position: absolute;
@@ -147,7 +86,7 @@
         button:hover .tooltip {
             visibility: visible;
             opacity: 1;
-            transform: translateX(-50%) scale(1) translateZ(10px);
+            transform: translateX(-50%) scale(1);
             animation: bounce-tooltip 0.3s ease-in-out;
         }
 
@@ -156,10 +95,11 @@
             50% { transform: translateY(-6px); }
             100% { transform: translateY(0); }
         }
+
     </style>
 </head>
-<body>
-    <!-- Top Navigation -->
+<body class="bg-gray-100">
+    <!-- Top navigation -->
     <header class="flex items-center justify-between px-4 py-3 bg-gray-800 fixed top-0 left-0 w-full z-50">
         <h1 class="text-lg font-bold text-white">$CURI</h1>
         <div class="flex gap-4">
@@ -178,7 +118,7 @@
     </button>
 
     <!-- Action Items -->
-    <div id="actionItems" class="action-items">
+    <div id="actionItems">
         <button class="action-item">Claim Airdrop</button>
         <button class="action-item">Stake Tokens</button>
         <button class="action-item">View Transactions</button>
@@ -189,7 +129,7 @@
     </div>
 
     <!-- Bottom Navigation -->
-    <nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full rounded-t-xl">
+    <nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full rounded-t-xl z-50">
         <button class="ripple" id="homeBtn" title="Home">
             <i class="fas fa-home text-xl text-gray-300"></i>
             <div class="tooltip">Home</div>
@@ -208,41 +148,30 @@
         </button>
     </nav>
 
-    <!-- Content Section -->
-    <div id="content" class="pt-20 p-6">
-        <!-- Default content here if needed -->
-        <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
-        <p class="section-content">Select an option from the navigation bar.</p>
-    </div>
-
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const quickActionsButton = document.getElementById("quickActions");
             const actionItems = document.getElementById("actionItems");
             let menuVisible = false;
 
-            // Toggle action items on button click
+            // Toggle action items visibility when the button is clicked
             quickActionsButton.addEventListener("click", (e) => {
                 e.stopPropagation();  // Prevent event from bubbling up to document
                 menuVisible = !menuVisible;
 
                 if (menuVisible) {
                     actionItems.classList.add("visible");
-                    quickActionsButton.classList.add("open");  // Rotate button
-                    actionItems.style.opacity = "1";
-                    actionItems.style.transform = "translateX(0)";
-                    quickActionsButton.style.opacity = "1";
-                    quickActionsButton.style.transform = "scale(1)";
+                    quickActionsButton.classList.add("hidden");  // Hide the floating action button with ease-out
                 } else {
                     // Trigger smooth disappear effect for both action items and button
                     actionItems.style.opacity = "0";
-                    actionItems.style.transform = "translateX(100%)";
-                    quickActionsButton.style.opacity = "0";
-                    quickActionsButton.style.transform = "scale(0)"; // Hide the button with ease-out
+                    actionItems.style.transform = "translateX(100%)"; // Make action items slide out
+                    quickActionsButton.style.opacity = "0";  // Hide button smoothly
+                    quickActionsButton.style.transform = "scale(0)";  // Hide button with scale effect
                     setTimeout(() => {
-                        actionItems.style.transform = "translateX(100%)"; // Reset items after transition
-                        quickActionsButton.style.transform = "scale(1)"; // Reset button after transition
-                    }, 300); // Ensure this timeout matches the transition duration
+                        actionItems.style.transform = "translateX(100%)";
+                        quickActionsButton.style.transform = "scale(1)";  // Reset scale
+                    }, 300); // Timeout should match the transition duration
                 }
             });
 
@@ -251,13 +180,13 @@
                 if (menuVisible) {
                     actionItems.style.opacity = "0";
                     actionItems.style.transform = "translateX(100%)";  // Make action items disappear
-                    quickActionsButton.style.opacity = "0"; // Make the button disappear smoothly
+                    quickActionsButton.style.opacity = "0";  // Make the button disappear smoothly
                     menuVisible = false;
 
                     setTimeout(() => {
                         actionItems.style.transform = "translateX(100%)";
                         quickActionsButton.style.transform = "scale(1)";
-                    }, 300); // Timeout to match transition duration
+                    }, 300);  // Timeout to match transition duration
                 }
             });
 
