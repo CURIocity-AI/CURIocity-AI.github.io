@@ -79,11 +79,6 @@
             transform: translateX(0);
         }
 
-        .action-items.hidden .action-item {
-            opacity: 0;
-            transform: translateX(20px);
-        }
-
         /* Quick action button disappearing */
         #quickActions.hidden {
             opacity: 0;
@@ -234,13 +229,19 @@
                 if (menuVisible) {
                     actionItems.classList.add("visible");
                     quickActionsButton.classList.add("open");  // Rotate button
+                    actionItems.style.opacity = "1";
+                    actionItems.style.transform = "translateX(0)";
+                    quickActionsButton.style.opacity = "1";
+                    quickActionsButton.style.transform = "scale(1)";
                 } else {
                     // Trigger smooth disappear effect for both action items and button
-                    actionItems.classList.add("hidden");
-                    quickActionsButton.classList.add("hidden"); // Hide the button with ease-out
+                    actionItems.style.opacity = "0";
+                    actionItems.style.transform = "translateX(100%)";
+                    quickActionsButton.style.opacity = "0";
+                    quickActionsButton.style.transform = "scale(0)"; // Hide the button with ease-out
                     setTimeout(() => {
-                        actionItems.classList.remove("visible", "hidden"); // Reset items after transition
-                        quickActionsButton.classList.remove("open", "hidden"); // Reset button after transition
+                        actionItems.style.transform = "translateX(100%)"; // Reset items after transition
+                        quickActionsButton.style.transform = "scale(1)"; // Reset button after transition
                     }, 300); // Ensure this timeout matches the transition duration
                 }
             });
@@ -248,13 +249,14 @@
             // Close action items if clicking outside the button
             document.addEventListener("click", () => {
                 if (menuVisible) {
-                    actionItems.classList.add("hidden");  // Make action items disappear
-                    quickActionsButton.classList.add("hidden"); // Make the button disappear smoothly
+                    actionItems.style.opacity = "0";
+                    actionItems.style.transform = "translateX(100%)";  // Make action items disappear
+                    quickActionsButton.style.opacity = "0"; // Make the button disappear smoothly
                     menuVisible = false;
 
                     setTimeout(() => {
-                        actionItems.classList.remove("visible", "hidden");
-                        quickActionsButton.classList.remove("open", "hidden");
+                        actionItems.style.transform = "translateX(100%)";
+                        quickActionsButton.style.transform = "scale(1)";
                     }, 300); // Timeout to match transition duration
                 }
             });
