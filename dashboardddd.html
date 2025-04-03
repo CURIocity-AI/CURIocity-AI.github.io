@@ -30,23 +30,13 @@
             transition: all 0.3s ease;
             position: relative;
             z-index: 1;
+            background-color: transparent;
+            border: none;
         }
 
-        /* Active state styles for button */
+        /* Icon color change on active state */
         button.active i {
-            color: #4CAF50;  /* White color for active icon */
-        }
-
-        /* Hover Effects */
-        button:hover i {
-            transform: scale(1.5);  /* Zoom effect on hover */
-        }
-
-        /* Active state styles */
-        .active {
-            color: #fff;  /* White text for active state */
-            background-color: #4CAF50;  /* Green background for active state */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Shadow for depth */
+            color: white;  /* White color for active icon */
         }
 
         /* Tooltip styling with 3D effects */
@@ -73,10 +63,10 @@
             animation: bounce-tooltip 0.3s ease-in-out; /* Bounce animation */
         }
 
-        /* Keyframe for bounce effect */
+        /* Keyframe for bounce effect on tooltip */
         @keyframes bounce-tooltip {
             0% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
+            50% { transform: translateY(-6px); }
             100% { transform: translateY(0); }
         }
 
@@ -89,6 +79,12 @@
             0% { transform: translateY(0); }
             50% { transform: translateY(-4px); }
             100% { transform: translateY(0); }
+        }
+
+        /* Active state styles for button */
+        .active {
+            background-color: transparent;  /* Make background transparent */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Add subtle shadow for depth */
         }
 
         /* General section styling with soft 3D perspective */
