@@ -39,114 +39,65 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     color: white;
     font-size: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.4s ease-out, transform 0.3s ease;
+    transition: all 0.3s ease;
     z-index: 20;
-    transform-origin: center;
-    will-change: transform, box-shadow;
 }
 
-/* Hover Effect for Floating Action Button */
 #quickActions:hover {
-    transform: scale(1.2) rotate(45deg);
-    box-shadow: 0 0 25px 10px rgba(56, 161, 105, 0.7);
-    animation: neon-glow 1.5s infinite alternate;
+    transform: scale(1.1);
 }
 
-/* Neon Glow Animation */
-@keyframes neon-glow {
-    0% {
-        box-shadow: 0 0 5px 2px rgba(56, 161, 105, 0.4);
-    }
-    100% {
-        box-shadow: 0 0 25px 10px rgba(56, 161, 105, 0.7);
-    }
-}
-
-/* Action Items Styling */
+/* Action Items */
 .action-items {
     position: fixed;
     right: 30px;
     bottom: 150px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 5px;
     opacity: 0;
     transform: translateX(100%);
-    transition: opacity 0.5s ease-out, transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transition: opacity 0.3s ease-out, transform 0.5s ease-out;
     z-index: 19;
-    will-change: transform, opacity;
 }
 
-/* Action Item Styling with Bounce and 3D effects */
 .action-item {
     background-color: #2d3748;
     padding: 0.8rem 1rem;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     color: white;
     font-size: 1rem;
     text-align: center;
     opacity: 0;
     transform: translateX(20px);
-    transition: opacity 0.3s ease-out, transform 0.4s ease-out;
-    transform-origin: center;
-    will-change: transform, opacity;
-    animation: bounce-in 0.6s ease-out;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
-/* Action Items visible */
 .action-items.visible {
     opacity: 1;
     transform: translateX(0);
 }
 
-/* Staggered Animation for Action Items */
-.action-items.visible .action-item:nth-child(1) { animation-delay: 0.6s; }
-.action-items.visible .action-item:nth-child(2) { animation-delay: 0.55s; }
-.action-items.visible .action-item:nth-child(3) { animation-delay: 0.5s; }
-.action-items.visible .action-item:nth-child(4) { animation-delay: 0.45s; }
-.action-items.visible .action-item:nth-child(5) { animation-delay: 0.4s; }
-.action-items.visible .action-item:nth-child(6) { animation-delay: 0.35s; }
-.action-items.visible .action-item:nth-child(7) { animation-delay: 0.3s; }
-
-/* Bounce In Animation */
-@keyframes bounce-in {
-    0% {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    60% {
-        transform: translateY(-15px);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(0);
-    }
-}
-
-/* Elasticity for Action Items (smooth, bouncy movement) */
 .action-items.visible .action-item {
-    animation: elastic-bounce 0.8s ease-out;
+    opacity: 1;
+    transform: translateX(0);
 }
 
-@keyframes elastic-bounce {
-    0% {
-        transform: scale(0.6);
-    }
-    50% {
-        transform: scale(1.2);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
+.action-items.visible .action-item:nth-child(1) { transition-delay: 0.65s; }
+.action-items.visible .action-item:nth-child(2) { transition-delay: 0.6s; }
+.action-items.visible .action-item:nth-child(3) { transition-delay: 0.55s; }
+.action-items.visible .action-item:nth-child(4) { transition-delay: 0.5s; }
+.action-items.visible .action-item:nth-child(5) { transition-delay: 0.45s; }
+.action-items.visible .action-item:nth-child(6) { transition-delay: 0.4s; }
+.action-items.visible .action-item:nth-child(7) { transition-delay: 0.35s; }
 
 /*stophere*/
 
@@ -324,15 +275,22 @@
 </div>
 
     <script>
-        const quickActions = document.getElementById("quickActions");
-const actionItems = document.getElementById("actionItems");
+        document.addEventListener("DOMContentLoaded", () => {
+    const quickActionsButton = document.getElementById("quickActions");
+    const actionItems = document.getElementById("actionItems");
 
-// Toggle the visibility of action items when the FAB is clicked
-quickActions.addEventListener("click", () => {
-    actionItems.classList.toggle("visible");
+    let menuVisible = false;  // Track whether the menu is visible or not
+
+    quickActionsButton.addEventListener("click", () => {
+        menuVisible = !menuVisible;  // Toggle the visibility state
+
+        if (menuVisible) {
+            actionItems.classList.add("visible");  // Show the action items
+        } else {
+            actionItems.classList.remove("visible");  // Hide the action items
+        }
+    });
 });
-
-
 
     </script>
 
