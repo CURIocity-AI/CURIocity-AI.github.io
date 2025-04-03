@@ -11,7 +11,8 @@
         body {
             background: linear-gradient(135deg, rgba(238, 238, 238, 1) 0%, rgba(211, 211, 211, 1) 100%);
             font-family: 'Arial', sans-serif;
-            perspective: 1000px; /* Adding a perspective for depth */
+            margin: 0;
+            padding: 0;
         }
 
         /* Smooth transition for content area changes */
@@ -48,27 +49,35 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Shadow for depth */
         }
 
-        /* Tooltip styling with animations */
+        /* Tooltip styling with 3D effects */
         .tooltip {
             visibility: hidden;
             position: absolute;
             bottom: 40px;
             left: 50%;
-            transform: translateX(-50%) scale(0.8) rotateY(-10deg);  /* Initial state with slight rotation */
+            transform: translateX(-50%) scale(0.8); /* Initial scaling and positioning */
             background-color: rgba(0, 0, 0, 0.75);
             color: #fff;
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 12px;
             opacity: 0;
-            transition: opacity 0.3s ease, transform 0.4s ease; /* Smooth fade-in and scaling */
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        /* Hover state for tooltips with 3D effect */
+        /* Tooltip shows up with 3D effect and bounce */
         button:hover .tooltip {
             visibility: visible;
             opacity: 1;
-            transform: translateX(-50%) scale(1) rotateY(0deg) translateZ(10px); /* Tooltip grows and rotates into view */
+            transform: translateX(-50%) scale(1) translateZ(10px); /* Tooltip scale to normal and with Z-axis */
+            animation: bounce-tooltip 0.3s ease-in-out; /* Bounce animation */
+        }
+
+        /* Keyframe for bounce effect */
+        @keyframes bounce-tooltip {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+            100% { transform: translateY(0); }
         }
 
         /* Bouncing effect for wallet icon */
@@ -112,6 +121,18 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
 
+        /* Fixed bottom navigation bar */
+        nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
     </style>
 </head>
 <body>
@@ -138,7 +159,6 @@
 
 <!-- Content Section -->
 <div id="content" class="pt-20 p-6">
-    <!-- Default content here if needed -->
     <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
     <p class="section-content">Select an option from the navigation bar.</p>
 </div>
@@ -151,37 +171,6 @@
             document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
             // Add active class to clicked button
             button.classList.add('active');
-
-            // Optional: Bouncing effect on home button click
-            if (button.id === 'homeBtn') {
-                button.classList.add('bounce');
-                setTimeout(() => {
-                    button.classList.remove('bounce');
-                }, 300);
-            }
-            // Optional: Bouncing effect on task button click
-            if (button.id === 'tasksBtn') {
-                button.classList.add('bounce');
-                setTimeout(() => {
-                    button.classList.remove('bounce');
-                }, 300);
-            }
-
-            // Optional: Bouncing effect on wallet button click
-            if (button.id === 'walletBtn') {
-                button.classList.add('bounce');
-                setTimeout(() => {
-                    button.classList.remove('bounce');
-                }, 300);
-            }
-
-            // Optional: Bouncing effect on user button click
-            if (button.id === 'userBtn') {
-                button.classList.add('bounce');
-                setTimeout(() => {
-                    button.classList.remove('bounce');
-                }, 300);
-            }
 
             // Change content based on button clicked
             const content = document.getElementById('content');
