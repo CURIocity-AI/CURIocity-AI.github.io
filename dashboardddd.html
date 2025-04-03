@@ -23,13 +23,6 @@
             margin-top: 80px;
         }
 
-        /* General button transition*/
-        button {
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
-        }
-
         /* Floating Action Button */
         #quickActions {
             position: fixed;
@@ -81,97 +74,21 @@
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
 
-        .action-items.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
         .action-items.visible .action-item {
             opacity: 1;
             transform: translateX(0);
         }
 
-        .action-items.visible .action-item:nth-child(1) { transition-delay: 0.65s; }
-        .action-items.visible .action-item:nth-child(2) { transition-delay: 0.6s; }
-        .action-items.visible .action-item:nth-child(3) { transition-delay: 0.55s; }
-        .action-items.visible .action-item:nth-child(4) { transition-delay: 0.5s; }
-        .action-items.visible .action-item:nth-child(5) { transition-delay: 0.45s; }
-        .action-items.visible .action-item:nth-child(6) { transition-delay: 0.4s; }
-        .action-items.visible .action-item:nth-child(7) { transition-delay:  0.05s; }
-
-.nav-item {
-    transition: transform 0.3s ease, color 0.3s ease;
-}
-
-        /* Transition for smooth animations */
-        button {
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-                      /* General button transition */
-        button {
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
-            background-color: transparent; /* Make the background transparent */
-            border: none;
-        }
-
-        /* Add green color highlight to active button */
-        button.active {
-            background-color: transparent; /* Transparent background */
-            box-shadow: none; /* Remove box-shadow when active */
-        }
-
-        /* Icon color change for active state */
-        button.active i {
-            color: #4CAF50; /* Change icon color to green when active */
-            animation: bounce-zoom 0.5s ease-out; /* Add bounce and zoom animation */
-        }
-
-        /* Bounce and zoom effect */
-        @keyframes bounce-zoom {
-            0% {
-                transform: scale(1) translateY(0);
-            }
-            50% {
-                transform: scale(1.2) translateY(-5px); /* Zoom in and bounce up */
-            }
-            100% {
-                transform: scale(1) translateY(0); /* Reset to normal size */
-            }
-        }
-
-        /* Tooltip styling with 3D effects */
-        .tooltip {
-            visibility: hidden;
-            position: absolute;
-            bottom: 37px;
-            left: -15px;
-            transform: translateX(-50%) scale(0.8); /* Initial scaling and positioning */
-            background-color: rgba(0, 0, 0, 0.75);
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
+        .action-items.hidden .action-item {
             opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateX(20px);
         }
 
-        /* Tooltip shows up with 3D effect and bounce */
-        button:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
-            transform: translateX(-50%) scale(1) translateZ(10px); /* Tooltip scale to normal and with Z-axis */
-            animation: bounce-tooltip 0.3s ease-in-out; /* Bounce animation */
-        }
-
-        /* Keyframe for bounce effect on tooltip */
-        @keyframes bounce-tooltip {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-            100% { transform: translateY(0); }
+        /* Quick action button disappearing */
+        #quickActions.hidden {
+            opacity: 0;
+            transform: scale(0);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
 
         /* General section styling with soft 3D perspective */
@@ -216,22 +133,49 @@
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
         }
+
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 37px;
+            left: -15px;
+            transform: translateX(-50%) scale(0.8);
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) scale(1) translateZ(10px);
+            animation: bounce-tooltip 0.3s ease-in-out;
+        }
+
+        @keyframes bounce-tooltip {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
     <!-- Top Navigation -->
-   <header class="flex items-center justify-between px-4 py-3 bg-gray-800 fixed top-0 left-0 w-full z-50">
-    <h1 class="text-lg font-bold text-white">$CURI</h1>
-    <div class="flex gap-4">
-        <button id="notification" class="text-xl text-white">
-            <i class="fas fa-bell"></i>
-        </button>
-        <button id="profile" class="text-xl text-white">
-            <i class="fas fa-user-circle"></i>
-        </button>
-    </div>
-</header>
-
+    <header class="flex items-center justify-between px-4 py-3 bg-gray-800 fixed top-0 left-0 w-full z-50">
+        <h1 class="text-lg font-bold text-white">$CURI</h1>
+        <div class="flex gap-4">
+            <button id="notification" class="text-xl text-white">
+                <i class="fas fa-bell"></i>
+            </button>
+            <button id="profile" class="text-xl text-white">
+                <i class="fas fa-user-circle"></i>
+            </button>
+        </div>
+    </header>
 
     <!-- Floating Action Button -->
     <button id="quickActions">
@@ -249,32 +193,32 @@
         <button class="action-item">Logout</button>
     </div>
 
-<!-- Bottom Navigation -->
-<nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full rounded-t-xl">
-    <button class="ripple" id="homeBtn" title="Home">
-        <i class="fas fa-home text-xl text-gray-300"></i>
-        <div class="tooltip">Home</div>
-    </button>
-    <button class="ripple" id="tasksBtn" title="Tasks">
-        <i class="fas fa-tasks text-xl text-gray-300"></i>
-        <div class="tooltip">Tasks</div>
-    </button>
-    <button class="ripple" id="walletBtn" title="Wallet">
-        <i class="fas fa-wallet text-xl text-gray-300"></i>
-        <div class="tooltip">Wallet</div>
-    </button>
-    <button class="ripple" id="userBtn" title="Profile">
-        <i class="fas fa-user text-xl text-gray-300"></i>
-        <div class="tooltip">Profile</div>
-    </button>
-</nav>
+    <!-- Bottom Navigation -->
+    <nav class="flex justify-around items-center bg-gray-800 py-3 fixed bottom-0 w-full rounded-t-xl">
+        <button class="ripple" id="homeBtn" title="Home">
+            <i class="fas fa-home text-xl text-gray-300"></i>
+            <div class="tooltip">Home</div>
+        </button>
+        <button class="ripple" id="tasksBtn" title="Tasks">
+            <i class="fas fa-tasks text-xl text-gray-300"></i>
+            <div class="tooltip">Tasks</div>
+        </button>
+        <button class="ripple" id="walletBtn" title="Wallet">
+            <i class="fas fa-wallet text-xl text-gray-300"></i>
+            <div class="tooltip">Wallet</div>
+        </button>
+        <button class="ripple" id="userBtn" title="Profile">
+            <i class="fas fa-user text-xl text-gray-300"></i>
+            <div class="tooltip">Profile</div>
+        </button>
+    </nav>
 
-<!-- Content Section -->
-<div id="content" class="pt-20 p-6">
-    <!-- Default content here if needed -->
-    <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
-    <p class="section-content">Select an option from the navigation bar.</p>
-</div>
+    <!-- Content Section -->
+    <div id="content" class="pt-20 p-6">
+        <!-- Default content here if needed -->
+        <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
+        <p class="section-content">Select an option from the navigation bar.</p>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -282,96 +226,45 @@
             const actionItems = document.getElementById("actionItems");
             let menuVisible = false;
 
-            quickActionsButton.addEventListener("click", () => {
+            // Toggle action items on button click
+            quickActionsButton.addEventListener("click", (e) => {
+                e.stopPropagation();  // Prevent event from bubbling up to document
                 menuVisible = !menuVisible;
+
                 if (menuVisible) {
                     actionItems.classList.add("visible");
+                    quickActionsButton.classList.add("open");  // Rotate button
                 } else {
-                    actionItems.classList.remove("visible");
+                    // Trigger smooth disappear effect for both action items and button
+                    actionItems.classList.add("hidden");
+                    quickActionsButton.classList.add("hidden"); // Hide the button with ease-out
+                    setTimeout(() => {
+                        actionItems.classList.remove("visible", "hidden"); // Reset items after transition
+                        quickActionsButton.classList.remove("open", "hidden"); // Reset button after transition
+                    }, 300); // Ensure this timeout matches the transition duration
                 }
+            });
+
+            // Close action items if clicking outside the button
+            document.addEventListener("click", () => {
+                if (menuVisible) {
+                    actionItems.classList.add("hidden");  // Make action items disappear
+                    quickActionsButton.classList.add("hidden"); // Make the button disappear smoothly
+                    menuVisible = false;
+
+                    setTimeout(() => {
+                        actionItems.classList.remove("visible", "hidden");
+                        quickActionsButton.classList.remove("open", "hidden");
+                    }, 300); // Timeout to match transition duration
+                }
+            });
+
+            // Prevent closing when clicking on action items or quick actions button
+            actionItems.addEventListener("click", (e) => {
+                e.stopPropagation(); // Prevent click event from propagating to document
             });
         });
     </script>
-
-
-<script>
-    // JavaScript to add active class dynamically and show content based on clicked button
-    document.querySelectorAll('nav button').forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
-            button.classList.add('active');
-
-            // Change content based on button clicked
-            const content = document.getElementById('content');
-            switch (button.id) {
-                case 'homeBtn':
-                    content.innerHTML = `
-                        <h1 class="section-header">Home</h1>
-                        <p class="section-content">Overview of your Web3 dashboard, including balance, transactions, and stats.</p>
-                        <div class="list-item">Wallet Address: 0x1234...ABCD</div>
-                        <div class="list-item">Total ETH: 3.5 ETH</div>
-                        <div class="list-item">Latest Transaction: Sent 0.2 ETH</div>
-                    `;
-                    break;
-                case 'tasksBtn':
-                    content.innerHTML = `
-                        <h1 class="section-header">Tasks</h1>
-                        <p class="section-content">Pending tasks for you to review or approve.</p>
-                        <div class="list-item">Governance Proposal: Vote on Proposal #24</div>
-                        <div class="list-item">Claim Staking Rewards: 1.2 ETH</div>
-                        <div class="list-item">Approve Token Swap: Approve USDT -> ETH</div>
-                    `;
-                    break;
-                case 'walletBtn':
-                    content.innerHTML = `
-                        <h1 class="section-header">Wallet</h1>
-                        <p class="section-content">Your wallet and assets overview.</p>
-                        <div class="list-item">Balance: 3.5 ETH</div>
-                        <div class="list-item">ERC-20 Tokens: USDT, DAI</div>
-                        <div class="list-item">Transactions: 25 (Recent: Sent 0.2 ETH)</div>
-                    `;
-                    break;
-                case 'userBtn':
-                    content.innerHTML = `
-                        <h1 class="section-header">Profile</h1>
-                        <p class="section-content">Manage your Web3 identity and profile settings.</p>
-                        <div class="list-item">Address: 0x1234...ABCD</div>
-                        <div class="list-item">Connected Networks: Ethereum, Binance Smart Chain</div>
-                        <div class="list-item">Profile: @yourUsername (Linked to GitHub)</div>
-                    `;
-                    break;
-                default:
-                    content.innerHTML = `
-                        <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
-                        <p class="section-content">Select an option from the navigation bar.</p>
-                    `;
-            }
-
-            // Hide all tooltips first
-            document.querySelectorAll('.tooltip').forEach(tooltip => {
-                tooltip.style.visibility = 'hidden';
-                tooltip.style.opacity = 0;
-                tooltip.style.transform = 'scale(0.8)';
-            });
-
-            // Show the clicked button's tooltip and hide after 3 seconds
-            const tooltip = button.querySelector('.tooltip');
-            tooltip.style.visibility = 'visible';
-            tooltip.style.opacity = 1;
-            tooltip.style.transform = 'scale(1)';
-
-            // Hide the tooltip after 3 seconds
-            setTimeout(() => {
-                tooltip.style.visibility = 'hidden';
-                tooltip.style.opacity = 0;
-                tooltip.style.transform = 'scale(0.8)';
-            }, 3000);
-        });
-    });
-</script>
-
 
 </body>
 </html>
