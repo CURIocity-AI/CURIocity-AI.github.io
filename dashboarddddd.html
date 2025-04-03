@@ -226,28 +226,25 @@
                     `;
             }
 
-            // Reset all tooltips to invisible and hide after 3 seconds
+            // Hide all tooltips first
             document.querySelectorAll('.tooltip').forEach(tooltip => {
                 tooltip.style.visibility = 'hidden';
                 tooltip.style.opacity = 0;
                 tooltip.style.transform = 'scale(0.8)';
             });
-            setTimeout(() => {
-                document.querySelectorAll('.tooltip').forEach(tooltip => {
-                    tooltip.style.visibility = 'visible';
-                    tooltip.style.opacity = 1;
-                    tooltip.style.transform = 'scale(1)';
-                });
-            }, 10);
 
-            // Function to hide tooltips after a few seconds
+            // Show the clicked button's tooltip and hide after 3 seconds
+            const tooltip = button.querySelector('.tooltip');
+            tooltip.style.visibility = 'visible';
+            tooltip.style.opacity = 1;
+            tooltip.style.transform = 'scale(1)';
+
+            // Hide the tooltip after 3 seconds
             setTimeout(() => {
-                document.querySelectorAll('.tooltip').forEach(tooltip => {
-                    tooltip.style.visibility = 'hidden';
-                    tooltip.style.opacity = 0;
-                    tooltip.style.transform = 'scale(0.8)';
-                });
-            }, 3000); // Hides tooltips after 3 seconds
+                tooltip.style.visibility = 'hidden';
+                tooltip.style.opacity = 0;
+                tooltip.style.transform = 'scale(0.8)';
+            }, 3000);
         });
     });
 </script>
