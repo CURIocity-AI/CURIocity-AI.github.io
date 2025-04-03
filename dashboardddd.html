@@ -30,7 +30,7 @@
             z-index: 1;
         }
 
-        /* Floating Action Button with rotation */
+        /* Floating Action Button */
 #quickActions {
     position: fixed;
     right: 20px;
@@ -39,76 +39,75 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     color: white;
     font-size: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease-out, transform 0.3s ease;
     z-index: 20;
+    transform-origin: center;
+    will-change: transform, box-shadow;
 }
 
-/* Hover effect with scaling and rotation */
+/* Hover Effect for Floating Action Button */
 #quickActions:hover {
-    transform: scale(1.1) rotate(45deg);  /* Adds rotation */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);  /* More prominent shadow */
+    transform: scale(1.2) rotate(45deg);
+    box-shadow: 0 0 25px 10px rgba(56, 161, 105, 0.7);
+    animation: neon-glow 1.5s infinite alternate;
 }
 
-/* Action Items Styling with bounce effect */
+/* Neon Glow Animation */
+@keyframes neon-glow {
+    0% {
+        box-shadow: 0 0 5px 2px rgba(56, 161, 105, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 25px 10px rgba(56, 161, 105, 0.7);
+    }
+}
+
+/* Action Items Styling */
 .action-items {
     position: fixed;
     right: 30px;
     bottom: 150px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     opacity: 0;
     transform: translateX(100%);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    transition: opacity 0.5s ease-out, transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     z-index: 19;
+    will-change: transform, opacity;
 }
 
-/* Action item animations with bounce effect */
+/* Action Item Styling with Bounce and 3D effects */
 .action-item {
     background-color: #2d3748;
     padding: 0.8rem 1rem;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     color: white;
     font-size: 1rem;
     text-align: center;
     opacity: 0;
-    transform: translateY(30px); /* Start slightly below */
-    transition: opacity 0.3s ease-out, transform 0.5s ease-out;
-    animation: bounce 0.6s ease-out; /* Added bounce animation */
+    transform: translateX(20px);
+    transition: opacity 0.3s ease-out, transform 0.4s ease-out;
+    transform-origin: center;
+    will-change: transform, opacity;
+    animation: bounce-in 0.6s ease-out;
 }
 
-@keyframes bounce {
-    0% {
-        transform: translateY(30px); /* Start off-screen */
-    }
-    50% {
-        transform: translateY(-10px); /* Bounce up */
-    }
-    100% {
-        transform: translateY(0); /* Settle to original position */
-    }
-}
-
-/* Action items visible with staggered delays */
+/* Action Items visible */
 .action-items.visible {
     opacity: 1;
     transform: translateX(0);
 }
 
-.action-items.visible .action-item {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Staggered animation delays */
+/* Staggered Animation for Action Items */
 .action-items.visible .action-item:nth-child(1) { animation-delay: 0.6s; }
 .action-items.visible .action-item:nth-child(2) { animation-delay: 0.55s; }
 .action-items.visible .action-item:nth-child(3) { animation-delay: 0.5s; }
@@ -117,19 +116,38 @@
 .action-items.visible .action-item:nth-child(6) { animation-delay: 0.35s; }
 .action-items.visible .action-item:nth-child(7) { animation-delay: 0.3s; }
 
-/* Flicker effect for action items */
-@keyframes flicker {
-    0% { opacity: 1; }
-    20% { opacity: 0.8; }
-    40% { opacity: 1; }
-    60% { opacity: 0.9; }
-    80% { opacity: 1; }
-    100% { opacity: 1; }
+/* Bounce In Animation */
+@keyframes bounce-in {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    60% {
+        transform: translateY(-15px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
-.action-items.flicker {
-    animation: flicker 0.5s ease-out;
+/* Elasticity for Action Items (smooth, bouncy movement) */
+.action-items.visible .action-item {
+    animation: elastic-bounce 0.8s ease-out;
 }
+
+@keyframes elastic-bounce {
+    0% {
+        transform: scale(0.6);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 
         /* Transition for smooth animations */
         button {
@@ -305,24 +323,14 @@
 </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-    const quickActionsButton = document.getElementById("quickActions");
-    const actionItems = document.getElementById("actionItems");
-    let menuVisible = false;
+        const quickActions = document.getElementById("quickActions");
+const actionItems = document.getElementById("actionItems");
 
-    quickActionsButton.addEventListener("click", () => {
-        menuVisible = !menuVisible;
-        
-        // Toggle visibility and add flicker effect when opening/closing menu
-        if (menuVisible) {
-            actionItems.classList.add("visible");
-            actionItems.classList.add("flicker"); // Add flicker effect when visible
-        } else {
-            actionItems.classList.remove("visible");
-            actionItems.classList.remove("flicker");
-        }
-    });
+// Toggle the visibility of action items when the FAB is clicked
+quickActions.addEventListener("click", () => {
+    actionItems.classList.toggle("visible");
 });
+
 
     </script>
 
