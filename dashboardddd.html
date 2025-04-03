@@ -25,7 +25,7 @@
 
         /* General button transition */
         button {
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             z-index: 1;
         }
@@ -36,8 +36,8 @@
     right: 20px;
     bottom: 80px;
     background-color: #38a169;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     color: white;
     font-size: 2rem;
@@ -45,13 +45,13 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: transform 0.3s ease, opacity 0.3s ease;/*all 0.3s ease-in-out;*/
     z-index: 20;
 }
 
 /* Zoom effect when the button is active */
 #quickActions.zoom {
-    transform: scale(1.2); /* Zoom in slightly */
+    transform: scale(1.0); /* Zoom in slightly */
 }
 
 /* Smooth transition for icon rotation when changing from "+" to "X" */
@@ -62,7 +62,7 @@
 
 /* Button Icon Transition when hovering or active */
 #quickActions:hover {
-    transform: scale(1.1); /* Slight zoom on hover */
+    transform: scale(1.05); /* Slight zoom on hover */
 }
 
 /* Reset the icon transition back to '+' smoothly */
@@ -75,7 +75,7 @@
 .action-items {
     position: fixed;
     right: 30px;
-    bottom: 150px;
+    bottom: 142px;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -126,7 +126,7 @@
 
                       /* General button transition */
         button {
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;/*all 0.3s ease;*/
             position: relative;
             z-index: 1;
             background-color: transparent; /* Make the background transparent */
@@ -297,19 +297,35 @@
     const actionItems = document.getElementById("actionItems");
     let menuVisible = false;
 
-    quickActionsButton.addEventListener("click", () => {
+    // Toggle the menu visibility when the quick action button is clicked
+    quickActionsButton.addEventListener("click", (e) => {
+        // Prevent the event from propagating to the document
+        e.stopPropagation();
+
         menuVisible = !menuVisible;
 
-        // Toggle the zoom class for zoom effect
+        // Toggle the zoom effect on the button
         quickActionsButton.classList.toggle("zoom");
 
         // Switch the button icon between "+" and "X"
         if (menuVisible) {
-            quickActionsButton.classList.add("x"); // Change to 'X'
+            quickActionsButton.classList.add("x");
             actionItems.classList.add("visible");
         } else {
-            quickActionsButton.classList.remove("x"); // Revert to '+'
+            quickActionsButton.classList.remove("x");
             actionItems.classList.remove("visible");
+        }
+    });
+
+    // Hide the action items when clicking anywhere outside the button or action items
+    document.addEventListener("click", (e) => {
+        if (!quickActionsButton.contains(e.target) && !actionItems.contains(e.target)) {
+            // If the click is outside both the button and action items, hide the action items
+            if (menuVisible) {
+                menuVisible = false;
+                quickActionsButton.classList.remove("x");
+                actionItems.classList.remove("visible");
+            }
         }
     });
 });
