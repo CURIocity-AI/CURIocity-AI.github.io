@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Bottom Navigation Bar</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -40,15 +40,14 @@
             transform: scale(1.5);  /* Zoom effect on hover */
         }
 
-            /* Active state styles */
+        /* Active state styles */
         .active {
             color: #fff;  /* White text for active state */
             background-color: ;  /* Green background for active state */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Shadow for depth */
         }
 
-   
-        /* Tooltip styling */
+        /* Tooltip styling with animations */
         .tooltip {
             visibility: hidden;
             position: absolute;
@@ -58,10 +57,15 @@
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 12px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.3s, transform 0.3s; /* Smooth fade-in and scaling */
         }
 
         button:hover .tooltip {
             visibility: visible;
+            opacity: 1;
+            transform: scale(1); /* Tooltip grows slightly */
         }
 
         /* Bouncing effect for wallet icon */
@@ -145,14 +149,14 @@
             // Add active class to clicked button
             button.classList.add('active');
 
-// Optional: Bouncing effect on home button click
+            // Optional: Bouncing effect on home button click
             if (button.id === 'homeBtn') {
                 button.classList.add('bounce');
                 setTimeout(() => {
                     button.classList.remove('bounce');
                 }, 300);
             }
-// Optional: Bouncing effect on task button click
+            // Optional: Bouncing effect on task button click
             if (button.id === 'tasksBtn') {
                 button.classList.add('bounce');
                 setTimeout(() => {
@@ -168,7 +172,7 @@
                 }, 300);
             }
 
-// Optional: Bouncing effect on user button click
+            // Optional: Bouncing effect on user button click
             if (button.id === 'userBtn') {
                 button.classList.add('bounce');
                 setTimeout(() => {
@@ -223,6 +227,15 @@
             }
         });
     });
+
+    // Function to hide tooltips after a few seconds
+    setInterval(() => {
+        document.querySelectorAll('.tooltip').forEach(tooltip => {
+            tooltip.style.visibility = 'hidden';
+            tooltip.style.opacity = 0;
+            tooltip.style.transform = 'scale(0.8)';
+        });
+    }, 3000); // Hides tooltips after 3 seconds
 </script>
 
 </body>
