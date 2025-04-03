@@ -303,37 +303,6 @@
             // Add active class to clicked button
             button.classList.add('active');
 
-// Optional: Bouncing effect on home button click
-            if (button.id === 'homeBtn') {
-                button.classList.add('bounce');
-                setTimeout(() => {
-                    button.classList.remove('bounce');
-                }, 300);
-            }
-// Optional: Bouncing effect on task button click
-            if (button.id === 'tasksBtn') {
-                button.classList.add('bounce');
-                setTimeout(() => {
-                    button.classList.remove('bounce');
-                }, 300);
-            }
-
-            // Optional: Bouncing effect on wallet button click
-            if (button.id === 'walletBtn') {
-                button.classList.add('bounce');
-                setTimeout(() => {
-                    button.classList.remove('bounce');
-                }, 300);
-            }
-
-// Optional: Bouncing effect on user button click
-            if (button.id === 'userBtn') {
-                button.classList.add('bounce');
-                setTimeout(() => {
-                    button.classList.remove('bounce');
-                }, 300);
-            }
-
             // Change content based on button clicked
             const content = document.getElementById('content');
             switch (button.id) {
@@ -379,6 +348,26 @@
                         <p class="section-content">Select an option from the navigation bar.</p>
                     `;
             }
+
+            // Hide all tooltips first
+            document.querySelectorAll('.tooltip').forEach(tooltip => {
+                tooltip.style.visibility = 'hidden';
+                tooltip.style.opacity = 0;
+                tooltip.style.transform = 'scale(0.8)';
+            });
+
+            // Show the clicked button's tooltip and hide after 3 seconds
+            const tooltip = button.querySelector('.tooltip');
+            tooltip.style.visibility = 'visible';
+            tooltip.style.opacity = 1;
+            tooltip.style.transform = 'scale(1)';
+
+            // Hide the tooltip after 3 seconds
+            setTimeout(() => {
+                tooltip.style.visibility = 'hidden';
+                tooltip.style.opacity = 0;
+                tooltip.style.transform = 'scale(0.8)';
+            }, 3000);
         });
     });
 </script>
