@@ -377,7 +377,51 @@ header .flex button:hover {
     <!-- Default content here if needed -->
     <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
     <p class="section-content">Select an option from the navigation bar.</p>
+
+    <!-- Wallet Overview Section -->
+    <div class="wallet-overview mt-6">
+        <h2>Wallet Overview</h2>
+        <p>Wallet Address: <strong>0x1234...ABCD</strong></p>
+        <h3>Balance: <strong>3.5 ETH</strong> (~$5,200)</h3>
+    </div>
+
+    <!-- Latest Transactions Section -->
+    <div class="transactions mt-6">
+        <h3>Recent Transactions</h3>
+        <ul>
+            <li>Sent 0.2 ETH to <strong>0x5678...EFGH</strong></li>
+            <li>Received 1.5 ETH from <strong>0x9876...QRST</strong></li>
+            <li>Claimed 0.5 ETH as staking rewards</li>
+        </ul>
+    </div>
+
+    <!-- Staking & Rewards Section -->
+    <div class="staking mt-6">
+        <h3>Your Staked Assets</h3>
+        <p>Staked: <strong>1.0 ETH</strong></p>
+        <p>APY: <strong>10%</strong></p>
+        <p>Earned Rewards: <strong>0.1 ETH</strong></p>
+        <button class="action-item" id="stakeMore">Stake More</button>
+    </div>
+
+    <!-- Market Overview Section -->
+    <div class="market-overview mt-6">
+        <h3>Token Prices</h3>
+        <ul>
+            <li>ETH: $3,200</li>
+            <li>BTC: $50,000</li>
+            <li>USDT: $1.00</li>
+        </ul>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="quick-actions mt-6">
+        <button class="action-item">Send Tokens</button>
+        <button class="action-item">Claim Rewards</button>
+        <button class="action-item">View Tasks</button>
+    </div>
 </div>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
