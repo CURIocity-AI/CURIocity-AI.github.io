@@ -7,90 +7,28 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-       /* General body and background styling */
-body {
-    background: #fff;
-    font-family: 'Arial', sans-serif;
-}
+         /* General body and background styling */
+        body {
+            background: #fff;
+            font-family: 'Arial', sans-serif;
+        }
 
-/* Smooth transition for content area changes */
-#content {
-    transition: all 0.5s ease;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    margin-top: 80px;
-}
+        /* Smooth transition for content area changes */
+        #content {
+            transition: all 0.5s ease;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-top: 80px;
+        }
 
-/* General button transition */
-button {
-    transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    background-color: transparent; /* Make the background transparent */
-    border: none;
-}
-
-button:hover {
-    transform: scale(1.1); /* Slightly enlarge the icon on hover */
-    transition: all 0.3s ease;
-}
-
-/* Add green color highlight to active button */
-button.active {
-    background-color: transparent; /* Transparent background */
-    box-shadow: none; /* Remove box-shadow when active */
-}
-
-/* Icon color change for active state */
-button.active i {
-    color: #4CAF50; /* Change icon color to green when active */
-    animation: bounce-zoom 0.5s ease-out; /* Add bounce and zoom animation */
-}
-
-/* Bounce and zoom effect */
-@keyframes bounce-zoom {
-    0% {
-        transform: scale(1) translateY(0);
-    }
-    50% {
-        transform: scale(1.2) translateY(-5px); /* Zoom in and bounce up */
-    }
-    100% {
-        transform: scale(1) translateY(0); /* Reset to normal size */
-    }
-}
-
-/* Tooltip styling with 3D effects */
-.tooltip {
-    visibility: hidden;
-    position: absolute;
-    bottom: 37px;
-    left: -15px;
-    transform: translateX(-50%) scale(0.8); /* Initial scaling and positioning */
-    background-color: rgba(0, 0, 0, 0.75);
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-/* Tooltip shows up with 3D effect and bounce */
-button:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
-    transform: translateX(-50%) scale(1) translateZ(10px); /* Tooltip scale to normal and with Z-axis */
-    animation: bounce-tooltip 0.3s ease-in-out; /* Bounce animation */
-}
-
-/* Keyframe for bounce effect on tooltip */
-@keyframes bounce-tooltip {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-    100% { transform: translateY(0); }
-}
+        /* General button transition */
+        button {
+            transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
 
 /* Floating Action Button */
 #quickActions {
@@ -107,7 +45,7 @@ button:hover .tooltip {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.3s ease, opacity 0.3s ease; /*all 0.3s ease-in-out;*/
+    transition: transform 0.3s ease, opacity 0.3s ease;/*all 0.3s ease-in-out;*/
     z-index: 20;
 }
 
@@ -178,159 +116,133 @@ button:hover .tooltip {
 .action-items.visible .action-item:nth-child(6) { transition-delay: 0.4s; }
 .action-items.visible .action-item:nth-child(7) { transition-delay: 0.35s; }
 
-/* Bottom Navigation Bar */
-nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #333;
-    padding: 10px 0;
-    display: flex;
-    justify-content: space-around;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-}
+/*stophere*/
 
-/* Bottom Nav Buttons */
-nav button {
-    position: relative;
-    background-color: transparent;
-    border: none;
-    padding: 10px;
-    font-size: 24px;
-    color: #ccc;
-    cursor: pointer;
-}
+        /* Transition for smooth animations */
+        button {
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-nav button:hover {
-    color: #fff;
-    transform: scale(1.1);
-}
+                      /* General button transition */
+        button {
+            transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;/*all 0.3s ease;*/
+            position: relative;
+            z-index: 1;
+            background-color: transparent; /* Make the background transparent */
+            border: none;
+        }
 
-/* Tooltips for Bottom Nav */
-nav button .tooltip {
-    visibility: hidden;
-    position: absolute;
-    bottom: 37px;
-    left: -15px;
-    transform: translateX(-50%) scale(0.8); /* Initial scaling and positioning */
-    background-color: rgba(0, 0, 0, 0.75);
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
+        /* Add green color highlight to active button */
+        button.active {
+            background-color: transparent; /* Transparent background */
+            box-shadow: none; /* Remove box-shadow when active */
+        }
 
-nav button:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
-    transform: translateX(-50%) scale(1) translateZ(10px); /* Tooltip scale to normal and with Z-axis */
-    animation: bounce-tooltip 0.3s ease-in-out; /* Bounce animation */
-}
+        /* Icon color change for active state */
+        button.active i {
+            color: #4CAF50; /* Change icon color to green when active */
+            animation: bounce-zoom 0.5s ease-out; /* Add bounce and zoom animation */
+        }
 
-/* Keyframe for bounce effect on tooltip */
-@keyframes bounce-tooltip {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-    100% { transform: translateY(0); }
-}
+        /* Bounce and zoom effect */
+        @keyframes bounce-zoom {
+            0% {
+                transform: scale(1) translateY(0);
+            }
+            50% {
+                transform: scale(1.2) translateY(-5px); /* Zoom in and bounce up */
+            }
+            100% {
+                transform: scale(1) translateY(0); /* Reset to normal size */
+            }
+        }
 
-/* Top Navigation */
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #333;
-    padding: 10px 20px;
-    z-index: 50;
-}
+        /* Tooltip styling with 3D effects */
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 37px;
+            left: -15px;
+            transform: translateX(-50%) scale(0.8); /* Initial scaling and positioning */
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
 
-/* Top Nav Logo */
-header h1 {
-    font-size: 1.5rem;
-    color: white;
-    font-weight: bold;
-}
+        /* Tooltip shows up with 3D effect and bounce */
+        button:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) scale(1) translateZ(10px); /* Tooltip scale to normal and with Z-axis */
+            animation: bounce-tooltip 0.3s ease-in-out; /* Bounce animation */
+        }
 
-/* Top Nav Buttons */
-header .flex button {
-    color: white;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    padding: 5px;
-    cursor: pointer;
-}
+        /* Keyframe for bounce effect on tooltip */
+        @keyframes bounce-tooltip {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0); }
+        }
 
-header .flex button:hover {
-    transform: scale(1.1); /* Slight zoom effect */
-}
+        /* General section styling with soft 3D perspective */
+        .section-header {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
 
-/* Action Items (Floating) */
-.action-items {
-    position: fixed;
-    right: 30px;
-    bottom: 142px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    opacity: 0;
-    transform: translateX(100%);
-    transition: opacity 0.3s ease-out, transform 0.5s ease-out;
-    z-index: 19;
-}
+        .section-content {
+            font-size: 1rem;
+            color: #666666;
+            line-height: 1.6;
+        }
 
-.action-item {
-    background-color: #2d3748;
-    padding: 0.8rem 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    color: white;
-    font-size: 1rem;
-    text-align: center;
-    opacity: 0;
-    transform: translateX(20px);
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-}
+        .list-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
 
-.action-items.visible {
-    opacity: 1;
-    transform: translateX(0);
-}
+        .list-item:hover {
+            background-color: #eeeeee;
+            cursor: pointer;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
 
-.action-items.visible .action-item {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.action-items.visible .action-item:nth-child(1) { transition-delay: 0.65s; }
-.action-items.visible .action-item:nth-child(2) { transition-delay: 0.6s; }
-.action-items.visible .action-item:nth-child(3) { transition-delay: 0.55s; }
-.action-items.visible .action-item:nth-child(4) { transition-delay: 0.5s; }
-.action-items.visible .action-item:nth-child(5) { transition-delay: 0.45s; }
-.action-items.visible .action-item:nth-child(6) { transition-delay: 0.4s; }
-.action-items.visible .action-item:nth-child(7) { transition-delay: 0.35s; }
-
+        /* Fixed bottom navigation bar */
+        nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
     </style>
 </head>
 <body>
     <!-- Top Navigation -->
-  <header class="flex items-center justify-between px-4 py-3 bg-gray-800 fixed top-0 left-0 w-full z-50">
+   <header class="flex items-center justify-between px-4 py-3 bg-gray-800 fixed top-0 left-0 w-full z-50">
     <h1 class="text-lg font-bold text-white">$CURI</h1>
     <div class="flex gap-4">
-        <!-- Notification Icon -->
-        <button id="notification" class="text-xl text-white ripple hover:text-green-400 hover:scale-110 transition-all relative">
+        <button id="notification" class="text-xl text-white">
             <i class="fas fa-bell"></i>
-            <div class="tooltip">Notifications</div>
         </button>
-
-        <!-- Profile Icon -->
-        <button id="profile" class="text-xl text-white ripple hover:text-blue-400 hover:scale-110 transition-all relative">
+        <button id="profile" class="text-xl text-white">
             <i class="fas fa-user-circle"></i>
-            <div class="tooltip">Profile</div>
         </button>
     </div>
 </header>
@@ -377,51 +289,7 @@ header .flex button:hover {
     <!-- Default content here if needed -->
     <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
     <p class="section-content">Select an option from the navigation bar.</p>
-
-    <!-- Wallet Overview Section -->
-    <div class="wallet-overview mt-6">
-        <h2>Wallet Overview</h2>
-        <p>Wallet Address: <strong>0x1234...ABCD</strong></p>
-        <h3>Balance: <strong>3.5 ETH</strong> (~$5,200)</h3>
-    </div>
-
-    <!-- Latest Transactions Section -->
-    <div class="transactions mt-6">
-        <h3>Recent Transactions</h3>
-        <ul>
-            <li>Sent 0.2 ETH to <strong>0x5678...EFGH</strong></li>
-            <li>Received 1.5 ETH from <strong>0x9876...QRST</strong></li>
-            <li>Claimed 0.5 ETH as staking rewards</li>
-        </ul>
-    </div>
-
-    <!-- Staking & Rewards Section -->
-    <div class="staking mt-6">
-        <h3>Your Staked Assets</h3>
-        <p>Staked: <strong>1.0 ETH</strong></p>
-        <p>APY: <strong>10%</strong></p>
-        <p>Earned Rewards: <strong>0.1 ETH</strong></p>
-        <button class="action-item" id="stakeMore">Stake More</button>
-    </div>
-
-    <!-- Market Overview Section -->
-    <div class="market-overview mt-6">
-        <h3>Token Prices</h3>
-        <ul>
-            <li>ETH: $3,200</li>
-            <li>BTC: $50,000</li>
-            <li>USDT: $1.00</li>
-        </ul>
-    </div>
-
-    <!-- Quick Actions Section -->
-    <div class="quick-actions mt-6">
-        <button class="action-item">Send Tokens</button>
-        <button class="action-item">Claim Rewards</button>
-        <button class="action-item">View Tasks</button>
-    </div>
 </div>
-
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
