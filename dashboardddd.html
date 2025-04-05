@@ -380,31 +380,34 @@ p {
     border-radius: 10px;
     width: 250px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    justify-content: center;
+    flex-direction: column;
 }
 
 /* Profile Button */
 .profile-btn {
-    background-color: #4CAF50; /* Green */
+    background-color: transparent; /* Remove the green circle */
     color: white;
     border: none;
-    padding: 10px;
-    border-radius: 50%;
-    font-size: 30px;
+    padding: 0;
+    font-size: 40px; /* Increase icon size */
     cursor: pointer;
-    margin-right: 10px;
+    margin-bottom: 10px; /* Space between icon and username */
 }
 
 /* Username Card */
 .username-card {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: center; /* Center the username */
+    width: 100%;
 }
 
+/* Username Style */
 .username {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     color: white;
+    text-align: center; /* Ensure the text is centered */
 }
 
 
