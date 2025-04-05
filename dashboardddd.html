@@ -348,78 +348,41 @@
             const content = document.getElementById('content');
             switch (button.id) {
                 case 'homeBtn':
-    content.innerHTML = `
-        <h1 class="section-header">Home</h1>
-        <p class="section-content">Overview of your Web3 dashboard, including balance, transactions, and stats.</p>
-        <div class="list-item">Wallet Address: 0x1234...ABCD</div>
-        <div class="list-item">Total ETH: 3.5 ETH</div>
-        <div class="list-item">Latest Transaction: Sent 0.2 ETH</div>
-        <button id="viewTransactions" class="action-btn">View All Transactions</button>
-        <button id="viewBalanceHistory" class="action-btn">View Balance History</button>
-    `;
-    document.getElementById('viewTransactions').addEventListener('click', function() {
-        alert('Redirecting to transactions page...');
-    });
-    document.getElementById('viewBalanceHistory').addEventListener('click', function() {
-        alert('Redirecting to balance history...');
-    });
-    break;
-
+                    content.innerHTML = `
+                        <h1 class="section-header">Home</h1>
+                        <p class="section-content">Overview of your Web3 dashboard, including balance, transactions, and stats.</p>
+                        <div class="list-item">Wallet Address: 0x1234...ABCD</div>
+                        <div class="list-item">Total ETH: 3.5 ETH</div>
+                        <div class="list-item">Latest Transaction: Sent 0.2 ETH</div>
+                    `;
+                    break;
                 case 'tasksBtn':
-    content.innerHTML = `
-        <h1 class="section-header">Tasks</h1>
-        <p class="section-content">Pending tasks for you to review or approve.</p>
-        <div class="list-item">Governance Proposal: Vote on Proposal #24 <button id="voteProposal" class="action-btn">Vote</button></div>
-        <div class="list-item">Claim Staking Rewards: 1.2 ETH <button id="claimRewards" class="action-btn">Claim</button></div>
-        <div class="list-item">Approve Token Swap: Approve USDT -> ETH <button id="approveSwap" class="action-btn">Approve</button></div>
-    `;
-    document.getElementById('voteProposal').addEventListener('click', function() {
-        alert('Opening voting modal for Proposal #24...');
-    });
-    document.getElementById('claimRewards').addEventListener('click', function() {
-        alert('Claiming staking rewards...');
-    });
-    document.getElementById('approveSwap').addEventListener('click', function() {
-        alert('Approving token swap...');
-    });
-    break;
-
+                    content.innerHTML = `
+                        <h1 class="section-header">Tasks</h1>
+                        <p class="section-content">Pending tasks for you to review or approve.</p>
+                        <div class="list-item">Governance Proposal: Vote on Proposal #24</div>
+                        <div class="list-item">Claim Staking Rewards: 1.2 ETH</div>
+                        <div class="list-item">Approve Token Swap: Approve USDT -> ETH</div>
+                    `;
+                    break;
                 case 'walletBtn':
-    content.innerHTML = `
-        <h1 class="section-header">Wallet</h1>
-        <p class="section-content">Your wallet and assets overview.</p>
-        <div class="list-item">Balance: 3.5 ETH</div>
-        <div class="list-item">ERC-20 Tokens: USDT, DAI</div>
-        <div class="list-item">Transactions: 25 (Recent: Sent 0.2 ETH)</div>
-        <button id="manageTokens" class="action-btn">Manage Tokens</button>
-        <button id="sendETH" class="action-btn">Send ETH</button>
-    `;
-    document.getElementById('manageTokens').addEventListener('click', function() {
-        alert('Managing ERC-20 tokens...');
-    });
-    document.getElementById('sendETH').addEventListener('click', function() {
-        alert('Initiating ETH transfer...');
-    });
-    break;
-
+                    content.innerHTML = `
+                        <h1 class="section-header">Wallet</h1>
+                        <p class="section-content">Your wallet and assets overview.</p>
+                        <div class="list-item">Balance: 3.5 ETH</div>
+                        <div class="list-item">ERC-20 Tokens: USDT, DAI</div>
+                        <div class="list-item">Transactions: 25 (Recent: Sent 0.2 ETH)</div>
+                    `;
+                    break;
                 case 'userBtn':
-    content.innerHTML = `
-        <h1 class="section-header">Profile</h1>
-        <p class="section-content">Manage your Web3 identity and profile settings.</p>
-        <div class="list-item">Address: 0x1234...ABCD</div>
-        <div class="list-item">Connected Networks: Ethereum, Binance Smart Chain</div>
-        <div class="list-item">Profile: @yourUsername (Linked to GitHub)</div>
-        <button id="editProfile" class="action-btn">Edit Profile</button>
-        <button id="changeNetworks" class="action-btn">Change Networks</button>
-    `;
-    document.getElementById('editProfile').addEventListener('click', function() {
-        alert('Opening profile editor...');
-    });
-    document.getElementById('changeNetworks').addEventListener('click', function() {
-        alert('Changing connected networks...');
-    });
-    break;
-
+                    content.innerHTML = `
+                        <h1 class="section-header">Profile</h1>
+                        <p class="section-content">Manage your Web3 identity and profile settings.</p>
+                        <div class="list-item">Address: 0x1234...ABCD</div>
+                        <div class="list-item">Connected Networks: Ethereum, Binance Smart Chain</div>
+                        <div class="list-item">Profile: @yourUsername (Linked to GitHub)</div>
+                    `;
+                    break;
                 default:
                     content.innerHTML = `
                         <h1 class="section-header">Welcome to the Web3 Dashboard</h1>
