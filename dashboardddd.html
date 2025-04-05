@@ -371,6 +371,41 @@ p {
 
 
 
+/* Profile Card Container */
+.profile-card {
+    display: flex;
+    align-items: center;
+    background-color: #2d2d2d;
+    padding: 10px;
+    border-radius: 10px;
+    width: 250px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Profile Button */
+.profile-btn {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 30px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* Username Card */
+.username-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.username {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
 
 
 
@@ -498,10 +533,15 @@ p {
 
 
 
-
-
-
-    
+<!-- Profile pics and username -->
+<div class="profile-card">
+    <button id="profile" class="profile-btn">
+        <i class="fas fa-user-circle"></i>
+    </button>
+    <div class="username-card">
+        <p class="username">John Doe</p>
+    </div>
+</div>
         <!-- Total Balance Section -->
         <div class="balance-section">
             <h1 class="total-balance">$4,000.00</h1>
