@@ -246,6 +246,15 @@
 
 
 
+
+
+
+
+
+
+
+
+
 /* Dashboard Container */
 .dashboard-container {
     max-width: 1200px;
@@ -271,42 +280,68 @@
     margin-bottom: 30px;
 }
 
-/* CURI Balance Section */
-.curi-section {
+/* Compact Grid Styles */
+.compact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
     margin-top: 30px;
+}
+
+/* Grid Item Styles */
+.grid-item {
     background-color: #2a2a2a;
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
 }
 
-/* CURI Balance */
-.curi-balance {
-    font-size: 1.8em;
-    color: #ff6f61;
-    margin-bottom: 20px;
+.grid-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 20px rgba(0, 255, 144, 0.3);
 }
 
-/* Action Buttons */
+/* Icon Styles */
+.icon {
+    font-size: 40px;
+    color: #00ff90;
+    margin-bottom: 10px;
+}
+
+/* Title and Text */
+h3 {
+    font-size: 1.2em;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.1em;
+    color: #bbb;
+}
+
+/* Action Buttons Styles */
 .action-buttons {
     display: flex;
-    justify-content: space-around;
-    gap: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
 }
 
-/* Individual Action Button Styles */
 .action-button {
     background-color: #00ff90;
     border: none;
-    padding: 15px 30px;
-    border-radius: 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
     color: white;
-    font-size: 1.1em;
+    font-size: 1em;
     display: flex;
     align-items: center;
     gap: 8px;
     transition: background-color 0.3s ease;
+    margin: 5px;
 }
 
 .action-button:hover {
@@ -331,49 +366,9 @@
 
 /* Icon inside buttons */
 .action-button i {
-    font-size: 20px;
+    font-size: 18px;
 }
 
-/* Grid Styles */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-}
-
-/* Grid Item Styles */
-.grid-item {
-    background-color: #2a2a2a;
-    padding: 20px;
-    border-radius: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
-}
-
-.grid-item:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 4px 20px rgba(0, 255, 144, 0.3);
-}
-
-/* Icon Styles */
-.icon {
-    font-size: 50px;
-    color: #00ff90;
-    margin-bottom: 10px;
-}
-
-/* Title and Text */
-h3 {
-    font-size: 1.5em;
-    color: #fff;
-    margin-bottom: 10px;
-}
-
-p {
-    font-size: 1.1em;
-    color: #bbb;
-}
 
 
 
@@ -510,6 +505,16 @@ p {
 
 
 
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3 Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
     <div class="dashboard-container">
         <!-- Total Balance Section -->
         <div class="balance-section">
@@ -517,36 +522,22 @@ p {
             <p class="section-content">Overview of your Web3 dashboard, including balance, transactions, and stats.</p>
         </div>
 
-        <!-- CURI Balance and Action Buttons Section -->
-        <div class="curi-section">
-            <h2 class="curi-balance">CURI Balance: 1000 CURI</h2>
-
-            <div class="action-buttons">
-                <button class="action-button buy">
-                    <i class="fas fa-arrow-up"></i> Buy
-                </button>
-                <button class="action-button sell">
-                    <i class="fas fa-arrow-down"></i> Sell
-                </button>
-                <button class="action-button receive">
-                    <i class="fas fa-download"></i> Receive
-                </button>
-                <button class="action-button send">
-                    <i class="fas fa-upload"></i> Send
-                </button>
+        <!-- Compact Grid with Token Prices and Functions -->
+        <div class="compact-grid">
+            <div class="grid-item">
+                <i class="fab fa-ethereum icon"></i>
+                <h3>ETH Price</h3>
+                <p>$2,000</p>
             </div>
-        </div>
-
-        <div class="grid">
             <div class="grid-item">
                 <i class="fas fa-wallet icon"></i>
                 <h3>Wallet Address</h3>
                 <p>0x1234...ABCD</p>
             </div>
             <div class="grid-item">
-                <i class="fab fa-ethereum icon"></i>
-                <h3>Total ETH</h3>
-                <p>3.5 ETH</p>
+                <i class="fab fa-bitcoin icon"></i>
+                <h3>BTC Price</h3>
+                <p>$30,000</p>
             </div>
             <div class="grid-item">
                 <i class="fas fa-arrow-up icon"></i>
@@ -554,13 +545,32 @@ p {
                 <p>Sent 0.2 ETH</p>
             </div>
             <div class="grid-item">
-                <i class="fas fa-clock icon"></i>
-                <h3>Last Activity</h3>
-                <p>2 hours ago</p>
+                <i class="fas fa-diamond icon"></i>
+                <h3>CURI Price</h3>
+                <p>$1.50</p>
+            </div>
+            <div class="grid-item">
+                <h3>CURI Balance</h3>
+                <p>1000 CURI</p>
+                <div class="action-buttons">
+                    <button class="action-button buy">
+                        <i class="fas fa-arrow-up"></i> Buy
+                    </button>
+                    <button class="action-button sell">
+                        <i class="fas fa-arrow-down"></i> Sell
+                    </button>
+                    <button class="action-button receive">
+                        <i class="fas fa-download"></i> Receive
+                    </button>
+                    <button class="action-button send">
+                        <i class="fas fa-upload"></i> Send
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-
+</body>
+</html>
 
 
 
