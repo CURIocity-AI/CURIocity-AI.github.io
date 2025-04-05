@@ -362,7 +362,7 @@ p {
 
 
 
-/* Profile Card Container */
+/* Profile Card Container 
 .profile-card {
     display: flex;
     align-items: center;
@@ -374,19 +374,19 @@ p {
     flex-direction: row;
 }
 
-/* Profile Button */
+Profile Button 
 .profile-btn {
-    background-color: transparent; /* Remove the green circle */
+    background-color: transparent;  Remove the green circle 
     color: white;
     border: none;
     padding: 0;
-    font-size: 50px; /* Increase icon size */
+    font-size: 50px; Increase icon size 
     cursor: pointer;
     margin-bottom: 5px;
-    margin-right: 5px; /* Space between icon and username */
+    margin-right: 5px; Space between icon and username 
 }
 
-/* Username Card */
+Username Card 
 .username-card {
     display: flex;
     justify-content: start;
@@ -395,13 +395,13 @@ p {
     margin-left: 10px;
 }
 
-/* Username Style */
+Username Style 
 .username {
     font-size: 20px;
     font-weight: bold;
     color: white;
-    text-align: center; /* Ensure the text is centered */
-}
+    text-align: center; Ensure the text is centered 
+}*/
 
 
 
@@ -530,15 +530,28 @@ p {
 
 
 
-<!-- Profile pics and username -->
-<div class="profile-card">
-    <button id="profile" class="profile-btn">
-        <i class="fas fa-user-circle"></i>
-    </button>
-    <div class="username-card">
-        <p class="username">Prosper Bassey</p>
+
+
+    <!-- Profile pics and username -->
+    <div class="profile-card">
+        <button id="profile" class="profile-btn">
+            <i class="fas fa-user-circle" id="profilePicIcon"></i>
+        </button> 
+        <div class="username-card">
+            <p class="username">
+                Prosper Bassey
+                <!-- Verification Badge -->
+                <span class="verification-badge" title="Verified">✔</span>
+            </p>
+        </div>
+        <!-- File input for profile picture upload -->
+        <input type="file" id="profilePicUpload" accept="image/*" onchange="previewProfilePic(event)" style="display: none;" />
     </div>
-</div>
+
+    <!-- Button to open the file upload dialog -->
+    <button onclick="document.getElementById('profilePicUpload').click();">Change Profile Picture</button>
+
+   
         <!-- Total Balance Section -->
         <div class="balance-section">
             <h1 class="total-balance">$4,000.00</h1>
@@ -654,6 +667,25 @@ p {
     });
 </script>
 
+<script>
 
+// Function to preview the profile picture in real-time
+function previewProfilePic(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function() {
+        const profileIcon = document.getElementById('profilePicIcon');
+        profileIcon.style.backgroundImage = `url(${reader.result})`;
+        profileIcon.style.backgroundSize = 'cover';
+        profileIcon.style.backgroundPosition = 'center';
+        profileIcon.classList.add('custom-profile-pic');
+    };
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+}
+
+</script>
 </body>
 </html>
