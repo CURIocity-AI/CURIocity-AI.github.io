@@ -286,85 +286,65 @@
 
 /* Grid Item Styles */
 .grid-item {
-    background-color: #2a2a2a;
-    padding: 15px;
-    border-radius: 10px;
+    background-color: #1d1d1d; /* Darker background for a more Web3 feel */
+    padding: 20px;
+    border-radius: 15px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 255, 144, 0.2); /* Added shadow for depth */
 }
 
 .grid-item:hover {
     transform: translateY(-10px);
-    box-shadow: 0 4px 20px rgba(0, 255, 144, 0.3);
-}
-
-/* Icon Styles */
-.icon {
-    font-size: 40px;
-    color: #00ff90;
-    margin-bottom: 10px;
+    box-shadow: 0 8px 25px rgba(0, 255, 144, 0.3); /* Elevated shadow on hover */
 }
 
 /* Title and Text */
 h3 {
-    font-size: 1.2em;
+    font-size: 1.4em;
     color: #fff;
     margin-bottom: 10px;
+    font-weight: bold; /* More emphasis on the title */
 }
 
 p {
-    font-size: 1.1em;
+    font-size: 1.2em;
     color: #bbb;
+    margin-bottom: 20px; /* Added space between text and buttons */
 }
 
 /* Action Buttons Styles */
 .action-buttons {
     display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    justify-content: center;
-    margin-top: 10px;
+    justify-content: center; /* Align buttons in the center */
+    gap: 15px;
+    margin-top: 20px;
 }
 
 .action-button {
-    background-color: #00ff90;
+    background: linear-gradient(145deg, #00ff90, #00cc73); /* Gradient effect */
     border: none;
-    padding: 5px 10px;
-    border-radius: 15px;
+    padding: 12px 20px;
+    border-radius: 25px;
     color: white;
-    font-size: 1em;
-    display: flex;
-    align-items: center;
-    gap: 0.5px;
-    transition: background-color 0.1s ease;
-    margin: 2px;
+    font-size: 1.1em;
+    text-transform: uppercase; /* All text in uppercase for a more modern look */
+    letter-spacing: 1px; /* Adds space between letters */
+    box-shadow: 0 4px 8px rgba(0, 255, 144, 0.2); /* Soft shadow for 3D effect */
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .action-button:hover {
-    background-color: #00cc73;
+    background: linear-gradient(145deg, #00cc73, #00b362); /* Darker gradient on hover */
+    transform: translateY(-5px); /* Button "lift" effect on hover */
+    box-shadow: 0 6px 15px rgba(0, 255, 144, 0.3); /* More prominent shadow */
 }
 
-.buy {
-    background-color: #4caf50;
+.action-button:active {
+    transform: translateY(2px); /* Button presses down when clicked */
+    box-shadow: 0 2px 5px rgba(0, 255, 144, 0.3); /* Subtle press effect */
 }
-
-.sell {
-    background-color: #f44336;
-}
-
-.receive {
-    background-color: #2196f3;
-}
-
-.send {
-    background-color: #ff9800;
-}
-
-/* Icon inside buttons */
-.action-button i {
-    font-size: 18px;
-}
-
 
 
 
@@ -506,26 +486,18 @@ p {
             <p class="section-content">Overview of your Web3 dashboard, including balance, transactions, and stats.</p>
         </div>
 
-  <div class="grid-item">
-                <h3>CURI Balance</h3>
-                <p>1000 CURI</p>
-                <div class="action-buttons">
-                    <button class="action-button buy">
-                        <i class="fas fa-arrow-up"></i> Buy
-                    </button>
-                    <button class="action-button sell">
-                        <i class="fas fa-arrow-down"></i> Sell
-                    </button>
-                    <button class="action-button receive">
-                        <i class="fas fa-download"></i> Receive
-                    </button>
-                    <button class="action-button send">
-                        <i class="fas fa-upload"></i> Send
-                    </button>
+<div class="grid-item">
+    <h3>CURI Balance</h3>
+    <p>1000 CURI</p>
+    <div class="action-buttons">
+        <button class="action-button buy">Buy</button>
+        <button class="action-button sell">Sell</button>
+        <button class="action-button receive">Receive</button>
+        <button class="action-button send">Send</button>
+    </div>
 </div>
 
-</div>
-        <!-- Compact Grid with Token Prices and Functions -->
+  <!-- Compact Grid with Token Prices and Functions -->
         <div class="compact-grid">
             <div class="grid-item">
                 <i class="fab fa-ethereum icon"></i>
