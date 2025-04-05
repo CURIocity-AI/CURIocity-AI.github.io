@@ -190,7 +190,17 @@
         }
 
         /* General section styling with soft 3D perspective */
-        .section-header {
+
+
+    .section-header {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+    .total-balance {
             font-size: 2rem;
             font-weight: bold;
             color: #333333;
@@ -349,7 +359,7 @@
             switch (button.id) {
                 case 'homeBtn':
                     content.innerHTML = `
-                        <h1 class="section-header">$4,000</h1>
+                        <h1 class="total-balance">$4,000</h1>
                         <p class="section-content">Overview of your Web3 dashboard, including balance, transactions, and stats.</p>
                         <div class="list-item">Wallet Address: 0x1234...ABCD</div>
                         <div class="list-item">Total ETH: 3.5 ETH</div>
