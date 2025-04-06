@@ -362,14 +362,12 @@ p {
 
 
 
-
-
-/* Profile Card Container */
+   /* Profile Card Container */
 .profile-card {
     display: flex;
     align-items: center;
     background-color:          background: linear-gradient(135deg, #0f172a, #1e293b);
-    padding: 10px;
+    padding: 10px; 
     border-radius: 10px;
     width: 100%;
     justify-content: center;
@@ -384,7 +382,6 @@ p {
     padding: 0;
     font-size: 50px; /* Increase icon size */
     cursor: pointer;
-    margin-bottom: 5px;
     margin-right: 5px; /* Space between icon and username */
 }
 
@@ -397,7 +394,7 @@ p {
     height: 50px; /* Set a smaller height for a compact rectangular shape */
     margin-top: 4px;
     margin-left: 3px;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
+    background: #1e293b;
     padding: 5px 4px; /* Add small padding to avoid cramped text */
 }
 
@@ -405,7 +402,7 @@ p {
     font-size: 18px; /* Adjust font size to fit in the smaller card */
     font-weight: bold;
     color: white;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
+    background: #1e293b;
     text-align: center; /* Ensure the text is centered */
     margin-bottom: 2px; /* Small space between the username and the button */
 }
@@ -514,7 +511,7 @@ p {
     });
 
     // Hide the action items when clicking anywhere outside the button or action items
-    document.addEventListener("click", (e) => {me
+    document.addEventListener("click", (e) => {
         if (!quickActionsButton.contains(e.target) && !actionItems.contains(e.target)) {
             // If the click is outside both the button and action items, hide the action items
             if (menuVisible) {
@@ -551,7 +548,9 @@ p {
 
 
 
-<!-- Profile pics and username -->
+
+
+  <!-- Profile pics and username -->
 <div class="profile-card">
     <button id="profile" class="profile-btn">
         <i class="fas fa-user-circle"></i>
@@ -562,11 +561,7 @@ p {
     </div>
 </div>
 
-
-
-
-
-
+   
         <!-- Total Balance Section -->
         <div class="balance-section">
             <h1 class="total-balance">$4,000.00</h1>
@@ -682,6 +677,26 @@ p {
     });
 </script>
 
+<script>
 
+// Function to preview the profile picture in real-time
+function previewProfilePic(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function() {
+        const profileIcon = document.getElementById('profilePicIcon');
+        profileIcon.style.backgroundImage = `url(${reader.result})`;
+        profileIcon.style.backgroundSize = 'cover';
+        profileIcon.style.backgroundPosition = 'center';
+        profileIcon.classList.add('custom-profile-pic');
+    };
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+}
+
+
+</script>
 </body>
 </html>
