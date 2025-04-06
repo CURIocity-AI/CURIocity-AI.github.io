@@ -421,7 +421,25 @@ p {
     width: auto; /* Let the button adjust width based on content */
 }
 
+    /* Style for the badge */
+    .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: red;
+        color: white;
+        font-size: 12px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 18px;
+    }
 
+    /* Adjusting button styles to ensure the badge fits nicely */
+    .relative {
+        position: relative;
+    }
 
 
 
@@ -434,7 +452,19 @@ p {
     <h1 class="text-lg font-bold text-white">$CURI</h1>
     <div class="flex gap-4">
   
-here!!!!!!!
+<button id="notification" class="text-xl text-white relative">
+    <i class="fas fa-bell"></i>
+    <!-- Badge for notification count -->
+    <span class="notification-badge">3</span> 
+</button>
+
+<button id="profile" class="text-xl text-white relative">
+    <i class="fas fa-comment"></i>
+    <!-- Badge for notification count -->
+    <span class="notification-badge">5</span>
+</button>
+
+
 
     </div>
 </header>
