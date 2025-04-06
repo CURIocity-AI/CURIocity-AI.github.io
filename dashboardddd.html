@@ -422,6 +422,23 @@ p {
 }
 
 
+/* Adjust the position of the badge and make it circular */
+#notification .relative, #chat .relative {
+    position: relative;
+}
+
+#notification-count, #chat-count {
+    position: absolute;
+    top: -5px; /* Adjust as necessary */
+    right: -5px; /* Adjust as necessary */
+    background-color: red;
+    color: white;
+    font-size: 0.75rem; /* Small text */
+    padding: 3px 5px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
 
     </style>
 </head>
@@ -430,11 +447,14 @@ p {
    <header class="flex items-center justify-between px-4 py-3 bg-gray-800 fixed top-0 left-0 w-full z-50">
     <h1 class="text-lg font-bold text-white">$CURI</h1>
     <div class="flex gap-4">
-        <button id="notification" class="text-xl text-white">
-            <i class="fas fa-bell"></i>
-        </button>
-      <button id="profile" class="text-xl text-white">
+  <button id="notification" class="text-xl text-white relative">
+    <i class="fas fa-bell"></i>
+    <span id="notification-count" class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span> <!-- Example count -->
+</button>
+
+<button id="chat" class="text-xl text-white relative">
     <i class="fas fa-comment"></i>
+    <span id="chat-count" class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-2 py-1">1</span> <!-- Example count -->
 </button>
 
     </div>
@@ -696,6 +716,39 @@ function previewProfilePic(event) {
     }
 }
 
+
+</script>
+
+<script>
+// Update notification count
+function updateNotificationCount(count) {
+    const notificationCount = document.getElementById('notification-count');
+    notificationCount.textContent = count;
+
+    // Show or hide the badge depending on the count
+    if (count > 0) {
+        notificationCount.style.display = 'inline-block';
+    } else {
+        notificationCount.style.display = 'none';
+    }
+}
+
+// Update chat count (was profile count)
+function updateChatCount(count) {
+    const chatCount = document.getElementById('chat-count');
+    chatCount.textContent = count;
+
+    // Show or hide the badge depending on the count
+    if (count > 0) {
+        chatCount.style.display = 'inline-block';
+    } else {
+        chatCount.style.display = 'none';
+    }
+}
+
+// Example of dynamically changing the count
+updateNotificationCount(5); // Example: 5 new notifications
+updateChatCount(0); // Example: No new chat messages
 
 </script>
 </body>
