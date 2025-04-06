@@ -551,25 +551,16 @@ p {
 
 
 
-  
-    <!-- Profile card container -->
-    <div class="profile-card">
-        <!-- Profile button to open file input for image upload -->
-        <button id="profile" class="profile-btn" onclick="document.getElementById('profilePicUpload').click();">
-            <i class="fas fa-user-circle" id="profilePicIcon"></i>
-        </button> 
-        
-        <div class="username-card">
-            <p class="username">
-                Prosper Bassey
-                <!-- Facebook-style verification badge -->
-                <span class="verification-badge" title="Verified">✔</span>
-            </p>
-        </div>
-        
-        <!-- File input for profile picture upload (hidden) -->
-        <input type="file" id="profilePicUpload" accept="image/*" onchange="previewProfilePic(event)" style="display: none;" />
+  <!-- Profile pics and username -->
+<div class="profile-card">
+    <button id="profile" class="profile-btn">
+        <i class="fas fa-user-circle"></i>
+    </button>
+    <div class="username-card">
+        <p class="username">Prosper Bassey</p>
+<button class="user-verified">✓ verified</button>
     </div>
+</div>
 
    
         <!-- Total Balance Section -->
