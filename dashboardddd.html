@@ -414,9 +414,11 @@ p {
     text-align: center;
     margin: 0;
     padding: 2px 6px; /* Adjust padding for the button */
-    background: linear-gradient(145deg, #00ff90, #00cc73);
+    background: #4CAF50;
     color: #999999;
-    border: none;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 50%;
     font-size: 0.8rem; /* Slightly smaller font size for the button */
     width: auto; /* Let the button adjust width based on content */
 }
@@ -511,7 +513,7 @@ p {
     });
 
     // Hide the action items when clicking anywhere outside the button or action items
-    document.addEventListener("click", (e) => {
+    document.addEventListener("click", (e) => {me
         if (!quickActionsButton.contains(e.target) && !actionItems.contains(e.target)) {
             // If the click is outside both the button and action items, hide the action items
             if (menuVisible) {
