@@ -422,22 +422,58 @@ p {
 }
 
 
-/* Adjust the position of the badge and make it circular */
-#notification .relative, #chat .relative {
+/* Specific styles for buttons with the class 'badge-button' */
+.badge-button .relative {
     position: relative;
 }
 
-#notification-count, #chat-count {
+/* Notification Count Styles */
+.badge-button #notification-count {
     position: absolute;
-    top: -5px; /* Adjust as necessary */
-    right: -5px; /* Adjust as necessary */
+    top: -4px; /* Adjusted top position */
+    right: -4px; /* Adjusted right position */
     background-color: red;
     color: white;
-    font-size: 0.75rem; /* Small text */
-    padding: 3px 5px;
-    border-radius: 50%;
+    font-size: 0.65rem; /* Reduced font size */
+    padding: 3px; /* Reduced padding for smaller badges */
+    border-radius: 50%; /* Circular shape */
+    width: 18px; /* Reduced width for smaller size */
+    height: 18px; /* Reduced height for smaller size */
+    display: inline-block;
+    text-align: center; /* Ensure text is centered horizontally */
+    line-height: 18px; /* Center text vertically */
+    visibility: hidden; /* Initially hidden until count > 0 */
+}
+
+/* Chat Count Styles */
+.badge-button #chat-count {
+    position: absolute;
+    top: -4px; /* Adjusted top position */
+    right: -4px; /* Adjusted right position */
+    background-color: red;
+    color: white;
+    font-size: 0.65rem; /* Reduced font size */
+    padding: 3px; /* Reduced padding for smaller badges */
+    border-radius: 50%; /* Circular shape */
+    width: 18px; /* Reduced width for smaller size */
+    height: 18px; /* Reduced height for smaller size */
+    display: inline-block;
+    text-align: center; /* Ensure text is centered horizontally */
+    line-height: 18px; /* Center text vertically */
+    visibility: hidden; /* Initially hidden until count > 0 */
+}
+
+/* Show count when greater than 0 */
+.badge-button #notification-count.visible, .badge-button #chat-count.visible {
+    visibility: visible;
+}
+
+/* Avoid affecting other buttons globally */
+button {
+    position: relative;
     display: inline-block;
 }
+
 
 
     </style>
@@ -447,15 +483,16 @@ p {
    <header class="flex items-center justify-between px-4 py-3 bg-gray-800 fixed top-0 left-0 w-full z-50">
     <h1 class="text-lg font-bold text-white">$CURI</h1>
     <div class="flex gap-4">
-  <button id="notification" class="text-xl text-white relative">
+  <button id="notification" class="text-xl text-white relative badge-button">
     <i class="fas fa-bell"></i>
     <span id="notification-count" class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span> <!-- Example count -->
 </button>
 
-<button id="chat" class="text-xl text-white relative">
+<button id="chat" class="text-xl text-white relative badge-button">
     <i class="fas fa-comment"></i>
     <span id="chat-count" class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-2 py-1">1</span> <!-- Example count -->
 </button>
+
 
     </div>
 </header>
@@ -720,35 +757,58 @@ function previewProfilePic(event) {
 </script>
 
 <script>
-// Update notification count
-function updateNotificationCount(count) {
-    const notificationCount = document.getElementById('notification-count');
-    notificationCount.textContent = count;
-
-    // Show or hide the badge depending on the count
-    if (count > 0) {
-        notificationCount.style.display = 'inline-block';
-    } else {
-        notificationCount.style.display = 'none';
-    }
+/* Specific styles for buttons with the class 'badge-button' */
+.badge-button .relative {
+    position: relative;
 }
 
-// Update chat count (was profile count)
-function updateChatCount(count) {
-    const chatCount = document.getElementById('chat-count');
-    chatCount.textContent = count;
-
-    // Show or hide the badge depending on the count
-    if (count > 0) {
-        chatCount.style.display = 'inline-block';
-    } else {
-        chatCount.style.display = 'none';
-    }
+/* Notification Count Styles */
+.badge-button #notification-count {
+    position: absolute;
+    top: -4px; /* Adjusted top position */
+    right: -4px; /* Adjusted right position */
+    background-color: red;
+    color: white;
+    font-size: 0.65rem; /* Reduced font size */
+    padding: 3px; /* Reduced padding for smaller badges */
+    border-radius: 50%; /* Circular shape */
+    width: 18px; /* Reduced width for smaller size */
+    height: 18px; /* Reduced height for smaller size */
+    display: inline-block;
+    text-align: center; /* Ensure text is centered horizontally */
+    line-height: 18px; /* Center text vertically */
+    visibility: hidden; /* Initially hidden until count > 0 */
 }
 
-// Example of dynamically changing the count
-updateNotificationCount(5); // Example: 5 new notifications
-updateChatCount(0); // Example: No new chat messages
+/* Chat Count Styles */
+.badge-button #chat-count {
+    position: absolute;
+    top: -4px; /* Adjusted top position */
+    right: -4px; /* Adjusted right position */
+    background-color: red;
+    color: white;
+    font-size: 0.65rem; /* Reduced font size */
+    padding: 3px; /* Reduced padding for smaller badges */
+    border-radius: 50%; /* Circular shape */
+    width: 18px; /* Reduced width for smaller size */
+    height: 18px; /* Reduced height for smaller size */
+    display: inline-block;
+    text-align: center; /* Ensure text is centered horizontally */
+    line-height: 18px; /* Center text vertically */
+    visibility: hidden; /* Initially hidden until count > 0 */
+}
+
+/* Show count when greater than 0 */
+.badge-button #notification-count.visible, .badge-button #chat-count.visible {
+    visibility: visible;
+}
+
+/* Avoid affecting other buttons globally */
+button {
+    position: relative;
+    display: inline-block;
+}
+
 
 </script>
 </body>
