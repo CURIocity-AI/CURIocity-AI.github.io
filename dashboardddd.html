@@ -442,6 +442,32 @@ p {
     }
 
 
+.task-buttons {
+    margin-bottom: 20px;
+}
+
+.task-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.task-btn.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.task-list {
+    display: none;
+}
+
+.task-list.show {
+    display: block;
+}
 
 
     </style>
@@ -660,11 +686,32 @@ p {
                     break;
                 case 'walletBtn':
                     content.innerHTML = `
-                        <h1 class="section-header">Wallet</h1>
-                        <p class="section-content">Your wallet and assets overview.</p>
-                        <div class="list-item">Balance: 3.5 ETH</div>
-                        <div class="list-item">ERC-20 Tokens: USDT, DAI</div>
-                        <div class="list-item">Transactions: 25 (Recent: Sent 0.2 ETH)</div>
+                      <h1 class="section-header">Tasks</h1>
+<p class="section-content">Manage your tasks by switching between pending and completed.</p>
+
+<div class="task-buttons">
+    <button id="pending-btn" class="task-btn active">Pending</button>
+    <button id="completed-btn" class="task-btn">Completed</button>
+</div>
+
+<div id="pending-tasks" class="task-list">
+    <h2>Pending Tasks</h2>
+    <ul>
+        <li class="list-item">Governance Proposal: Vote on Proposal #24</li>
+        <li class="list-item">Claim Staking Rewards: 1.2 ETH</li>
+        <li class="list-item">Approve Token Swap: Approve USDT -> ETH</li>
+    </ul>
+</div>
+
+<div id="completed-tasks" class="task-list" style="display: none;">
+    <h2>Completed Tasks</h2>
+    <ul>
+        <li class="list-item">Governance Proposal: Vote on Proposal #22</li>
+        <li class="list-item">Claim Staking Rewards: 0.5 ETH</li>
+        <li class="list-item">Approve Token Swap: Approve BTC -> ETH</li>
+    </ul>
+</div>
+
                     `;
                     break;
                 case 'userBtn':
@@ -730,6 +777,19 @@ function previewProfilePic(event) {
 
 <script>
 
+document.getElementById('pending-btn').addEventListener('click', function() {
+    document.getElementById('pending-tasks').style.display = 'block';
+    document.getElementById('completed-tasks').style.display = 'none';
+    document.getElementById('pending-btn').classList.add('active');
+    document.getElementById('completed-btn').classList.remove('active');
+});
+
+document.getElementById('completed-btn').addEventListener('click', function() {
+    document.getElementById('completed-tasks').style.display = 'block';
+    document.getElementById('pending-tasks').style.display = 'none';
+    document.getElementById('completed-btn').classList.add('active');
+    document.getElementById('pending-btn').classList.remove('active');
+});
 
 
 </script>
