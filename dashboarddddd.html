@@ -6,6 +6,11 @@
     <title>ProjectName - Logged In</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<!-- Add Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-firestore.js"></script>
+
     <style>
          /* General body and background styling */
         body {
@@ -694,6 +699,134 @@ function previewProfilePic(event) {
     if (file) {
         reader.readAsDataURL(file);
     }
+}
+
+
+</script>
+
+
+<!-- Initialize Firebase -->
+<script>
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyB-G9TAjjwAIfbC5qCrDRrqQykl-skn3v4",
+  authDomain: "curitoken-87a26.firebaseapp.com",
+  projectId: "curitoken-87a26",
+  storageBucket: "curitoken-87a26.firebasestorage.app",
+  messagingSenderId: "698884646705",
+  appId: "1:698884646705:web:ebfb0fa5c8e943ade23210",
+  measurementId: "G-C155DRCN40"
+};
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore(app);
+</script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch tasks when page loads
+    fetchTasks('pending');
+
+    // Event listeners for tab switching
+    document.getElementById('pending-btn').addEventListener('click', function () {
+        fetchTasks('pending');
+        toggleActiveButton('pending');
+    });
+    document.getElementById('completed-btn').addEventListener('click', function () {
+        fetchTasks('completed');
+        toggleActiveButton('completed');
+    });
+
+    // Event listener for adding a new task
+    document.getElementById('add-task-btn').addEventListener('click', function () {
+        const newTaskText = document.getElementById('new-task').value;
+        if (newTaskText) {
+            addTask(newTaskText);
+            document.getElementById('new-task').value = '';  // Clear input
+        }
+    });
+});
+
+// Fetch tasks from Firestore based on status
+function fetchTasks(status) {
+    db.collection("tasks").where("status", "==", status).get()
+        .then(querySnapshot => {
+            const tasks = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            updateTaskList(status, tasks);
+        })
+        .catch(error => console.error("Error getting tasks: ", error));
+}
+
+// Update the task list in the UI
+function updateTaskList(status, tasks) {
+    const taskListId = status === 'pending' ? 'pending-task-list' : 'completed-task-list';
+    const taskListElement = document.getElementById(taskListId);
+
+    // Clear existing tasks
+    taskListElement.innerHTML = '';
+
+    // Add new tasks to the list
+    tasks.forEach(task => {
+        const listItem = document.createElement('li');
+        listItem.classList.add('list-item');
+        listItem.textContent = task.description;
+
+        if (status === 'pending') {
+            const completeButton = document.createElement('button');
+            completeButton.classList.add('complete-btn');
+            completeButton.textContent = 'Complete';
+            completeButton.onclick = () => completeTask(task.id);
+            listItem.appendChild(completeButton);
+        }
+
+        taskListElement.appendChild(listItem);
+    });
+}
+
+// Mark task as completed in Firestore
+function completeTask(taskId) {
+    const taskRef = db.collection("tasks").doc(taskId);
+    taskRef.update({ status: 'completed' })
+        .then(() => {
+            // Refresh tasks after update
+            fetchTasks('pending');
+            fetchTasks('completed');
+        })
+        .catch(error => console.error("Error updating task: ", error));
+}
+
+// Add a new task to Firestore
+function addTask(taskDescription) {
+    db.collection("tasks").add({
+        description: taskDescription,
+        status: 'pending'
+    })
+    .then(() => {
+        // Refresh pending tasks list
+        fetchTasks('pending');
+    })
+    .catch(error => console.error("Error adding task: ", error));
+}
+
+// Toggle the active class on buttons
+function toggleActiveButton(status) {
+    const pendingBtn = document.getElementById('pending-btn');
+    const completedBtn = document.getElementById('completed-btn');
+
+    if (status === 'pending') {
+        pendingBtn.classList.add('active');
+        completedBtn.classList.remove('active');
+    } else {
+        completedBtn.classList.add('active');
+        pendingBtn.classList.remove('active');
+    }
+
+    // Show the correct task list
+    document.getElementById('pending-tasks').style.display = (status === 'pending') ? 'block' : 'none';
+    document.getElementById('completed-tasks').style.display = (status === 'completed') ? 'block' : 'none';
 }
 
 
