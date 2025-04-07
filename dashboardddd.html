@@ -442,32 +442,33 @@ p {
     }
 
 
-.task-buttons {
-    margin-bottom: 20px;
-}
-
-.task-btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-right: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
+/* Example styles for active button color */
 .task-btn.active {
-    background-color: #007bff;
+    background-color: blue;
     color: white;
 }
 
-.task-list {
-    display: none;
+/* Style for inactive buttons */
+.task-btn {
+    background-color: lightgray;
+    color: black;
 }
 
-.task-list.show {
-    display: block;
+/* Style for the task completion button */
+.complete-btn {
+    margin-left: 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
 }
+
+/* Hover effect for the complete button */
+.complete-btn:hover {
+    background-color: darkgreen;
+}
+
 
 
     </style>
@@ -677,7 +678,7 @@ p {
                     break;
                 case 'tasksBtn':
                     content.innerHTML = `
-                         <h1 class="section-header">Tasks</h1>
+                       <h1 class="section-header">Tasks</h1>
 <p class="section-content">Manage your tasks by switching between pending and completed.</p>
 
 <div class="task-buttons">
@@ -687,22 +688,23 @@ p {
 
 <div id="pending-tasks" class="task-list">
     <h2>Pending Tasks</h2>
-    <ul>
-        <li class="list-item">Governance Proposal: Vote on Proposal #24</li>
-        <li class="list-item">Claim Staking Rewards: 1.2 ETH</li>
-        <li class="list-item">Approve Token Swap: Approve USDT -> ETH</li>
+    <ul id="pending-task-list">
+        <li class="list-item">Governance Proposal: Vote on Proposal #24 <button class="complete-btn">Complete</button></li>
+        <li class="list-item">Claim Staking Rewards: 1.2 ETH <button class="complete-btn">Complete</button></li>
+        <li class="list-item">Approve Token Swap: Approve USDT -> ETH <button class="complete-btn">Complete</button></li>
     </ul>
+    <input type="text" id="new-task" placeholder="Add a new task">
+    <button id="add-task-btn">Add Task</button>
 </div>
 
 <div id="completed-tasks" class="task-list" style="display: none;">
     <h2>Completed Tasks</h2>
-    <ul>
-        <li class="list-item">Governance Proposal: Vote on Proposal #22</li>
-        <li class="list-item">Claim Staking Rewards: 0.5 ETH</li>
-        <li class="list-item">Approve Token Swap: Approve BTC -> ETH</li>
+    <ul id="completed-task-list">
+        <!-- Completed tasks will appear here -->
     </ul>
 </div>
-                    `;
+
+         `;
                     break;
                 case 'walletBtn':
                     content.innerHTML = `
@@ -777,19 +779,59 @@ function previewProfilePic(event) {
 
 <script>
 
-document.getElementById('pending-btn').addEventListener('click', function() {
-    document.getElementById('pending-tasks').style.display = 'block';
-    document.getElementById('completed-tasks').style.display = 'none';
-    document.getElementById('pending-btn').classList.add('active');
-    document.getElementById('completed-btn').classList.remove('active');
-});
+<script>
+    // Get references to the buttons, task lists, and other elements
+    const pendingBtn = document.getElementById('pending-btn');
+    const completedBtn = document.getElementById('completed-btn');
+    const pendingTasks = document.getElementById('pending-tasks');
+    const completedTasks = document.getElementById('completed-tasks');
+    const pendingTaskList = document.getElementById('pending-task-list');
+    const completedTaskList = document.getElementById('completed-task-list');
+    const addTaskBtn = document.getElementById('add-task-btn');
+    const newTaskInput = document.getElementById('new-task');
 
-document.getElementById('completed-btn').addEventListener('click', function() {
-    document.getElementById('completed-tasks').style.display = 'block';
-    document.getElementById('pending-tasks').style.display = 'none';
-    document.getElementById('completed-btn').classList.add('active');
-    document.getElementById('pending-btn').classList.remove('active');
-});
+    // Switch between pending and completed task views
+    pendingBtn.addEventListener('click', () => {
+        pendingTasks.style.display = 'block';
+        completedTasks.style.display = 'none';
+        pendingBtn.classList.add('active');
+        completedBtn.classList.remove('active');
+    });
+
+    completedBtn.addEventListener('click', () => {
+        completedTasks.style.display = 'block';
+        pendingTasks.style.display = 'none';
+        completedBtn.classList.add('active');
+        pendingBtn.classList.remove('active');
+    });
+
+    // Add a new task to the Pending section
+    addTaskBtn.addEventListener('click', () => {
+        const newTask = newTaskInput.value.trim();
+        if (newTask) {
+            const newListItem = document.createElement('li');
+            newListItem.classList.add('list-item');
+            newListItem.innerHTML = `${newTask} <button class="complete-btn">Complete</button>`;
+            pendingTaskList.appendChild(newListItem);
+            newTaskInput.value = '';  // Clear input field
+        }
+    });
+
+    // Handle task completion
+    pendingTaskList.addEventListener('click', (e) => {
+        if (e.target && e.target.classList.contains('complete-btn')) {
+            const taskItem = e.target.parentElement;
+            // Move the task to the Completed section
+            const completedTaskItem = document.createElement('li');
+            completedTaskItem.classList.add('list-item');
+            completedTaskItem.textContent = taskItem.textContent.replace(' Complete', '');  // Remove "Complete" button text
+
+            completedTaskList.appendChild(completedTaskItem);
+            // Remove the task from Pending
+            taskItem.remove();
+        }
+    });
+</script>
 
 
 </script>
