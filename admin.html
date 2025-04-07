@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login - Meme Token</title>
+
+  <!-- FirebaseUI CSS -->
+  <link rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/6.0.2/firebaseui.css" />
+
+  <style>
+    body {
+      background: #0b0b0f;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    h1 {
+      color: #00ffff;
+    }
+
+    #admin-dashboard {
+      display: none;
+      margin-top: 2rem;
+    }
+
+    .section {
+      background: #1f1f2e;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+    }
+
+    button {
+      background: #00ffff;
+      color: black;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Admin Panel Login</h1>
+  <div id="firebaseui-auth-container"></div>
+
+  <div id="admin-dashboard">
+    <div class="section">
+      <h2>Airdrop Management</h2>
+      <p>Manage and approve airdrops here.</p>
+    </div>
+    <div class="section">
+      <h2>Task Management</h2>
+      <p>Create and manage user tasks.</p>
+    </div>
+    <div class="section">
+      <h2>User Stats</h2>
+      <p>Monitor user activity and referrals.</p>
+    </div>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <!-- Firebase JS SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js"></script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/6.0.2/firebaseui.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB-G9TAjjwAIfbC5qCrDRrqQykl-skn3v4",
+      authDomain: "curitoken-87a26.firebaseapp.com",
+      projectId: "curitoken-87a26",
+      storageBucket: "curitoken-87a26.appspot.com",
+      messagingSenderId: "698884646705",
+      appId: "1:698884646705:web:ebfb0fa5c8e943ade23210",
+      measurementId: "G-C155DRCN40"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    window.addEventListener('load', () => {
+      const auth = firebase.auth();
+      const ui = new firebaseui.auth.AuthUI(auth);
+
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          document.getElementById("firebaseui-auth-container").style.display = "none";
+          document.getElementById("admin-dashboard").style.display = "block";
+        } else {
+          ui.start("#firebaseui-auth-container", {
+            signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
+            signInFlow: "popup",
+            callbacks: {
+              signInSuccessWithAuthResult: () => false
+            }
+          });
+        }
+      });
+    });
+
+    function logout() {
+      firebase.auth().signOut().then(() => location.reload());
+    }
+  </script>
+</body>
+</html>
