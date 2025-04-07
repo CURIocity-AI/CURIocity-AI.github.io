@@ -88,22 +88,25 @@
     const auth = firebase.auth();
     const ui = new firebaseui.auth.AuthUI(auth);
 
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        document.getElementById("firebaseui-auth-container").style.display = "none";
-        document.getElementById("admin-dashboard").style.display = "block";
-      } else {
-        ui.start("#firebaseui-auth-container", {
-          signInOptions: [
-            firebase.auth.EmailAuthProvider.PROVIDER_ID
-          ],
-          signInFlow: 'popup',
-          callbacks: {
-            signInSuccessWithAuthResult: () => false
-          }
-        });
-      }
-    });
+    window.onload = () => {
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      document.getElementById("firebaseui-auth-container").style.display = "none";
+      document.getElementById("admin-dashboard").style.display = "block";
+    } else {
+      ui.start("#firebaseui-auth-container", {
+        signInOptions: [
+          firebase.auth.EmailAuthProvider.PROVIDER_ID
+        ],
+        signInFlow: 'popup',
+        callbacks: {
+          signInSuccessWithAuthResult: () => false
+        }
+      });
+    }
+  });
+};
+
 
     function logout() {
       auth.signOut().then(() => location.reload());
