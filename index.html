@@ -1,3 +1,5 @@
+**index.html**
+```html
 <!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -77,7 +79,6 @@
         width: 70%;
     }
 
-    /* Add animation when toggled */
     .menu-icon.open span:nth-child(1) {
         transform: rotate(45deg) translate(5px, 5px);
         width: 100%;
@@ -179,6 +180,8 @@
             cursor: pointer;
             font-size: 1rem;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
         .btn-login {
             background: transparent;
@@ -240,12 +243,20 @@
                 white-space: normal;
                 border-right: none;
             }
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 280px;
+            }
+            .btn-nav {
+                width: 100%;
+            }
         }
 
        .rotation {
-                  display: flex; /* Align elements horizontally */
-            gap: 10px; /* Adjust spacing */
-            justify-content: center; /* Center items */
+                  display: flex;
+            gap: 10px;
+            justify-content: center;
 }
 
         .picker-container {
@@ -286,9 +297,8 @@
             text-shadow: 0px 0px 10px rgba(255, 255, 0, 0.8);
         }
 
-/* Footer Styling */
 .footer {
-  background: #1e293b; /* Gradient background */
+  background: #1e293b;
   color: #ffffff;
   padding: 40px 20px;
   font-family: "Arial", sans-serif;
@@ -304,7 +314,7 @@
 }
 
 .footer-section {
-  flex: 1 1 220px; /* Flexible layout for responsiveness */
+  flex: 1 1 220px;
   margin: 10px;
 }
 
@@ -438,7 +448,7 @@
 
         <div class="nav-buttons">
             <button class="btn-nav btn-get-started">Get Started</button>
-            <button class="btn-nav btn-login">Login</button>
+            <a href="login.html" class="btn-nav btn-login">Login</a>
         </div>
     </div>
     <div class="token-data">
@@ -467,7 +477,6 @@
 
 <footer class="footer">
   <div class="footer-container">
-    <!-- About Section -->
     <div class="footer-section about">
       <h3>Curiosity ($CURI)</h3>
       <p>
@@ -476,7 +485,6 @@
       </p>
     </div>
 
-    <!-- Quick Links -->
     <div class="footer-section links">
       <h4>Quick Links</h4>
       <ul>
@@ -488,7 +496,6 @@
       </ul>
     </div>
 
-    <!-- Social Media -->
     <div class="footer-section social">
       <h4>Follow Us</h4>
       <div class="social-icons">
@@ -498,7 +505,6 @@
       </div>
     </div>
 
-    <!-- Newsletter -->
     <div class="footer-section newsletter">
       <h4>Newsletter</h4>
       <p>Stay updated with our latest updates and airdrops!</p>
@@ -509,7 +515,6 @@
     </div>
   </div>
 
-  <!-- Copyright -->
   <div class="footer-bottom">
     <p>© 2025 Curiosity ($CURI). All rights reserved.</p>
   </div>
@@ -530,17 +535,14 @@ document.querySelectorAll(".menu-items a").forEach(link => {
     });
 });
 
-// Close menu on scroll
 window.addEventListener("scroll", () => {
     closeMenu();
 });
 
-// Close menu when clicking anywhere outside the menu
 document.addEventListener("click", (event) => {
     const menuIcon = document.querySelector(".menu-icon");
     const menuItems = document.getElementById("menu-items");
 
-    // Check if the clicked element is NOT inside the menu or the menu icon
     if (!menuItems.contains(event.target) && !menuIcon.contains(event.target)) {
         closeMenu();
     }
@@ -560,7 +562,7 @@ function closeMenu() {
         const totalItems = words.length;
         let angle = 0;
         let autoRotating = true;
-        let speed = 0.2; // Increased rotation speed
+        let speed = 0.2;
         let manualControl = false;
         let scrollTimeout;
         const stepAngle = 360 / totalItems;
@@ -615,14 +617,12 @@ function closeMenu() {
             }, 3000);
         }
 
-        // Mouse Scroll Control
         pickerContainer.addEventListener("wheel", (e) => {
             e.preventDefault();
             let direction = e.deltaY > 0 ? 1 : -1;
             manualRotate(direction);
         });
 
-        // Touch Control
         let touchStartY = 0, touchEndY = 0;
         pickerContainer.addEventListener("touchstart", (e) => {
             manualControl = true;
@@ -653,3 +653,187 @@ function closeMenu() {
     </script>
 </body>
 </html>
+```
+
+**login.html**
+```html
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Curiosity ($CURI)</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(15, 23, 42, 0.9);
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        .login-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        .login-card {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 380px;
+        }
+        .login-card h1 {
+            font-size: 2rem;
+            margin: 0 0 5px;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .login-card p.subtitle {
+            margin: 0 0 25px;
+            color: #cccccc;
+            font-size: 0.95rem;
+        }
+        .field {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+        .field label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: #cccccc;
+        }
+        .field input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+        .field input:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+        .btn-submit {
+            width: 100%;
+            background: #00bcd4;
+            color: #ffffff;
+            padding: 14px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            background: #008c9e;
+            transform: scale(1.03);
+        }
+        .form-footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+        .form-footer a {
+            color: #00e0ff;
+            text-decoration: none;
+        }
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            display: none;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #fecaca;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 18px;
+        }
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div><a href="index.html">Curiosity ($CURI)</a></div>
+        <div><a href="index.html">&larr; Back to home</a></div>
+    </nav>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h1>Welcome back</h1>
+            <p class="subtitle">Log in to your Curiosity account</p>
+
+            <div class="error-message" id="errorMessage">Please enter both your email and password.</div>
+
+            <form id="loginForm">
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit">Log In</button>
+            </form>
+
+            <div class="form-footer">
+                Don't have an account? <a href="#">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const errorMessage = document.getElementById("errorMessage");
+
+            if (!email || !password) {
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            errorMessage.style.display = "none";
+            // TODO: hook this up to your real authentication endpoint
+            alert("Login submitted (this is a placeholder — connect it to your backend).");
+        });
+    </script>
+</body>
+</html>
+```
