@@ -1,0 +1,841 @@
+Here's the full code for both files.
+
+**index.html**
+```html
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curiosity ($CURI)</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #ffffff;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(15, 23, 42, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav .menu-items {
+            display: flex;
+            gap: 1px;
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #00bcd4;
+        }
+
+
+           .menu-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 35px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+        z-index: 1000;
+    }
+
+    .menu-icon span {
+        display: block;
+        height: 3px;
+        background: #ffffff;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        transform-origin: center;
+    }
+
+    .menu-icon span:nth-child(1) {
+        width: 100%;
+    }
+
+    .menu-icon span:nth-child(2) {
+        width: 85%;
+    }
+
+    .menu-icon span:nth-child(3) {
+        width: 70%;
+    }
+
+    .menu-icon.open span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+        width: 100%;
+    }
+
+    .menu-icon.open span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-icon.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+        width: 100%;
+    }
+    .menu-items {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 30px;
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        padding: 10px 20px;
+    }
+
+    .menu-items a {
+        margin: 10px 0;
+    }
+
+    .menu-items.show {
+        display: flex;
+    }
+
+    @media (min-width: 768px) {
+        .menu-icon {
+            display: none;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: row;
+            position: static;
+            background: none;
+            box-shadow: none;
+            padding: 0;
+        }
+
+        .menu-items a {
+            margin: 0 15px;
+        }
+    }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-right: 2px solid #00bcd4;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .hero p {
+            font-size: 1.5rem;
+        }
+        .btn {
+            background: #00bcd4;
+            color: #ffffff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #008c9e;
+            transform: scale(1.1);
+        }
+
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .btn-nav {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-login {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #00bcd4;
+        }
+        .btn-login:hover {
+            background: #00bcd4;
+        }
+        .btn-get-started {
+            background: #00bcd4;
+            color: #ffffff;
+        }
+        .btn-get-started:hover {
+            background: #008c9e;
+        }
+
+        .features {
+            padding: 35px 20px;
+            background: #1e293b;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .features .feature-item {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .token-data {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(15, 23, 42, 0.8);
+            margin: 20px auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 80%;
+        }
+        @media (max-width: 768px) {
+            nav .menu-items {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                right: 30px;
+                background: rgba(15, 23, 42, 0.9);
+                padding: 10px;
+                border-radius: 10px;
+            }
+            nav .menu-items.show {
+                display: flex;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+                white-space: normal;
+                border-right: none;
+            }
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 280px;
+            }
+            .btn-nav {
+                width: 100%;
+            }
+        }
+
+       .rotation {
+                  display: flex;
+            gap: 10px;
+            justify-content: center;
+}
+
+        .picker-container {
+            perspective: 1000px;
+            height: 200px;
+            width: 230px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            touch-action: none;
+        }
+        .picker {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.15s linear;
+
+        }
+        .picker-item {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) rotateX(var(--rotate)) translateZ(120px);
+            font-size: 24px;
+            color: white;
+            opacity: 0.5;
+            transition: opacity 0.1s, font-size 0.1s, font-weight 0.1s;
+            border-style: solid;
+            border-width: 1px;
+            border-color: white;
+            border-radius: 5px;
+        }
+        .selected {
+            opacity: 1;
+            font-size: 36px;
+            font-weight: bold;
+            color: yellow;
+            text-shadow: 0px 0px 10px rgba(255, 255, 0, 0.8);
+        }
+
+.footer {
+  background: #1e293b;
+  color: #ffffff;
+  padding: 40px 20px;
+  font-family: "Arial", sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1 1 220px;
+  margin: 10px;
+}
+
+.footer-section h3,
+.footer-section h4 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #00e0ff;
+}
+
+.footer-section p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #cccccc;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 10px 0;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  color: #00e0ff;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: #00b8e6;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons a {
+  font-size: 1.5rem;
+  color: #ffffff;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #00e0ff;
+  transform: scale(1.2);
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 10px;
+}
+
+.newsletter-form input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.newsletter-form button {
+  background: #00e0ff;
+  color: #121212;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.newsletter-form button:hover {
+  background: #00b8e6;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  border-top: 1px solid #333;
+  padding-top: 10px;
+  font-size: 0.8rem;
+  color: #999999;
+}
+
+
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const text = "Welcome to Curiosity ($CURI)";
+            let i = 0;
+            const speed = 100;
+            const heading = document.getElementById("typing-text");
+            function typeWriter() {
+                if (i < text.length) {
+                    heading.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, speed);
+                }
+            }
+            typeWriter();
+        });
+    </script>
+</head>
+<body>
+    <nav>
+    <div><a href="#">Curiosity ($CURI)</a></div>
+   <div class="menu-icon" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+     <div class="menu-items" id="menu-items">
+            <a href="#features">Features</a>
+            <a href="#roadmap">Roadmap</a>
+            <a href="#tokenomics">Tokenomics</a>
+            <a href="#nfts">NFTs</a>
+            <a href="#whitepaper">Whitepaper</a>
+            <a href="#airdrop">Airdrop</a>
+        </div>
+    </nav>
+    <div class="hero">
+        <h1 id="typing-text"></h1>
+        <p>The token that fuels your curiosity and drives innovation in Web3.</p>
+        <button class="btn">Explore Features</button>
+
+        <div class="nav-buttons">
+            <button class="btn-nav btn-get-started">Get Started</button>
+            <a href="login.html" class="btn-nav btn-login">Login</a>
+        </div>
+    </div>
+    <div class="token-data">
+        <h3>Live Token Data</h3>
+        <p>Price: $0.000 (placeholder)</p>
+        <p>Market Cap: $0 (placeholder)</p>
+        <p>Total Supply: 500M CURI</p>
+    </div>
+
+<div class="features" id="features">
+    <h2>Features</h2>
+    <div class="feature-item">✅ Live Token Data: Price, Market Cap, Supply</div>
+    <div class="feature-item">✅ Staking and Rewards with Transparency</div>
+    <div class="feature-item">✅ Interactive Roadmap and Tokenomics</div>
+    <div class="feature-item">✅ NFT Section: Browse, Buy, and Trade</div>
+</div>
+
+<section class="rotation">
+
+    <div class="picker-container" id="pickerContainer">
+        <div class="picker" id="picker"></div>
+    </div>
+
+</section>
+
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-section about">
+      <h3>Curiosity ($CURI)</h3>
+      <p>
+        Discover the world of Web3 with Curiosity. Explore, earn, and grow with
+        our innovative platform.
+      </p>
+    </div>
+
+    <div class="footer-section links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#about-us">About Us</a></li>
+        <li><a href="#faqs">FAQs</a></li>
+        <li><a href="#contact-us">Contact Us</a></li>
+        <li><a href="#privacy-policy">Privacy Policy</a></li>
+        <li><a href="#terms-of-service">Terms of Service</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section social">
+      <h4>Follow Us</h4>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-telegram"></i></a>
+        <a href="#"><i class="fab fa-discord"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-section newsletter">
+      <h4>Newsletter</h4>
+      <p>Stay updated with our latest updates and airdrops!</p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Enter your email" required />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Curiosity ($CURI). All rights reserved.</p>
+  </div>
+</footer>
+
+ <script>
+        function toggleMenu() {
+    const menuIcon = document.querySelector(".menu-icon");
+    const menuItems = document.getElementById("menu-items");
+
+    menuIcon.classList.toggle("open");
+    menuItems.classList.toggle("show");
+}
+
+document.querySelectorAll(".menu-items a").forEach(link => {
+    link.addEventListener("click", () => {
+        closeMenu();
+    });
+});
+
+window.addEventListener("scroll", () => {
+    closeMenu();
+});
+
+document.addEventListener("click", (event) => {
+    const menuIcon = document.querySelector(".menu-icon");
+    const menuItems = document.getElementById("menu-items");
+
+    if (!menuItems.contains(event.target) && !menuIcon.contains(event.target)) {
+        closeMenu();
+    }
+});
+
+function closeMenu() {
+    document.querySelector(".menu-icon").classList.remove("open");
+    document.getElementById("menu-items").classList.remove("show");
+}
+
+</script>
+
+    <script>
+        const picker = document.getElementById("picker");
+        const pickerContainer = document.getElementById("pickerContainer");
+        const words = ["The", "Power", "Of", "Innovations", "Is..In..", "Your", "Curiosity", "Be", "Curious", "For"];
+        const totalItems = words.length;
+        let angle = 0;
+        let autoRotating = true;
+        let speed = 0.2;
+        let manualControl = false;
+        let scrollTimeout;
+        const stepAngle = 360 / totalItems;
+
+        function createItems() {
+            picker.innerHTML = "";
+            words.forEach((word, i) => {
+                const div = document.createElement("div");
+                div.classList.add("picker-item");
+                div.style.setProperty("--rotate", `${i * stepAngle}deg`);
+                div.textContent = word;
+                picker.appendChild(div);
+            });
+            updateSelection();
+        }
+
+        function updateSelection() {
+            const items = document.querySelectorAll(".picker-item");
+            let selectedIndex = Math.round((-angle % 360) / stepAngle) % totalItems;
+            if (selectedIndex < 0) selectedIndex += totalItems;
+
+            items.forEach((item, i) => {
+                item.classList.toggle("selected", i === selectedIndex);
+            });
+        }
+
+        function rotatePicker() {
+            if (autoRotating) {
+                angle -= speed;
+                picker.style.transform = `rotateX(${angle}deg)`;
+
+                if (Math.abs(angle % stepAngle) < 1) {
+                    updateSelection();
+                }
+
+                requestAnimationFrame(rotatePicker);
+            }
+        }
+
+        function manualRotate(direction) {
+            manualControl = true;
+            autoRotating = false;
+            angle += direction * stepAngle;
+            picker.style.transition = "transform 0.2s ease-out";
+            picker.style.transform = `rotateX(${angle}deg)`;
+            updateSelection();
+
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                autoRotating = true;
+                rotatePicker();
+            }, 3000);
+        }
+
+        pickerContainer.addEventListener("wheel", (e) => {
+            e.preventDefault();
+            let direction = e.deltaY > 0 ? 1 : -1;
+            manualRotate(direction);
+        });
+
+        let touchStartY = 0, touchEndY = 0;
+        pickerContainer.addEventListener("touchstart", (e) => {
+            manualControl = true;
+            autoRotating = false;
+            touchStartY = e.touches[0].clientY;
+        });
+
+        pickerContainer.addEventListener("touchend", () => {
+            let deltaY = touchStartY - touchEndY;
+            if (Math.abs(deltaY) > 20) {
+                let direction = deltaY > 0 ? 1 : -1;
+                manualRotate(direction);
+            }
+
+            scrollTimeout = setTimeout(() => {
+                autoRotating = true;
+                rotatePicker();
+            }, 3000);
+        });
+
+        pickerContainer.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+            touchEndY = e.touches[0].clientY;
+        });
+
+        createItems();
+        rotatePicker();
+    </script>
+</body>
+</html>
+```
+
+**login.html**
+```html
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Curiosity ($CURI)</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(15, 23, 42, 0.9);
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        .login-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        .login-card {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 380px;
+        }
+        .login-card h1 {
+            font-size: 2rem;
+            margin: 0 0 5px;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .login-card p.subtitle {
+            margin: 0 0 25px;
+            color: #cccccc;
+            font-size: 0.95rem;
+        }
+        .field {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+        .field label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: #cccccc;
+        }
+        .field input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+        .field input:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+        .btn-submit {
+            width: 100%;
+            background: #00bcd4;
+            color: #ffffff;
+            padding: 14px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            background: #008c9e;
+            transform: scale(1.03);
+        }
+        .form-footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+        .form-footer a {
+            color: #00e0ff;
+            text-decoration: none;
+        }
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            display: none;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #fecaca;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 18px;
+        }
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div><a href="index.html">Curiosity ($CURI)</a></div>
+        <div><a href="index.html">&larr; Back to home</a></div>
+    </nav>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h1>Welcome back</h1>
+            <p class="subtitle">Log in to your Curiosity account</p>
+
+            <div class="error-message" id="errorMessage">Please enter both your email and password.</div>
+
+            <form id="loginForm">
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit">Log In</button>
+            </form>
+
+            <div class="form-footer">
+                Don't have an account? <a href="#">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const errorMessage = document.getElementById("errorMessage");
+
+            if (!email || !password) {
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            errorMessage.style.display = "none";
+            // TODO: hook this up to your real authentication endpoint
+            alert("Login submitted (this is a placeholder — connect it to your backend).");
+        });
+    </script>
+</body>
+</html>
+```
