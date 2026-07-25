@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -405,7 +404,7 @@
   color: #999999;
 }
 
-/* Login Modal */
+/* Modal (Login / Sign Up) */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -413,24 +412,61 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
     z-index: 2000;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    opacity: 0;
+    transition: opacity 0.35s ease, backdrop-filter 0.35s ease;
 }
 .modal-overlay.show {
     display: flex;
+    opacity: 1;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
-.login-card {
-    background: #0f172a;
-    border-radius: 15px;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
-    padding: 40px 30px;
+.modal-card {
+    background: linear-gradient(160deg, #12213f, #0f172a 60%);
+    border: 1px solid rgba(0, 188, 212, 0.15);
+    border-radius: 32px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    padding: 40px 32px;
     width: 100%;
-    max-width: 380px;
+    max-width: 400px;
+    max-height: 88vh;
+    overflow-y: auto;
     text-align: left;
     position: relative;
+    transform: scale(0.7);
+    opacity: 0;
+    transition: transform 0.1s;
+}
+.modal-overlay.show .modal-card {
+    animation: liquidPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes liquidPop {
+    0% {
+        transform: scale(0.6) translateY(30px);
+        opacity: 0;
+        border-radius: 50%;
+    }
+    55% {
+        transform: scale(1.04) translateY(-4px);
+        opacity: 1;
+        border-radius: 24px;
+    }
+    75% {
+        transform: scale(0.98) translateY(1px);
+        border-radius: 28px;
+    }
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+        border-radius: 24px;
+    }
 }
 .modal-close {
     position: absolute;
@@ -446,14 +482,14 @@
 .modal-close:hover {
     color: #ffffff;
 }
-.login-card h1 {
+.modal-card h1 {
     font-size: 2rem;
     margin: 0 0 5px;
     background: linear-gradient(90deg, #00bcd4, #008c9e);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-.login-card p.subtitle {
+.modal-card p.subtitle {
     margin: 0 0 25px;
     color: #cccccc;
     font-size: 0.95rem;
@@ -468,7 +504,8 @@
     margin-bottom: 6px;
     color: #cccccc;
 }
-.field input {
+.field input,
+.field select {
     width: 100%;
     padding: 12px 14px;
     border-radius: 10px;
@@ -477,9 +514,17 @@
     color: #ffffff;
     font-size: 1rem;
 }
-.field input:focus {
+.field input:focus,
+.field select:focus {
     outline: none;
     border-color: #00bcd4;
+}
+.field-row {
+    display: flex;
+    gap: 12px;
+}
+.field-row .field {
+    flex: 1;
 }
 .btn-submit {
     width: 100%;
@@ -519,6 +564,151 @@
     border-radius: 8px;
     font-size: 0.85rem;
     margin-bottom: 18px;
+}
+
+/* Data collection section on Sign Up */
+.data-section {
+    margin: 22px 0 8px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.data-section h4 {
+    margin: 0 0 4px;
+    font-size: 0.95rem;
+    color: #ffffff;
+}
+.data-section p.data-note {
+    margin: 0 0 16px;
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+.toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.toggle-row:last-child {
+    border-bottom: none;
+}
+.toggle-text .toggle-title {
+    font-size: 0.9rem;
+    color: #ffffff;
+    display: block;
+}
+.toggle-text .toggle-desc {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    display: block;
+    margin-top: 2px;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #334155;
+    transition: 0.3s;
+    border-radius: 34px;
+}
+.slider::before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #ffffff;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+.switch input:checked + .slider {
+    background-color: #00bcd4;
+}
+.switch input:checked + .slider::before {
+    transform: translateX(20px);
+}
+.consent-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 16px;
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+.consent-line input {
+    margin-top: 3px;
+}
+
+/* Social auth buttons */
+.social-auth {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.btn-google {
+    background: #ffffff;
+    color: #1f2937;
+}
+.btn-google:hover {
+    background: #f0f0f0;
+    transform: scale(1.02);
+}
+.btn-google i {
+    color: #ea4335;
+}
+.btn-facebook {
+    background: #1877f2;
+    color: #ffffff;
+    border-color: transparent;
+}
+.btn-facebook:hover {
+    background: #166fe0;
+    transform: scale(1.02);
+}
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0 20px;
+    color: #64748b;
+    font-size: 0.8rem;
+}
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
 }
 
     </style>
@@ -563,18 +753,27 @@
         <button class="btn">Explore Features</button>
 
         <div class="nav-buttons">
-            <button class="btn-nav btn-get-started">Get Started</button>
+            <button class="btn-nav btn-get-started" onclick="openSignupModal()">Get Started</button>
             <button class="btn-nav btn-login" onclick="openLoginModal()">Login</button>
         </div>
     </div>
-
     <div class="modal-overlay" id="loginModal">
-        <div class="login-card">
+        <div class="modal-card">
             <button class="modal-close" onclick="closeLoginModal()">&times;</button>
             <h1>Welcome back</h1>
             <p class="subtitle">Log in to your Curiosity account</p>
 
             <div class="error-message" id="errorMessage">Please enter both your email and password.</div>
+
+            <div class="social-auth">
+                <button type="button" class="btn-social btn-google" onclick="socialAuth('Google')">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+                <button type="button" class="btn-social btn-facebook" onclick="socialAuth('Facebook')">
+                    <i class="fab fa-facebook-f"></i> Continue with Facebook
+                </button>
+            </div>
+            <div class="divider">or</div>
 
             <form id="loginForm">
                 <div class="field">
@@ -589,7 +788,314 @@
             </form>
 
             <div class="form-footer">
-                Don't have an account? <a href="#">Sign up</a>
+                Don't have an account? <a href="#" onclick="switchToSignup(event)">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="signupModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeSignupModal()">&times;</button>
+            <h1>Create your account</h1>
+            <p class="subtitle">Join Curiosity and start exploring Web3</p>
+
+            <div class="error-message" id="signupErrorMessage">Please fill in all required fields.</div>
+
+            <div class="social-auth">
+                <button type="button" class="btn-social btn-google" onclick="socialAuth('Google')">
+                    <i class="fab fa-google"></i> Sign up with Google
+                </button>
+                <button type="button" class="btn-social btn-facebook" onclick="socialAuth('Facebook')">
+                    <i class="fab fa-facebook-f"></i> Sign up with Facebook
+                </button>
+            </div>
+            <div class="divider">or</div>
+
+            <form id="signupForm">
+                <div class="field-row">
+                    <div class="field">
+                        <label for="signupFirstName">First name</label>
+                        <input type="text" id="signupFirstName" placeholder="Jane" required>
+                    </div>
+                    <div class="field">
+                        <label for="signupLastName">Last name</label>
+                        <input type="text" id="signupLastName" placeholder="Doe" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="field">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="••••••••" required>
+                </div>
+                <div class="field">
+                    <label for="signupPhone">Phone number</label>
+                    <input type="tel" id="signupPhone" placeholder="+1 555 123 4567" required>
+                </div>
+                <div class="field">
+                    <label for="signupCountry">Country / Region</label>
+                    <select id="signupCountry">
+                        <option value="">Select your country</option>
+                        <option value="AF">Afghanistan</option>
+                        <option value="AL">Albania</option>
+                        <option value="DZ">Algeria</option>
+                        <option value="AD">Andorra</option>
+                        <option value="AO">Angola</option>
+                        <option value="AG">Antigua and Barbuda</option>
+                        <option value="AR">Argentina</option>
+                        <option value="AM">Armenia</option>
+                        <option value="AU">Australia</option>
+                        <option value="AT">Austria</option>
+                        <option value="AZ">Azerbaijan</option>
+                        <option value="BS">Bahamas</option>
+                        <option value="BH">Bahrain</option>
+                        <option value="BD">Bangladesh</option>
+                        <option value="BB">Barbados</option>
+                        <option value="BY">Belarus</option>
+                        <option value="BE">Belgium</option>
+                        <option value="BZ">Belize</option>
+                        <option value="BJ">Benin</option>
+                        <option value="BT">Bhutan</option>
+                        <option value="BO">Bolivia</option>
+                        <option value="BA">Bosnia and Herzegovina</option>
+                        <option value="BW">Botswana</option>
+                        <option value="BR">Brazil</option>
+                        <option value="BN">Brunei</option>
+                        <option value="BG">Bulgaria</option>
+                        <option value="BF">Burkina Faso</option>
+                        <option value="BI">Burundi</option>
+                        <option value="CV">Cabo Verde</option>
+                        <option value="KH">Cambodia</option>
+                        <option value="CM">Cameroon</option>
+                        <option value="CA">Canada</option>
+                        <option value="CF">Central African Republic</option>
+                        <option value="TD">Chad</option>
+                        <option value="CL">Chile</option>
+                        <option value="CN">China</option>
+                        <option value="CO">Colombia</option>
+                        <option value="KM">Comoros</option>
+                        <option value="CG">Congo</option>
+                        <option value="CD">Congo (DRC)</option>
+                        <option value="CR">Costa Rica</option>
+                        <option value="CI">Cote d'Ivoire</option>
+                        <option value="HR">Croatia</option>
+                        <option value="CU">Cuba</option>
+                        <option value="CY">Cyprus</option>
+                        <option value="CZ">Czechia</option>
+                        <option value="DK">Denmark</option>
+                        <option value="DJ">Djibouti</option>
+                        <option value="DM">Dominica</option>
+                        <option value="DO">Dominican Republic</option>
+                        <option value="EC">Ecuador</option>
+                        <option value="EG">Egypt</option>
+                        <option value="SV">El Salvador</option>
+                        <option value="GQ">Equatorial Guinea</option>
+                        <option value="ER">Eritrea</option>
+                        <option value="EE">Estonia</option>
+                        <option value="SZ">Eswatini</option>
+                        <option value="ET">Ethiopia</option>
+                        <option value="FJ">Fiji</option>
+                        <option value="FI">Finland</option>
+                        <option value="FR">France</option>
+                        <option value="GA">Gabon</option>
+                        <option value="GM">Gambia</option>
+                        <option value="GE">Georgia</option>
+                        <option value="DE">Germany</option>
+                        <option value="GH">Ghana</option>
+                        <option value="GR">Greece</option>
+                        <option value="GD">Grenada</option>
+                        <option value="GT">Guatemala</option>
+                        <option value="GN">Guinea</option>
+                        <option value="GW">Guinea-Bissau</option>
+                        <option value="GY">Guyana</option>
+                        <option value="HT">Haiti</option>
+                        <option value="HN">Honduras</option>
+                        <option value="HU">Hungary</option>
+                        <option value="IS">Iceland</option>
+                        <option value="IN">India</option>
+                        <option value="ID">Indonesia</option>
+                        <option value="IR">Iran</option>
+                        <option value="IQ">Iraq</option>
+                        <option value="IE">Ireland</option>
+                        <option value="IL">Israel</option>
+                        <option value="IT">Italy</option>
+                        <option value="JM">Jamaica</option>
+                        <option value="JP">Japan</option>
+                        <option value="JO">Jordan</option>
+                        <option value="KZ">Kazakhstan</option>
+                        <option value="KE">Kenya</option>
+                        <option value="KI">Kiribati</option>
+                        <option value="KP">North Korea</option>
+                        <option value="KR">South Korea</option>
+                        <option value="KW">Kuwait</option>
+                        <option value="KG">Kyrgyzstan</option>
+                        <option value="LA">Laos</option>
+                        <option value="LV">Latvia</option>
+                        <option value="LB">Lebanon</option>
+                        <option value="LS">Lesotho</option>
+                        <option value="LR">Liberia</option>
+                        <option value="LY">Libya</option>
+                        <option value="LI">Liechtenstein</option>
+                        <option value="LT">Lithuania</option>
+                        <option value="LU">Luxembourg</option>
+                        <option value="MG">Madagascar</option>
+                        <option value="MW">Malawi</option>
+                        <option value="MY">Malaysia</option>
+                        <option value="MV">Maldives</option>
+                        <option value="ML">Mali</option>
+                        <option value="MT">Malta</option>
+                        <option value="MH">Marshall Islands</option>
+                        <option value="MR">Mauritania</option>
+                        <option value="MU">Mauritius</option>
+                        <option value="MX">Mexico</option>
+                        <option value="FM">Micronesia</option>
+                        <option value="MD">Moldova</option>
+                        <option value="MC">Monaco</option>
+                        <option value="MN">Mongolia</option>
+                        <option value="ME">Montenegro</option>
+                        <option value="MA">Morocco</option>
+                        <option value="MZ">Mozambique</option>
+                        <option value="MM">Myanmar</option>
+                        <option value="NA">Namibia</option>
+                        <option value="NR">Nauru</option>
+                        <option value="NP">Nepal</option>
+                        <option value="NL">Netherlands</option>
+                        <option value="NZ">New Zealand</option>
+                        <option value="NI">Nicaragua</option>
+                        <option value="NE">Niger</option>
+                        <option value="NG">Nigeria</option>
+                        <option value="MK">North Macedonia</option>
+                        <option value="NO">Norway</option>
+                        <option value="OM">Oman</option>
+                        <option value="PK">Pakistan</option>
+                        <option value="PW">Palau</option>
+                        <option value="PS">Palestine</option>
+                        <option value="PA">Panama</option>
+                        <option value="PG">Papua New Guinea</option>
+                        <option value="PY">Paraguay</option>
+                        <option value="PE">Peru</option>
+                        <option value="PH">Philippines</option>
+                        <option value="PL">Poland</option>
+                        <option value="PT">Portugal</option>
+                        <option value="QA">Qatar</option>
+                        <option value="RO">Romania</option>
+                        <option value="RU">Russia</option>
+                        <option value="RW">Rwanda</option>
+                        <option value="KN">Saint Kitts and Nevis</option>
+                        <option value="LC">Saint Lucia</option>
+                        <option value="VC">Saint Vincent and the Grenadines</option>
+                        <option value="WS">Samoa</option>
+                        <option value="SM">San Marino</option>
+                        <option value="ST">Sao Tome and Principe</option>
+                        <option value="SA">Saudi Arabia</option>
+                        <option value="SN">Senegal</option>
+                        <option value="RS">Serbia</option>
+                        <option value="SC">Seychelles</option>
+                        <option value="SL">Sierra Leone</option>
+                        <option value="SG">Singapore</option>
+                        <option value="SK">Slovakia</option>
+                        <option value="SI">Slovenia</option>
+                        <option value="SB">Solomon Islands</option>
+                        <option value="SO">Somalia</option>
+                        <option value="ZA">South Africa</option>
+                        <option value="SS">South Sudan</option>
+                        <option value="ES">Spain</option>
+                        <option value="LK">Sri Lanka</option>
+                        <option value="SD">Sudan</option>
+                        <option value="SR">Suriname</option>
+                        <option value="SE">Sweden</option>
+                        <option value="CH">Switzerland</option>
+                        <option value="SY">Syria</option>
+                        <option value="TW">Taiwan</option>
+                        <option value="TJ">Tajikistan</option>
+                        <option value="TZ">Tanzania</option>
+                        <option value="TH">Thailand</option>
+                        <option value="TL">Timor-Leste</option>
+                        <option value="TG">Togo</option>
+                        <option value="TO">Tonga</option>
+                        <option value="TT">Trinidad and Tobago</option>
+                        <option value="TN">Tunisia</option>
+                        <option value="TR">Turkey</option>
+                        <option value="TM">Turkmenistan</option>
+                        <option value="TV">Tuvalu</option>
+                        <option value="UG">Uganda</option>
+                        <option value="UA">Ukraine</option>
+                        <option value="AE">United Arab Emirates</option>
+                        <option value="GB">United Kingdom</option>
+                        <option value="US">United States</option>
+                        <option value="UY">Uruguay</option>
+                        <option value="UZ">Uzbekistan</option>
+                        <option value="VU">Vanuatu</option>
+                        <option value="VA">Vatican City</option>
+                        <option value="VE">Venezuela</option>
+                        <option value="VN">Vietnam</option>
+                        <option value="YE">Yemen</option>
+                        <option value="ZM">Zambia</option>
+                        <option value="ZW">Zimbabwe</option>
+                    </select>
+                </div>
+
+                <div class="data-section">
+                    <h4>Data & personalization</h4>
+                    <p class="data-note">Control what Curiosity can use to personalize your experience. You can change these anytime in Settings.</p>
+
+                    <div class="toggle-row">
+                        <div class="toggle-text">
+                            <span class="toggle-title">Usage analytics</span>
+                            <span class="toggle-desc">Help us improve by sharing anonymized app usage data.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="consentAnalytics" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-row">
+                        <div class="toggle-text">
+                            <span class="toggle-title">Wallet activity insights</span>
+                            <span class="toggle-desc">Personalize recommendations based on on-chain activity.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="consentWallet">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-row">
+                        <div class="toggle-text">
+                            <span class="toggle-title">Marketing communications</span>
+                            <span class="toggle-desc">Receive product updates, airdrops, and news by email.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="consentMarketing" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-row">
+                        <div class="toggle-text">
+                            <span class="toggle-title">Third-party data sharing</span>
+                            <span class="toggle-desc">Share limited profile data with trusted partners for tailored offers.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="consentThirdParty">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <label class="consent-line">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <span>I agree to the Terms of Service and Privacy Policy.</span>
+                </label>
+
+                <button type="submit" class="btn-submit">Create Account</button>
+            </form>
+
+            <div class="form-footer">
+                Already have an account? <a href="#" onclick="switchToLogin(event)">Log in</a>
             </div>
         </div>
     </div>
@@ -708,8 +1214,10 @@ function closeMenu() {
 
 <script>
     const loginModal = document.getElementById("loginModal");
+    const signupModal = document.getElementById("signupModal");
 
     function openLoginModal() {
+        signupModal.classList.remove("show");
         loginModal.classList.add("show");
     }
 
@@ -717,17 +1225,45 @@ function closeMenu() {
         loginModal.classList.remove("show");
     }
 
+    function openSignupModal() {
+        loginModal.classList.remove("show");
+        signupModal.classList.add("show");
+    }
+
+    function closeSignupModal() {
+        signupModal.classList.remove("show");
+    }
+
+    function switchToSignup(event) {
+        event.preventDefault();
+        openSignupModal();
+    }
+
+    function switchToLogin(event) {
+        event.preventDefault();
+        openLoginModal();
+    }
+
+    function socialAuth(provider) {
+        // TODO: replace with real OAuth flow (e.g. redirect to your backend's
+        // /auth/google or /auth/facebook endpoint, or use their JS SDK)
+        alert(`${provider} sign-in is a placeholder — connect it to your OAuth provider.`);
+    }
+
     // Close modal when clicking outside the card
-    loginModal.addEventListener("click", (event) => {
-        if (event.target === loginModal) {
-            closeLoginModal();
-        }
+    [loginModal, signupModal].forEach((modal) => {
+        modal.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                modal.classList.remove("show");
+            }
+        });
     });
 
     // Close modal with Escape key
     document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && loginModal.classList.contains("show")) {
+        if (event.key === "Escape") {
             closeLoginModal();
+            closeSignupModal();
         }
     });
 
@@ -745,6 +1281,112 @@ function closeMenu() {
         errorMessage.style.display = "none";
         // TODO: hook this up to your real authentication endpoint
         alert("Login submitted (this is a placeholder — connect it to your backend).");
+    });
+
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const firstName = document.getElementById("signupFirstName").value.trim();
+        const lastName = document.getElementById("signupLastName").value.trim();
+        const email = document.getElementById("signupEmail").value.trim();
+        const password = document.getElementById("signupPassword").value.trim();
+        const phone = document.getElementById("signupPhone").value.trim();
+        const agreeTerms = document.getElementById("agreeTerms").checked;
+        const errorMessage = document.getElementById("signupErrorMessage");
+
+        if (!firstName || !lastName || !email || !password || !phone || !agreeTerms) {
+            errorMessage.textContent = !agreeTerms
+                ? "You must agree to the Terms of Service and Privacy Policy."
+                : "Please fill in all required fields.";
+            errorMessage.style.display = "block";
+            return;
+        }
+
+        errorMessage.style.display = "none";
+
+        // Collected data preferences (wire these up to your backend / consent management system)
+        const dataPreferences = {
+            country: document.getElementById("signupCountry").value,
+            analytics: document.getElementById("consentAnalytics").checked,
+            walletInsights: document.getElementById("consentWallet").checked,
+            marketing: document.getElementById("consentMarketing").checked,
+            thirdPartySharing: document.getElementById("consentThirdParty").checked
+        };
+
+        // TODO: send { firstName, lastName, email, password, phone, ...dataPreferences } to your signup endpoint
+        alert("Account created (this is a placeholder — connect it to your backend).");
+    });
+
+    // Country <-> phone number dial code syncing
+    const COUNTRY_DIAL_CODES = {
+        AF:"+93", AL:"+355", DZ:"+213", AD:"+376", AO:"+244", AG:"+1268", AR:"+54", AM:"+374",
+        AU:"+61", AT:"+43", AZ:"+994", BS:"+1242", BH:"+973", BD:"+880", BB:"+1246", BY:"+375",
+        BE:"+32", BZ:"+501", BJ:"+229", BT:"+975", BO:"+591", BA:"+387", BW:"+267", BR:"+55",
+        BN:"+673", BG:"+359", BF:"+226", BI:"+257", CV:"+238", KH:"+855", CM:"+237", CA:"+1",
+        CF:"+236", TD:"+235", CL:"+56", CN:"+86", CO:"+57", KM:"+269", CG:"+242", CD:"+243",
+        CR:"+506", CI:"+225", HR:"+385", CU:"+53", CY:"+357", CZ:"+420", DK:"+45", DJ:"+253",
+        DM:"+1767", DO:"+1809", EC:"+593", EG:"+20", SV:"+503", GQ:"+240", ER:"+291", EE:"+372",
+        SZ:"+268", ET:"+251", FJ:"+679", FI:"+358", FR:"+33", GA:"+241", GM:"+220", GE:"+995",
+        DE:"+49", GH:"+233", GR:"+30", GD:"+1473", GT:"+502", GN:"+224", GW:"+245", GY:"+592",
+        HT:"+509", HN:"+504", HU:"+36", IS:"+354", IN:"+91", ID:"+62", IR:"+98", IQ:"+964",
+        IE:"+353", IL:"+972", IT:"+39", JM:"+1876", JP:"+81", JO:"+962", KZ:"+7", KE:"+254",
+        KI:"+686", KP:"+850", KR:"+82", KW:"+965", KG:"+996", LA:"+856", LV:"+371", LB:"+961",
+        LS:"+266", LR:"+231", LY:"+218", LI:"+423", LT:"+370", LU:"+352", MG:"+261", MW:"+265",
+        MY:"+60", MV:"+960", ML:"+223", MT:"+356", MH:"+692", MR:"+222", MU:"+230", MX:"+52",
+        FM:"+691", MD:"+373", MC:"+377", MN:"+976", ME:"+382", MA:"+212", MZ:"+258", MM:"+95",
+        NA:"+264", NR:"+674", NP:"+977", NL:"+31", NZ:"+64", NI:"+505", NE:"+227", NG:"+234",
+        MK:"+389", NO:"+47", OM:"+968", PK:"+92", PW:"+680", PS:"+970", PA:"+507", PG:"+675",
+        PY:"+595", PE:"+51", PH:"+63", PL:"+48", PT:"+351", QA:"+974", RO:"+40", RU:"+7",
+        RW:"+250", KN:"+1869", LC:"+1758", VC:"+1784", WS:"+685", SM:"+378", ST:"+239", SA:"+966",
+        SN:"+221", RS:"+381", SC:"+248", SL:"+232", SG:"+65", SK:"+421", SI:"+386", SB:"+677",
+        SO:"+252", ZA:"+27", SS:"+211", ES:"+34", LK:"+94", SD:"+249", SR:"+597", SE:"+46",
+        CH:"+41", SY:"+963", TW:"+886", TJ:"+992", TZ:"+255", TH:"+66", TL:"+670", TG:"+228",
+        TO:"+676", TT:"+1868", TN:"+216", TR:"+90", TM:"+993", TV:"+688", UG:"+256", UA:"+380",
+        AE:"+971", GB:"+44", US:"+1", UY:"+598", UZ:"+998", VU:"+678", VA:"+379", VE:"+58",
+        VN:"+84", YE:"+967", ZM:"+260", ZW:"+263"
+    };
+    // Longest dial codes first, so e.g. +1246 (Barbados) is matched before +1 (US/Canada)
+    const DIAL_CODES_BY_LENGTH = Object.entries(COUNTRY_DIAL_CODES).sort((a, b) => b[1].length - a[1].length);
+
+    function detectCountryFromDialCode(rawValue) {
+        const value = rawValue.trim();
+        if (!value.startsWith("+")) return null;
+        for (const [iso, dial] of DIAL_CODES_BY_LENGTH) {
+            if (value.startsWith(dial)) return iso;
+        }
+        return null;
+    }
+
+    const signupPhoneInput = document.getElementById("signupPhone");
+    const signupCountrySelect = document.getElementById("signupCountry");
+
+    // Typing a number that starts with a country code selects the matching country
+    signupPhoneInput.addEventListener("input", () => {
+        const iso = detectCountryFromDialCode(signupPhoneInput.value);
+        if (iso && signupCountrySelect.value !== iso) {
+            signupCountrySelect.value = iso;
+        }
+    });
+
+    // Picking a country fills in (or swaps) the dial code in the phone field
+    signupCountrySelect.addEventListener("change", () => {
+        const iso = signupCountrySelect.value;
+        const dial = COUNTRY_DIAL_CODES[iso];
+        if (!dial) return;
+
+        const current = signupPhoneInput.value.trim();
+        const existingIso = detectCountryFromDialCode(current);
+
+        if (existingIso) {
+            // Replace the old dial code, keep the rest of the number typed so far
+            const oldDial = COUNTRY_DIAL_CODES[existingIso];
+            const rest = current.slice(oldDial.length).replace(/^\s+/, "");
+            signupPhoneInput.value = rest ? `${dial} ${rest}` : `${dial} `;
+        } else if (!current) {
+            signupPhoneInput.value = `${dial} `;
+        } else {
+            // Existing text without a recognizable code — prepend the dial code
+            signupPhoneInput.value = `${dial} ${current}`;
+        }
     });
 </script>
 
