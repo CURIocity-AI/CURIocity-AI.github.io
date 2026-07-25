@@ -1,105 +1,179 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Curiosity ($CURI)</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Login | Curiosity ($CURI)</title>
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
         body {
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            background: radial-gradient(circle at center, #0f0f0f, #1a1a2e);
-            color: white;
-            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-
-        .login-container {
-            max-width: 400px;
-            margin: auto;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.1);
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(15, 23, 42, 0.9);
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        .login-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        .login-card {
+            background: rgba(15, 23, 42, 0.8);
             border-radius: 15px;
-            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 380px;
         }
-
-        h1 {
+        .login-card h1 {
             font-size: 2rem;
-            color: #ffdd57;
+            margin: 0 0 5px;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 1rem;
-            border-radius: 8px;
-            border: none;
+        .login-card p.subtitle {
+            margin: 0 0 25px;
+            color: #cccccc;
+            font-size: 0.95rem;
         }
-
-        button {
+        .field {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+        .field label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: #cccccc;
+        }
+        .field input {
             width: 100%;
-            padding: 10px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: #ffffff;
             font-size: 1rem;
-            font-weight: bold;
-            background: #ffdd57;
+        }
+        .field input:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+        .btn-submit {
+            width: 100%;
+            background: #00bcd4;
+            color: #ffffff;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: 50px;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: background 0.3s ease-in-out;
+            transition: all 0.3s ease;
+            margin-top: 10px;
         }
-
-        button:hover {
-            background: #f4c542;
+        .btn-submit:hover {
+            background: #008c9e;
+            transform: scale(1.03);
         }
-
-        .register-link,
-        .recovery-link {
+        .form-footer {
             margin-top: 20px;
-            display: inline-block;
-            color: #ffdd57;
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+        .form-footer a {
+            color: #00e0ff;
             text-decoration: none;
         }
-
-        .register-link:hover,
-        .recovery-link:hover {
-            color: white;
+        .form-footer a:hover {
+            text-decoration: underline;
         }
-
-        .back-button {
-            margin-top: 20px;
-            padding: 12px 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            background: #6a0dad;
-            color: white;
-            border: none;
+        .error-message {
+            display: none;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #fecaca;
+            padding: 10px 14px;
             border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease-in-out;
+            font-size: 0.85rem;
+            margin-bottom: 18px;
         }
-
-        .back-button:hover {
-            background: #8a2be2;
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h1>Welcome Back</h1>
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button type="submit" id="loginForm">Login</button>
-        </form>
-        <a href="register.html" class="register-link">Don't have an account? Register</a>
-        <br>
-        <a href="password-recovery.html" class="recovery-link">Forgot Password?</a>
+    <nav>
+        <div><a href="index.html">Curiosity ($CURI)</a></div>
+        <div><a href="index.html">&larr; Back to home</a></div>
+    </nav>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h1>Welcome back</h1>
+            <p class="subtitle">Log in to your Curiosity account</p>
+
+            <div class="error-message" id="errorMessage">Please enter both your email and password.</div>
+
+            <form id="loginForm">
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit">Log In</button>
+            </form>
+
+            <div class="form-footer">
+                Don't have an account? <a href="#">Sign up</a>
+            </div>
+        </div>
     </div>
 
-    <button class="back-button" onclick="goBack()">Back</button>
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const errorMessage = document.getElementById("errorMessage");
 
-<script type="module" src="./login.js"></script>
-    <script src="common.js"></script>
+            if (!email || !password) {
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            errorMessage.style.display = "none";
+            // TODO: hook this up to your real authentication endpoint
+            alert("Login submitted (this is a placeholder — connect it to your backend).");
+        });
+    </script>
 </body>
 </html>
