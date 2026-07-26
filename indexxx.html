@@ -1,188 +1,1909 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curiosity ($CURI)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Curiosity — Digital Financial Ecosystem</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        html, body {
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --bg-input: #1e293b;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --card-border: #334155;
+            --hover-bg: rgba(0, 188, 212, 0.08);
+            --modal-bg: linear-gradient(160deg, #12213f, #0f172a 70%);
+            --nav-bg: rgba(15, 23, 42, 0.92);
+            --input-text: #ffffff;
+            --toggle-bg: #334155;
+            --toggle-dot: #ffffff;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-input: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --card-border: #e2e8f0;
+            --hover-bg: rgba(0, 188, 212, 0.06);
+            --modal-bg: linear-gradient(160deg, #ffffff, #f1f5f9 70%);
+            --nav-bg: rgba(241, 245, 249, 0.92);
+            --input-text: #0f172a;
+            --toggle-bg: #cbd5e1;
+            --toggle-dot: #ffffff;
+        }
+
+        /* ===== RESET & BASE ===== */
+        * {
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
             box-sizing: border-box;
-            text-align: center;
         }
-        *, *::before, *::after {
-            box-sizing: inherit;
+        html {
+            scroll-behavior: smooth;
         }
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
         }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00bcd4;
+            border-radius: 10px;
+        }
+
+        /* ===== NAVIGATION ===== */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 30px;
-            background: rgba(15, 23, 42, 0.9);
+            padding: 14px 24px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
-        nav .menu-items {
+        .nav-brand {
             display: flex;
-            gap: 20px;
-        }
-        nav a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: color 0.3s ease;
-        }
-        nav a:hover {
-            color: #00bcd4;
-        }
-        .hero {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 50px 20px;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
         }
-        .hero h1 {
-            font-size: 4rem;
+        .nav-brand span {
             background: linear-gradient(90deg, #00bcd4, #008c9e);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            border-right: 2px solid #00bcd4;
-            white-space: nowrap;
-            overflow: hidden;
+        }
+        .nav-badge {
+            font-size: 0.55rem;
+            background: var(--bg-secondary);
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            -webkit-text-fill-color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            width: 56px;
+            height: 30px;
+        }
+        .theme-toggle .toggle-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+        .theme-toggle .toggle-dot {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: var(--toggle-dot);
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            left: 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        [data-theme="light"] .theme-toggle .toggle-dot {
+            left: 28px;
+        }
+        .theme-toggle i {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            z-index: 1;
+        }
+        .theme-toggle .fa-sun { color: #fbbf24; }
+        .theme-toggle .fa-moon { color: #818cf8; }
+
+        /* Mobile Menu */
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 28px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .menu-icon span {
+            display: block;
+            height: 2.5px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .menu-icon.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+        .menu-icon.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .menu-icon.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            right: 16px;
+            margin-top: 10px;
+            width: min(70vw, 240px);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 20px 50px var(--shadow);
+            padding: 8px;
+            gap: 2px;
+            opacity: 0;
+            transform: translateY(-10px) scale(0.96);
+            pointer-events: none;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1500;
+        }
+        .menu-items.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .menu-items a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+        }
+        .menu-items a:hover {
+            background: var(--hover-bg);
+            color: #00bcd4;
+        }
+        .menu-items a i {
+            width: 20px;
+            text-align: center;
+            color: #00bcd4;
+            font-size: 0.9rem;
+        }
+        .menu-items .nav-avatar {
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+            margin-top: 4px;
+        }
+
+        @media (min-width: 768px) {
+            .menu-icon {
+                display: none;
+            }
+            .menu-items {
+                display: flex;
+                flex-direction: row;
+                position: static;
+                width: auto;
+                margin-top: 0;
+                background: none;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                gap: 0;
+                opacity: 1;
+                transform: none;
+                pointer-events: auto;
+            }
+            .menu-items a {
+                margin: 0 4px;
+                padding: 8px 14px;
+                border-radius: 8px;
+                font-size: 0.85rem;
+            }
+            .menu-items a i {
+                display: none;
+            }
+            .menu-items .nav-avatar {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 0;
+            }
+            .menu-items .nav-avatar i {
+                display: inline-block;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 50px 20px 70px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .hero-badge {
             display: inline-block;
+            background: var(--bg-secondary);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #00bcd4;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+            border: 1px solid var(--border-color);
+        }
+        .hero h1 {
+            font-size: 3.2rem;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+        .hero h1 .gradient-text {
+            background: linear-gradient(90deg, #00bcd4, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .hero p {
-            font-size: 1.5rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            line-height: 1.6;
+            margin-bottom: 26px;
         }
-        .btn {
-            background: #00bcd4;
-            color: #ffffff;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .btn:hover {
-            background: #008c9e;
-            transform: scale(1.1);
-        }
-
-
-        .nav-buttons {
+        .hero-actions {
             display: flex;
-            gap: 15px;
-            margin-top: 15px;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
         }
-        .btn-nav {
-            padding: 10px 20px;
-            border-radius: 25px;
+        .btn-primary {
+            background: #00bcd4;
+            color: #0f172a;
             border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .btn-login {
-            background: transparent;
-            color: #ffffff;
-            border: 1px solid #00bcd4;
+        .btn-primary:active {
+            transform: scale(0.96);
         }
-        .btn-login:hover {
-            background: #00bcd4;
+        .btn-primary .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: rippleAnim 0.6s ease-out;
+            pointer-events: none;
         }
-        .btn-get-started {
-            background: #00bcd4;
-            color: #ffffff;
+        @keyframes rippleAnim {
+            to { transform: scale(4); opacity: 0; }
         }
-        .btn-get-started:hover {
+        .btn-primary:hover {
             background: #008c9e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 188, 212, 0.3);
         }
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.25s ease;
+        }
+        .btn-secondary:hover {
+            border-color: #00bcd4;
+            background: var(--hover-bg);
+        }
+        .hero-trust {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .hero-trust i { margin-right: 5px; }
+        .hero-trust .check { color: #4ade80; }
+        .hero-trust .shield { color: #00bcd4; }
+        .hero-trust .bolt { color: #fbbf24; }
 
-        .token-data {
-            text-align: center;
-            padding: 30px 20px;
-            background: rgba(15, 23, 42, 0.8);
-            margin: 20px auto;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            width: 80%;
+        /* ===== DASHBOARD PREVIEW ===== */
+        .dashboard-preview {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 24px 26px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px var(--shadow);
+            transition: background 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
         }
-        @media (max-width: 768px) {
-            nav .menu-items {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 60px;
-                right: 30px;
-                background: rgba(15, 23, 42, 0.9);
-                padding: 10px;
-                border-radius: 10px;
-            }
-            nav .menu-items.show {
-                display: flex;
+        .dashboard-preview:active {
+            transform: scale(0.98);
+        }
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .dash-header .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+        .dash-header .status {
+            font-size: 0.6rem;
+            background: #00bcd4;
+            padding: 2px 12px;
+            border-radius: 12px;
+            color: #0f172a;
+            font-weight: 600;
+            animation: pulseStatus 2s infinite;
+        }
+        @keyframes pulseStatus {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .dash-balance {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+        .dash-balance .change {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #4ade80;
+            margin-top: 2px;
+        }
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .dash-item {
+            background: var(--bg-primary);
+            padding: 14px 8px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .dash-item:hover {
+            background: var(--hover-bg);
+            border-color: #00bcd4;
+            transform: translateY(-2px);
+        }
+        .dash-item:active {
+            transform: scale(0.94);
+        }
+        .dash-item i {
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .dash-item .dash-label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+        }
+        .dash-item .send { color: #00bcd4; }
+        .dash-item .receive { color: #fbbf24; }
+        .dash-item .invest { color: #4ade80; }
+        .dash-item .stake { color: #a78bfa; }
+
+        @media (max-width: 900px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
             .hero h1 {
                 font-size: 2.5rem;
-                white-space: normal;
-                border-right: none;
+            }
+            .dashboard-preview {
+                padding: 18px 20px;
+            }
+            .dash-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
-    </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const text = "Welcome to Curiosity ($CURI)";
-            let i = 0;
-            const speed = 100;
-            const heading = document.getElementById("typing-text");
-            function typeWriter() {
-                if (i < text.length) {
-                    heading.innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, speed);
-                }
+        @media (max-width: 480px) {
+            .hero {
+                padding: 30px 16px 50px;
             }
-            typeWriter();
-        });
-    </script>
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero-actions {
+                flex-direction: column;
+            }
+            .btn-primary, .btn-secondary {
+                justify-content: center;
+                width: 100%;
+                padding: 14px 20px;
+            }
+            .dash-balance {
+                font-size: 1.6rem;
+            }
+            .dash-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .dash-item {
+                padding: 12px 6px;
+            }
+            .dash-item i {
+                font-size: 1rem;
+            }
+            .hero-trust {
+                gap: 12px;
+                font-size: 0.7rem;
+            }
+            .theme-toggle {
+                width: 48px;
+                height: 26px;
+            }
+            .theme-toggle .toggle-dot {
+                width: 18px;
+                height: 18px;
+            }
+            [data-theme="light"] .theme-toggle .toggle-dot {
+                left: 24px;
+            }
+            nav {
+                padding: 10px 16px;
+            }
+            .nav-brand {
+                font-size: 1rem;
+            }
+        }
+        @media (max-width: 380px) {
+            .dash-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .hero h1 {
+                font-size: 1.7rem;
+            }
+        }
+
+        /* ===== FEATURES ===== */
+        .features-section {
+            padding: 60px 20px;
+            background: var(--bg-primary);
+            transition: background 0.3s ease;
+        }
+        .features-section .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .features-section h2 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .features-section h2 .highlight {
+            color: #00bcd4;
+        }
+        .features-section .sub {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 36px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .feature-card {
+            background: var(--bg-secondary);
+            padding: 24px 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: #00bcd4;
+            box-shadow: 0 12px 30px var(--shadow);
+        }
+        .feature-card:active {
+            transform: scale(0.97);
+        }
+        .feature-icon {
+            background: var(--bg-primary);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+        .feature-card h3 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .feature-card .icon-send { color: #00bcd4; }
+        .feature-card .icon-earn { color: #fbbf24; }
+        .feature-card .icon-social { color: #a78bfa; }
+        .feature-card .icon-rewards { color: #f87171; }
+
+        /* ===== TOKEN SECTION ===== */
+        .token-section {
+            padding: 60px 20px;
+            background: var(--bg-secondary);
+            transition: background 0.3s ease;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .token-section .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .token-badge {
+            display: inline-block;
+            background: var(--bg-primary);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #fbbf24;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .token-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        .token-section h2 .gold {
+            color: #fbbf24;
+        }
+        .token-section .sub {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 560px;
+            margin: 0 auto 28px;
+        }
+        .token-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 10px;
+        }
+        .token-stat {
+            background: var(--bg-primary);
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+        }
+        .token-stat:hover {
+            border-color: #00bcd4;
+            transform: translateY(-2px);
+        }
+        .token-stat .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .token-stat .number.green { color: #4ade80; }
+        .token-stat .number.gold { color: #fbbf24; }
+        .token-stat .number.purple { color: #a78bfa; }
+        .token-stat .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .token-cta {
+            margin-top: 28px;
+        }
+        .token-cta .btn-gold {
+            background: transparent;
+            border: 2px solid #fbbf24;
+            color: var(--text-primary);
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+        .token-cta .btn-gold:hover {
+            background: #fbbf24;
+            color: #0f172a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.25);
+        }
+        @media (max-width: 600px) {
+            .token-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .token-stat .number {
+                font-size: 1.4rem;
+            }
+        }
+        @media (max-width: 400px) {
+            .token-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--bg-primary);
+            padding: 40px 20px 24px;
+            border-top: 1px solid var(--border-color);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .footer .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 30px;
+        }
+        .footer h4 {
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        .footer p, .footer li {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .footer ul {
+            list-style: none;
+            padding: 0;
+        }
+        .footer ul li {
+            margin-bottom: 5px;
+        }
+        .footer ul li a {
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
+        }
+        .footer ul li a:hover {
+            color: #00bcd4;
+        }
+        .footer .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 6px;
+        }
+        .footer .social-icons a {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+        .footer .social-icons a:hover {
+            color: #00bcd4;
+            transform: scale(1.1);
+        }
+        .footer .app-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .footer .app-badges .badge {
+            background: var(--bg-secondary);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .footer .app-badges .badge:hover {
+            border-color: #00bcd4;
+        }
+        .footer .trust-row {
+            display: flex;
+            gap: 16px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .footer .trust-row i { margin-right: 3px; }
+        .footer-bottom {
+            max-width: 1100px;
+            margin: 24px auto 0;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        @media (max-width: 768px) {
+            .footer .container {
+                grid-template-columns: 1fr 1fr;
+                gap: 24px;
+            }
+        }
+        @media (max-width: 480px) {
+            .footer .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .footer {
+                padding: 30px 16px 20px;
+            }
+        }
+
+        /* ===== MODALS (Unified) ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-card {
+            background: var(--modal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 32px 28px;
+            max-width: 420px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+            opacity: 0;
+            position: relative;
+        }
+        .modal-overlay.show .modal-card {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        .modal-card h2 {
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .modal-card .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+        .modal-card .field {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+        .modal-card .field label {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .modal-card .field input,
+        .modal-card .field select,
+        .modal-card .field textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--input-text);
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease;
+            font-family: inherit;
+        }
+        .modal-card .field input:focus,
+        .modal-card .field select:focus,
+        .modal-card .field textarea:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+        .modal-card .field textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        .modal-card .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: #00bcd4;
+            color: #0f172a;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            margin-top: 6px;
+        }
+        .modal-card .btn-submit:hover {
+            background: #008c9e;
+            transform: scale(1.02);
+        }
+        .modal-card .btn-submit:active {
+            transform: scale(0.96);
+        }
+        .modal-card .form-footer {
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-top: 14px;
+        }
+        .modal-card .form-footer a {
+            color: #00bcd4;
+            cursor: pointer;
+        }
+        .modal-card .form-footer a:hover {
+            text-decoration: underline;
+        }
+        .modal-card .social-auth {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .modal-card .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .modal-card .btn-social:hover {
+            background: var(--bg-secondary);
+        }
+        .modal-card .btn-social.google i { color: #ea4335; }
+        .modal-card .btn-social.facebook i { color: #1877f2; }
+        .modal-card .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            margin: 6px 0 16px;
+        }
+        .modal-card .divider::before,
+        .modal-card .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+        .modal-card .qr-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .modal-card .qr-container .qr-placeholder {
+            width: 140px;
+            height: 140px;
+            background: var(--bg-primary);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 3rem;
+            color: var(--text-muted);
+        }
+        .modal-card .copy-address {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: var(--bg-primary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+        .modal-card .copy-address code {
+            flex: 1;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            word-break: break-all;
+            font-family: monospace;
+        }
+        .modal-card .copy-address button {
+            background: #00bcd4;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 6px;
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 0.7rem;
+            transition: all 0.2s ease;
+        }
+        .modal-card .copy-address button:hover {
+            background: #008c9e;
+        }
+        .modal-card .amount-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 10px 0;
+            color: var(--text-primary);
+        }
+        .modal-card .amount-display small {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        @media (max-width: 480px) {
+            .modal-card {
+                padding: 24px 18px;
+                border-radius: 20px;
+            }
+            .modal-card h2 {
+                font-size: 1.3rem;
+            }
+            .modal-card .amount-display {
+                font-size: 2rem;
+            }
+            .modal-card .qr-container .qr-placeholder {
+                width: 100px;
+                height: 100px;
+                font-size: 2rem;
+            }
+        }
+
+        /* ===== TOAST NOTIFICATION ===== */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px var(--shadow);
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 90vw;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+        .toast .toast-icon {
+            font-size: 1.2rem;
+        }
+        .toast.success .toast-icon { color: #4ade80; }
+        .toast.error .toast-icon { color: #f87171; }
+        .toast.info .toast-icon { color: #00bcd4; }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in {
+            animation: fadeUp 0.6s ease forwards;
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+
+        /* ===== ACCESSIBILITY ===== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        :focus-visible {
+            outline: 2px solid #00bcd4;
+            outline-offset: 2px;
+        }
+    </style>
 </head>
 <body>
+
+    <!-- ===== NAV ===== -->
     <nav>
-        <div><a href="#">Curiosity ($CURI)</a></div>
-        <div class="menu-items" id="menu-items">
-            <a href="#features">Features</a>
-            <a href="#roadmap">Roadmap</a>
-            <a href="#tokenomics">Tokenomics</a>
-            <a href="#nfts">NFTs</a>
-            <a href="#whitepaper">Whitepaper</a>
-            <a href="#airdrop">Airdrop</a>
+        <div class="nav-brand">
+            <span>⚡ Curiosity</span>
+            <span class="nav-badge">Beta</span>
+        </div>
+
+        <div class="nav-actions">
+            <!-- Theme Toggle -->
+            <div class="theme-toggle" onclick="toggleTheme()" role="button" aria-label="Toggle theme" tabindex="0">
+                <div class="toggle-track">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                    <div class="toggle-dot"></div>
+                </div>
+            </div>
+
+            <div class="menu-icon" onclick="toggleMenu()" role="button" aria-label="Toggle menu" tabindex="0">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="menu-items" id="menuItems" role="navigation">
+            <a href="#features" onclick="closeMenu()"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="#earn" onclick="closeMenu()"><i class="fas fa-coins"></i> Earn</a>
+            <a href="#pay" onclick="closeMenu(); openModal('sendModal')"><i class="fas fa-arrow-right-arrow-left"></i> Pay</a>
+            <a href="#social" onclick="closeMenu()"><i class="fas fa-users"></i> Social</a>
+            <a href="#" class="nav-avatar" onclick="closeMenu(); openModal('profileModal')">
+                <i class="fas fa-user-circle"></i> Profile
+            </a>
         </div>
     </nav>
-    <div class="hero">
-        <h1 id="typing-text"></h1>
-        <p>The token that fuels your curiosity and drives innovation in Web3.</p>
-        <button class="btn">Explore Features</button>
 
-        <div class="nav-buttons">
-            <button class="btn-nav btn-get-started">Get Started</button>
-            <button class="btn-nav btn-login">Login</button>
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="hero-grid">
+            <div class="animate-in">
+                <div class="hero-badge">🚀 Now in Beta</div>
+                <h1>
+                    Your Digital<br>
+                    <span class="gradient-text">Financial Ecosystem</span>
+                </h1>
+                <p>
+                    Send money, earn rewards, share content, and bank smarter—
+                    all in one sleek platform.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn-primary" onclick="openModal('signupModal')">
+                        <i class="fas fa-rocket"></i> Get Started Free
+                    </button>
+                    <button class="btn-secondary" onclick="startDemoTour()">
+                        <i class="fas fa-play-circle"></i> See Demo
+                    </button>
+                </div>
+                <div class="hero-trust">
+                    <span><i class="fas fa-check-circle check"></i> <span id="userCount">12,847</span>+ Active</span>
+                    <span><i class="fas fa-shield-alt shield"></i> Bank-Grade Security</span>
+                    <span><i class="fas fa-bolt bolt"></i> Instant Settlements</span>
+                </div>
+            </div>
+
+            <!-- Dashboard Preview -->
+            <div class="dashboard-preview animate-in delay-1" onclick="openModal('dashboardModal')">
+                <div class="dash-header">
+                    <span class="label">Main Wallet</span>
+                    <span class="status">● Active</span>
+                </div>
+                <div class="dash-balance">
+                    $<span id="balanceDisplay">3,842.50</span>
+                    <span class="change">▲ +12.4% this month</span>
+                </div>
+                <div class="dash-grid">
+                    <div class="dash-item" onclick="event.stopPropagation(); openModal('sendModal')">
+                        <i class="fas fa-paper-plane send"></i>
+                        <span class="dash-label">Send</span>
+                    </div>
+                    <div class="dash-item" onclick="event.stopPropagation(); openModal('receiveModal')">
+                        <i class="fas fa-wallet receive"></i>
+                        <span class="dash-label">Receive</span>
+                    </div>
+                    <div class="dash-item" onclick="event.stopPropagation(); openModal('investModal')">
+                        <i class="fas fa-chart-line invest"></i>
+                        <span class="dash-label">Invest</span>
+                    </div>
+                    <div class="dash-item" onclick="event.stopPropagation(); openModal('stakeModal')">
+                        <i class="fas fa-coins stake"></i>
+                        <span class="dash-label">Stake</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <h2>Everything You Need, <span class="highlight">One Platform</span></h2>
+            <p class="sub">No crypto jargon. Just powerful tools that work.</p>
+
+            <div class="features-grid">
+                <div class="feature-card animate-in delay-1" onclick="openModal('sendModal')">
+                    <div class="feature-icon icon-send"><i class="fas fa-credit-card"></i></div>
+                    <h3>Spend &amp; Send</h3>
+                    <p>Pay anyone, anywhere. Instant transfers with 0.01% fees.</p>
+                </div>
+                <div class="feature-card animate-in delay-2" onclick="openModal('stakeModal')">
+                    <div class="feature-icon icon-earn"><i class="fas fa-piggy-bank"></i></div>
+                    <h3>Earn Interest</h3>
+                    <p>Grow your savings with 8.2% APY. Withdraw anytime.</p>
+                </div>
+                <div class="feature-card animate-in delay-3" onclick="showToast('Social feed coming soon!', 'info')">
+                    <div class="feature-icon icon-social"><i class="fas fa-share-alt"></i></div>
+                    <h3>Social Feed</h3>
+                    <p>Share updates, tip creators, and build your community.</p>
+                </div>
+                <div class="feature-card animate-in delay-3" onclick="openModal('receiveModal')">
+                    <div class="feature-icon icon-rewards"><i class="fas fa-crown"></i></div>
+                    <h3>Exclusive Rewards</h3>
+                    <p>Earn $CURI tokens for activity—spend them in-app for discounts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TOKEN / REWARDS ===== -->
+    <section class="token-section" id="earn">
+        <div class="container">
+            <div class="token-badge">⚡ Rewards Token</div>
+            <h2>Earn $CURI for <span class="gold">Every Action</span></h2>
+            <p class="sub">
+                Use it to unlock premium features, pay lower fees, and access exclusive content.
+            </p>
+
+            <div class="token-stats">
+                <div class="token-stat">
+                    <div class="number green" id="cashbackCount">5%</div>
+                    <div class="label">Cashback on spend</div>
+                </div>
+                <div class="token-stat">
+                    <div class="number gold" id="apyCount">8.2%</div>
+                    <div class="label">Staking APY</div>
+                </div>
+                <div class="token-stat">
+                    <div class="number purple" id="feeCount">0.01%</div>
+                    <div class="label">Transaction fees</div>
+                </div>
+            </div>
+
+            <div class="token-cta">
+                <button class="btn-gold" onclick="openModal('signupModal')">
+                    Start Earning <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div>
+                <h4>⚡ Curiosity</h4>
+                <p style="max-width:260px;">
+                    The digital ecosystem that puts you in control of your money, community, and future.
+                </p>
+                <div class="trust-row">
+                    <span><i class="fas fa-lock"></i> Audited</span>
+                    <span><i class="fas fa-clock"></i> 99.9% uptime</span>
+                </div>
+            </div>
+            <div>
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#features" onclick="event.preventDefault(); document.querySelector('#features').scrollIntoView({behavior:'smooth'})">Features</a></li>
+                    <li><a href="#earn" onclick="event.preventDefault(); document.querySelector('#earn').scrollIntoView({behavior:'smooth'})">Earn</a></li>
+                    <li><a href="#" onclick="showToast('Roadmap coming soon!', 'info')">Roadmap</a></li>
+                    <li><a href="#" onclick="showToast('Whitepaper coming soon!', 'info')">Whitepaper</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#" onclick="showToast('About page coming soon!', 'info')">About</a></li>
+                    <li><a href="#" onclick="showToast('Careers coming soon!', 'info')">Careers</a></li>
+                    <li><a href="#" onclick="showToast('Blog coming soon!', 'info')">Blog</a></li>
+                    <li><a href="#" onclick="showToast('Contact us at hello@curiosity.io', 'info')">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Get the App</h4>
+                <div class="app-badges">
+                    <span class="badge" onclick="showToast('App Store link coming soon!', 'info')"><i class="fab fa-apple"></i> App Store</span>
+                    <span class="badge" onclick="showToast('Google Play link coming soon!', 'info')"><i class="fab fa-google-play"></i> Google Play</span>
+                </div>
+                <div class="social-icons">
+                    <a href="#" onclick="showToast('Follow us on Twitter!', 'info')"><i class="fab fa-twitter"></i></a>
+                    <a href="#" onclick="showToast('Join our Telegram!', 'info')"><i class="fab fa-telegram"></i></a>
+                    <a href="#" onclick="showToast('Join our Discord!', 'info')"><i class="fab fa-discord"></i></a>
+                    <a href="#" onclick="showToast('Check our GitHub!', 'info')"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 Curiosity. All rights reserved. Built for the future of finance.
+        </div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- ===== ALL MODALS ===== -->
+    <!-- ============================================================ -->
+
+    <!-- SIGNUP MODAL -->
+    <div class="modal-overlay" id="signupModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('signupModal')">&times;</button>
+            <h2>Create your account</h2>
+            <p class="subtitle">Join 12,000+ users exploring the future of finance.</p>
+
+            <div class="social-auth">
+                <button class="btn-social google" onclick="socialAuth('Google')">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+                <button class="btn-social facebook" onclick="socialAuth('Facebook')">
+                    <i class="fab fa-facebook-f"></i> Continue with Facebook
+                </button>
+            </div>
+            <div class="divider">or</div>
+
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <div class="field">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="field">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-arrow-right"></i> Continue
+                </button>
+            </form>
+
+            <div class="form-footer">
+                Already have an account? <a onclick="closeModal('signupModal'); showToast('Login coming soon!', 'info')">Log in</a>
+            </div>
+            <div style="margin-top:10px; font-size:0.65rem; color:var(--text-muted); text-align:center;">
+                By continuing, you agree to our Terms &amp; Privacy Policy.
+            </div>
         </div>
     </div>
-    <div class="token-data">
-        <h3>Live Token Data</h3>
-        <p>Price: $0.000 (placeholder)</p>
-        <p>Market Cap: $0 (placeholder)</p>
-        <p>Total Supply: 500M CURI</p>
+
+    <!-- SEND MODAL -->
+    <div class="modal-overlay" id="sendModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('sendModal')">&times;</button>
+            <h2>Send Money</h2>
+            <p class="subtitle">Transfer funds to anyone, instantly.</p>
+
+            <form onsubmit="event.preventDefault(); handleSend()">
+                <div class="field">
+                    <label for="sendContact">Contact</label>
+                    <input type="text" id="sendContact" placeholder="Enter email, phone, or wallet address" required>
+                </div>
+                <div class="field">
+                    <label for="sendAmount">Amount (USD)</label>
+                    <input type="number" id="sendAmount" placeholder="0.00" step="0.01" min="0.01" required>
+                </div>
+                <div class="field">
+                    <label for="sendNote">Note (optional)</label>
+                    <textarea id="sendNote" placeholder="What's this for?" rows="2"></textarea>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i> Send Now
+                </button>
+            </form>
+        </div>
     </div>
+
+    <!-- RECEIVE MODAL -->
+    <div class="modal-overlay" id="receiveModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('receiveModal')">&times;</button>
+            <h2>Receive Funds</h2>
+            <p class="subtitle">Share your address to receive payments.</p>
+
+            <div class="qr-container">
+                <div class="qr-placeholder">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:8px;">Scan to receive</p>
+            </div>
+
+            <div class="copy-address">
+                <code id="walletAddress">0x7F4E...9B2D</code>
+                <button onclick="copyAddress()">Copy</button>
+            </div>
+            <p style="font-size:0.7rem; color:var(--text-muted); text-align:center; margin-top:8px;">
+                Only send $CURI or supported tokens to this address.
+            </p>
+        </div>
+    </div>
+
+    <!-- INVEST MODAL -->
+    <div class="modal-overlay" id="investModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('investModal')">&times;</button>
+            <h2>Invest</h2>
+            <p class="subtitle">Grow your wealth with curated portfolios.</p>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:10px 0 16px;">
+                <div style="background:var(--bg-primary); padding:14px; border-radius:12px; border:1px solid var(--border-color); text-align:center; cursor:pointer; transition:all 0.2s ease;" onclick="showToast('Portfolio A selected!', 'success')">
+                    <div style="font-weight:700; color:#00bcd4;">Stable</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary);">4.2% APY</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Low risk</div>
+                </div>
+                <div style="background:var(--bg-primary); padding:14px; border-radius:12px; border:1px solid var(--border-color); text-align:center; cursor:pointer; transition:all 0.2s ease;" onclick="showToast('Portfolio B selected!', 'success')">
+                    <div style="font-weight:700; color:#fbbf24;">Balanced</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary);">8.7% APY</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Medium risk</div>
+                </div>
+                <div style="background:var(--bg-primary); padding:14px; border-radius:12px; border:1px solid var(--border-color); text-align:center; cursor:pointer; transition:all 0.2s ease;" onclick="showToast('Portfolio C selected!', 'success')">
+                    <div style="font-weight:700; color:#a78bfa;">Growth</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary);">15.3% APY</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Higher risk</div>
+                </div>
+                <div style="background:var(--bg-primary); padding:14px; border-radius:12px; border:1px solid var(--border-color); text-align:center; cursor:pointer; transition:all 0.2s ease;" onclick="showToast('Portfolio D selected!', 'success')">
+                    <div style="font-weight:700; color:#4ade80;">DeFi</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary);">22.1% APY</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Expert only</div>
+                </div>
+            </div>
+
+            <form onsubmit="event.preventDefault(); handleInvest()">
+                <div class="field">
+                    <label for="investAmount">Amount to invest (USD)</label>
+                    <input type="number" id="investAmount" placeholder="Min $100" step="1" min="100" required>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-chart-line"></i> Invest Now
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- STAKE MODAL -->
+    <div class="modal-overlay" id="stakeModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('stakeModal')">&times;</button>
+            <h2>Stake $CURI</h2>
+            <p class="subtitle">Earn 8.2% APY on your tokens.</p>
+
+            <div style="background:var(--bg-primary); border-radius:12px; padding:16px; margin:10px 0; border:1px solid var(--border-color);">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+                    <span style="color:var(--text-secondary);">Your balance</span>
+                    <span style="font-weight:600;" id="stakeBalance">12,450 $CURI</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-top:4px;">
+                    <span style="color:var(--text-secondary);">Rewards earned</span>
+                    <span style="color:#4ade80; font-weight:600;" id="stakeRewards">842 $CURI</span>
+                </div>
+            </div>
+
+            <form onsubmit="event.preventDefault(); handleStake()">
+                <div class="field">
+                    <label for="stakeAmount">Amount to stake</label>
+                    <input type="number" id="stakeAmount" placeholder="Min 100 $CURI" step="1" min="100" required>
+                </div>
+                <div class="field">
+                    <label for="stakeDuration">Duration</label>
+                    <select id="stakeDuration">
+                        <option value="30">30 days (6.5% APY)</option>
+                        <option value="90" selected>90 days (8.2% APY) 🔥</option>
+                        <option value="180">180 days (10.1% APY)</option>
+                        <option value="365">365 days (12.5% APY)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-coins"></i> Stake Now
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PROFILE MODAL -->
+    <div class="modal-overlay" id="profileModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('profileModal')">&times;</button>
+            <h2>Profile</h2>
+            <p class="subtitle">Manage your account settings.</p>
+
+            <div style="text-align:center; margin:10px 0 20px;">
+                <div style="width:72px; height:72px; border-radius:50%; background:linear-gradient(135deg,#00bcd4,#008c9e); display:inline-flex; align-items:center; justify-content:center; font-size:2rem; color:white; margin-bottom:8px;">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div style="font-weight:600; font-size:1.1rem;">Curiosity User</div>
+                <div style="font-size:0.8rem; color:var(--text-secondary);">user@curiosity.io</div>
+            </div>
+
+            <div style="display:grid; gap:8px; margin:10px 0;">
+                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-color);">
+                    <span style="color:var(--text-secondary);">Member since</span>
+                    <span>March 2025</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-color);">
+                    <span style="color:var(--text-secondary);">$CURI balance</span>
+                    <span style="color:#fbbf24;">12,450</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-color);">
+                    <span style="color:var(--text-secondary);">Total earned</span>
+                    <span style="color:#4ade80;">$1,284.50</span>
+                </div>
+            </div>
+
+            <button class="btn-submit" style="margin-top:6px;" onclick="closeModal('profileModal'); showToast('Settings coming soon!', 'info')">
+                <i class="fas fa-cog"></i> Edit Profile
+            </button>
+        </div>
+    </div>
+
+    <!-- DASHBOARD MODAL (Quick View) -->
+    <div class="modal-overlay" id="dashboardModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('dashboardModal')">&times;</button>
+            <h2>Dashboard</h2>
+            <p class="subtitle">Your financial overview.</p>
+
+            <div style="background:var(--bg-primary); border-radius:12px; padding:16px; margin:10px 0; border:1px solid var(--border-color);">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="color:var(--text-secondary);">Total Balance</span>
+                    <span style="font-size:1.6rem; font-weight:700;">$3,842.50</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:0.85rem;">
+                    <span style="color:var(--text-secondary);">Available</span>
+                    <span>$2,134.20</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+                    <span style="color:var(--text-secondary);">Staked</span>
+                    <span>$1,708.30</span>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0;">
+                <button class="btn-submit" style="padding:10px; font-size:0.85rem;" onclick="closeModal('dashboardModal'); openModal('sendModal')">
+                    <i class="fas fa-paper-plane"></i> Send
+                </button>
+                <button class="btn-submit" style="padding:10px; font-size:0.85rem; background:var(--bg-primary); color:var(--text-primary);" onclick="closeModal('dashboardModal'); openModal('receiveModal')">
+                    <i class="fas fa-wallet"></i> Receive
+                </button>
+            </div>
+
+            <div style="text-align:center; margin-top:10px;">
+                <span style="font-size:0.75rem; color:var(--text-muted);">Last transaction: 2 min ago</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST NOTIFICATION ===== -->
+    <div class="toast" id="toast">
+        <span class="toast-icon"><i class="fas fa-check-circle"></i></span>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== SCRIPTS ===== -->
+    <!-- ============================================================ -->
+
+    <script>
+        // ===== THEME TOGGLE =====
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            showToast(newTheme === 'light' ? '☀️ Light mode activated' : '🌙 Dark mode activated', 'info');
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // ===== MOBILE MENU =====
+        function toggleMenu() {
+            document.querySelector('.menu-icon').classList.toggle('open');
+            document.getElementById('menuItems').classList.toggle('show');
+        }
+
+        function closeMenu() {
+            document.querySelector('.menu-icon').classList.remove('open');
+            document.getElementById('menuItems').classList.remove('show');
+        }
+
+        // Close menu on outside click
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('menuItems');
+            const icon = document.querySelector('.menu-icon');
+            if (!menu.contains(e.target) && !icon.contains(e.target)) {
+                closeMenu();
+            }
+        });
+
+        // Close menu on scroll
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (Math.abs(currentScroll - lastScroll) > 10) {
+                closeMenu();
+            }
+            lastScroll = currentScroll;
+        });
+
+        // ===== MODALS =====
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close modal on outside click
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.show').forEach(modal => {
+                    modal.classList.remove('show');
+                });
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Keyboard shortcut: Cmd+K or Ctrl+K
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                openModal('signupModal');
+            }
+        });
+
+        // ===== TOAST =====
+        let toastTimeout;
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const icon = toast.querySelector('.toast-icon i');
+
+            toast.className = 'toast';
+            toast.classList.add(type);
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            icon.className = 'fas ' + (icons[type] || icons.info);
+
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== SOCIAL AUTH =====
+        function socialAuth(provider) {
+            showToast(`${provider} sign-in coming soon!`, 'info');
+        }
+
+        // ===== SIGNUP =====
+        function handleSignup(e) {
+            e.preventDefault();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value.trim();
+
+            if (!email || !password) {
+                showToast('Please fill in both fields.', 'error');
+                return;
+            }
+
+            if (password.length < 8) {
+                showToast('Password must be at least 8 characters.', 'error');
+                return;
+            }
+
+            showToast('🎉 Account created! Welcome to Curiosity.', 'success');
+            closeModal('signupModal');
+            document.getElementById('signupForm').reset();
+        }
+
+        // ===== SEND =====
+        function handleSend() {
+            const contact = document.getElementById('sendContact').value.trim();
+            const amount = document.getElementById('sendAmount').value.trim();
+
+            if (!contact || !amount || parseFloat(amount) <= 0) {
+                showToast('Please enter a valid contact and amount.', 'error');
+                return;
+            }
+
+            showToast(`💰 Sent $${parseFloat(amount).toFixed(2)} to ${contact}`, 'success');
+            closeModal('sendModal');
+            document.getElementById('sendContact').value = '';
+            document.getElementById('sendAmount').value = '';
+            document.getElementById('sendNote').value = '';
+        }
+
+        // ===== RECEIVE =====
+        function copyAddress() {
+            const address = document.getElementById('walletAddress').textContent;
+            navigator.clipboard?.writeText(address).then(() => {
+                showToast('📋 Address copied to clipboard!', 'success');
+            }).catch(() => {
+                // Fallback
+                const range = document.createRange();
+                range.selectNode(document.getElementById('walletAddress'));
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                document.execCommand('copy');
+                showToast('📋 Address copied!', 'success');
+            });
+        }
+
+        // ===== INVEST =====
+        function handleInvest() {
+            const amount = document.getElementById('investAmount').value.trim();
+
+            if (!amount || parseFloat(amount) < 100) {
+                showToast('Minimum investment is $100.', 'error');
+                return;
+            }
+
+            showToast(`📈 Invested $${parseFloat(amount).toFixed(2)} successfully!`, 'success');
+            closeModal('investModal');
+            document.getElementById('investAmount').value = '';
+        }
+
+        // ===== STAKE =====
+        function handleStake() {
+            const amount = document.getElementById('stakeAmount').value.trim();
+            const duration = document.getElementById('stakeDuration').value;
+
+            if (!amount || parseFloat(amount) < 100) {
+                showToast('Minimum stake is 100 $CURI.', 'error');
+                return;
+            }
+
+            showToast(`🔒 Staked ${parseFloat(amount).toFixed(0)} $CURI for ${duration} days!`, 'success');
+            closeModal('stakeModal');
+            document.getElementById('stakeAmount').value = '';
+        }
+
+        // ===== DEMO TOUR =====
+        function startDemoTour() {
+            showToast('🎬 Starting demo tour...', 'info');
+            setTimeout(() => {
+                showToast('💳 Click "Send" to transfer money', 'info');
+            }, 1500);
+            setTimeout(() => {
+                showToast('📈 Click "Invest" to grow your wealth', 'info');
+            }, 3000);
+            setTimeout(() => {
+                showToast('🔒 Click "Stake" to earn rewards', 'info');
+            }, 4500);
+        }
+
+        // ===== ANIMATED COUNTERS =====
+        function animateCounter(element, target, suffix = '%') {
+            let current = 0;
+            const step = target / 60;
+            const interval = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(interval);
+                }
+                element.textContent = current.toFixed(1) + suffix;
+            }, 30);
+        }
+
+        // Animate token stats on load
+        setTimeout(() => {
+            animateCounter(document.getElementById('cashbackCount'), 5);
+            setTimeout(() => animateCounter(document.getElementById('apyCount'), 8.2), 300);
+            setTimeout(() => animateCounter(document.getElementById('feeCount'), 0.01), 600);
+        }, 500);
+
+        // ===== LIVE BALANCE FLUCTUATION =====
+        let balanceInterval;
+        let balanceValue = 3842.50;
+
+        function startBalanceFluctuation() {
+            balanceInterval = setInterval(() => {
+                const change = (Math.random() - 0.5) * 0.5;
+                balanceValue = Math.max(0, balanceValue + change);
+                document.getElementById('balanceDisplay').textContent = balanceValue.toFixed(2);
+            }, 5000);
+        }
+
+        startBalanceFluctuation();
+
+        // ===== USER COUNT GROWTH =====
+        let userCount = 12847;
+        setInterval(() => {
+            userCount += Math.floor(Math.random() * 3);
+            document.getElementById('userCount').textContent = userCount.toLocaleString();
+        }, 8000);
+
+        // ===== RIPPLE EFFECT ON BUTTONS =====
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn-primary, .btn-submit, .btn-gold, .btn-secondary');
+            if (btn) {
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            }
+        });
+
+        // ===== CONSOLE GREETING =====
+        console.log('%c⚡ Curiosity', 'font-size:24px; font-weight:bold; color:#00bcd4;');
+        console.log('%cYour invisible Web3 financial ecosystem.', 'font-size:14px; color:#94a3b8;');
+        console.log('%c⌘+K to open signup | 🌓 Click the sun/moon to toggle theme', 'font-size:12px; color:#64748b;');
+
+        // ===== KEYBOARD SHORTCUT: ? for help =====
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '?' && !e.ctrlKey && !e.metaKey) {
+                e.preventDefault();
+                showToast('⌘+K = Signup | ESC = Close | 🌓 = Theme toggle', 'info');
+            }
+        });
+
+        // ===== SERVICE WORKER READY (PWA placeholder) =====
+        if ('serviceWorker' in navigator) {
+            // Register service worker for PWA support (optional)
+            console.log('📱 PWA ready — register service worker to enable offline mode.');
+        }
+    </script>
+
 </body>
 </html>
