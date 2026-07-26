@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curiosity — Digital Financial Ecosystem</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ===== CSS VARIABLES (same as before) ===== */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --bg-input: #1e293b;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --card-border: #334155;
+            --hover-bg: rgba(0, 188, 212, 0.08);
+            --modal-bg: linear-gradient(160deg, #12213f, #0f172a 70%);
+            --nav-bg: rgba(15, 23, 42, 0.92);
+            --input-text: #ffffff;
+            --toggle-bg: #334155;
+            --toggle-dot: #ffffff;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --info: #00bcd4;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-input: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --card-border: #e2e8f0;
+            --hover-bg: rgba(0, 188, 212, 0.06);
+            --modal-bg: linear-gradient(160deg, #ffffff, #f1f5f9 70%);
+            --nav-bg: rgba(241, 245, 249, 0.92);
+            --input-text: #0f172a;
+            --toggle-bg: #cbd5e1;
+            --toggle-dot: #ffffff;
+        }
+
+        /* ===== RESET & BASE ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; font-family: inherit; }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: #00bcd4; border-radius: 10px; }
+
+        /* ===== PAGE CONTAINERS ===== */
+        .page {
+            display: none;
+            min-height: 100vh;
+        }
+        .page.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================================ */
+        /* ===== LANDING PAGE (PUBLIC) ===== */
+        /* ============================================================ */
+        #landingPage .hero {
+            padding: 50px 20px 70px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        #landingPage .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        /* ... (keep all landing styles from before) ... */
+
+        /* ============================================================ */
+        /* ===== DASHBOARD PAGE (PRIVATE) ===== */
+        /* ============================================================ */
+        #dashboardPage {
+            background: var(--bg-primary);
+        }
+
+        /* Dashboard Layout */
+        .dash-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Sidebar */
+        .dash-sidebar {
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.3s ease;
+        }
+        .dash-sidebar .sidebar-brand {
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 8px 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+        .dash-sidebar .sidebar-brand span {
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dash-sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+        .dash-sidebar a:hover,
+        .dash-sidebar a.active {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+        }
+        .dash-sidebar a.active {
+            color: #00bcd4;
+        }
+        .dash-sidebar a i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        .dash-sidebar .sidebar-bottom {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+        }
+        .dash-sidebar .sidebar-bottom a {
+            color: var(--text-muted);
+        }
+        .dash-sidebar .sidebar-bottom a:hover {
+            color: var(--danger);
+        }
+
+        /* Main Content */
+        .dash-main {
+            padding: 30px 36px;
+            overflow-y: auto;
+        }
+        .dash-main .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .dash-main .dash-header h1 {
+            font-size: 1.8rem;
+        }
+        .dash-main .dash-header .dash-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .dash-main .dash-header .dash-user .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00bcd4, #008c9e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .dash-main .dash-header .dash-user .user-info {
+            line-height: 1.3;
+        }
+        .dash-main .dash-header .dash-user .user-info .name {
+            font-weight: 600;
+        }
+        .dash-main .dash-header .dash-user .user-info .email {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Dashboard Stats Grid */
+        .dash-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .dash-stat {
+            background: var(--bg-secondary);
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+        }
+        .dash-stat:hover {
+            border-color: #00bcd4;
+            transform: translateY(-2px);
+        }
+        .dash-stat .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .dash-stat .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        .dash-stat .stat-change {
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+        .dash-stat .stat-change.up { color: var(--success); }
+        .dash-stat .stat-change.down { color: var(--danger); }
+
+        /* Quick Actions */
+        .dash-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .dash-action {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .dash-action:hover {
+            border-color: #00bcd4;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+        .dash-action:active { transform: scale(0.95); }
+        .dash-action i {
+            font-size: 1.6rem;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .dash-action .action-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .dash-action .send { color: #00bcd4; }
+        .dash-action .receive { color: #fbbf24; }
+        .dash-action .invest { color: #4ade80; }
+        .dash-action .stake { color: #a78bfa; }
+        .dash-action .swap { color: #f472b6; }
+        .dash-action .history { color: #60a5fa; }
+
+        /* Transaction History */
+        .dash-transactions {
+            background: var(--bg-secondary);
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        .dash-transactions .tx-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dash-transactions .tx-header h3 {
+            font-size: 1rem;
+        }
+        .dash-transactions .tx-header a {
+            font-size: 0.8rem;
+            color: #00bcd4;
+        }
+        .dash-transactions .tx-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .dash-transactions .tx-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s ease;
+        }
+        .dash-transactions .tx-item:hover {
+            background: var(--hover-bg);
+        }
+        .dash-transactions .tx-item:last-child {
+            border-bottom: none;
+        }
+        .dash-transactions .tx-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .dash-transactions .tx-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        .dash-transactions .tx-icon.sent {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+        .dash-transactions .tx-icon.received {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+        }
+        .dash-transactions .tx-icon.staked {
+            background: rgba(167, 139, 250, 0.15);
+            color: #a78bfa;
+        }
+        .dash-transactions .tx-details .tx-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .dash-transactions .tx-details .tx-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .dash-transactions .tx-amount {
+            font-weight: 600;
+        }
+        .dash-transactions .tx-amount.positive {
+            color: var(--success);
+        }
+        .dash-transactions .tx-amount.negative {
+            color: var(--danger);
+        }
+
+        /* ===== RESPONSIVE DASHBOARD ===== */
+        @media (max-width: 1024px) {
+            .dash-layout {
+                grid-template-columns: 1fr;
+            }
+            .dash-sidebar {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 280px;
+                height: calc(100vh - 70px);
+                z-index: 100;
+                overflow-y: auto;
+            }
+            .dash-sidebar.mobile-open {
+                display: flex;
+                animation: slideIn 0.3s ease;
+            }
+            @keyframes slideIn {
+                from { transform: translateX(-100%); }
+                to { transform: translateX(0); }
+            }
+            .dash-main {
+                padding: 20px;
+            }
+            .dash-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .dash-actions {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .dash-main {
+                padding: 16px;
+            }
+            .dash-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .dash-stat .stat-value {
+                font-size: 1.3rem;
+            }
+            .dash-actions {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            .dash-action {
+                padding: 12px 8px;
+            }
+            .dash-action i {
+                font-size: 1.2rem;
+            }
+            .dash-action .action-label {
+                font-size: 0.7rem;
+            }
+            .dash-transactions .tx-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .dash-main .dash-header h1 {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* ===== MOBILE HAMBURGER FOR DASHBOARD ===== */
+        .dash-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            padding: 4px 8px;
+        }
+        @media (max-width: 1024px) {
+            .dash-hamburger {
+                display: block;
+            }
+        }
+
+        /* ============================================================ */
+        /* ===== REUSE LANDING STYLES (from previous) ===== */
+        /* ============================================================ */
+        /* ... (include all landing styles from the previous version) ... */
+        /* I'll keep this concise but include everything needed */
+
+        /* Navigation (shared) */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 24px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .nav-brand span {
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-badge {
+            font-size: 0.55rem;
+            background: var(--bg-secondary);
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            -webkit-text-fill-color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            width: 56px;
+            height: 30px;
+        }
+        .theme-toggle .toggle-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+        .theme-toggle .toggle-dot {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: var(--toggle-dot);
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            left: 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        [data-theme="light"] .theme-toggle .toggle-dot { left: 28px; }
+        .theme-toggle i { font-size: 0.75rem; color: var(--text-secondary); z-index: 1; }
+        .theme-toggle .fa-sun { color: #fbbf24; }
+        .theme-toggle .fa-moon { color: #818cf8; }
+
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 28px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .menu-icon span {
+            display: block;
+            height: 2.5px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .menu-icon.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+        .menu-icon.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .menu-icon.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            right: 16px;
+            margin-top: 10px;
+            width: min(70vw, 240px);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 20px 50px var(--shadow);
+            padding: 8px;
+            gap: 2px;
+            opacity: 0;
+            transform: translateY(-10px) scale(0.96);
+            pointer-events: none;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1500;
+        }
+        .menu-items.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .menu-items a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+        }
+        .menu-items a:hover {
+            background: var(--hover-bg);
+            color: #00bcd4;
+        }
+        .menu-items a i {
+            width: 20px;
+            text-align: center;
+            color: #00bcd4;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            .menu-icon { display: none; }
+            .menu-items {
+                display: flex;
+                flex-direction: row;
+                position: static;
+                width: auto;
+                margin-top: 0;
+                background: none;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                gap: 0;
+                opacity: 1;
+                transform: none;
+                pointer-events: auto;
+            }
+            .menu-items a {
+                margin: 0 4px;
+                padding: 8px 14px;
+                border-radius: 8px;
+                font-size: 0.85rem;
+            }
+            .menu-items a i { display: none; }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px var(--shadow);
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 90vw;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+        .toast .toast-icon { font-size: 1.2rem; }
+        .toast.success .toast-icon { color: #4ade80; }
+        .toast.error .toast-icon { color: #f87171; }
+        .toast.info .toast-icon { color: #00bcd4; }
+
+        /* Modals (same as before - keeping compact) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-card {
+            background: var(--modal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 32px 28px;
+            max-width: 420px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+            opacity: 0;
+            position: relative;
+        }
+        .modal-overlay.show .modal-card {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .modal-close:hover { color: var(--text-primary); }
+        .modal-card h2 {
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .modal-card .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+        .modal-card .field { margin-bottom: 14px; text-align: left; }
+        .modal-card .field label {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .modal-card .field input,
+        .modal-card .field select,
+        .modal-card .field textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--input-text);
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease;
+            font-family: inherit;
+        }
+        .modal-card .field input:focus,
+        .modal-card .field select:focus,
+        .modal-card .field textarea:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+        .modal-card .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: #00bcd4;
+            color: #0f172a;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            margin-top: 6px;
+        }
+        .modal-card .btn-submit:hover { background: #008c9e; transform: scale(1.02); }
+        .modal-card .btn-submit:active { transform: scale(0.96); }
+        .modal-card .form-footer {
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-top: 14px;
+        }
+        .modal-card .form-footer a { color: #00bcd4; cursor: pointer; }
+        .modal-card .form-footer a:hover { text-decoration: underline; }
+        .modal-card .social-auth {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .modal-card .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .modal-card .btn-social:hover { background: var(--bg-secondary); }
+        .modal-card .btn-social.google i { color: #ea4335; }
+        .modal-card .btn-social.facebook i { color: #1877f2; }
+        .modal-card .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            margin: 6px 0 16px;
+        }
+        .modal-card .divider::before,
+        .modal-card .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        @media (max-width: 480px) {
+            .modal-card { padding: 24px 18px; border-radius: 20px; }
+            .modal-card h2 { font-size: 1.3rem; }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+        :focus-visible {
+            outline: 2px solid #00bcd4;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- ===== NAVIGATION (Shared) ===== -->
+    <!-- ============================================================ -->
+    <nav>
+        <div class="nav-brand">
+            <span>⚡ Curiosity</span>
+            <span class="nav-badge">Beta</span>
+        </div>
+
+        <div class="nav-actions">
+            <div class="theme-toggle" onclick="toggleTheme()" role="button" aria-label="Toggle theme" tabindex="0">
+                <div class="toggle-track">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                    <div class="toggle-dot"></div>
+                </div>
+            </div>
+
+            <!-- Hamburger (visible on mobile for both pages) -->
+            <div class="menu-icon" onclick="toggleMenu()" role="button" aria-label="Toggle menu" tabindex="0">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="menu-items" id="menuItems" role="navigation">
+            <a href="#" onclick="closeMenu(); showPage('landingPage')"><i class="fas fa-home"></i> Home</a>
+            <a href="#" onclick="closeMenu(); showPage('dashboardPage')"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="#" onclick="closeMenu(); openModal('sendModal')"><i class="fas fa-paper-plane"></i> Send</a>
+            <a href="#" onclick="closeMenu(); openModal('receiveModal')"><i class="fas fa-wallet"></i> Receive</a>
+            <a href="#" onclick="closeMenu(); logout()" style="color:var(--danger);"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <!-- ============================================================ -->
+    <!-- ===== LANDING PAGE (Public) ===== -->
+    <!-- ============================================================ -->
+    <div class="page active" id="landingPage">
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <div class="hero-badge">🚀 Now in Beta</div>
+                    <h1>Your Digital<br><span class="gradient-text">Financial Ecosystem</span></h1>
+                    <p>Send money, earn rewards, share content, and bank smarter—all in one sleek platform.</p>
+                    <div class="hero-actions">
+                        <button class="btn-primary" onclick="openModal('signupModal')">
+                            <i class="fas fa-rocket"></i> Get Started Free
+                        </button>
+                        <button class="btn-secondary" onclick="showToast('🎬 Demo tour starting...', 'info')">
+                            <i class="fas fa-play-circle"></i> See Demo
+                        </button>
+                    </div>
+                    <div class="hero-trust">
+                        <span><i class="fas fa-check-circle check"></i> <span id="userCount">12,847</span>+ Active</span>
+                        <span><i class="fas fa-shield-alt shield"></i> Bank-Grade Security</span>
+                        <span><i class="fas fa-bolt bolt"></i> Instant Settlements</span>
+                    </div>
+                </div>
+                <div class="dashboard-preview" onclick="openModal('signupModal')">
+                    <div class="dash-header">
+                        <span class="label">Main Wallet</span>
+                        <span class="status">● Active</span>
+                    </div>
+                    <div class="dash-balance">
+                        $<span id="balanceDisplay">3,842.50</span>
+                        <span class="change">▲ +12.4% this month</span>
+                    </div>
+                    <div class="dash-grid">
+                        <div class="dash-item" onclick="event.stopPropagation(); openModal('signupModal')">
+                            <i class="fas fa-paper-plane send"></i>
+                            <span class="dash-label">Send</span>
+                        </div>
+                        <div class="dash-item" onclick="event.stopPropagation(); openModal('signupModal')">
+                            <i class="fas fa-wallet receive"></i>
+                            <span class="dash-label">Receive</span>
+                        </div>
+                        <div class="dash-item" onclick="event.stopPropagation(); openModal('signupModal')">
+                            <i class="fas fa-chart-line invest"></i>
+                            <span class="dash-label">Invest</span>
+                        </div>
+                        <div class="dash-item" onclick="event.stopPropagation(); openModal('signupModal')">
+                            <i class="fas fa-coins stake"></i>
+                            <span class="dash-label">Stake</span>
+                        </div>
+                    </div>
+                    <div style="text-align:center; margin-top:12px; font-size:0.7rem; color:var(--text-muted);">
+                        👆 Sign up to unlock full dashboard
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="features-section" id="features">
+            <div class="container">
+                <h2>Everything You Need, <span class="highlight">One Platform</span></h2>
+                <p class="sub">No crypto jargon. Just powerful tools that work.</p>
+                <div class="features-grid">
+                    <div class="feature-card" onclick="openModal('signupModal')">
+                        <div class="feature-icon icon-send"><i class="fas fa-credit-card"></i></div>
+                        <h3>Spend &amp; Send</h3>
+                        <p>Pay anyone, anywhere. Instant transfers with 0.01% fees.</p>
+                    </div>
+                    <div class="feature-card" onclick="openModal('signupModal')">
+                        <div class="feature-icon icon-earn"><i class="fas fa-piggy-bank"></i></div>
+                        <h3>Earn Interest</h3>
+                        <p>Grow your savings with 8.2% APY. Withdraw anytime.</p>
+                    </div>
+                    <div class="feature-card" onclick="showToast('Social feed coming soon!', 'info')">
+                        <div class="feature-icon icon-social"><i class="fas fa-share-alt"></i></div>
+                        <h3>Social Feed</h3>
+                        <p>Share updates, tip creators, and build your community.</p>
+                    </div>
+                    <div class="feature-card" onclick="openModal('signupModal')">
+                        <div class="feature-icon icon-rewards"><i class="fas fa-crown"></i></div>
+                        <h3>Exclusive Rewards</h3>
+                        <p>Earn $CURI tokens for activity—spend them in-app for discounts.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Token Section -->
+        <section class="token-section" id="earn">
+            <div class="container">
+                <div class="token-badge">⚡ Rewards Token</div>
+                <h2>Earn $CURI for <span class="gold">Every Action</span></h2>
+                <p class="sub">Use it to unlock premium features, pay lower fees, and access exclusive content.</p>
+                <div class="token-stats">
+                    <div class="token-stat">
+                        <div class="number green" id="cashbackCount">5%</div>
+                        <div class="label">Cashback on spend</div>
+                    </div>
+                    <div class="token-stat">
+                        <div class="number gold" id="apyCount">8.2%</div>
+                        <div class="label">Staking APY</div>
+                    </div>
+                    <div class="token-stat">
+                        <div class="number purple" id="feeCount">0.01%</div>
+                        <div class="label">Transaction fees</div>
+                    </div>
+                </div>
+                <div class="token-cta">
+                    <button class="btn-gold" onclick="openModal('signupModal')">
+                        Start Earning <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div>
+                    <h4>⚡ Curiosity</h4>
+                    <p style="max-width:260px;">The digital ecosystem that puts you in control of your money, community, and future.</p>
+                    <div class="trust-row">
+                        <span><i class="fas fa-lock"></i> Audited</span>
+                        <span><i class="fas fa-clock"></i> 99.9% uptime</span>
+                    </div>
+                </div>
+                <div>
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features" onclick="event.preventDefault(); document.querySelector('#features').scrollIntoView({behavior:'smooth'})">Features</a></li>
+                        <li><a href="#earn" onclick="event.preventDefault(); document.querySelector('#earn').scrollIntoView({behavior:'smooth'})">Earn</a></li>
+                        <li><a href="#" onclick="showToast('Roadmap coming soon!', 'info')">Roadmap</a></li>
+                        <li><a href="#" onclick="showToast('Whitepaper coming soon!', 'info')">Whitepaper</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#" onclick="showToast('About page coming soon!', 'info')">About</a></li>
+                        <li><a href="#" onclick="showToast('Careers coming soon!', 'info')">Careers</a></li>
+                        <li><a href="#" onclick="showToast('Blog coming soon!', 'info')">Blog</a></li>
+                        <li><a href="#" onclick="showToast('Contact us at hello@curiosity.io', 'info')">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Get the App</h4>
+                    <div class="app-badges">
+                        <span class="badge" onclick="showToast('App Store link coming soon!', 'info')"><i class="fab fa-apple"></i> App Store</span>
+                        <span class="badge" onclick="showToast('Google Play link coming soon!', 'info')"><i class="fab fa-google-play"></i> Google Play</span>
+                    </div>
+                    <div class="social-icons">
+                        <a href="#" onclick="showToast('Follow us on Twitter!', 'info')"><i class="fab fa-twitter"></i></a>
+                        <a href="#" onclick="showToast('Join our Telegram!', 'info')"><i class="fab fa-telegram"></i></a>
+                        <a href="#" onclick="showToast('Join our Discord!', 'info')"><i class="fab fa-discord"></i></a>
+                        <a href="#" onclick="showToast('Check our GitHub!', 'info')"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2025 Curiosity. All rights reserved. Built for the future of finance.
+            </div>
+        </footer>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== DASHBOARD PAGE (Private - Full Access) ===== -->
+    <!-- ============================================================ -->
+    <div class="page" id="dashboardPage">
+        <div class="dash-layout">
+            <!-- Sidebar -->
+            <aside class="dash-sidebar" id="dashSidebar">
+                <div class="sidebar-brand">
+                    <span>⚡ Curiosity</span>
+                </div>
+
+                <a href="#" class="active" onclick="event.preventDefault(); switchDashTab('overview')">
+                    <i class="fas fa-th-large"></i> Overview
+                </a>
+                <a href="#" onclick="event.preventDefault(); switchDashTab('transactions')">
+                    <i class="fas fa-exchange-alt"></i> Transactions
+                </a>
+                <a href="#" onclick="event.preventDefault(); switchDashTab('invest')">
+                    <i class="fas fa-chart-line"></i> Invest
+                </a>
+                <a href="#" onclick="event.preventDefault(); switchDashTab('stake')">
+                    <i class="fas fa-coins"></i> Stake
+                </a>
+                <a href="#" onclick="event.preventDefault(); switchDashTab('social')">
+                    <i class="fas fa-users"></i> Social
+                </a>
+                <a href="#" onclick="event.preventDefault(); switchDashTab('profile')">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+
+                <div class="sidebar-bottom">
+                    <a href="#" onclick="logout()" style="color:var(--danger);">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="dash-main">
+                <!-- Header -->
+                <div class="dash-header">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <button class="dash-hamburger" onclick="toggleDashSidebar()">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h1 id="dashTitle">Overview</h1>
+                    </div>
+                    <div class="dash-user">
+                        <div>
+                            <div class="user-info">
+                                <div class="name" id="userName">Jane Doe</div>
+                                <div class="email" id="userEmail">jane@curiosity.io</div>
+                            </div>
+                        </div>
+                        <div class="avatar" id="userAvatar">JD</div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Content -->
+                <div id="dashContent">
+                    <!-- Overview Tab (Default) -->
+                    <div id="tab-overview">
+                        <!-- Stats -->
+                        <div class="dash-stats">
+                            <div class="dash-stat">
+                                <div class="stat-label">Total Balance</div>
+                                <div class="stat-value">$<span id="dashBalance">3,842.50</span></div>
+                                <div class="stat-change up">▲ +12.4% this month</div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="stat-label">$CURI Tokens</div>
+                                <div class="stat-value" style="color:#fbbf24;">12,450</div>
+                                <div class="stat-change up">▲ +8.2% APY</div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="stat-label">Staked</div>
+                                <div class="stat-value" style="color:#a78bfa;">$1,708.30</div>
+                                <div class="stat-change up">▲ Rewards: 842 $CURI</div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="stat-label">Transactions</div>
+                                <div class="stat-value" id="txCount">47</div>
+                                <div class="stat-change">This month</div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="dash-actions">
+                            <div class="dash-action" onclick="openModal('sendModal')">
+                                <i class="fas fa-paper-plane send"></i>
+                                <span class="action-label">Send</span>
+                            </div>
+                            <div class="dash-action" onclick="openModal('receiveModal')">
+                                <i class="fas fa-wallet receive"></i>
+                                <span class="action-label">Receive</span>
+                            </div>
+                            <div class="dash-action" onclick="openModal('investModal')">
+                                <i class="fas fa-chart-line invest"></i>
+                                <span class="action-label">Invest</span>
+                            </div>
+                            <div class="dash-action" onclick="openModal('stakeModal')">
+                                <i class="fas fa-coins stake"></i>
+                                <span class="action-label">Stake</span>
+                            </div>
+                            <div class="dash-action" onclick="showToast('Swap feature coming soon!', 'info')">
+                                <i class="fas fa-exchange-alt swap"></i>
+                                <span class="action-label">Swap</span>
+                            </div>
+                            <div class="dash-action" onclick="switchDashTab('transactions')">
+                                <i class="fas fa-history history"></i>
+                                <span class="action-label">History</span>
+                            </div>
+                        </div>
+
+                        <!-- Recent Transactions -->
+                        <div class="dash-transactions">
+                            <div class="tx-header">
+                                <h3>Recent Transactions</h3>
+                                <a href="#" onclick="event.preventDefault(); switchDashTab('transactions')">View all →</a>
+                            </div>
+                            <div class="tx-list" id="transactionList">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Other tabs (simplified for now) -->
+                    <div id="tab-transactions" style="display:none;">
+                        <h3 style="margin-bottom:16px;">Transaction History</h3>
+                        <div class="dash-transactions">
+                            <div class="tx-list" id="fullTransactionList">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-invest" style="display:none;">
+                        <h3 style="margin-bottom:16px;">Investment Portfolio</h3>
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:16px;">
+                            <div style="background:var(--bg-secondary); padding:20px; border-radius:14px; border:1px solid var(--border-color);">
+                                <div style="color:var(--text-muted); font-size:0.8rem;">Stable Fund</div>
+                                <div style="font-size:1.4rem; font-weight:700;">$1,234.50</div>
+                                <div style="color:#4ade80; font-size:0.8rem;">▲ 4.2% APY</div>
+                            </div>
+                            <div style="background:var(--bg-secondary); padding:20px; border-radius:14px; border:1px solid var(--border-color);">
+                                <div style="color:var(--text-muted); font-size:0.8rem;">Growth Fund</div>
+                                <div style="font-size:1.4rem; font-weight:700;">$2,608.00</div>
+                                <div style="color:#fbbf24; font-size:0.8rem;">▲ 15.3% APY</div>
+                            </div>
+                        </div>
+                        <button class="btn-submit" style="margin-top:16px; max-width:200px;" onclick="openModal('investModal')">
+                            <i class="fas fa-plus"></i> Invest More
+                        </button>
+                    </div>
+
+                    <div id="tab-stake" style="display:none;">
+                        <h3 style="margin-bottom:16px;">Staking Dashboard</h3>
+                        <div style="background:var(--bg-secondary); padding:20px; border-radius:14px; border:1px solid var(--border-color); max-width:400px;">
+                            <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-color);">
+                                <span style="color:var(--text-muted);">Staked</span>
+                                <span style="font-weight:600;">8,450 $CURI</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-color);">
+                                <span style="color:var(--text-muted);">Rewards</span>
+                                <span style="color:#4ade80; font-weight:600;">842 $CURI</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; padding:8px 0;">
+                                <span style="color:var(--text-muted);">APY</span>
+                                <span style="color:#fbbf24; font-weight:600;">8.2%</span>
+                            </div>
+                        </div>
+                        <button class="btn-submit" style="margin-top:16px; max-width:200px;" onclick="openModal('stakeModal')">
+                            <i class="fas fa-plus"></i> Stake More
+                        </button>
+                    </div>
+
+                    <div id="tab-social" style="display:none;">
+                        <h3 style="margin-bottom:16px;">Community Feed</h3>
+                        <div style="background:var(--bg-secondary); padding:20px; border-radius:14px; border:1px solid var(--border-color); text-align:center; color:var(--text-muted);">
+                            <i class="fas fa-users" style="font-size:3rem; display:block; margin-bottom:12px; opacity:0.3;"></i>
+                            <p>Social feed coming soon!<br>Connect with the community.</p>
+                        </div>
+                    </div>
+
+                    <div id="tab-profile" style="display:none;">
+                        <h3 style="margin-bottom:16px;">Profile Settings</h3>
+                        <div style="background:var(--bg-secondary); padding:24px; border-radius:14px; border:1px solid var(--border-color); max-width:500px;">
+                            <div style="display:flex; gap:16px; align-items:center; margin-bottom:20px;">
+                                <div style="width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#00bcd4,#008c9e); display:flex; align-items:center; justify-content:center; font-size:1.6rem; color:white; font-weight:600;" id="profileAvatar">JD</div>
+                                <div>
+                                    <div style="font-weight:600; font-size:1.1rem;" id="profileName">Jane Doe</div>
+                                    <div style="color:var(--text-muted); font-size:0.85rem;" id="profileEmail">jane@curiosity.io</div>
+                                </div>
+                            </div>
+                            <div style="display:grid; gap:12px;">
+                                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-color);">
+                                    <span style="color:var(--text-muted);">Member since</span>
+                                    <span>March 2025</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-color);">
+                                    <span style="color:var(--text-muted);">Wallet address</span>
+                                    <span style="font-family:monospace; font-size:0.8rem;">0x7F4E...9B2D</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-color);">
+                                    <span style="color:var(--text-muted);">2FA</span>
+                                    <span style="color:#4ade80;">Enabled ✓</span>
+                                </div>
+                            </div>
+                            <button class="btn-submit" style="margin-top:16px;" onclick="showToast('Profile settings coming soon!', 'info')">
+                                <i class="fas fa-cog"></i> Edit Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== MODALS (Same as before) ===== -->
+    <!-- ============================================================ -->
+
+    <!-- Signup Modal -->
+    <div class="modal-overlay" id="signupModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('signupModal')">&times;</button>
+            <h2>Create your account</h2>
+            <p class="subtitle">Join 12,000+ users exploring the future of finance.</p>
+            <div class="social-auth">
+                <button class="btn-social google" onclick="socialAuth('Google')">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+                <button class="btn-social facebook" onclick="socialAuth('Facebook')">
+                    <i class="fab fa-facebook-f"></i> Continue with Facebook
+                </button>
+            </div>
+            <div class="divider">or</div>
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <div class="field">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="field">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-arrow-right"></i> Continue</button>
+            </form>
+            <div class="form-footer">
+                Already have an account? <a onclick="closeModal('signupModal'); showToast('Login coming soon!', 'info')">Log in</a>
+            </div>
+            <div style="margin-top:10px; font-size:0.65rem; color:var(--text-muted); text-align:center;">
+                By continuing, you agree to our Terms &amp; Privacy Policy.
+            </div>
+        </div>
+    </div>
+
+    <!-- Send Modal -->
+    <div class="modal-overlay" id="sendModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('sendModal')">&times;</button>
+            <h2>Send Money</h2>
+            <p class="subtitle">Transfer funds to anyone, instantly.</p>
+            <form onsubmit="event.preventDefault(); handleSend()">
+                <div class="field">
+                    <label for="sendContact">Contact</label>
+                    <input type="text" id="sendContact" placeholder="Enter email, phone, or wallet address" required>
+                </div>
+                <div class="field">
+                    <label for="sendAmount">Amount (USD)</label>
+                    <input type="number" id="sendAmount" placeholder="0.00" step="0.01" min="0.01" required>
+                </div>
+                <div class="field">
+                    <label for="sendNote">Note (optional)</label>
+                    <textarea id="sendNote" placeholder="What's this for?" rows="2"></textarea>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Send Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Receive Modal -->
+    <div class="modal-overlay" id="receiveModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('receiveModal')">&times;</button>
+            <h2>Receive Funds</h2>
+            <p class="subtitle">Share your address to receive payments.</p>
+            <div class="qr-container">
+                <div class="qr-placeholder"><i class="fas fa-qrcode"></i></div>
+                <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:8px;">Scan to receive</p>
+            </div>
+            <div class="copy-address">
+                <code id="walletAddress">0x7F4E...9B2D</code>
+                <button onclick="copyAddress()">Copy</button>
+            </div>
+            <p style="font-size:0.7rem; color:var(--text-muted); text-align:center; margin-top:8px;">
+                Only send $CURI or supported tokens to this address.
+            </p>
+        </div>
+    </div>
+
+    <!-- Invest Modal -->
+    <div class="modal-overlay" id="investModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('investModal')">&times;</button>
+            <h2>Invest</h2>
+            <p class="subtitle">Grow your wealth with curated portfolios.</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:10px 0 16px;">
+                <div style="background:var(--bg-primary); padding:14px; border-radius:12px; border:1px solid var(--border-color); text-align:center; cursor:pointer;" onclick="showToast('Portfolio A selected!', 'success')">
+                    <div style="font-weight:700; color:#00bcd4;">Stable</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary);">4.2% APY</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Low risk</div>
+                </div>
+                <div style="background:var(--bg-primary); padding:14px; border-radius:12px; border:1px solid var(--border-color); text-align:center; cursor:pointer;" onclick="showToast('Portfolio B selected!', 'success')">
+                    <div style="font-weight:700; color:#fbbf24;">Balanced</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary);">8.7% APY</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Medium risk</div>
+                </div>
+                <div style="background:var(--bg-primary); padding:14px; border-radius:12px; border:1px solid var(--border-color); text-align:center; cursor:pointer;" onclick="showToast('Portfolio C selected!', 'success')">
+                    <div style="font-weight:700; color:#a78bfa;">Growth</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary);">15.3% APY</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Higher risk</div>
+                </div>
+                <div style="background:var(--bg-primary); padding:14px; border-radius:12px; border:1px solid var(--border-color); text-align:center; cursor:pointer;" onclick="showToast('Portfolio D selected!', 'success')">
+                    <div style="font-weight:700; color:#4ade80;">DeFi</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary);">22.1% APY</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Expert only</div>
+                </div>
+            </div>
+            <form onsubmit="event.preventDefault(); handleInvest()">
+                <div class="field">
+                    <label for="investAmount">Amount to invest (USD)</label>
+                    <input type="number" id="investAmount" placeholder="Min $100" step="1" min="100" required>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-chart-line"></i> Invest Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Stake Modal -->
+    <div class="modal-overlay" id="stakeModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('stakeModal')">&times;</button>
+            <h2>Stake $CURI</h2>
+            <p class="subtitle">Earn 8.2% APY on your tokens.</p>
+            <div style="background:var(--bg-primary); border-radius:12px; padding:16px; margin:10px 0; border:1px solid var(--border-color);">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+                    <span style="color:var(--text-secondary);">Your balance</span>
+                    <span style="font-weight:600;" id="stakeBalance">12,450 $CURI</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-top:4px;">
+                    <span style="color:var(--text-secondary);">Rewards earned</span>
+                    <span style="color:#4ade80; font-weight:600;" id="stakeRewards">842 $CURI</span>
+                </div>
+            </div>
+            <form onsubmit="event.preventDefault(); handleStake()">
+                <div class="field">
+                    <label for="stakeAmount">Amount to stake</label>
+                    <input type="number" id="stakeAmount" placeholder="Min 100 $CURI" step="1" min="100" required>
+                </div>
+                <div class="field">
+                    <label for="stakeDuration">Duration</label>
+                    <select id="stakeDuration">
+                        <option value="30">30 days (6.5% APY)</option>
+                        <option value="90" selected>90 days (8.2% APY) 🔥</option>
+                        <option value="180">180 days (10.1% APY)</option>
+                        <option value="365">365 days (12.5% APY)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-coins"></i> Stake Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast">
+        <span class="toast-icon"><i class="fas fa-check-circle"></i></span>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== SCRIPTS ===== -->
+    <!-- ============================================================ -->
+    <script>
+        // ===== THEME =====
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            showToast(newTheme === 'light' ? '☀️ Light mode activated' : '🌙 Dark mode activated', 'info');
+        }
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // ===== PAGE ROUTING =====
+        let currentUser = null;
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            closeMenu();
+
+            if (pageId === 'dashboardPage' && currentUser) {
+                updateDashboard();
+            }
+        }
+
+        // ===== AUTH =====
+        function login(user) {
+            currentUser = user;
+            showPage('dashboardPage');
+            updateDashboard();
+            showToast(`Welcome back, ${user.name}! 🎉`, 'success');
+        }
+
+        function logout() {
+            currentUser = null;
+            showPage('landingPage');
+            showToast('Logged out successfully.', 'info');
+        }
+
+        // ===== HANDLE SIGNUP =====
+        function handleSignup(e) {
+            e.preventDefault();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value.trim();
+
+            if (!email || !password) {
+                showToast('Please fill in both fields.', 'error');
+                return;
+            }
+            if (password.length < 8) {
+                showToast('Password must be at least 8 characters.', 'error');
+                return;
+            }
+
+            // Create user
+            const name = email.split('@')[0].replace(/[^a-zA-Z]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            const user = {
+                name: name,
+                email: email,
+                avatar: name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+            };
+
+            login(user);
+            closeModal('signupModal');
+            document.getElementById('signupForm').reset();
+        }
+
+        // ===== UPDATE DASHBOARD =====
+        function updateDashboard() {
+            if (!currentUser) return;
+
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userEmail').textContent = currentUser.email;
+            document.getElementById('userAvatar').textContent = currentUser.avatar;
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            document.getElementById('profileAvatar').textContent = currentUser.avatar;
+
+            // Populate transactions
+            renderTransactions();
+        }
+
+        // ===== TRANSACTIONS =====
+        const transactions = [
+            { type: 'received', name: 'Alex Johnson', amount: 250.00, date: '2 min ago', icon: 'fa-arrow-down' },
+            { type: 'sent', name: 'Sarah Williams', amount: 75.50, date: '1 hour ago', icon: 'fa-arrow-up' },
+            { type: 'staked', name: 'Staking Rewards', amount: 42.80, date: '3 hours ago', icon: 'fa-coins' },
+            { type: 'received', name: 'Mike Chen', amount: 1200.00, date: 'Yesterday', icon: 'fa-arrow-down' },
+            { type: 'sent', name: 'Coffee Shop', amount: 4.50, date: 'Yesterday', icon: 'fa-arrow-up' },
+            { type: 'received', name: 'Salary Deposit', amount: 3200.00, date: '2 days ago', icon: 'fa-arrow-down' },
+            { type: 'sent', name: 'Netflix', amount: 15.99, date: '2 days ago', icon: 'fa-arrow-up' },
+            { type: 'staked', name: 'Staking Rewards', amount: 38.20, date: '3 days ago', icon: 'fa-coins' },
+        ];
+
+        function renderTransactions() {
+            const list = document.getElementById('transactionList');
+            const fullList = document.getElementById('fullTransactionList');
+
+            const render = (txs, container) => {
+                container.innerHTML = txs.map(tx => `
+                    <div class="tx-item">
+                        <div class="tx-left">
+                            <div class="tx-icon ${tx.type}">
+                                <i class="fas ${tx.icon}"></i>
+                            </div>
+                            <div class="tx-details">
+                                <div class="tx-name">${tx.name}</div>
+                                <div class="tx-date">${tx.date}</div>
+                            </div>
+                        </div>
+                        <div class="tx-amount ${tx.type === 'sent' ? 'negative' : 'positive'}">
+                            ${tx.type === 'sent' ? '-' : '+'}$${tx.amount.toFixed(2)}
+                        </div>
+                    </div>
+                `).join('');
+            };
+
+            render(transactions.slice(0, 5), list);
+            render(transactions, fullList);
+        }
+
+        // ===== DASHBOARD TABS =====
+        function switchDashTab(tab) {
+            // Update sidebar
+            document.querySelectorAll('.dash-sidebar a').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('.dash-sidebar a').forEach(a => {
+                if (a.textContent.trim().toLowerCase() === tab) {
+                    a.classList.add('active');
+                }
+            });
+
+            // Update title
+            const titles = {
+                overview: 'Overview',
+                transactions: 'Transactions',
+                invest: 'Invest',
+                stake: 'Stake',
+                social: 'Social Feed',
+                profile: 'Profile'
+            };
+            document.getElementById('dashTitle').textContent = titles[tab] || 'Overview';
+
+            // Show/hide tabs
+            document.querySelectorAll('#dashContent > div').forEach(div => div.style.display = 'none');
+            const target = document.getElementById(`tab-${tab}`);
+            if (target) target.style.display = 'block';
+
+            // Close mobile sidebar
+            document.getElementById('dashSidebar').classList.remove('mobile-open');
+        }
+
+        // ===== TOGGLE DASHBOARD SIDEBAR (Mobile) =====
+        function toggleDashSidebar() {
+            document.getElementById('dashSidebar').classList.toggle('mobile-open');
+        }
+
+        // ===== MENU =====
+        function toggleMenu() {
+            document.querySelector('.menu-icon').classList.toggle('open');
+            document.getElementById('menuItems').classList.toggle('show');
+        }
+
+        function closeMenu() {
+            document.querySelector('.menu-icon').classList.remove('open');
+            document.getElementById('menuItems').classList.remove('show');
+        }
+
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('menuItems');
+            const icon = document.querySelector('.menu-icon');
+            if (!menu.contains(e.target) && !icon.contains(e.target)) {
+                closeMenu();
+            }
+        });
+
+        // ===== MODALS =====
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.show').forEach(modal => {
+                    modal.classList.remove('show');
+                });
+                document.body.style.overflow = '';
+            }
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                if (!currentUser) openModal('signupModal');
+                else showToast('You\'re already logged in!', 'info');
+            }
+        });
+
+        // ===== TOAST =====
+        let toastTimeout;
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const icon = toast.querySelector('.toast-icon i');
+
+            toast.className = 'toast';
+            toast.classList.add(type);
+
+            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
+            icon.className = 'fas ' + (icons[type] || icons.info);
+
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== SOCIAL AUTH =====
+        function socialAuth(provider) {
+            showToast(`${provider} sign-in coming soon!`, 'info');
+        }
+
+        // ===== SEND =====
+        function handleSend() {
+            const contact = document.getElementById('sendContact').value.trim();
+            const amount = document.getElementById('sendAmount').value.trim();
+
+            if (!contact || !amount || parseFloat(amount) <= 0) {
+                showToast('Please enter a valid contact and amount.', 'error');
+                return;
+            }
+
+            showToast(`💰 Sent $${parseFloat(amount).toFixed(2)} to ${contact}`, 'success');
+            closeModal('sendModal');
+            document.getElementById('sendContact').value = '';
+            document.getElementById('sendAmount').value = '';
+            document.getElementById('sendNote').value = '';
+        }
+
+        // ===== RECEIVE =====
+        function copyAddress() {
+            const address = document.getElementById('walletAddress').textContent;
+            navigator.clipboard?.writeText(address).then(() => {
+                showToast('📋 Address copied to clipboard!', 'success');
+            }).catch(() => {
+                const range = document.createRange();
+                range.selectNode(document.getElementById('walletAddress'));
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                document.execCommand('copy');
+                showToast('📋 Address copied!', 'success');
+            });
+        }
+
+        // ===== INVEST =====
+        function handleInvest() {
+            const amount = document.getElementById('investAmount').value.trim();
+            if (!amount || parseFloat(amount) < 100) {
+                showToast('Minimum investment is $100.', 'error');
+                return;
+            }
+            showToast(`📈 Invested $${parseFloat(amount).toFixed(2)} successfully!`, 'success');
+            closeModal('investModal');
+            document.getElementById('investAmount').value = '';
+        }
+
+        // ===== STAKE =====
+        function handleStake() {
+            const amount = document.getElementById('stakeAmount').value.trim();
+            const duration = document.getElementById('stakeDuration').value;
+            if (!amount || parseFloat(amount) < 100) {
+                showToast('Minimum stake is 100 $CURI.', 'error');
+                return;
+            }
+            showToast(`🔒 Staked ${parseFloat(amount).toFixed(0)} $CURI for ${duration} days!`, 'success');
+            closeModal('stakeModal');
+            document.getElementById('stakeAmount').value = '';
+        }
+
+        // ===== ANIMATED COUNTERS =====
+        function animateCounter(element, target, suffix = '%') {
+            let current = 0;
+            const step = target / 60;
+            const interval = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(interval);
+                }
+                element.textContent = current.toFixed(1) + suffix;
+            }, 30);
+        }
+
+        setTimeout(() => {
+            animateCounter(document.getElementById('cashbackCount'), 5);
+            setTimeout(() => animateCounter(document.getElementById('apyCount'), 8.2), 300);
+            setTimeout(() => animateCounter(document.getElementById('feeCount'), 0.01), 600);
+        }, 500);
+
+        // ===== LIVE BALANCE =====
+        let balanceValue = 3842.50;
+        setInterval(() => {
+            const change = (Math.random() - 0.5) * 0.5;
+            balanceValue = Math.max(0, balanceValue + change);
+            document.getElementById('balanceDisplay').textContent = balanceValue.toFixed(2);
+            document.getElementById('dashBalance').textContent = balanceValue.toFixed(2);
+        }, 5000);
+
+        // ===== USER COUNT =====
+        let userCount = 12847;
+        setInterval(() => {
+            userCount += Math.floor(Math.random() * 3);
+            document.getElementById('userCount').textContent = userCount.toLocaleString();
+        }, 8000);
+
+        // ===== AUTO-LOGIN FOR DEMO (REMOVE IN PRODUCTION) =====
+        // For testing purposes only — comment out for production
+        setTimeout(() => {
+            if (!currentUser) {
+                // Auto-login as demo user after 2 seconds on landing page
+                const demoUser = {
+                    name: 'Demo User',
+                    email: 'demo@curiosity.io',
+                    avatar: 'DU'
+                };
+                // Uncomment below to auto-login:
+                // login(demoUser);
+            }
+        }, 2000);
+
+        // ===== CONSOLE =====
+        console.log('%c⚡ Curiosity', 'font-size:24px; font-weight:bold; color:#00bcd4;');
+        console.log('%cYour invisible Web3 financial ecosystem.', 'font-size:14px; color:#94a3b8;');
+        console.log('%c⌘+K to sign up | 🌓 Toggle theme | 📱 Fully responsive', 'font-size:12px; color:#64748b;');
+    </script>
+
+</body>
+</html>
