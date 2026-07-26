@@ -91,24 +91,49 @@
         transform: rotate(-45deg) translate(5px, -5px);
         width: 100%;
     }
+    /* Mobile nav dropdown */
     .menu-items {
-        display: none;
+        display: flex;
         flex-direction: column;
         position: absolute;
         top: 100%;
-        right: 30px;
-        background: rgba(15, 23, 42, 0.9);
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        padding: 10px 20px;
+        right: 20px;
+        margin-top: 10px;
+        width: min(70vw, 220px);
+        background: linear-gradient(160deg, #12213f, #0f172a 65%);
+        border: 1px solid rgba(0, 188, 212, 0.15);
+        border-radius: 14px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+        padding: 10px;
+        gap: 2px;
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity 0.22s ease, transform 0.22s ease;
+        z-index: 1500;
     }
-
-    .menu-items a {
-        margin: 10px 0;
-    }
-
     .menu-items.show {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+    .menu-items a {
         display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 11px 10px;
+        border-radius: 8px;
+        font-size: 0.98rem;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+    .menu-items a:hover {
+        background: rgba(0, 188, 212, 0.1);
+    }
+    .menu-items a i {
+        width: 18px;
+        text-align: center;
+        color: #00bcd4;
+        font-size: 0.95rem;
     }
 
     @media (min-width: 768px) {
@@ -120,13 +145,30 @@
             display: flex;
             flex-direction: row;
             position: static;
+            width: auto;
+            margin-top: 0;
             background: none;
+            border: none;
             box-shadow: none;
             padding: 0;
+            gap: 0;
+            opacity: 1;
+            transform: none;
+            pointer-events: auto;
         }
 
         .menu-items a {
             margin: 0 15px;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .menu-items a:hover {
+            background: none;
+        }
+
+        .menu-items a i {
+            display: none;
         }
     }
 
@@ -160,6 +202,8 @@
             font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
         .btn:hover {
             background: #008c9e;
@@ -224,19 +268,6 @@
             width: 80%;
         }
         @media (max-width: 768px) {
-            nav .menu-items {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 60px;
-                right: 30px;
-                background: rgba(15, 23, 42, 0.9);
-                padding: 10px;
-                border-radius: 10px;
-            }
-            nav .menu-items.show {
-                display: flex;
-            }
             .hero h1 {
                 font-size: 2.5rem;
                 white-space: normal;
@@ -881,7 +912,7 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const text = "Welcome to CurioCity ($CURI)";
+            const text = "Welcome to Curiosity ($CURI)";
             let i = 0;
             const speed = 100;
             const heading = document.getElementById("typing-text");
@@ -906,18 +937,18 @@
 </div>
 
      <div class="menu-items" id="menu-items">
-            <a href="#features">Features</a>
-            <a href="#roadmap">Roadmap</a>
-            <a href="#tokenomics">Tokenomics</a>
-            <a href="#nfts">NFTs</a>
-            <a href="#whitepaper">Whitepaper</a>
-            <a href="#airdrop">Airdrop</a>
+            <a href="#features"><i class="fas fa-star"></i> Features</a>
+            <a href="#roadmap"><i class="fas fa-road"></i> Roadmap</a>
+            <a href="#tokenomics"><i class="fas fa-chart-pie"></i> Tokenomics</a>
+            <a href="#nfts"><i class="fas fa-image"></i> NFTs</a>
+            <a href="#whitepaper"><i class="fas fa-file-alt"></i> Whitepaper</a>
+            <a href="#airdrop"><i class="fas fa-parachute-box"></i> Airdrop</a>
         </div>
     </nav>
     <div class="hero">
         <h1 id="typing-text"></h1>
         <p>The token that fuels your curiosity and drives innovation in Web3.</p>
-        <button class="btn">Explore Features</button>
+        <a class="btn" href="features.html">Explore Features</a>
 
         <div class="nav-buttons">
             <button class="btn-nav btn-get-started" onclick="openSignupModal()">Get Started</button>
@@ -1026,7 +1057,9 @@
                             <div class="wheel-highlight"></div>
                             <div class="wheel-scroll" id="genderWheelScroll"></div>
                         </div>
-                        
+                        <div class="wheel-done-row">
+                            <button type="button" class="wheel-done-btn" onclick="confirmPicker('gender')">Done</button>
+                        </div>
                     </div>
                     <input type="hidden" id="signupGender" value="">
                 </div>
@@ -1044,7 +1077,9 @@
                                     <div class="wheel-highlight"></div>
                                     <div class="wheel-scroll" id="dobDayScroll"></div>
                                 </div>
-                                
+                                <div class="wheel-done-row">
+                                    <button type="button" class="wheel-done-btn" onclick="confirmPicker('dobDay')">Done</button>
+                                </div>
                             </div>
                         </div>
                         <div class="dob-col">
@@ -1058,7 +1093,9 @@
                                     <div class="wheel-highlight"></div>
                                     <div class="wheel-scroll" id="dobMonthScroll"></div>
                                 </div>
-                                
+                                <div class="wheel-done-row">
+                                    <button type="button" class="wheel-done-btn" onclick="confirmPicker('dobMonth')">Done</button>
+                                </div>
                             </div>
                         </div>
                         <div class="dob-col">
@@ -1072,7 +1109,9 @@
                                     <div class="wheel-highlight"></div>
                                     <div class="wheel-scroll" id="dobYearScroll"></div>
                                 </div>
-                                
+                                <div class="wheel-done-row">
+                                    <button type="button" class="wheel-done-btn" onclick="confirmPicker('dobYear')">Done</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1100,7 +1139,9 @@
                             <div class="wheel-highlight"></div>
                             <div class="wheel-scroll" id="countryWheelScroll"></div>
                         </div>
-                
+                        <div class="wheel-done-row">
+                            <button type="button" class="wheel-done-btn" onclick="confirmPicker('country')">Done</button>
+                        </div>
                     </div>
                     <input type="hidden" id="signupCountry" value="">
                 </div>
@@ -1866,6 +1907,17 @@ function closeMenu() {
 
         createItems();
         rotatePicker();
+    </script>
+
+    <script>
+        // If the person clicked "Get Started" on the features page, open the
+        // sign-up modal automatically once we land back on the homepage.
+        if (localStorage.getItem("openSignup") === "1") {
+            localStorage.removeItem("openSignup");
+            if (typeof openSignupModal === "function") {
+                openSignupModal();
+            }
+        }
     </script>
 </body>
 </html>
