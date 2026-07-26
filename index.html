@@ -298,7 +298,7 @@
 
 /* Footer Styling */
 .footer {
-  background: #1e293b;
+  background: #1e293b; /* Gradient background */
   color: #ffffff;
   padding: 40px 20px;
   font-family: "Arial", sans-serif;
@@ -314,7 +314,7 @@
 }
 
 .footer-section {
-  flex: 1 1 220px;
+  flex: 1 1 220px; /* Flexible layout for responsiveness */
   margin: 10px;
 }
 
@@ -565,6 +565,28 @@
     font-size: 0.85rem;
     margin-bottom: 18px;
 }
+.success-message {
+    display: none;
+    background: rgba(0, 188, 212, 0.12);
+    border: 1px solid #00bcd4;
+    color: #b2ebf2;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 18px;
+}
+.forgot-password-row {
+    text-align: right;
+    margin: -10px 0 18px;
+}
+.forgot-password-row a {
+    color: #00e0ff;
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+.forgot-password-row a:hover {
+    text-decoration: underline;
+}
 
 /* Data collection section on Sign Up */
 .data-section {
@@ -711,6 +733,151 @@
     background: rgba(255, 255, 255, 0.12);
 }
 
+/* iOS-style wheel picker */
+.wheel-picker {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+}
+.wheel-scroll {
+    height: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.wheel-scroll::-webkit-scrollbar {
+    display: none;
+}
+.wheel-item {
+    height: 40px;
+    line-height: 40px;
+    scroll-snap-align: center;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: color 0.15s ease, font-size 0.15s ease, font-weight 0.15s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 6px;
+}
+.wheel-item.selected {
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+.wheel-highlight {
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    right: 4px;
+    height: 40px;
+    transform: translateY(-50%);
+    background: rgba(0, 188, 212, 0.08);
+    border-top: 1px solid rgba(0, 188, 212, 0.35);
+    border-bottom: 1px solid rgba(0, 188, 212, 0.35);
+    border-radius: 8px;
+    pointer-events: none;
+}
+.dob-wheels {
+    display: flex;
+    gap: 8px;
+}
+.dob-wheels .wheel-picker {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Click-to-open picker field */
+.picker-field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    background: #1e293b;
+    color: #ffffff;
+    font-size: 1rem;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color 0.2s ease;
+}
+.picker-field:hover {
+    border-color: #00bcd4;
+}
+.picker-field.open {
+    border-color: #00bcd4;
+}
+.picker-field i {
+    color: #64748b;
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+.picker-field.open i {
+    transform: rotate(180deg);
+}
+.picker-field span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.picker-dropdown {
+    display: none;
+    margin-top: 8px;
+}
+.picker-dropdown.show {
+    display: block;
+    animation: dropdownPop 0.22s ease;
+}
+@keyframes dropdownPop {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.dob-row {
+    display: flex;
+    gap: 8px;
+}
+.dob-row .dob-col {
+    flex: 1;
+    min-width: 0;
+}
+.dob-col > label {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    display: block;
+    margin-bottom: 6px;
+}
+.wheel-done-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+.wheel-done-btn {
+    background: #00bcd4;
+    color: #ffffff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.wheel-done-btn:hover {
+    background: #008c9e;
+}
+
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -784,11 +951,37 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" placeholder="••••••••" required>
                 </div>
+                <div class="forgot-password-row">
+                    <a href="#" onclick="switchToForgotPassword(event)">Forgot password?</a>
+                </div>
                 <button type="submit" class="btn-submit">Log In</button>
             </form>
 
             <div class="form-footer">
                 Don't have an account? <a href="#" onclick="switchToSignup(event)">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="forgotPasswordModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
+            <h1>Reset password</h1>
+            <p class="subtitle">Enter your email and we'll send you a link to reset your password.</p>
+
+            <div class="error-message" id="forgotErrorMessage">Please enter a valid email address.</div>
+            <div class="success-message" id="forgotSuccessMessage">If an account exists for that email, a reset link is on its way.</div>
+
+            <form id="forgotPasswordForm">
+                <div class="field">
+                    <label for="forgotEmail">Email</label>
+                    <input type="email" id="forgotEmail" placeholder="you@example.com" required>
+                </div>
+                <button type="submit" class="btn-submit">Send Reset Link</button>
+            </form>
+
+            <div class="form-footer">
+                Remembered it? <a href="#" onclick="switchToLogin(event)">Back to login</a>
             </div>
         </div>
     </div>
@@ -823,6 +1016,76 @@
                     </div>
                 </div>
                 <div class="field">
+                    <label for="genderPickerField">Gender</label>
+                    <div class="picker-field" id="genderPickerField" onclick="togglePicker('gender')">
+                        <span id="genderPickerValue">Select</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="picker-dropdown" id="genderPickerDropdown">
+                        <div class="wheel-picker" id="genderWheel">
+                            <div class="wheel-highlight"></div>
+                            <div class="wheel-scroll" id="genderWheelScroll"></div>
+                        </div>
+                        <div class="wheel-done-row">
+                            <button type="button" class="wheel-done-btn" onclick="confirmPicker('gender')">Done</button>
+                        </div>
+                    </div>
+                    <input type="hidden" id="signupGender" value="">
+                </div>
+                <div class="field">
+                    <label>Date of birth (must be 18+)</label>
+                    <div class="dob-row">
+                        <div class="dob-col">
+                            <label for="dobDayField">Day</label>
+                            <div class="picker-field" id="dobDayField" onclick="togglePicker('dobDay')">
+                                <span id="dobDayValue">01</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="picker-dropdown" id="dobDayDropdown">
+                                <div class="wheel-picker" id="dobDayWheel">
+                                    <div class="wheel-highlight"></div>
+                                    <div class="wheel-scroll" id="dobDayScroll"></div>
+                                </div>
+                                <div class="wheel-done-row">
+                                    <button type="button" class="wheel-done-btn" onclick="confirmPicker('dobDay')">Done</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dob-col">
+                            <label for="dobMonthField">Month</label>
+                            <div class="picker-field" id="dobMonthField" onclick="togglePicker('dobMonth')">
+                                <span id="dobMonthValue">January</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="picker-dropdown" id="dobMonthDropdown">
+                                <div class="wheel-picker" id="dobMonthWheel">
+                                    <div class="wheel-highlight"></div>
+                                    <div class="wheel-scroll" id="dobMonthScroll"></div>
+                                </div>
+                                <div class="wheel-done-row">
+                                    <button type="button" class="wheel-done-btn" onclick="confirmPicker('dobMonth')">Done</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dob-col">
+                            <label for="dobYearField">Year</label>
+                            <div class="picker-field" id="dobYearField" onclick="togglePicker('dobYear')">
+                                <span id="dobYearValue">Year</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="picker-dropdown" id="dobYearDropdown">
+                                <div class="wheel-picker" id="dobYearWheel">
+                                    <div class="wheel-highlight"></div>
+                                    <div class="wheel-scroll" id="dobYearScroll"></div>
+                                </div>
+                                <div class="wheel-done-row">
+                                    <button type="button" class="wheel-done-btn" onclick="confirmPicker('dobYear')">Done</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
                     <label for="signupEmail">Email</label>
                     <input type="email" id="signupEmail" placeholder="you@example.com" required>
                 </div>
@@ -835,206 +1098,21 @@
                     <input type="tel" id="signupPhone" placeholder="+1 555 123 4567" required>
                 </div>
                 <div class="field">
-                    <label for="signupCountry">Country / Region</label>
-                    <select id="signupCountry">
-                        <option value="">Select your country</option>
-                        <option value="AF">Afghanistan</option>
-                        <option value="AL">Albania</option>
-                        <option value="DZ">Algeria</option>
-                        <option value="AD">Andorra</option>
-                        <option value="AO">Angola</option>
-                        <option value="AG">Antigua and Barbuda</option>
-                        <option value="AR">Argentina</option>
-                        <option value="AM">Armenia</option>
-                        <option value="AU">Australia</option>
-                        <option value="AT">Austria</option>
-                        <option value="AZ">Azerbaijan</option>
-                        <option value="BS">Bahamas</option>
-                        <option value="BH">Bahrain</option>
-                        <option value="BD">Bangladesh</option>
-                        <option value="BB">Barbados</option>
-                        <option value="BY">Belarus</option>
-                        <option value="BE">Belgium</option>
-                        <option value="BZ">Belize</option>
-                        <option value="BJ">Benin</option>
-                        <option value="BT">Bhutan</option>
-                        <option value="BO">Bolivia</option>
-                        <option value="BA">Bosnia and Herzegovina</option>
-                        <option value="BW">Botswana</option>
-                        <option value="BR">Brazil</option>
-                        <option value="BN">Brunei</option>
-                        <option value="BG">Bulgaria</option>
-                        <option value="BF">Burkina Faso</option>
-                        <option value="BI">Burundi</option>
-                        <option value="CV">Cabo Verde</option>
-                        <option value="KH">Cambodia</option>
-                        <option value="CM">Cameroon</option>
-                        <option value="CA">Canada</option>
-                        <option value="CF">Central African Republic</option>
-                        <option value="TD">Chad</option>
-                        <option value="CL">Chile</option>
-                        <option value="CN">China</option>
-                        <option value="CO">Colombia</option>
-                        <option value="KM">Comoros</option>
-                        <option value="CG">Congo</option>
-                        <option value="CD">Congo (DRC)</option>
-                        <option value="CR">Costa Rica</option>
-                        <option value="CI">Cote d'Ivoire</option>
-                        <option value="HR">Croatia</option>
-                        <option value="CU">Cuba</option>
-                        <option value="CY">Cyprus</option>
-                        <option value="CZ">Czechia</option>
-                        <option value="DK">Denmark</option>
-                        <option value="DJ">Djibouti</option>
-                        <option value="DM">Dominica</option>
-                        <option value="DO">Dominican Republic</option>
-                        <option value="EC">Ecuador</option>
-                        <option value="EG">Egypt</option>
-                        <option value="SV">El Salvador</option>
-                        <option value="GQ">Equatorial Guinea</option>
-                        <option value="ER">Eritrea</option>
-                        <option value="EE">Estonia</option>
-                        <option value="SZ">Eswatini</option>
-                        <option value="ET">Ethiopia</option>
-                        <option value="FJ">Fiji</option>
-                        <option value="FI">Finland</option>
-                        <option value="FR">France</option>
-                        <option value="GA">Gabon</option>
-                        <option value="GM">Gambia</option>
-                        <option value="GE">Georgia</option>
-                        <option value="DE">Germany</option>
-                        <option value="GH">Ghana</option>
-                        <option value="GR">Greece</option>
-                        <option value="GD">Grenada</option>
-                        <option value="GT">Guatemala</option>
-                        <option value="GN">Guinea</option>
-                        <option value="GW">Guinea-Bissau</option>
-                        <option value="GY">Guyana</option>
-                        <option value="HT">Haiti</option>
-                        <option value="HN">Honduras</option>
-                        <option value="HU">Hungary</option>
-                        <option value="IS">Iceland</option>
-                        <option value="IN">India</option>
-                        <option value="ID">Indonesia</option>
-                        <option value="IR">Iran</option>
-                        <option value="IQ">Iraq</option>
-                        <option value="IE">Ireland</option>
-                        <option value="IL">Israel</option>
-                        <option value="IT">Italy</option>
-                        <option value="JM">Jamaica</option>
-                        <option value="JP">Japan</option>
-                        <option value="JO">Jordan</option>
-                        <option value="KZ">Kazakhstan</option>
-                        <option value="KE">Kenya</option>
-                        <option value="KI">Kiribati</option>
-                        <option value="KP">North Korea</option>
-                        <option value="KR">South Korea</option>
-                        <option value="KW">Kuwait</option>
-                        <option value="KG">Kyrgyzstan</option>
-                        <option value="LA">Laos</option>
-                        <option value="LV">Latvia</option>
-                        <option value="LB">Lebanon</option>
-                        <option value="LS">Lesotho</option>
-                        <option value="LR">Liberia</option>
-                        <option value="LY">Libya</option>
-                        <option value="LI">Liechtenstein</option>
-                        <option value="LT">Lithuania</option>
-                        <option value="LU">Luxembourg</option>
-                        <option value="MG">Madagascar</option>
-                        <option value="MW">Malawi</option>
-                        <option value="MY">Malaysia</option>
-                        <option value="MV">Maldives</option>
-                        <option value="ML">Mali</option>
-                        <option value="MT">Malta</option>
-                        <option value="MH">Marshall Islands</option>
-                        <option value="MR">Mauritania</option>
-                        <option value="MU">Mauritius</option>
-                        <option value="MX">Mexico</option>
-                        <option value="FM">Micronesia</option>
-                        <option value="MD">Moldova</option>
-                        <option value="MC">Monaco</option>
-                        <option value="MN">Mongolia</option>
-                        <option value="ME">Montenegro</option>
-                        <option value="MA">Morocco</option>
-                        <option value="MZ">Mozambique</option>
-                        <option value="MM">Myanmar</option>
-                        <option value="NA">Namibia</option>
-                        <option value="NR">Nauru</option>
-                        <option value="NP">Nepal</option>
-                        <option value="NL">Netherlands</option>
-                        <option value="NZ">New Zealand</option>
-                        <option value="NI">Nicaragua</option>
-                        <option value="NE">Niger</option>
-                        <option value="NG">Nigeria</option>
-                        <option value="MK">North Macedonia</option>
-                        <option value="NO">Norway</option>
-                        <option value="OM">Oman</option>
-                        <option value="PK">Pakistan</option>
-                        <option value="PW">Palau</option>
-                        <option value="PS">Palestine</option>
-                        <option value="PA">Panama</option>
-                        <option value="PG">Papua New Guinea</option>
-                        <option value="PY">Paraguay</option>
-                        <option value="PE">Peru</option>
-                        <option value="PH">Philippines</option>
-                        <option value="PL">Poland</option>
-                        <option value="PT">Portugal</option>
-                        <option value="QA">Qatar</option>
-                        <option value="RO">Romania</option>
-                        <option value="RU">Russia</option>
-                        <option value="RW">Rwanda</option>
-                        <option value="KN">Saint Kitts and Nevis</option>
-                        <option value="LC">Saint Lucia</option>
-                        <option value="VC">Saint Vincent and the Grenadines</option>
-                        <option value="WS">Samoa</option>
-                        <option value="SM">San Marino</option>
-                        <option value="ST">Sao Tome and Principe</option>
-                        <option value="SA">Saudi Arabia</option>
-                        <option value="SN">Senegal</option>
-                        <option value="RS">Serbia</option>
-                        <option value="SC">Seychelles</option>
-                        <option value="SL">Sierra Leone</option>
-                        <option value="SG">Singapore</option>
-                        <option value="SK">Slovakia</option>
-                        <option value="SI">Slovenia</option>
-                        <option value="SB">Solomon Islands</option>
-                        <option value="SO">Somalia</option>
-                        <option value="ZA">South Africa</option>
-                        <option value="SS">South Sudan</option>
-                        <option value="ES">Spain</option>
-                        <option value="LK">Sri Lanka</option>
-                        <option value="SD">Sudan</option>
-                        <option value="SR">Suriname</option>
-                        <option value="SE">Sweden</option>
-                        <option value="CH">Switzerland</option>
-                        <option value="SY">Syria</option>
-                        <option value="TW">Taiwan</option>
-                        <option value="TJ">Tajikistan</option>
-                        <option value="TZ">Tanzania</option>
-                        <option value="TH">Thailand</option>
-                        <option value="TL">Timor-Leste</option>
-                        <option value="TG">Togo</option>
-                        <option value="TO">Tonga</option>
-                        <option value="TT">Trinidad and Tobago</option>
-                        <option value="TN">Tunisia</option>
-                        <option value="TR">Turkey</option>
-                        <option value="TM">Turkmenistan</option>
-                        <option value="TV">Tuvalu</option>
-                        <option value="UG">Uganda</option>
-                        <option value="UA">Ukraine</option>
-                        <option value="AE">United Arab Emirates</option>
-                        <option value="GB">United Kingdom</option>
-                        <option value="US">United States</option>
-                        <option value="UY">Uruguay</option>
-                        <option value="UZ">Uzbekistan</option>
-                        <option value="VU">Vanuatu</option>
-                        <option value="VA">Vatican City</option>
-                        <option value="VE">Venezuela</option>
-                        <option value="VN">Vietnam</option>
-                        <option value="YE">Yemen</option>
-                        <option value="ZM">Zambia</option>
-                        <option value="ZW">Zimbabwe</option>
-                    </select>
+                    <label for="countryPickerField">Country / Region</label>
+                    <div class="picker-field" id="countryPickerField" onclick="togglePicker('country')">
+                        <span id="countryPickerValue">Select your country</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="picker-dropdown" id="countryPickerDropdown">
+                        <div class="wheel-picker" id="countryWheel">
+                            <div class="wheel-highlight"></div>
+                            <div class="wheel-scroll" id="countryWheelScroll"></div>
+                        </div>
+                        <div class="wheel-done-row">
+                            <button type="button" class="wheel-done-btn" onclick="confirmPicker('country')">Done</button>
+                        </div>
+                    </div>
+                    <input type="hidden" id="signupCountry" value="">
                 </div>
 
                 <div class="data-section">
@@ -1215,9 +1293,11 @@ function closeMenu() {
 <script>
     const loginModal = document.getElementById("loginModal");
     const signupModal = document.getElementById("signupModal");
+    const forgotPasswordModal = document.getElementById("forgotPasswordModal");
 
     function openLoginModal() {
         signupModal.classList.remove("show");
+        forgotPasswordModal.classList.remove("show");
         loginModal.classList.add("show");
     }
 
@@ -1227,11 +1307,22 @@ function closeMenu() {
 
     function openSignupModal() {
         loginModal.classList.remove("show");
+        forgotPasswordModal.classList.remove("show");
         signupModal.classList.add("show");
     }
 
     function closeSignupModal() {
         signupModal.classList.remove("show");
+    }
+
+    function openForgotPasswordModal() {
+        loginModal.classList.remove("show");
+        signupModal.classList.remove("show");
+        forgotPasswordModal.classList.add("show");
+    }
+
+    function closeForgotPasswordModal() {
+        forgotPasswordModal.classList.remove("show");
     }
 
     function switchToSignup(event) {
@@ -1244,6 +1335,11 @@ function closeMenu() {
         openLoginModal();
     }
 
+    function switchToForgotPassword(event) {
+        event.preventDefault();
+        openForgotPasswordModal();
+    }
+
     function socialAuth(provider) {
         // TODO: replace with real OAuth flow (e.g. redirect to your backend's
         // /auth/google or /auth/facebook endpoint, or use their JS SDK)
@@ -1251,7 +1347,7 @@ function closeMenu() {
     }
 
     // Close modal when clicking outside the card
-    [loginModal, signupModal].forEach((modal) => {
+    [loginModal, signupModal, forgotPasswordModal].forEach((modal) => {
         modal.addEventListener("click", (event) => {
             if (event.target === modal) {
                 modal.classList.remove("show");
@@ -1264,6 +1360,7 @@ function closeMenu() {
         if (event.key === "Escape") {
             closeLoginModal();
             closeSignupModal();
+            closeForgotPasswordModal();
         }
     });
 
@@ -1283,20 +1380,47 @@ function closeMenu() {
         alert("Login submitted (this is a placeholder — connect it to your backend).");
     });
 
+    document.getElementById("forgotPasswordForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const forgotEmail = document.getElementById("forgotEmail").value.trim();
+        const forgotErrorMessage = document.getElementById("forgotErrorMessage");
+        const forgotSuccessMessage = document.getElementById("forgotSuccessMessage");
+
+        forgotSuccessMessage.style.display = "none";
+
+        if (!forgotEmail) {
+            forgotErrorMessage.style.display = "block";
+            return;
+        }
+
+        forgotErrorMessage.style.display = "none";
+        // TODO: hook this up to your real password-reset endpoint
+        forgotSuccessMessage.style.display = "block";
+    });
+
     document.getElementById("signupForm").addEventListener("submit", function(e) {
         e.preventDefault();
         const firstName = document.getElementById("signupFirstName").value.trim();
         const lastName = document.getElementById("signupLastName").value.trim();
+        const gender = document.getElementById("signupGender").value;
         const email = document.getElementById("signupEmail").value.trim();
         const password = document.getElementById("signupPassword").value.trim();
         const phone = document.getElementById("signupPhone").value.trim();
         const agreeTerms = document.getElementById("agreeTerms").checked;
         const errorMessage = document.getElementById("signupErrorMessage");
 
-        if (!firstName || !lastName || !email || !password || !phone || !agreeTerms) {
+        if (!firstName || !lastName || !gender || !email || !password || !phone || !agreeTerms) {
             errorMessage.textContent = !agreeTerms
                 ? "You must agree to the Terms of Service and Privacy Policy."
                 : "Please fill in all required fields.";
+            errorMessage.style.display = "block";
+            return;
+        }
+
+        const dob = getSelectedDOB();
+        const age = calculateAge(dob);
+        if (age < 18) {
+            errorMessage.textContent = "You must be at least 18 years old to create an account.";
             errorMessage.style.display = "block";
             return;
         }
@@ -1312,7 +1436,7 @@ function closeMenu() {
             thirdPartySharing: document.getElementById("consentThirdParty").checked
         };
 
-        // TODO: send { firstName, lastName, email, password, phone, ...dataPreferences } to your signup endpoint
+        // TODO: send { firstName, lastName, gender, dob, email, password, phone, ...dataPreferences } to your signup endpoint
         alert("Account created (this is a placeholder — connect it to your backend).");
     });
 
@@ -1357,37 +1481,302 @@ function closeMenu() {
     }
 
     const signupPhoneInput = document.getElementById("signupPhone");
-    const signupCountrySelect = document.getElementById("signupCountry");
+    const signupCountryHidden = document.getElementById("signupCountry");
 
-    // Typing a number that starts with a country code selects the matching country
-    signupPhoneInput.addEventListener("input", () => {
-        const iso = detectCountryFromDialCode(signupPhoneInput.value);
-        if (iso && signupCountrySelect.value !== iso) {
-            signupCountrySelect.value = iso;
+    // ---- Generic iOS-style wheel picker ----
+    function initWheelPicker(scrollEl, items, itemHeight, initialIndex, onCommit, autoCommitInitial) {
+        if (autoCommitInitial === undefined) autoCommitInitial = true;
+        scrollEl.innerHTML = "";
+
+        const padTop = document.createElement("div");
+        padTop.style.height = (itemHeight * 2) + "px";
+        scrollEl.appendChild(padTop);
+
+        const itemEls = items.map((item, idx) => {
+            const el = document.createElement("div");
+            el.className = "wheel-item";
+            el.textContent = item.label;
+            // Tapping an item directly IS an explicit selection — commit right away
+            el.addEventListener("click", () => {
+                scrollToIndex(idx, true);
+                commit(idx);
+            });
+            scrollEl.appendChild(el);
+            return el;
+        });
+
+        const padBottom = document.createElement("div");
+        padBottom.style.height = (itemHeight * 2) + "px";
+        scrollEl.appendChild(padBottom);
+
+        let committedIndex = autoCommitInitial ? initialIndex : -1;
+        let centeredIndex = initialIndex;
+
+        function updateSelectedClass(idx) {
+            itemEls.forEach((el, i) => el.classList.toggle("selected", i === idx));
         }
-    });
 
-    // Picking a country fills in (or swaps) the dial code in the phone field
-    signupCountrySelect.addEventListener("change", () => {
-        const iso = signupCountrySelect.value;
+        function scrollToIndex(idx, smooth) {
+            scrollEl.scrollTo({ top: idx * itemHeight, behavior: smooth ? "smooth" : "auto" });
+        }
+
+        function commit(idx) {
+            committedIndex = idx;
+            centeredIndex = idx;
+            updateSelectedClass(idx);
+            if (onCommit) onCommit(items[idx], idx);
+        }
+
+        // Scrolling only previews the centered item (highlights it) — it does NOT
+        // select anything. Selection only happens when the user taps an item or Done.
+        let settleTimeout;
+        scrollEl.addEventListener("scroll", () => {
+            clearTimeout(settleTimeout);
+            settleTimeout = setTimeout(() => {
+                let idx = Math.round(scrollEl.scrollTop / itemHeight);
+                idx = Math.max(0, Math.min(items.length - 1, idx));
+                centeredIndex = idx;
+                updateSelectedClass(idx);
+            }, 120);
+        });
+
+        // Initialize scroll position
+        scrollToIndex(initialIndex, false);
+        updateSelectedClass(initialIndex);
+        if (autoCommitInitial && onCommit) {
+            onCommit(items[initialIndex], initialIndex);
+        }
+
+        return {
+            getValue: () => (committedIndex === -1 ? null : items[committedIndex]),
+            setIndex: (idx, alsoCommit) => {
+                scrollToIndex(idx, true);
+                if (alsoCommit) {
+                    commit(idx);
+                } else {
+                    centeredIndex = idx;
+                    updateSelectedClass(idx);
+                }
+            },
+            // Confirms whatever is currently centered (used by the Done button)
+            commitCurrent: () => commit(centeredIndex)
+        };
+    }
+
+    // ---- Country wheel ----
+    const COUNTRIES = [
+        {value:"AF",label:"Afghanistan"},{value:"AL",label:"Albania"},{value:"DZ",label:"Algeria"},{value:"AD",label:"Andorra"},{value:"AO",label:"Angola"},
+        {value:"AG",label:"Antigua and Barbuda"},{value:"AR",label:"Argentina"},{value:"AM",label:"Armenia"},{value:"AU",label:"Australia"},{value:"AT",label:"Austria"},
+        {value:"AZ",label:"Azerbaijan"},{value:"BS",label:"Bahamas"},{value:"BH",label:"Bahrain"},{value:"BD",label:"Bangladesh"},{value:"BB",label:"Barbados"},
+        {value:"BY",label:"Belarus"},{value:"BE",label:"Belgium"},{value:"BZ",label:"Belize"},{value:"BJ",label:"Benin"},{value:"BT",label:"Bhutan"},
+        {value:"BO",label:"Bolivia"},{value:"BA",label:"Bosnia and Herzegovina"},{value:"BW",label:"Botswana"},{value:"BR",label:"Brazil"},{value:"BN",label:"Brunei"},
+        {value:"BG",label:"Bulgaria"},{value:"BF",label:"Burkina Faso"},{value:"BI",label:"Burundi"},{value:"CV",label:"Cabo Verde"},{value:"KH",label:"Cambodia"},
+        {value:"CM",label:"Cameroon"},{value:"CA",label:"Canada"},{value:"CF",label:"Central African Republic"},{value:"TD",label:"Chad"},{value:"CL",label:"Chile"},
+        {value:"CN",label:"China"},{value:"CO",label:"Colombia"},{value:"KM",label:"Comoros"},{value:"CG",label:"Congo"},{value:"CD",label:"Congo (DRC)"},
+        {value:"CR",label:"Costa Rica"},{value:"CI",label:"Cote d'Ivoire"},{value:"HR",label:"Croatia"},{value:"CU",label:"Cuba"},{value:"CY",label:"Cyprus"},
+        {value:"CZ",label:"Czechia"},{value:"DK",label:"Denmark"},{value:"DJ",label:"Djibouti"},{value:"DM",label:"Dominica"},{value:"DO",label:"Dominican Republic"},
+        {value:"EC",label:"Ecuador"},{value:"EG",label:"Egypt"},{value:"SV",label:"El Salvador"},{value:"GQ",label:"Equatorial Guinea"},{value:"ER",label:"Eritrea"},
+        {value:"EE",label:"Estonia"},{value:"SZ",label:"Eswatini"},{value:"ET",label:"Ethiopia"},{value:"FJ",label:"Fiji"},{value:"FI",label:"Finland"},
+        {value:"FR",label:"France"},{value:"GA",label:"Gabon"},{value:"GM",label:"Gambia"},{value:"GE",label:"Georgia"},{value:"DE",label:"Germany"},
+        {value:"GH",label:"Ghana"},{value:"GR",label:"Greece"},{value:"GD",label:"Grenada"},{value:"GT",label:"Guatemala"},{value:"GN",label:"Guinea"},
+        {value:"GW",label:"Guinea-Bissau"},{value:"GY",label:"Guyana"},{value:"HT",label:"Haiti"},{value:"HN",label:"Honduras"},{value:"HU",label:"Hungary"},
+        {value:"IS",label:"Iceland"},{value:"IN",label:"India"},{value:"ID",label:"Indonesia"},{value:"IR",label:"Iran"},{value:"IQ",label:"Iraq"},
+        {value:"IE",label:"Ireland"},{value:"IL",label:"Israel"},{value:"IT",label:"Italy"},{value:"JM",label:"Jamaica"},{value:"JP",label:"Japan"},
+        {value:"JO",label:"Jordan"},{value:"KZ",label:"Kazakhstan"},{value:"KE",label:"Kenya"},{value:"KI",label:"Kiribati"},{value:"KP",label:"North Korea"},
+        {value:"KR",label:"South Korea"},{value:"KW",label:"Kuwait"},{value:"KG",label:"Kyrgyzstan"},{value:"LA",label:"Laos"},{value:"LV",label:"Latvia"},
+        {value:"LB",label:"Lebanon"},{value:"LS",label:"Lesotho"},{value:"LR",label:"Liberia"},{value:"LY",label:"Libya"},{value:"LI",label:"Liechtenstein"},
+        {value:"LT",label:"Lithuania"},{value:"LU",label:"Luxembourg"},{value:"MG",label:"Madagascar"},{value:"MW",label:"Malawi"},{value:"MY",label:"Malaysia"},
+        {value:"MV",label:"Maldives"},{value:"ML",label:"Mali"},{value:"MT",label:"Malta"},{value:"MH",label:"Marshall Islands"},{value:"MR",label:"Mauritania"},
+        {value:"MU",label:"Mauritius"},{value:"MX",label:"Mexico"},{value:"FM",label:"Micronesia"},{value:"MD",label:"Moldova"},{value:"MC",label:"Monaco"},
+        {value:"MN",label:"Mongolia"},{value:"ME",label:"Montenegro"},{value:"MA",label:"Morocco"},{value:"MZ",label:"Mozambique"},{value:"MM",label:"Myanmar"},
+        {value:"NA",label:"Namibia"},{value:"NR",label:"Nauru"},{value:"NP",label:"Nepal"},{value:"NL",label:"Netherlands"},{value:"NZ",label:"New Zealand"},
+        {value:"NI",label:"Nicaragua"},{value:"NE",label:"Niger"},{value:"NG",label:"Nigeria"},{value:"MK",label:"North Macedonia"},{value:"NO",label:"Norway"},
+        {value:"OM",label:"Oman"},{value:"PK",label:"Pakistan"},{value:"PW",label:"Palau"},{value:"PS",label:"Palestine"},{value:"PA",label:"Panama"},
+        {value:"PG",label:"Papua New Guinea"},{value:"PY",label:"Paraguay"},{value:"PE",label:"Peru"},{value:"PH",label:"Philippines"},{value:"PL",label:"Poland"},
+        {value:"PT",label:"Portugal"},{value:"QA",label:"Qatar"},{value:"RO",label:"Romania"},{value:"RU",label:"Russia"},{value:"RW",label:"Rwanda"},
+        {value:"KN",label:"Saint Kitts and Nevis"},{value:"LC",label:"Saint Lucia"},{value:"VC",label:"Saint Vincent and the Grenadines"},
+        {value:"WS",label:"Samoa"},{value:"SM",label:"San Marino"},{value:"ST",label:"Sao Tome and Principe"},{value:"SA",label:"Saudi Arabia"},
+        {value:"SN",label:"Senegal"},{value:"RS",label:"Serbia"},{value:"SC",label:"Seychelles"},{value:"SL",label:"Sierra Leone"},{value:"SG",label:"Singapore"},
+        {value:"SK",label:"Slovakia"},{value:"SI",label:"Slovenia"},{value:"SB",label:"Solomon Islands"},{value:"SO",label:"Somalia"},{value:"ZA",label:"South Africa"},
+        {value:"SS",label:"South Sudan"},{value:"ES",label:"Spain"},{value:"LK",label:"Sri Lanka"},{value:"SD",label:"Sudan"},{value:"SR",label:"Suriname"},
+        {value:"SE",label:"Sweden"},{value:"CH",label:"Switzerland"},{value:"SY",label:"Syria"},{value:"TW",label:"Taiwan"},{value:"TJ",label:"Tajikistan"},
+        {value:"TZ",label:"Tanzania"},{value:"TH",label:"Thailand"},{value:"TL",label:"Timor-Leste"},{value:"TG",label:"Togo"},{value:"TO",label:"Tonga"},
+        {value:"TT",label:"Trinidad and Tobago"},{value:"TN",label:"Tunisia"},{value:"TR",label:"Turkey"},{value:"TM",label:"Turkmenistan"},{value:"TV",label:"Tuvalu"},
+        {value:"UG",label:"Uganda"},{value:"UA",label:"Ukraine"},{value:"AE",label:"United Arab Emirates"},{value:"GB",label:"United Kingdom"},{value:"US",label:"United States"},
+        {value:"UY",label:"Uruguay"},{value:"UZ",label:"Uzbekistan"},{value:"VU",label:"Vanuatu"},{value:"VA",label:"Vatican City"},{value:"VE",label:"Venezuela"},
+        {value:"VN",label:"Vietnam"},{value:"YE",label:"Yemen"},{value:"ZM",label:"Zambia"},{value:"ZW",label:"Zimbabwe"}
+    ];
+
+    let suppressCountryPhoneSync = false;
+
+    function syncPhoneFromCountry(iso) {
         const dial = COUNTRY_DIAL_CODES[iso];
         if (!dial) return;
-
         const current = signupPhoneInput.value.trim();
         const existingIso = detectCountryFromDialCode(current);
 
         if (existingIso) {
-            // Replace the old dial code, keep the rest of the number typed so far
             const oldDial = COUNTRY_DIAL_CODES[existingIso];
             const rest = current.slice(oldDial.length).replace(/^\s+/, "");
             signupPhoneInput.value = rest ? `${dial} ${rest}` : `${dial} `;
         } else if (!current) {
             signupPhoneInput.value = `${dial} `;
         } else {
-            // Existing text without a recognizable code — prepend the dial code
             signupPhoneInput.value = `${dial} ${current}`;
         }
+    }
+
+    // ---- Click-to-open / close-on-select picker fields ----
+    const pickers = {
+        country: { field: document.getElementById("countryPickerField"), dropdown: document.getElementById("countryPickerDropdown") },
+        gender: { field: document.getElementById("genderPickerField"), dropdown: document.getElementById("genderPickerDropdown") },
+        dobDay: { field: document.getElementById("dobDayField"), dropdown: document.getElementById("dobDayDropdown") },
+        dobMonth: { field: document.getElementById("dobMonthField"), dropdown: document.getElementById("dobMonthDropdown") },
+        dobYear: { field: document.getElementById("dobYearField"), dropdown: document.getElementById("dobYearDropdown") }
+    };
+    const pickerApis = {};
+    const pickerCloseTimers = {};
+
+    function openPicker(key) {
+        Object.entries(pickers).forEach(([k, p]) => {
+            if (k !== key) {
+                p.dropdown.classList.remove("show");
+                p.field.classList.remove("open");
+            }
+        });
+        pickers[key].dropdown.classList.add("show");
+        pickers[key].field.classList.add("open");
+    }
+
+    function closePicker(key) {
+        pickers[key].dropdown.classList.remove("show");
+        pickers[key].field.classList.remove("open");
+    }
+
+    function togglePicker(key) {
+        const isOpen = pickers[key].dropdown.classList.contains("show");
+        if (isOpen) {
+            closePicker(key);
+        } else {
+            openPicker(key);
+        }
+    }
+
+    // Called after an explicit selection (tapping an item) — briefly shows the
+    // pick landing, then closes. Scrolling alone never reaches this.
+    function closePickerSoon(key) {
+        clearTimeout(pickerCloseTimers[key]);
+        pickerCloseTimers[key] = setTimeout(() => closePicker(key), 250);
+    }
+
+    // "Done" button — confirms whatever value is currently centered, then closes
+    function confirmPicker(key) {
+        pickerApis[key].commitCurrent();
+        closePicker(key);
+    }
+
+    // Close any open picker when tapping outside of it (no value is committed by this)
+    document.addEventListener("click", (event) => {
+        const insideAnyPicker = Object.values(pickers).some(
+            (p) => p.field.contains(event.target) || p.dropdown.contains(event.target)
+        );
+        if (!insideAnyPicker) {
+            Object.keys(pickers).forEach(closePicker);
+        }
     });
+
+    const countryWheelApi = initWheelPicker(
+        document.getElementById("countryWheelScroll"),
+        COUNTRIES,
+        40,
+        COUNTRIES.findIndex(c => c.value === "US"),
+        (item) => {
+            signupCountryHidden.value = item.value;
+            document.getElementById("countryPickerValue").textContent = item.label;
+            if (!suppressCountryPhoneSync) {
+                syncPhoneFromCountry(item.value);
+            }
+            closePickerSoon("country");
+        }
+    );
+    pickerApis.country = countryWheelApi;
+
+    // ---- Gender wheel (no default — must be explicitly chosen) ----
+    const GENDERS = [
+        { value: "female", label: "Female" },
+        { value: "male", label: "Male" },
+        { value: "non-binary", label: "Non-binary" },
+        { value: "prefer-not-to-say", label: "Prefer not to say" }
+    ];
+    const signupGenderHidden = document.getElementById("signupGender");
+    const genderWheelApi = initWheelPicker(
+        document.getElementById("genderWheelScroll"),
+        GENDERS,
+        40,
+        0,
+        (item) => {
+            signupGenderHidden.value = item.value;
+            document.getElementById("genderPickerValue").textContent = item.label;
+            closePickerSoon("gender");
+        },
+        false // don't auto-commit a default — wait for the user to actually pick one
+    );
+    pickerApis.gender = genderWheelApi;
+
+    // Typing a number that starts with a country code selects the matching country
+    signupPhoneInput.addEventListener("input", () => {
+        const iso = detectCountryFromDialCode(signupPhoneInput.value);
+        if (iso && signupCountryHidden.value !== iso) {
+            const idx = COUNTRIES.findIndex(c => c.value === iso);
+            if (idx !== -1) {
+                suppressCountryPhoneSync = true;
+                countryWheelApi.setIndex(idx, true);
+                suppressCountryPhoneSync = false;
+            }
+        }
+    });
+
+    // ---- Date of birth wheels (Day, Month, Year each stand alone) ----
+    const dayItems = Array.from({ length: 31 }, (_, i) => ({ value: i + 1, label: String(i + 1).padStart(2, "0") }));
+    const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const monthItems = monthNames.map((m, i) => ({ value: i + 1, label: m }));
+    const currentYear = new Date().getFullYear();
+    const yearItems = Array.from({ length: 101 }, (_, i) => ({ value: currentYear - i, label: String(currentYear - i) }));
+
+    const dobDayApi = initWheelPicker(document.getElementById("dobDayScroll"), dayItems, 40, 0, (item) => {
+        document.getElementById("dobDayValue").textContent = String(item.value).padStart(2, "0");
+        closePickerSoon("dobDay");
+    });
+    pickerApis.dobDay = dobDayApi;
+
+    const dobMonthApi = initWheelPicker(document.getElementById("dobMonthScroll"), monthItems, 40, 0, (item) => {
+        document.getElementById("dobMonthValue").textContent = item.label;
+        closePickerSoon("dobMonth");
+    });
+    pickerApis.dobMonth = dobMonthApi;
+
+    const dobYearApi = initWheelPicker(document.getElementById("dobYearScroll"), yearItems, 40, 18, (item) => {
+        document.getElementById("dobYearValue").textContent = String(item.value);
+        closePickerSoon("dobYear");
+    }); // defaults to 18 years ago
+    pickerApis.dobYear = dobYearApi;
+
+    function getSelectedDOB() {
+        const day = dobDayApi.getValue().value;
+        const month = dobMonthApi.getValue().value;
+        const year = dobYearApi.getValue().value;
+        return new Date(year, month - 1, day);
+    }
+
+    function calculateAge(dob) {
+        const today = new Date();
+        let age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+        return age;
+    }
 </script>
 
     <script>
@@ -1490,4 +1879,3 @@ function closeMenu() {
     </script>
 </body>
 </html>
-```
