@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Curiosity Admin Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .card {
+            background: #1e293b;
+            padding: 40px 36px;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid #334155;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .logo h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+        .field {
+            margin-bottom: 16px;
+        }
+        .field label {
+            display: block;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .field input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: #ffffff;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+        .field input:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+        .btn-primary {
+            background: #00bcd4;
+            color: #0f172a;
+        }
+        .btn-primary:hover {
+            background: #008c9e;
+            transform: scale(1.02);
+        }
+        .btn-success {
+            background: #4ade80;
+            color: #0f172a;
+        }
+        .btn-success:hover {
+            background: #22c55e;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #334155;
+            color: #94a3b8;
+        }
+        .btn-outline:hover {
+            border-color: #00bcd4;
+            color: #00bcd4;
+        }
+        .message {
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            display: none;
+        }
+        .message.error {
+            display: block;
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid rgba(248, 113, 113, 0.2);
+            color: #f87171;
+        }
+        .message.success {
+            display: block;
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+        }
+        .message.info {
+            display: block;
+            background: rgba(0, 188, 212, 0.1);
+            border: 1px solid rgba(0, 188, 212, 0.2);
+            color: #00bcd4;
+        }
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #0f172a;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.8rem;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .status-dot.green {
+            background: #4ade80;
+        }
+        .status-dot.red {
+            background: #f87171;
+        }
+        .status-dot.yellow {
+            background: #fbbf24;
+        }
+        .status-dot.gray {
+            background: #64748b;
+        }
+        .btn-sm {
+            padding: 4px 14px;
+            font-size: 0.7rem;
+            border: 1px solid #334155;
+            background: transparent;
+            color: #94a3b8;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-sm:hover {
+            border-color: #00bcd4;
+            color: #00bcd4;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0;
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #334155;
+        }
+        .log {
+            background: #0f172a;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-top: 16px;
+            font-size: 0.7rem;
+            color: #64748b;
+            max-height: 100px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #1e293b;
+            line-height: 1.6;
+        }
+        .log .info {
+            color: #00bcd4;
+        }
+        .log .success {
+            color: #4ade80;
+        }
+        .log .error {
+            color: #f87171;
+        }
+        .log .warning {
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="logo">
+            <h1>⚡ Curiosity</h1>
+            <p>Admin Panel Login</p>
+        </div>
+
+        <div class="status-bar">
+            <span>
+                <span class="status-dot gray" id="statusDot"></span>
+                <span id="statusText">Loading...</span>
+            </span>
+            <button class="btn-sm" onclick="checkAdmin()">🔄 Refresh</button>
+        </div>
+
+        <div id="loginForm">
+            <div class="field">
+                <label>Email Address</label>
+                <input type="email" id="email" value="admin@curiosity.io" />
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input type="password" id="password" value="Admin@2025!" />
+            </div>
+            <button class="btn btn-primary" onclick="handleLogin()">🔐 Log In</button>
+            <div id="message" class="message"></div>
+        </div>
+
+        <div class="divider">or</div>
+
+        <button class="btn btn-outline" onclick="showSetup()">
+            🛠️ First Time Setup
+        </button>
+
+        <div class="log" id="log">
+            <span class="info">🚀 Ready to connect...</span>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- LOAD SUPABASE (CDN) -->
+    <!-- ============================================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.6/dist/umd/supabase.min.js">
+    </script>
+
+    <script>
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        const SUPABASE_URL = 'https://pfnbpgdtrxqyudeqrtbr.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_L9nklf0aUlRHBVuc6V-nFg_DqW79DV4';
+
+        // ============================================================
+        // INITIALIZE SUPABASE
+        // ============================================================
+        let supabaseClient = null;
+
+        function initSupabase() {
+            try {
+                if (typeof supabase === 'undefined') {
+                    log('❌ Supabase SDK not loaded!', 'error');
+                    return false;
+                }
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                log('✅ Supabase connected!', 'success');
+                return true;
+            } catch (e) {
+                log('❌ Connection error: ' + e.message, 'error');
+                return false;
+            }
+        }
+
+        // ============================================================
+        // HELPERS
+        // ============================================================
+        function log(msg, type = 'info') {
+            const el = document.getElementById('log');
+            const cls = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info';
+            el.innerHTML += `\n[${new Date().toLocaleTimeString()}] <span class="${cls}">${msg}</span>`;
+            el.scrollTop = el.scrollHeight;
+            console.log(`[${type}]`, msg);
+        }
+
+        function showMessage(msg, type = 'info') {
+            const el = document.getElementById('message');
+            el.textContent = msg;
+            el.className = 'message ' + type;
+        }
+
+        function setStatus(text, color) {
+            document.getElementById('statusText').textContent = text;
+            document.getElementById('statusDot').className = 'status-dot ' + color;
+        }
+
+        // ============================================================
+        // CHECK ADMIN
+        // ============================================================
+        async function checkAdmin() {
+            if (!supabaseClient) {
+                if (!initSupabase()) return;
+            }
+
+            try {
+                setStatus('Checking...', 'yellow');
+                log('🔍 Checking for admin...', 'info');
+
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('name, email, role')
+                    .eq('role', 'admin')
+                    .limit(1);
+
+                if (error) {
+                    log('❌ Database error: ' + error.message, 'error');
+                    setStatus('⚠️ Error', 'red');
+                    showMessage('Database error: ' + error.message, 'error');
+                    return;
+                }
+
+                if (data && data.length > 0) {
+                    log('✅ Admin found: ' + data[0].name, 'success');
+                    setStatus('✅ Admin exists', 'green');
+                    showMessage('✅ Admin found: ' + data[0].email, 'success');
+                } else {
+                    log('❌ No admin found', 'error');
+                    setStatus('🔓 No admin', 'red');
+                    showMessage('No admin found. Click "First Time Setup".', 'warning');
+                }
+            } catch (err) {
+                log('❌ Error: ' + err.message, 'error');
+                setStatus('⚠️ Error', 'red');
+                showMessage('Error: ' + err.message, 'error');
+            }
+        }
+
+        // ============================================================
+        // LOGIN
+        // ============================================================
+        async function handleLogin() {
+            if (!supabaseClient) {
+                if (!initSupabase()) return;
+            }
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            showMessage('', '');
+            log('🔄 Logging in...', 'info');
+            setStatus('Logging in...', 'yellow');
+
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    if (error.message.includes('Email not confirmed')) {
+                        log('📧 Email not confirmed! Check your inbox.', 'warning');
+                        showMessage('📧 Please confirm your email. Check your inbox/spam.', 'warning');
+                        setStatus('⚠️ Unconfirmed', 'yellow');
+                        return;
+                    }
+                    if (error.message.includes('Invalid login credentials')) {
+                        log('❌ Invalid credentials', 'error');
+                        showMessage('❌ Invalid email or password. Try again.', 'error');
+                        setStatus('❌ Invalid', 'red');
+                        return;
+                    }
+                    throw error;
+                }
+
+                log('✅ Auth successful!', 'success');
+
+                const { data: userData, error: userError } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('id', data.user.id)
+                    .single();
+
+                if (userError) {
+                    log('⚠️ User not in database: ' + userError.message, 'error');
+                    showMessage('User profile not found.', 'error');
+                    return;
+                }
+
+                if (userData.role !== 'admin') {
+                    await supabaseClient.auth.signOut();
+                    log('❌ Not an admin! Role: ' + userData.role, 'error');
+                    showMessage('Access denied. Admin privileges required.', 'error');
+                    setStatus('❌ Denied', 'red');
+                    return;
+                }
+
+                // ✅ SUCCESS!
+                log('🎉 Welcome ' + userData.name + '!', 'success');
+                setStatus('✅ Logged in', 'green');
+                showMessage('✅ Welcome ' + userData.name + '! You are logged in as Admin.', 'success');
+
+                // Redirect or show dashboard
+                setTimeout(() => {
+                    showMessage('✅ You are logged in! Full admin panel coming soon.', 'success');
+                }, 1000);
+
+            } catch (error) {
+                log('❌ Login error: ' + error.message, 'error');
+                showMessage('Error: ' + error.message, 'error');
+                setStatus('❌ Error', 'red');
+            }
+        }
+
+        // ============================================================
+        // SETUP (First Time)
+        // ============================================================
+        function showSetup() {
+            window.location.href = 'admin_setup.html';
+            // For now, just show a message
+            showMessage('🛠️ Setup mode: Please create admin account.', 'info');
+            log('📋 Setup mode activated', 'info');
+            alert('🛠️ Setup mode: Go to your Supabase dashboard → Authentication → Users → Add User\n\nThen click Refresh and login.');
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 Loading...', 'info');
+            if (initSupabase()) {
+                checkAdmin();
+            } else {
+                setStatus('⚠️ SDK Error', 'red');
+                showMessage('Failed to load Supabase SDK. Check internet connection.', 'error');
+            }
+        });
+    </script>
+
+</body>
+</html>
