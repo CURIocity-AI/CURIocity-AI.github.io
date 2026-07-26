@@ -1,0 +1,3198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Curiosity — Digital Financial Ecosystem</title>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --bg-input: #1e293b;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --info: #00bcd4;
+            --nav-bg: rgba(15, 23, 42, 0.92);
+            --hover-bg: rgba(0, 188, 212, 0.08);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-input: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --nav-bg: rgba(241, 245, 249, 0.92);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00bcd4;
+            border-radius: 10px;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 24px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .nav-brand span {
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-badge {
+            font-size: 0.55rem;
+            background: var(--bg-secondary);
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            width: 56px;
+            height: 30px;
+        }
+        .theme-toggle .toggle-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+        .theme-toggle .toggle-dot {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            left: 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        [data-theme="light"] .theme-toggle .toggle-dot {
+            left: 28px;
+        }
+        .theme-toggle i {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            z-index: 1;
+        }
+        .theme-toggle .fa-sun {
+            color: #fbbf24;
+        }
+        .theme-toggle .fa-moon {
+            color: #818cf8;
+        }
+
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 28px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .menu-icon span {
+            display: block;
+            height: 2.5px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .menu-icon.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+        .menu-icon.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .menu-icon.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            right: 16px;
+            margin-top: 10px;
+            width: min(70vw, 240px);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 20px 50px var(--shadow);
+            padding: 8px;
+            gap: 2px;
+            opacity: 0;
+            transform: translateY(-10px) scale(0.96);
+            pointer-events: none;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1500;
+        }
+        .menu-items.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .menu-items a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .menu-items a:hover {
+            background: var(--hover-bg);
+            color: #00bcd4;
+        }
+        .menu-items a i {
+            width: 20px;
+            text-align: center;
+            color: #00bcd4;
+            font-size: 0.9rem;
+        }
+        .menu-items .admin-link {
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+            margin-top: 4px;
+            color: var(--warning);
+        }
+        .menu-items .admin-link i {
+            color: var(--warning);
+        }
+
+        @media (min-width: 768px) {
+            .menu-icon {
+                display: none;
+            }
+            .menu-items {
+                display: flex;
+                flex-direction: row;
+                position: static;
+                width: auto;
+                margin-top: 0;
+                background: none;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                gap: 0;
+                opacity: 1;
+                transform: none;
+                pointer-events: auto;
+            }
+            .menu-items a {
+                margin: 0 4px;
+                padding: 8px 14px;
+                border-radius: 8px;
+                font-size: 0.85rem;
+            }
+            .menu-items a i {
+                display: none;
+            }
+            .menu-items .admin-link {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 0;
+            }
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+            min-height: 100vh;
+        }
+        .page.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 50px 20px 70px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: var(--bg-secondary);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #00bcd4;
+            margin-bottom: 14px;
+            border: 1px solid var(--border-color);
+        }
+        .hero h1 {
+            font-size: 3.2rem;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+        .hero h1 .gradient-text {
+            background: linear-gradient(90deg, #00bcd4, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            line-height: 1.6;
+            margin-bottom: 26px;
+        }
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+        .btn-primary {
+            background: #00bcd4;
+            color: #0f172a;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            background: #008c9e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 188, 212, 0.3);
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .btn-secondary:hover {
+            border-color: #00bcd4;
+            background: var(--hover-bg);
+        }
+        .hero-trust {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .hero-trust i {
+            margin-right: 5px;
+        }
+        .hero-trust .check {
+            color: #4ade80;
+        }
+        .hero-trust .shield {
+            color: #00bcd4;
+        }
+        .hero-trust .bolt {
+            color: #fbbf24;
+        }
+
+        .dashboard-preview {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 24px 26px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px var(--shadow);
+            transition: background 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+        }
+        .dashboard-preview:active {
+            transform: scale(0.98);
+        }
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .dash-header .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+        .dash-header .status {
+            font-size: 0.6rem;
+            background: #00bcd4;
+            padding: 2px 12px;
+            border-radius: 12px;
+            color: #0f172a;
+            font-weight: 600;
+            animation: pulseStatus 2s infinite;
+        }
+        @keyframes pulseStatus {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+        .dash-balance {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+        .dash-balance .change {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #4ade80;
+            margin-top: 2px;
+        }
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .dash-item {
+            background: var(--bg-primary);
+            padding: 14px 8px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .dash-item:hover {
+            background: var(--hover-bg);
+            border-color: #00bcd4;
+            transform: translateY(-2px);
+        }
+        .dash-item:active {
+            transform: scale(0.94);
+        }
+        .dash-item i {
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .dash-item .dash-label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+        }
+        .dash-item .send {
+            color: #00bcd4;
+        }
+        .dash-item .receive {
+            color: #fbbf24;
+        }
+        .dash-item .invest {
+            color: #4ade80;
+        }
+        .dash-item .stake {
+            color: #a78bfa;
+        }
+
+        /* ===== FEATURES ===== */
+        .features-section {
+            padding: 60px 20px;
+            background: var(--bg-primary);
+            transition: background 0.3s ease;
+        }
+        .features-section .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .features-section h2 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .features-section h2 .highlight {
+            color: #00bcd4;
+        }
+        .features-section .sub {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 36px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .feature-card {
+            background: var(--bg-secondary);
+            padding: 24px 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: #00bcd4;
+            box-shadow: 0 12px 30px var(--shadow);
+        }
+        .feature-card .feature-icon {
+            background: var(--bg-primary);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+        .feature-card h3 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .feature-card .icon-send {
+            color: #00bcd4;
+        }
+        .feature-card .icon-earn {
+            color: #fbbf24;
+        }
+        .feature-card .icon-social {
+            color: #a78bfa;
+        }
+        .feature-card .icon-rewards {
+            color: #f87171;
+        }
+
+        /* ===== TOKEN SECTION ===== */
+        .token-section {
+            padding: 60px 20px;
+            background: var(--bg-secondary);
+            transition: background 0.3s ease;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .token-section .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .token-badge {
+            display: inline-block;
+            background: var(--bg-primary);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #fbbf24;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .token-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        .token-section h2 .gold {
+            color: #fbbf24;
+        }
+        .token-section .sub {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 560px;
+            margin: 0 auto 28px;
+        }
+        .token-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 10px;
+        }
+        .token-stat {
+            background: var(--bg-primary);
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+        }
+        .token-stat:hover {
+            border-color: #00bcd4;
+            transform: translateY(-2px);
+        }
+        .token-stat .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .token-stat .number.green {
+            color: #4ade80;
+        }
+        .token-stat .number.gold {
+            color: #fbbf24;
+        }
+        .token-stat .number.purple {
+            color: #a78bfa;
+        }
+        .token-stat .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .token-cta {
+            margin-top: 28px;
+        }
+        .token-cta .btn-gold {
+            background: transparent;
+            border: 2px solid #fbbf24;
+            color: var(--text-primary);
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .token-cta .btn-gold:hover {
+            background: #fbbf24;
+            color: #0f172a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.25);
+        }
+
+        /* ===== ANNOUNCEMENT BAR ===== */
+        .announcement-bar {
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            color: #0f172a;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: none;
+            position: relative;
+        }
+        .announcement-bar .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #0f172a;
+            font-size: 1rem;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        .announcement-bar .close-btn:hover {
+            opacity: 1;
+        }
+        .announcement-bar.show {
+            display: block;
+            animation: slideDown 0.4s ease;
+        }
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .announcement-bar .priority-urgent {
+            background: var(--danger);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+        .announcement-bar .priority-high {
+            background: var(--warning);
+            color: #0f172a;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--bg-primary);
+            padding: 40px 20px 24px;
+            border-top: 1px solid var(--border-color);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .footer .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 30px;
+        }
+        .footer h4 {
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        .footer p,
+        .footer li {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .footer ul {
+            list-style: none;
+            padding: 0;
+        }
+        .footer ul li {
+            margin-bottom: 5px;
+        }
+        .footer ul li a {
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
+            text-decoration: none;
+        }
+        .footer ul li a:hover {
+            color: #00bcd4;
+        }
+        .footer .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 6px;
+        }
+        .footer .social-icons a {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+        .footer .social-icons a:hover {
+            color: #00bcd4;
+            transform: scale(1.1);
+        }
+        .footer .app-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .footer .app-badges .badge {
+            background: var(--bg-secondary);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .footer .app-badges .badge:hover {
+            border-color: #00bcd4;
+        }
+        .footer .trust-row {
+            display: flex;
+            gap: 16px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .footer .trust-row i {
+            margin-right: 3px;
+        }
+        .footer-bottom {
+            max-width: 1100px;
+            margin: 24px auto 0;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================================================ */
+        /* ===== DASHBOARD PAGE ===== */
+        /* ============================================================ */
+        .dash-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: calc(100vh - 70px);
+        }
+        .dash-sidebar {
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.3s ease;
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+        .dash-sidebar .sidebar-brand {
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 8px 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+        .dash-sidebar .sidebar-brand span {
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dash-sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .dash-sidebar a:hover,
+        .dash-sidebar a.active {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+        }
+        .dash-sidebar a.active {
+            color: #00bcd4;
+        }
+        .dash-sidebar a i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        .dash-sidebar .sidebar-bottom {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+        }
+        .dash-sidebar .sidebar-bottom a {
+            color: var(--text-muted);
+        }
+        .dash-sidebar .sidebar-bottom a:hover {
+            color: var(--danger);
+        }
+
+        .dash-main {
+            padding: 30px 36px;
+            overflow-y: auto;
+        }
+        .dash-main .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .dash-main .dash-header h1 {
+            font-size: 1.8rem;
+        }
+        .dash-main .dash-header .dash-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .dash-main .dash-header .dash-user .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00bcd4, #008c9e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .dash-main .dash-header .dash-user .user-info {
+            line-height: 1.3;
+        }
+        .dash-main .dash-header .dash-user .user-info .name {
+            font-weight: 600;
+        }
+        .dash-main .dash-header .dash-user .user-info .email {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .dash-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            padding: 4px 8px;
+            cursor: pointer;
+        }
+
+        .dash-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .dash-stat {
+            background: var(--bg-secondary);
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+        }
+        .dash-stat:hover {
+            border-color: #00bcd4;
+            transform: translateY(-2px);
+        }
+        .dash-stat .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .dash-stat .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        .dash-stat .stat-change {
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+        .dash-stat .stat-change.up {
+            color: var(--success);
+        }
+        .dash-stat .stat-change.down {
+            color: var(--danger);
+        }
+
+        .dash-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .dash-action {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .dash-action:hover {
+            border-color: #00bcd4;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+        .dash-action:active {
+            transform: scale(0.95);
+        }
+        .dash-action i {
+            font-size: 1.6rem;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .dash-action .action-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .dash-action .send {
+            color: #00bcd4;
+        }
+        .dash-action .receive {
+            color: #fbbf24;
+        }
+        .dash-action .invest {
+            color: #4ade80;
+        }
+        .dash-action .stake {
+            color: #a78bfa;
+        }
+        .dash-action .swap {
+            color: #f472b6;
+        }
+        .dash-action .history {
+            color: #60a5fa;
+        }
+
+        .dash-transactions {
+            background: var(--bg-secondary);
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        .dash-transactions .tx-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dash-transactions .tx-header h3 {
+            font-size: 1rem;
+        }
+        .dash-transactions .tx-header a {
+            font-size: 0.8rem;
+            color: #00bcd4;
+            cursor: pointer;
+        }
+        .dash-transactions .tx-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .dash-transactions .tx-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s ease;
+        }
+        .dash-transactions .tx-item:hover {
+            background: var(--hover-bg);
+        }
+        .dash-transactions .tx-item:last-child {
+            border-bottom: none;
+        }
+        .dash-transactions .tx-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .dash-transactions .tx-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        .dash-transactions .tx-icon.sent {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+        .dash-transactions .tx-icon.received {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+        }
+        .dash-transactions .tx-icon.staked {
+            background: rgba(167, 139, 250, 0.15);
+            color: #a78bfa;
+        }
+        .dash-transactions .tx-icon.invested {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+        }
+        .dash-transactions .tx-details .tx-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .dash-transactions .tx-details .tx-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .dash-transactions .tx-amount {
+            font-weight: 600;
+        }
+        .dash-transactions .tx-amount.positive {
+            color: var(--success);
+        }
+        .dash-transactions .tx-amount.negative {
+            color: var(--danger);
+        }
+
+        /* ============================================================ */
+        /* ===== MODALS ===== */
+        /* ============================================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 28px 24px;
+            max-width: 420px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+            opacity: 0;
+            position: relative;
+        }
+        .modal-overlay.show .modal-card {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        .modal-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .modal-card .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 18px;
+        }
+        .modal-card .field {
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        .modal-card .field label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .modal-card .field input,
+        .modal-card .field select,
+        .modal-card .field textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: border-color 0.2s ease;
+        }
+        .modal-card .field input:focus,
+        .modal-card .field select:focus,
+        .modal-card .field textarea:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+        .modal-card .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background: #00bcd4;
+            color: #0f172a;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            margin-top: 4px;
+            cursor: pointer;
+        }
+        .modal-card .btn-submit:hover {
+            background: #008c9e;
+            transform: scale(1.02);
+        }
+        .modal-card .social-auth {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .modal-card .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .modal-card .btn-social:hover {
+            background: var(--bg-secondary);
+        }
+        .modal-card .btn-social.google i {
+            color: #ea4335;
+        }
+        .modal-card .btn-social.facebook i {
+            color: #1877f2;
+        }
+        .modal-card .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            margin: 6px 0 16px;
+        }
+        .modal-card .divider::before,
+        .modal-card .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+        .modal-card .form-footer {
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-top: 14px;
+        }
+        .modal-card .form-footer a {
+            color: #00bcd4;
+            cursor: pointer;
+        }
+        .modal-card .form-footer a:hover {
+            text-decoration: underline;
+        }
+        .modal-card .status-message {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .modal-card .status-message.error {
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+        .modal-card .status-message.success {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+        .modal-card .status-message.warning {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .modal-card .copy-address {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: var(--bg-primary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+        .modal-card .copy-address code {
+            flex: 1;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            word-break: break-all;
+            font-family: monospace;
+        }
+        .modal-card .copy-address button {
+            background: #00bcd4;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 6px;
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 0.7rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .modal-card .copy-address button:hover {
+            background: #008c9e;
+        }
+        .modal-card .qr-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .modal-card .qr-container .qr-placeholder {
+            width: 120px;
+            height: 120px;
+            background: var(--bg-primary);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 2.5rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================================================ */
+        /* ===== TOAST ===== */
+        /* ============================================================ */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 10px 22px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px var(--shadow);
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 90vw;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+        .toast .toast-icon {
+            font-size: 1.1rem;
+        }
+        .toast.success .toast-icon {
+            color: #4ade80;
+        }
+        .toast.error .toast-icon {
+            color: #f87171;
+        }
+        .toast.info .toast-icon {
+            color: #00bcd4;
+        }
+        .toast.warning .toast-icon {
+            color: #fbbf24;
+        }
+
+        /* ============================================================ */
+        /* ===== RESPONSIVE ===== */
+        /* ============================================================ */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .dash-layout {
+                grid-template-columns: 1fr;
+            }
+            .dash-sidebar {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 280px;
+                height: calc(100vh - 70px);
+                z-index: 100;
+                background: var(--bg-secondary);
+                border-right: 1px solid var(--border-color);
+            }
+            .dash-sidebar.mobile-open {
+                display: flex;
+                animation: slideIn 0.3s ease;
+            }
+            @keyframes slideIn {
+                from {
+                    transform: translateX(-100%);
+                }
+                to {
+                    transform: translateX(0);
+                }
+            }
+            .dash-hamburger {
+                display: block;
+            }
+            .dash-main {
+                padding: 20px;
+            }
+            .dash-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .dash-actions {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .footer .container {
+                grid-template-columns: 1fr 1fr;
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero-actions {
+                flex-direction: column;
+            }
+            .hero-actions .btn-primary,
+            .hero-actions .btn-secondary {
+                justify-content: center;
+                width: 100%;
+            }
+            .dash-main {
+                padding: 16px;
+            }
+            .dash-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .dash-stat .stat-value {
+                font-size: 1.3rem;
+            }
+            .dash-actions {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            .dash-action {
+                padding: 12px 8px;
+            }
+            .dash-action i {
+                font-size: 1.2rem;
+            }
+            .dash-action .action-label {
+                font-size: 0.7rem;
+            }
+            .dash-transactions .tx-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .dash-main .dash-header h1 {
+                font-size: 1.3rem;
+            }
+            .token-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .dash-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dash-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .dash-actions {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .dash-balance {
+                font-size: 1.6rem;
+            }
+            .dash-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .dash-item {
+                padding: 12px 6px;
+            }
+            .dash-item i {
+                font-size: 1rem;
+            }
+            .hero-trust {
+                gap: 12px;
+                font-size: 0.7rem;
+            }
+            .theme-toggle {
+                width: 48px;
+                height: 26px;
+            }
+            .theme-toggle .toggle-dot {
+                width: 18px;
+                height: 18px;
+            }
+            [data-theme="light"] .theme-toggle .toggle-dot {
+                left: 24px;
+            }
+            nav {
+                padding: 10px 16px;
+            }
+            .nav-brand {
+                font-size: 1rem;
+            }
+            .token-stats {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                padding: 30px 16px 50px;
+            }
+            .modal-card {
+                padding: 20px 16px;
+            }
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 99;
+        }
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        :focus-visible {
+            outline: 2px solid #00bcd4;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== ANNOUNCEMENT BAR ===== -->
+    <div class="announcement-bar" id="announcementBar">
+        <span id="announcementText">🚀 Welcome to Curiosity! The future of digital finance.</span>
+        <button class="close-btn" onclick="document.getElementById('announcementBar').classList.remove('show')">&times;</button>
+    </div>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav>
+        <div class="nav-brand">
+            <span>⚡ Curiosity</span>
+            <span class="nav-badge">Beta</span>
+        </div>
+
+        <div class="nav-actions">
+            <div class="theme-toggle" onclick="toggleTheme()" role="button" aria-label="Toggle theme" tabindex="0">
+                <div class="toggle-track">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                    <div class="toggle-dot"></div>
+                </div>
+            </div>
+
+            <div class="menu-icon" onclick="toggleMenu()" role="button" aria-label="Toggle menu" tabindex="0">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="menu-items" id="menuItems" role="navigation">
+            <a href="#" onclick="closeMenu(); showPage('landingPage')"><i class="fas fa-home"></i> Home</a>
+            <a href="#" onclick="closeMenu(); showPage('dashboardPage')"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="#" onclick="closeMenu(); openModal('sendModal')"><i class="fas fa-paper-plane"></i> Send</a>
+            <a href="#" onclick="closeMenu(); openModal('receiveModal')"><i class="fas fa-wallet"></i> Receive</a>
+            <a href="#" class="admin-link" onclick="window.open('admin.html', '_blank')">
+                <i class="fas fa-crown"></i> Admin Panel
+            </a>
+            <a href="#" onclick="closeMenu(); logout()" style="color:var(--danger);"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <!-- ============================================================ -->
+    <!-- ===== LANDING PAGE ===== -->
+    <!-- ============================================================ -->
+    <div class="page active" id="landingPage">
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <div class="hero-badge">🚀 Now in Beta</div>
+                    <h1>Your Digital<br><span class="gradient-text">Financial Ecosystem</span></h1>
+                    <p>Send money, earn rewards, share content, and bank smarter—all in one sleek platform.</p>
+                    <div class="hero-actions">
+                        <button class="btn-primary" onclick="openModal('signupModal')">
+                            <i class="fas fa-rocket"></i> Get Started Free
+                        </button>
+                        <button class="btn-secondary" onclick="showToast('🎬 Demo tour starting...', 'info')">
+                            <i class="fas fa-play-circle"></i> See Demo
+                        </button>
+                    </div>
+                    <div class="hero-trust">
+                        <span><i class="fas fa-check-circle check"></i> <span id="userCount">Loading...</span>+ Active</span>
+                        <span><i class="fas fa-shield-alt shield"></i> Bank-Grade Security</span>
+                        <span><i class="fas fa-bolt bolt"></i> Instant Settlements</span>
+                    </div>
+                </div>
+                <div class="dashboard-preview" onclick="if(!currentUser)openModal('signupModal')">
+                    <div class="dash-header">
+                        <span class="label">Main Wallet</span>
+                        <span class="status">● Active</span>
+                    </div>
+                    <div class="dash-balance">
+                        $<span id="balanceDisplay">0.00</span>
+                        <span class="change">▲ +0% this month</span>
+                    </div>
+                    <div class="dash-grid">
+                        <div class="dash-item" onclick="event.stopPropagation(); if(!currentUser)openModal('signupModal')">
+                            <i class="fas fa-paper-plane send"></i>
+                            <span class="dash-label">Send</span>
+                        </div>
+                        <div class="dash-item" onclick="event.stopPropagation(); if(!currentUser)openModal('signupModal')">
+                            <i class="fas fa-wallet receive"></i>
+                            <span class="dash-label">Receive</span>
+                        </div>
+                        <div class="dash-item" onclick="event.stopPropagation(); if(!currentUser)openModal('signupModal')">
+                            <i class="fas fa-chart-line invest"></i>
+                            <span class="dash-label">Invest</span>
+                        </div>
+                        <div class="dash-item" onclick="event.stopPropagation(); if(!currentUser)openModal('signupModal')">
+                            <i class="fas fa-coins stake"></i>
+                            <span class="dash-label">Stake</span>
+                        </div>
+                    </div>
+                    <div style="text-align:center; margin-top:12px; font-size:0.7rem; color:var(--text-muted);">
+                        👆 Sign up to unlock full dashboard
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="features-section" id="features">
+            <div class="container">
+                <h2>Everything You Need, <span class="highlight">One Platform</span></h2>
+                <p class="sub">No crypto jargon. Just powerful tools that work.</p>
+                <div class="features-grid">
+                    <div class="feature-card" onclick="if(!currentUser)openModal('signupModal')">
+                        <div class="feature-icon icon-send"><i class="fas fa-credit-card"></i></div>
+                        <h3>Spend &amp; Send</h3>
+                        <p>Pay anyone, anywhere. Instant transfers with 0.01% fees.</p>
+                    </div>
+                    <div class="feature-card" onclick="if(!currentUser)openModal('signupModal')">
+                        <div class="feature-icon icon-earn"><i class="fas fa-piggy-bank"></i></div>
+                        <h3>Earn Interest</h3>
+                        <p>Grow your savings with 8.2% APY. Withdraw anytime.</p>
+                    </div>
+                    <div class="feature-card" onclick="if(!currentUser)openModal('signupModal')">
+                        <div class="feature-icon icon-social"><i class="fas fa-share-alt"></i></div>
+                        <h3>Social Feed</h3>
+                        <p>Share updates, tip creators, and build your community.</p>
+                    </div>
+                    <div class="feature-card" onclick="if(!currentUser)openModal('signupModal')">
+                        <div class="feature-icon icon-rewards"><i class="fas fa-crown"></i></div>
+                        <h3>Exclusive Rewards</h3>
+                        <p>Earn $CURI tokens for activity—spend them in-app for discounts.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Token Section -->
+        <section class="token-section" id="earn">
+            <div class="container">
+                <div class="token-badge">⚡ Rewards Token</div>
+                <h2>Earn $CURI for <span class="gold">Every Action</span></h2>
+                <p class="sub">Use it to unlock premium features, pay lower fees, and access exclusive content.</p>
+                <div class="token-stats">
+                    <div class="token-stat">
+                        <div class="number green" id="cashbackCount">5%</div>
+                        <div class="label">Cashback on spend</div>
+                    </div>
+                    <div class="token-stat">
+                        <div class="number gold" id="apyCount">8.2%</div>
+                        <div class="label">Staking APY</div>
+                    </div>
+                    <div class="token-stat">
+                        <div class="number purple" id="feeCount">0.01%</div>
+                        <div class="label">Transaction fees</div>
+                    </div>
+                </div>
+                <div class="token-cta">
+                    <button class="btn-gold" onclick="if(!currentUser)openModal('signupModal')">
+                        Start Earning <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div>
+                    <h4>⚡ Curiosity</h4>
+                    <p style="max-width:260px;">The digital ecosystem that puts you in control of your money, community, and future.</p>
+                    <div class="trust-row">
+                        <span><i class="fas fa-lock"></i> Audited</span>
+                        <span><i class="fas fa-clock"></i> 99.9% uptime</span>
+                    </div>
+                </div>
+                <div>
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features" onclick="event.preventDefault(); document.querySelector('#features').scrollIntoView({behavior:'smooth'})">Features</a></li>
+                        <li><a href="#earn" onclick="event.preventDefault(); document.querySelector('#earn').scrollIntoView({behavior:'smooth'})">Earn</a></li>
+                        <li><a href="#" onclick="showToast('Roadmap coming soon!', 'info')">Roadmap</a></li>
+                        <li><a href="#" onclick="showToast('Whitepaper coming soon!', 'info')">Whitepaper</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#" onclick="showToast('About page coming soon!', 'info')">About</a></li>
+                        <li><a href="#" onclick="showToast('Careers coming soon!', 'info')">Careers</a></li>
+                        <li><a href="#" onclick="showToast('Blog coming soon!', 'info')">Blog</a></li>
+                        <li><a href="#" onclick="showToast('Contact us at hello@curiosity.io', 'info')">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Get the App</h4>
+                    <div class="app-badges">
+                        <span class="badge" onclick="showToast('App Store link coming soon!', 'info')"><i class="fab fa-apple"></i> App Store</span>
+                        <span class="badge" onclick="showToast('Google Play link coming soon!', 'info')"><i class="fab fa-google-play"></i> Google Play</span>
+                    </div>
+                    <div class="social-icons">
+                        <a href="#" onclick="showToast('Follow us on Twitter!', 'info')"><i class="fab fa-twitter"></i></a>
+                        <a href="#" onclick="showToast('Join our Telegram!', 'info')"><i class="fab fa-telegram"></i></a>
+                        <a href="#" onclick="showToast('Join our Discord!', 'info')"><i class="fab fa-discord"></i></a>
+                        <a href="#" onclick="showToast('Check our GitHub!', 'info')"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2025 Curiosity. All rights reserved. Built for the future of finance.
+            </div>
+        </footer>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== DASHBOARD PAGE ===== -->
+    <!-- ============================================================ -->
+    <div class="page" id="dashboardPage">
+        <div class="dash-layout">
+            <!-- Sidebar -->
+            <aside class="dash-sidebar" id="dashSidebar">
+                <div class="sidebar-brand"><span>⚡ Curiosity</span></div>
+                <a href="#" class="active" onclick="event.preventDefault(); switchDashTab('overview')">
+                    <i class="fas fa-th-large"></i> Overview
+                </a>
+                <a href="#" onclick="event.preventDefault(); switchDashTab('transactions')">
+                    <i class="fas fa-exchange-alt"></i> Transactions
+                </a>
+                <a href="#" onclick="event.preventDefault(); switchDashTab('invest')">
+                    <i class="fas fa-chart-line"></i> Invest
+                </a>
+                <a href="#" onclick="event.preventDefault(); switchDashTab('stake')">
+                    <i class="fas fa-coins"></i> Stake
+                </a>
+                <a href="#" onclick="event.preventDefault(); switchDashTab('social')">
+                    <i class="fas fa-users"></i> Social
+                </a>
+                <a href="#" onclick="event.preventDefault(); switchDashTab('profile')">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <div class="sidebar-bottom">
+                    <a href="#" onclick="logout()" style="color:var(--danger);">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="dash-main">
+                <div class="dash-header">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <button class="dash-hamburger" onclick="toggleDashSidebar()">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h1 id="dashTitle">Overview</h1>
+                    </div>
+                    <div class="dash-user">
+                        <div>
+                            <div class="user-info">
+                                <div class="name" id="userName">Loading...</div>
+                                <div class="email" id="userEmail">loading@curiosity.io</div>
+                            </div>
+                        </div>
+                        <div class="avatar" id="userAvatar">LD</div>
+                    </div>
+                </div>
+
+                <div id="dashContent">
+                    <!-- Overview -->
+                    <div id="tab-overview">
+                        <div class="dash-stats">
+                            <div class="dash-stat">
+                                <div class="stat-label">Total Balance</div>
+                                <div class="stat-value">$<span id="dashBalance">0.00</span></div>
+                                <div class="stat-change up">▲ +0% this month</div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="stat-label">$CURI Tokens</div>
+                                <div class="stat-value" style="color:#fbbf24;" id="dashCURI">0</div>
+                                <div class="stat-change up">▲ +0% APY</div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="stat-label">Staked</div>
+                                <div class="stat-value" style="color:#a78bfa;" id="dashStaked">$0.00</div>
+                                <div class="stat-change up">▲ Rewards: <span id="dashRewards">0</span> $CURI</div>
+                            </div>
+                            <div class="dash-stat">
+                                <div class="stat-label">Transactions</div>
+                                <div class="stat-value" id="txCount">0</div>
+                                <div class="stat-change">This month</div>
+                            </div>
+                        </div>
+
+                        <div class="dash-actions">
+                            <div class="dash-action" onclick="openModal('sendModal')">
+                                <i class="fas fa-paper-plane send"></i>
+                                <span class="action-label">Send</span>
+                            </div>
+                            <div class="dash-action" onclick="openModal('receiveModal')">
+                                <i class="fas fa-wallet receive"></i>
+                                <span class="action-label">Receive</span>
+                            </div>
+                            <div class="dash-action" onclick="openModal('investModal')">
+                                <i class="fas fa-chart-line invest"></i>
+                                <span class="action-label">Invest</span>
+                            </div>
+                            <div class="dash-action" onclick="openModal('stakeModal')">
+                                <i class="fas fa-coins stake"></i>
+                                <span class="action-label">Stake</span>
+                            </div>
+                            <div class="dash-action" onclick="showToast('Swap feature coming soon!', 'info')">
+                                <i class="fas fa-exchange-alt swap"></i>
+                                <span class="action-label">Swap</span>
+                            </div>
+                            <div class="dash-action" onclick="switchDashTab('transactions')">
+                                <i class="fas fa-history history"></i>
+                                <span class="action-label">History</span>
+                            </div>
+                        </div>
+
+                        <div class="dash-transactions">
+                            <div class="tx-header">
+                                <h3>Recent Transactions</h3>
+                                <a href="#" onclick="event.preventDefault(); switchDashTab('transactions')">View all →</a>
+                            </div>
+                            <div class="tx-list" id="transactionList">
+                                <div class="empty-state" style="padding:20px;">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <p>No transactions yet.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transactions -->
+                    <div id="tab-transactions" style="display:none;">
+                        <h3 style="margin-bottom:16px;">Transaction History</h3>
+                        <div class="dash-transactions">
+                            <div class="tx-list" id="fullTransactionList">
+                                <div class="empty-state" style="padding:20px;">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <p>No transactions yet.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Invest -->
+                    <div id="tab-invest" style="display:none;">
+                        <h3 style="margin-bottom:16px;">Investment Portfolio</h3>
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:16px;">
+                            <div style="background:var(--bg-secondary); padding:20px; border-radius:14px; border:1px solid var(--border-color);">
+                                <div style="color:var(--text-muted); font-size:0.8rem;">Stable Fund</div>
+                                <div style="font-size:1.4rem; font-weight:700;">$0.00</div>
+                                <div style="color:#4ade80; font-size:0.8rem;">▲ 4.2% APY</div>
+                            </div>
+                            <div style="background:var(--bg-secondary); padding:20px; border-radius:14px; border:1px solid var(--border-color);">
+                                <div style="color:var(--text-muted); font-size:0.8rem;">Growth Fund</div>
+                                <div style="font-size:1.4rem; font-weight:700;">$0.00</div>
+                                <div style="color:#fbbf24; font-size:0.8rem;">▲ 15.3% APY</div>
+                            </div>
+                        </div>
+                        <button class="btn-submit" style="margin-top:16px; max-width:200px;" onclick="openModal('investModal')">
+                            <i class="fas fa-plus"></i> Invest More
+                        </button>
+                    </div>
+
+                    <!-- Stake -->
+                    <div id="tab-stake" style="display:none;">
+                        <h3 style="margin-bottom:16px;">Staking Dashboard</h3>
+                        <div style="background:var(--bg-secondary); padding:20px; border-radius:14px; border:1px solid var(--border-color); max-width:400px;">
+                            <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-color);">
+                                <span style="color:var(--text-muted);">Staked</span>
+                                <span style="font-weight:600;" id="stakeDisplay">0 $CURI</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-color);">
+                                <span style="color:var(--text-muted);">Rewards</span>
+                                <span style="color:#4ade80; font-weight:600;" id="rewardsDisplay">0 $CURI</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; padding:8px 0;">
+                                <span style="color:var(--text-muted);">APY</span>
+                                <span style="color:#fbbf24; font-weight:600;">8.2%</span>
+                            </div>
+                        </div>
+                        <button class="btn-submit" style="margin-top:16px; max-width:200px;" onclick="openModal('stakeModal')">
+                            <i class="fas fa-plus"></i> Stake More
+                        </button>
+                    </div>
+
+                    <!-- Social -->
+                    <div id="tab-social" style="display:none;">
+                        <h3 style="margin-bottom:16px;">Community Feed</h3>
+                        <div id="socialFeed" style="display:grid; gap:16px;"></div>
+                        <div style="margin-top:16px;">
+                            <button class="btn-primary" onclick="openModal('postModal')">
+                                <i class="fas fa-plus"></i> Create Post
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Profile -->
+                    <div id="tab-profile" style="display:none;">
+                        <h3 style="margin-bottom:16px;">Profile Settings</h3>
+                        <div style="background:var(--bg-secondary); padding:24px; border-radius:14px; border:1px solid var(--border-color); max-width:500px;">
+                            <div style="display:flex; gap:16px; align-items:center; margin-bottom:20px;">
+                                <div style="width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#00bcd4,#008c9e); display:flex; align-items:center; justify-content:center; font-size:1.6rem; color:white; font-weight:600;" id="profileAvatar">LD</div>
+                                <div>
+                                    <div style="font-weight:600; font-size:1.1rem;" id="profileName">Loading...</div>
+                                    <div style="color:var(--text-muted); font-size:0.85rem;" id="profileEmail">loading@curiosity.io</div>
+                                    <div style="color:var(--text-muted); font-size:0.8rem; margin-top:4px;">
+                                        Role: <span id="profileRole" style="color:#00bcd4;">User</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display:grid; gap:12px;">
+                                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-color);">
+                                    <span style="color:var(--text-muted);">Member since</span>
+                                    <span id="profileJoined">Loading...</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-color);">
+                                    <span style="color:var(--text-muted);">Wallet address</span>
+                                    <span style="font-family:monospace; font-size:0.8rem;">0x7F4E...9B2D</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-color);">
+                                    <span style="color:var(--text-muted);">2FA</span>
+                                    <span style="color:#4ade80;">Enabled ✓</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; padding:8px 0;">
+                                    <span style="color:var(--text-muted);">Status</span>
+                                    <span id="profileStatus" class="status-badge active">Active</span>
+                                </div>
+                            </div>
+                            <button class="btn-submit" style="margin-top:16px;" onclick="showToast('Profile settings coming soon!', 'info')">
+                                <i class="fas fa-cog"></i> Edit Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== MODALS ===== -->
+    <!-- ============================================================ -->
+
+    <!-- Signup Modal -->
+    <div class="modal-overlay" id="signupModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('signupModal')">&times;</button>
+            <h2>Create your account</h2>
+            <p class="subtitle">Join thousands of users exploring the future of finance.</p>
+            <div id="signupStatus" class="status-message" style="display:none;"></div>
+            <div class="social-auth">
+                <button class="btn-social google" onclick="socialAuth('Google')">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+                <button class="btn-social facebook" onclick="socialAuth('Facebook')">
+                    <i class="fab fa-facebook-f"></i> Continue with Facebook
+                </button>
+            </div>
+            <div class="divider">or</div>
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <div class="field">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" placeholder="John Doe" required>
+                </div>
+                <div class="field">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="field">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="••••••••" required minlength="8">
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-arrow-right"></i> Create Account</button>
+            </form>
+            <div class="form-footer">
+                Already have an account? <a onclick="showToast('Login coming soon!', 'info')">Log in</a>
+            </div>
+            <div style="margin-top:10px; font-size:0.65rem; color:var(--text-muted); text-align:center;">
+                By continuing, you agree to our Terms &amp; Privacy Policy.
+            </div>
+        </div>
+    </div>
+
+    <!-- Send Modal -->
+    <div class="modal-overlay" id="sendModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('sendModal')">&times;</button>
+            <h2>Send Money</h2>
+            <p class="subtitle">Transfer funds instantly to anyone.</p>
+            <form onsubmit="event.preventDefault(); handleSend()">
+                <div class="field">
+                    <label for="sendContact">Contact</label>
+                    <input type="text" id="sendContact" placeholder="Enter email, phone, or wallet address" required>
+                </div>
+                <div class="field">
+                    <label for="sendAmount">Amount (USD)</label>
+                    <input type="number" id="sendAmount" placeholder="0.00" step="0.01" min="0.01" required>
+                </div>
+                <div class="field">
+                    <label for="sendNote">Note (optional)</label>
+                    <textarea id="sendNote" placeholder="What's this for?" rows="2"></textarea>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Send Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Receive Modal -->
+    <div class="modal-overlay" id="receiveModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('receiveModal')">&times;</button>
+            <h2>Receive Funds</h2>
+            <p class="subtitle">Share your address to receive payments.</p>
+            <div class="qr-container">
+                <div class="qr-placeholder"><i class="fas fa-qrcode"></i></div>
+                <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:8px;">Scan to receive</p>
+            </div>
+            <div class="copy-address">
+                <code id="walletAddress">0x7F4E...9B2D</code>
+                <button onclick="copyAddress()">Copy</button>
+            </div>
+            <p style="font-size:0.7rem; color:var(--text-muted); text-align:center; margin-top:8px;">
+                Only send $CURI or supported tokens to this address.
+            </p>
+        </div>
+    </div>
+
+    <!-- Invest Modal -->
+    <div class="modal-overlay" id="investModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('investModal')">&times;</button>
+            <h2>Invest</h2>
+            <p class="subtitle">Grow your wealth with curated portfolios.</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:10px 0 16px;">
+                <div style="background:var(--bg-primary); padding:14px; border-radius:12px; border:1px solid var(--border-color); text-align:center; cursor:pointer;" onclick="selectPortfolio('Stable', '4.2%')">
+                    <div style="font-weight:700; color:#00bcd4;">Stable</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary);">4.2% APY</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Low risk</div>
+                </div>
+                <div style="background:var(--bg-primary); padding:14px; border-radius:12px; border:1px solid var(--border-color); text-align:center; cursor:pointer;" onclick="selectPortfolio('Balanced', '8.7%')">
+                    <div style="font-weight:700; color:#fbbf24;">Balanced</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary);">8.7% APY</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Medium risk</div>
+                </div>
+                <div style="background:var(--bg-primary); padding:14px; border-radius:12px; border:1px solid var(--border-color); text-align:center; cursor:pointer;" onclick="selectPortfolio('Growth', '15.3%')">
+                    <div style="font-weight:700; color:#a78bfa;">Growth</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary);">15.3% APY</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Higher risk</div>
+                </div>
+                <div style="background:var(--bg-primary); padding:14px; border-radius:12px; border:1px solid var(--border-color); text-align:center; cursor:pointer;" onclick="selectPortfolio('DeFi', '22.1%')">
+                    <div style="font-weight:700; color:#4ade80;">DeFi</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary);">22.1% APY</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Expert only</div>
+                </div>
+            </div>
+            <form onsubmit="event.preventDefault(); handleInvest()">
+                <div class="field">
+                    <label for="investAmount">Amount to invest (USD)</label>
+                    <input type="number" id="investAmount" placeholder="Min $100" step="1" min="100" required>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-chart-line"></i> Invest Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Stake Modal -->
+    <div class="modal-overlay" id="stakeModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('stakeModal')">&times;</button>
+            <h2>Stake $CURI</h2>
+            <p class="subtitle">Earn 8.2% APY on your tokens.</p>
+            <div style="background:var(--bg-primary); border-radius:12px; padding:16px; margin:10px 0; border:1px solid var(--border-color);">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+                    <span style="color:var(--text-secondary);">Your balance</span>
+                    <span style="font-weight:600;" id="stakeBalance">0 $CURI</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-top:4px;">
+                    <span style="color:var(--text-secondary);">Rewards earned</span>
+                    <span style="color:#4ade80; font-weight:600;" id="stakeRewards">0 $CURI</span>
+                </div>
+            </div>
+            <form onsubmit="event.preventDefault(); handleStake()">
+                <div class="field">
+                    <label for="stakeAmount">Amount to stake</label>
+                    <input type="number" id="stakeAmount" placeholder="Min 100 $CURI" step="1" min="100" required>
+                </div>
+                <div class="field">
+                    <label for="stakeDuration">Duration</label>
+                    <select id="stakeDuration">
+                        <option value="30">30 days (6.5% APY)</option>
+                        <option value="90" selected>90 days (8.2% APY) 🔥</option>
+                        <option value="180">180 days (10.1% APY)</option>
+                        <option value="365">365 days (12.5% APY)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-coins"></i> Stake Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Post Modal -->
+    <div class="modal-overlay" id="postModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('postModal')">&times;</button>
+            <h2>Create Post</h2>
+            <p class="subtitle">Share something with the community.</p>
+            <form onsubmit="event.preventDefault(); handlePost()">
+                <div class="field">
+                    <label for="postContent">What's on your mind?</label>
+                    <textarea id="postContent" rows="4" placeholder="Write your post here..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-share-alt"></i> Publish Post</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast">
+        <span class="toast-icon"><i class="fas fa-check-circle"></i></span>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== SCRIPTS ===== -->
+    <!-- ============================================================ -->
+    <script>
+        // ============================================================
+        // ===== SUPABASE CONFIGURATION =====
+        // ============================================================
+        const SUPABASE_URL = 'https://pfnbpgdtrxqyudeqrtbr.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_L9nklf0aUlRHBVuc6V-nFg_DqW79DV4';
+
+        // Initialize Supabase client
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ============================================================
+        // ===== STATE =====
+        // ============================================================
+        let currentUser = null;
+        let posts = [];
+        let transactions = [];
+
+        // ============================================================
+        // ===== THEME =====
+        // ============================================================
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('mainTheme', newTheme);
+            showToast(newTheme === 'light' ? '☀️ Light mode' : '🌙 Dark mode', 'info');
+        }
+
+        const savedTheme = localStorage.getItem('mainTheme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // ============================================================
+        // ===== MENU =====
+        // ============================================================
+        function toggleMenu() {
+            document.querySelector('.menu-icon').classList.toggle('open');
+            document.getElementById('menuItems').classList.toggle('show');
+        }
+
+        function closeMenu() {
+            document.querySelector('.menu-icon').classList.remove('open');
+            document.getElementById('menuItems').classList.remove('show');
+        }
+
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('menuItems');
+            const icon = document.querySelector('.menu-icon');
+            if (!menu.contains(e.target) && !icon.contains(e.target)) {
+                closeMenu();
+            }
+        });
+
+        // ============================================================
+        // ===== PAGE ROUTING =====
+        // ============================================================
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            closeMenu();
+            document.getElementById('dashSidebar').classList.remove('mobile-open');
+
+            if (pageId === 'dashboardPage' && currentUser) {
+                updateDashboard();
+            }
+            if (pageId === 'landingPage') {
+                updateUserCount();
+            }
+        }
+
+        // ============================================================
+        // ===== DASHBOARD SIDEBAR =====
+        // ============================================================
+        function toggleDashSidebar() {
+            document.getElementById('dashSidebar').classList.toggle('mobile-open');
+        }
+
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('dashSidebar');
+            const hamburger = document.querySelector('.dash-hamburger');
+            if (window.innerWidth <= 1024) {
+                if (!sidebar.contains(e.target) && !hamburger?.contains(e.target)) {
+                    sidebar.classList.remove('mobile-open');
+                }
+            }
+        });
+
+        // ============================================================
+        // ===== DASHBOARD TABS =====
+        // ============================================================
+        function switchDashTab(tab) {
+            document.querySelectorAll('.dash-sidebar a').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('.dash-sidebar a').forEach(a => {
+                const text = a.textContent.trim().toLowerCase();
+                if (text === tab || (tab === 'overview' && text === 'overview')) {
+                    a.classList.add('active');
+                }
+            });
+
+            const titles = {
+                overview: 'Overview',
+                transactions: 'Transactions',
+                invest: 'Invest',
+                stake: 'Stake',
+                social: 'Social Feed',
+                profile: 'Profile'
+            };
+            document.getElementById('dashTitle').textContent = titles[tab] || 'Overview';
+
+            document.querySelectorAll('#dashContent > div').forEach(div => div.style.display = 'none');
+            const target = document.getElementById(`tab-${tab}`);
+            if (target) target.style.display = 'block';
+
+            document.getElementById('dashSidebar').classList.remove('mobile-open');
+
+            if (tab === 'social') renderSocialFeed();
+        }
+
+        // ============================================================
+        // ===== AUTH FUNCTIONS =====
+        // ============================================================
+        async function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+
+            const statusEl = document.getElementById('signupStatus');
+            statusEl.style.display = 'none';
+
+            if (!name || !email || !password) {
+                showStatus('Please fill in all fields.', 'error');
+                return;
+            }
+            if (password.length < 8) {
+                showStatus('Password must be at least 8 characters.', 'error');
+                return;
+            }
+
+            try {
+                // Check if user exists in users table
+                const { data: existingUser, error: checkError } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .single();
+
+                if (existingUser) {
+                    if (existingUser.status === 'active') {
+                        showStatus('Account already exists. Please log in.', 'warning');
+                        return;
+                    } else if (existingUser.status === 'suspended') {
+                        showStatus('Your account is suspended. Contact support.', 'error');
+                        return;
+                    } else if (existingUser.status === 'banned') {
+                        showStatus('Your account has been permanently banned.', 'error');
+                        return;
+                    } else {
+                        showStatus('Your account is pending approval.', 'warning');
+                        return;
+                    }
+                }
+
+                // Sign up with Supabase Auth
+                const { data: authData, error: authError } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            name: name,
+                            full_name: name
+                        }
+                    }
+                });
+
+                if (authError) throw authError;
+
+                // Create user profile
+                const { data: userData, error: userError } = await supabase
+                    .from('users')
+                    .insert({
+                        id: authData.user.id,
+                        name: name,
+                        email: email,
+                        status: 'pending',
+                        balance: 0,
+                        curi_balance: 100,
+                        staked: 0,
+                        rewards: 0,
+                        joined: new Date().toISOString()
+                    })
+                    .select()
+                    .single();
+
+                if (userError) throw userError;
+
+                // Add audit log
+                await supabase
+                    .from('audit_logs')
+                    .insert({
+                        user_id: authData.user.id,
+                        action: 'signup',
+                        details: `New user registered: ${name} (${email})`
+                    });
+
+                // Store user in state
+                currentUser = userData;
+                localStorage.setItem('curiosity_user', JSON.stringify(userData));
+
+                closeModal('signupModal');
+                document.getElementById('signupForm').reset();
+                showPage('dashboardPage');
+                updateDashboard();
+                showToast(`🎉 Welcome ${name}! Account created successfully.`, 'success');
+
+                // Subscribe to real-time updates for this user
+                subscribeToUserUpdates(userData.id);
+
+            } catch (error) {
+                console.error('Signup error:', error);
+                showStatus(error.message || 'Something went wrong. Please try again.', 'error');
+            }
+        }
+
+        function showStatus(message, type) {
+            const el = document.getElementById('signupStatus');
+            el.textContent = message;
+            el.className = `status-message ${type}`;
+            el.style.display = 'block';
+        }
+
+        function socialAuth(provider) {
+            showToast(`${provider} sign-in coming soon!`, 'info');
+        }
+
+        async function logout() {
+            if (currentUser) {
+                await supabase.auth.signOut();
+            }
+            currentUser = null;
+            localStorage.removeItem('curiosity_user');
+            showPage('landingPage');
+            showToast('Logged out successfully.', 'info');
+        }
+
+        // ============================================================
+        // ===== REAL-TIME SUBSCRIPTIONS =====
+        // ============================================================
+        function subscribeToUserUpdates(userId) {
+            // Subscribe to user status changes
+            supabase
+                .channel(`user_status_${userId}`)
+                .on('postgres_changes', {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    table: 'users',
+                    filter: `id=eq.${userId}`
+                }, (payload) => {
+                    const updatedUser = payload.new;
+                    if (updatedUser.status !== currentUser?.status) {
+                        if (updatedUser.status === 'suspended') {
+                            showToast('⚠️ Your account has been suspended by an admin.', 'error');
+                            logout();
+                        } else if (updatedUser.status === 'banned') {
+                            showToast('🚫 Your account has been permanently banned.', 'error');
+                            logout();
+                        } else if (updatedUser.status === 'active') {
+                            showToast('✅ Your account has been activated!', 'success');
+                            currentUser = updatedUser;
+                            localStorage.setItem('curiosity_user', JSON.stringify(updatedUser));
+                            updateDashboard();
+                        }
+                    }
+                })
+                .subscribe();
+
+            // Subscribe to new posts (for social feed)
+            supabase
+                .channel('posts_channel')
+                .on('postgres_changes', {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'posts',
+                    filter: `status=eq.approved`
+                }, (payload) => {
+                    if (payload.new.user_id !== userId) {
+                        renderSocialFeed();
+                    }
+                })
+                .on('postgres_changes', {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    table: 'posts'
+                }, (payload) => {
+                    if (payload.new.user_id === userId) {
+                        if (payload.new.status === 'approved') {
+                            showToast('✅ Your post was approved!', 'success');
+                        } else if (payload.new.status === 'rejected') {
+                            showToast('❌ Your post was rejected.', 'warning');
+                        } else if (payload.new.status === 'flagged') {
+                            showToast('⚠️ Your post was flagged for review.', 'warning');
+                        }
+                        renderSocialFeed();
+                    }
+                })
+                .subscribe();
+
+            // Subscribe to announcements
+            supabase
+                .channel('announcements_channel')
+                .on('postgres_changes', {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'announcements'
+                }, (payload) => {
+                    showAnnouncement(payload.new);
+                })
+                .subscribe();
+        }
+
+        // ============================================================
+        // ===== UPDATE DASHBOARD =====
+        // ============================================================
+        function updateDashboard() {
+            if (!currentUser) return;
+
+            const name = currentUser.name || 'User';
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userEmail').textContent = currentUser.email;
+            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('profileName').textContent = name;
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('profileJoined').textContent = new Date(currentUser.joined).toLocaleDateString();
+            document.getElementById('profileRole').textContent = currentUser.role?.charAt(0).toUpperCase() + currentUser.role
+                ?.slice(1) || 'User';
+            document.getElementById('profileStatus').textContent = currentUser.status || 'Pending';
+            document.getElementById('profileStatus').className = `status-badge ${currentUser.status || 'pending'}`;
+
+            document.getElementById('dashBalance').textContent = (currentUser.balance || 0).toFixed(2);
+            document.getElementById('dashCURI').textContent = (currentUser.curi_balance || 0).toLocaleString();
+            document.getElementById('dashStaked').textContent = `$${(currentUser.staked || 0).toFixed(2)}`;
+            document.getElementById('dashRewards').textContent = currentUser.rewards || 0;
+            document.getElementById('stakeBalance').textContent = `${(currentUser.curi_balance || 0).toLocaleString()} $CURI`;
+            document.getElementById('stakeRewards').textContent = `${(currentUser.rewards || 0)} $CURI`;
+            document.getElementById('stakeDisplay').textContent = `${(currentUser.staked || 0).toLocaleString()} $CURI`;
+            document.getElementById('rewardsDisplay').textContent = `${(currentUser.rewards || 0)} $CURI`;
+            document.getElementById('balanceDisplay').textContent = (currentUser.balance || 0).toFixed(2);
+
+            loadTransactions();
+            renderSocialFeed();
+        }
+
+        // ============================================================
+        // ===== TRANSACTIONS =====
+        // ============================================================
+        async function loadTransactions() {
+            if (!currentUser) return;
+
+            const { data, error } = await supabase
+                .from('transactions')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Error loading transactions:', error);
+                return;
+            }
+
+            transactions = data || [];
+            document.getElementById('txCount').textContent = transactions.length;
+            renderTransactions();
+        }
+
+        function renderTransactions() {
+            const list = document.getElementById('transactionList');
+            const fullList = document.getElementById('fullTransactionList');
+
+            const render = (txs, container) => {
+                if (!txs || txs.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="padding:20px;">
+                            <i class="fas fa-exchange-alt"></i>
+                            <p>No transactions yet.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = txs.slice(0, 5).map(tx => `
+                    <div class="tx-item">
+                        <div class="tx-left">
+                            <div class="tx-icon ${tx.type}">
+                                <i class="fas ${tx.type === 'sent' ? 'fa-arrow-up' : tx.type === 'received' ? 'fa-arrow-down' : tx.type === 'staked' ? 'fa-coins' : 'fa-chart-line'}"></i>
+                            </div>
+                            <div class="tx-details">
+                                <div class="tx-name">${tx.type.charAt(0).toUpperCase() + tx.type.slice(1)}</div>
+                                <div class="tx-date">${new Date(tx.created_at).toLocaleString()}</div>
+                            </div>
+                        </div>
+                        <div class="tx-amount ${tx.type === 'sent' ? 'negative' : 'positive'}">
+                            ${tx.type === 'sent' ? '-' : '+'}$${tx.amount.toFixed(2)}
+                        </div>
+                    </div>
+                `).join('');
+            };
+
+            render(transactions, list);
+            render(transactions, fullList);
+        }
+
+        // ============================================================
+        // ===== TRANSACTION HANDLERS =====
+        // ============================================================
+        async function handleSend() {
+            if (!currentUser) {
+                showToast('Please log in first.', 'error');
+                return;
+            }
+
+            const contact = document.getElementById('sendContact').value.trim();
+            const amount = parseFloat(document.getElementById('sendAmount').value);
+
+            if (!contact || !amount || amount <= 0) {
+                showToast('Please enter a valid contact and amount.', 'error');
+                return;
+            }
+
+            if (amount > (currentUser.balance || 0)) {
+                showToast('Insufficient balance.', 'error');
+                return;
+            }
+
+            try {
+                // Update user balance
+                const newBalance = (currentUser.balance || 0) - amount;
+                const { error: updateError } = await supabase
+                    .from('users')
+                    .update({ balance: newBalance })
+                    .eq('id', currentUser.id);
+
+                if (updateError) throw updateError;
+
+                // Add transaction
+                const { error: txError } = await supabase
+                    .from('transactions')
+                    .insert({
+                        user_id: currentUser.id,
+                        type: 'sent',
+                        amount: amount,
+                        recipient: contact,
+                        created_at: new Date().toISOString()
+                    });
+
+                if (txError) throw txError;
+
+                // Add audit log
+                await supabase
+                    .from('audit_logs')
+                    .insert({
+                        user_id: currentUser.id,
+                        action: 'transaction',
+                        details: `${currentUser.name} sent $${amount.toFixed(2)} to ${contact}`
+                    });
+
+                // Update local user
+                currentUser.balance = newBalance;
+                localStorage.setItem('curiosity_user', JSON.stringify(currentUser));
+
+                closeModal('sendModal');
+                document.getElementById('sendContact').value = '';
+                document.getElementById('sendAmount').value = '';
+                document.getElementById('sendNote').value = '';
+                updateDashboard();
+                showToast(`💰 Sent $${amount.toFixed(2)} to ${contact}`, 'success');
+
+            } catch (error) {
+                console.error('Send error:', error);
+                showToast('Transaction failed. Please try again.', 'error');
+            }
+        }
+
+        async function handleInvest() {
+            if (!currentUser) {
+                showToast('Please log in first.', 'error');
+                return;
+            }
+
+            const amount = parseFloat(document.getElementById('investAmount').value);
+
+            if (!amount || amount < 100) {
+                showToast('Minimum investment is $100.', 'error');
+                return;
+            }
+
+            if (amount > (currentUser.balance || 0)) {
+                showToast('Insufficient balance.', 'error');
+                return;
+            }
+
+            try {
+                const newBalance = (currentUser.balance || 0) - amount;
+                const newCURI = (currentUser.curi_balance || 0) + (amount * 10);
+
+                const { error: updateError } = await supabase
+                    .from('users')
+                    .update({
+                        balance: newBalance,
+                        curi_balance: newCURI
+                    })
+                    .eq('id', currentUser.id);
+
+                if (updateError) throw updateError;
+
+                await supabase
+                    .from('transactions')
+                    .insert({
+                        user_id: currentUser.id,
+                        type: 'invested',
+                        amount: amount,
+                        created_at: new Date().toISOString()
+                    });
+
+                currentUser.balance = newBalance;
+                currentUser.curi_balance = newCURI;
+                localStorage.setItem('curiosity_user', JSON.stringify(currentUser));
+
+                closeModal('investModal');
+                document.getElementById('investAmount').value = '';
+                updateDashboard();
+                showToast(`📈 Invested $${amount.toFixed(2)} successfully!`, 'success');
+
+            } catch (error) {
+                console.error('Invest error:', error);
+                showToast('Investment failed. Please try again.', 'error');
+            }
+        }
+
+        async function handleStake() {
+            if (!currentUser) {
+                showToast('Please log in first.', 'error');
+                return;
+            }
+
+            const amount = parseInt(document.getElementById('stakeAmount').value);
+            const duration = document.getElementById('stakeDuration').value;
+
+            if (!amount || amount < 100) {
+                showToast('Minimum stake is 100 $CURI.', 'error');
+                return;
+            }
+
+            if (amount > (currentUser.curi_balance || 0)) {
+                showToast('Insufficient CURI balance.', 'error');
+                return;
+            }
+
+            try {
+                const newCURI = (currentUser.curi_balance || 0) - amount;
+                const newStaked = (currentUser.staked || 0) + amount;
+                const newRewards = (currentUser.rewards || 0) + Math.round(amount * 0.082 * (duration / 365));
+
+                const { error: updateError } = await supabase
+                    .from('users')
+                    .update({
+                        curi_balance: newCURI,
+                        staked: newStaked,
+                        rewards: newRewards
+                    })
+                    .eq('id', currentUser.id);
+
+                if (updateError) throw updateError;
+
+                await supabase
+                    .from('transactions')
+                    .insert({
+                        user_id: currentUser.id,
+                        type: 'staked',
+                        amount: amount,
+                        recipient: `Staking ${duration} days`,
+                        created_at: new Date().toISOString()
+                    });
+
+                currentUser.curi_balance = newCURI;
+                currentUser.staked = newStaked;
+                currentUser.rewards = newRewards;
+                localStorage.setItem('curiosity_user', JSON.stringify(currentUser));
+
+                closeModal('stakeModal');
+                document.getElementById('stakeAmount').value = '';
+                updateDashboard();
+                showToast(`🔒 Staked ${amount} $CURI for ${duration} days!`, 'success');
+
+            } catch (error) {
+                console.error('Stake error:', error);
+                showToast('Staking failed. Please try again.', 'error');
+            }
+        }
+
+        // ============================================================
+        // ===== SOCIAL FEED =====
+        // ============================================================
+        async function renderSocialFeed() {
+            const feed = document.getElementById('socialFeed');
+
+            try {
+                const { data, error } = await supabase
+                    .from('posts')
+                    .select(`
+                        *,
+                        users:user_id (name)
+                    `)
+                    .eq('status', 'approved')
+                    .order('created_at', { ascending: false })
+                    .limit(20);
+
+                if (error) throw error;
+
+                const posts = data || [];
+
+                if (posts.length === 0) {
+                    feed.innerHTML = `
+                        <div class="empty-state" style="padding:30px; background:var(--bg-secondary); border-radius:12px; border:1px solid var(--border-color);">
+                            <i class="fas fa-share-alt" style="font-size:2rem; opacity:0.3;"></i>
+                            <p style="margin-top:8px;">No posts yet. Be the first to share!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                feed.innerHTML = posts.map(p => `
+                    <div style="background:var(--bg-secondary); padding:16px 18px; border-radius:12px; border:1px solid var(--border-color);">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                            <span class="avatar-sm">${(p.users?.name || 'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)}</span>
+                            <span style="font-weight:500;">${p.users?.name || 'Unknown'}</span>
+                            <span style="font-size:0.7rem; color:var(--text-muted); margin-left:auto;">${new Date(p.created_at).toLocaleString()}</span>
+                        </div>
+                        <div style="color:var(--text-secondary); font-size:0.9rem; line-height:1.5;">${p.content}</div>
+                        <div style="margin-top:8px; display:flex; gap:12px; font-size:0.7rem; color:var(--text-muted);">
+                            <span><i class="far fa-heart"></i> ${p.likes || 0}</span>
+                            <span><i class="far fa-comment"></i> ${p.comments || 0}</span>
+                            <span><i class="far fa-share-square"></i> 0</span>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Feed error:', error);
+                feed.innerHTML = `
+                    <div class="empty-state" style="padding:30px; background:var(--bg-secondary); border-radius:12px; border:1px solid var(--border-color);">
+                        <i class="fas fa-exclamation-triangle" style="font-size:2rem; opacity:0.3;"></i>
+                        <p style="margin-top:8px;">Error loading feed. Please refresh.</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function handlePost() {
+            if (!currentUser) {
+                showToast('Please log in to post.', 'error');
+                return;
+            }
+
+            const content = document.getElementById('postContent').value.trim();
+
+            if (!content) {
+                showToast('Please write something.', 'error');
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .from('posts')
+                    .insert({
+                        user_id: currentUser.id,
+                        content: content,
+                        status: 'pending',
+                        created_at: new Date().toISOString()
+                    })
+                    .select()
+                    .single();
+
+                if (error) throw error;
+
+                // Add to moderation queue
+                await supabase
+                    .from('moderation_queue')
+                    .insert({
+                        user_id: currentUser.id,
+                        type: 'post',
+                        content: content,
+                        status: 'pending',
+                        submitted: new Date().toISOString()
+                    });
+
+                closeModal('postModal');
+                document.getElementById('postContent').value = '';
+                showToast('📝 Post submitted for review!', 'info');
+
+            } catch (error) {
+                console.error('Post error:', error);
+                showToast('Failed to create post. Please try again.', 'error');
+            }
+        }
+
+        // ============================================================
+        // ===== ANNOUNCEMENTS =====
+        // ============================================================
+        async function loadAnnouncements() {
+            try {
+                const { data, error } = await supabase
+                    .from('announcements')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(1);
+
+                if (error) throw error;
+
+                if (data && data.length > 0) {
+                    const announcement = data[0];
+                    // Check if expired
+                    if (announcement.expires && new Date(announcement.expires) < new Date()) {
+                        return;
+                    }
+                    showAnnouncement(announcement);
+                }
+            } catch (error) {
+                console.error('Announcement error:', error);
+            }
+        }
+
+        function showAnnouncement(announcement) {
+            const bar = document.getElementById('announcementBar');
+            const text = document.getElementById('announcementText');
+
+            let badge = '';
+            if (announcement.priority === 'urgent') {
+                badge = '<span class="priority-urgent">URGENT</span>';
+            } else if (announcement.priority === 'high') {
+                badge = '<span class="priority-high">HIGH</span>';
+            }
+
+            text.innerHTML = `${badge}${announcement.title}: ${announcement.content}`;
+            bar.classList.add('show');
+        }
+
+        // ============================================================
+        // ===== USER COUNT =====
+        // ============================================================
+        async function updateUserCount() {
+            try {
+                const { count, error } = await supabase
+                    .from('users')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('status', 'active');
+
+                if (!error) {
+                    document.getElementById('userCount').textContent = (count || 0).toLocaleString();
+                }
+            } catch (error) {
+                console.error('User count error:', error);
+            }
+        }
+
+        // ============================================================
+        // ===== UTILITIES =====
+        // ============================================================
+        function copyAddress() {
+            const address = document.getElementById('walletAddress').textContent;
+            navigator.clipboard?.writeText(address).then(() => {
+                showToast('📋 Address copied to clipboard!', 'success');
+            }).catch(() => {
+                const range = document.createRange();
+                range.selectNode(document.getElementById('walletAddress'));
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                document.execCommand('copy');
+                showToast('📋 Address copied!', 'success');
+            });
+        }
+
+        function selectPortfolio(name, apy) {
+            showToast(`📊 ${name} portfolio selected (${apy} APY)`, 'info');
+        }
+
+        // ============================================================
+        // ===== MODALS =====
+        // ============================================================
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.show').forEach(modal => {
+                    modal.classList.remove('show');
+                });
+                document.body.style.overflow = '';
+            }
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                if (!currentUser) openModal('signupModal');
+                else showToast('You\'re already logged in!', 'info');
+            }
+        });
+
+        // ============================================================
+        // ===== TOAST =====
+        // ============================================================
+        let toastTimeout;
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const icon = toast.querySelector('.toast-icon i');
+
+            toast.className = 'toast';
+            toast.classList.add(type);
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle',
+                warning: 'fa-exclamation-triangle'
+            };
+            icon.className = 'fas ' + (icons[type] || icons.info);
+
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        // ============================================================
+        // ===== CHECK SESSION ON LOAD =====
+        // ============================================================
+        async function checkSession() {
+            try {
+                // Check if there's a Supabase session
+                const { data: { session } } = await supabase.auth.getSession();
+
+                if (session) {
+                    // Get user profile
+                    const { data: userData, error } = await supabase
+                        .from('users')
+                        .select('*')
+                        .eq('id', session.user.id)
+                        .single();
+
+                    if (!error && userData) {
+                        if (userData.status === 'suspended') {
+                            showToast('Your account has been suspended.', 'error');
+                            await supabase.auth.signOut();
+                            return;
+                        }
+                        if (userData.status === 'banned') {
+                            showToast('Your account has been permanently banned.', 'error');
+                            await supabase.auth.signOut();
+                            return;
+                        }
+
+                        currentUser = userData;
+                        localStorage.setItem('curiosity_user', JSON.stringify(userData));
+                        showPage('dashboardPage');
+                        updateDashboard();
+                        subscribeToUserUpdates(userData.id);
+                        return;
+                    }
+                }
+
+                // Check localStorage for cached user
+                const cached = localStorage.getItem('curiosity_user');
+                if (cached) {
+                    try {
+                        const user = JSON.parse(cached);
+                        // Verify user still exists and is active
+                        const { data: userData, error } = await supabase
+                            .from('users')
+                            .select('*')
+                            .eq('id', user.id)
+                            .single();
+
+                        if (!error && userData && userData.status === 'active') {
+                            currentUser = userData;
+                            localStorage.setItem('curiosity_user', JSON.stringify(userData));
+                            showPage('dashboardPage');
+                            updateDashboard();
+                            subscribeToUserUpdates(userData.id);
+                            return;
+                        }
+                    } catch (e) {
+                        localStorage.removeItem('curiosity_user');
+                    }
+                }
+
+                showPage('landingPage');
+                updateUserCount();
+                loadAnnouncements();
+
+            } catch (error) {
+                console.error('Session check error:', error);
+                showPage('landingPage');
+            }
+        }
+
+        // ============================================================
+        // ===== INIT =====
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Show initial loading state
+            document.getElementById('userCount').textContent = 'Loading...';
+
+            await checkSession();
+
+            // Animated counters
+            setTimeout(() => {
+                animateCounter(document.getElementById('cashbackCount'), 5);
+                setTimeout(() => animateCounter(document.getElementById('apyCount'), 8.2), 300);
+                setTimeout(() => animateCounter(document.getElementById('feeCount'), 0.01), 600);
+            }, 500);
+
+            console.log('%c⚡ Curiosity — Powered by Supabase', 'font-size:24px; font-weight:bold; color:#00bcd4;');
+            console.log('%c🔗 Connected to: ' + SUPABASE_URL, 'font-size:12px; color:#94a3b8;');
+            console.log('%c👤 Logged in:', currentUser ? currentUser.name : 'Not logged in', 'font-size:14px;');
+            console.log('%c⌘+K to sign up | 🌓 Toggle theme', 'font-size:12px; color:#64748b;');
+        });
+
+        function animateCounter(element, target, suffix = '%') {
+            let current = 0;
+            const step = target / 60;
+            const interval = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(interval);
+                }
+                element.textContent = current.toFixed(1) + suffix;
+            }, 30);
+        }
+    </script>
+</body>
+</html>
