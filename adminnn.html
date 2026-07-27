@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Curiosity — Admin Panel</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.6/dist/umd/supabase.min.js">
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --info: #00bcd4;
+            --hover-bg: rgba(0, 188, 212, 0.08);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --hover-bg: rgba(0, 188, 212, 0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        .login-overlay {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 5000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .login-overlay.hidden { display: none; }
+
+        .login-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px 36px;
+            max-width: 420px;
+            width: 100%;
+        }
+        .login-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .login-card .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+        .login-card .field {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+        .login-card .field label {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .login-card .field input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        .login-card .field input:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+        .login-card .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: #00bcd4;
+            color: #0f172a;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .login-card .btn-submit:hover {
+            background: #008c9e;
+            transform: scale(1.02);
+        }
+        .login-card .btn-submit.green {
+            background: #4ade80;
+            color: #0f172a;
+        }
+        .login-card .btn-submit.green:hover {
+            background: #22c55e;
+        }
+        .login-card .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .login-card .btn-outline:hover {
+            border-color: #00bcd4;
+            color: #00bcd4;
+            background: var(--hover-bg);
+        }
+        .login-card .error-msg {
+            color: var(--danger);
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 12px;
+            display: none;
+        }
+        .login-card .success-msg {
+            color: var(--success);
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 12px;
+            display: none;
+        }
+        .login-card .tab-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: var(--bg-primary);
+            border-radius: 10px;
+            padding: 4px;
+        }
+        .login-card .tab-row .tab-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: transparent;
+            color: var(--text-secondary);
+        }
+        .login-card .tab-row .tab-btn.active {
+            background: #00bcd4;
+            color: #0f172a;
+        }
+        .login-card .tab-row .tab-btn:hover:not(.active) {
+            background: var(--hover-bg);
+        }
+
+        .admin-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+        .sidebar .brand {
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding: 8px 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 12px;
+        }
+        .sidebar .brand span {
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sidebar .brand small {
+            font-size: 0.55rem;
+            -webkit-text-fill-color: var(--text-muted);
+            background: none;
+            font-weight: 400;
+            display: block;
+            margin-top: 2px;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+        }
+        .sidebar a.active { color: #00bcd4; }
+        .sidebar a i { width: 20px; text-align: center; font-size: 1rem; }
+        .sidebar .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: white;
+            font-size: 0.6rem;
+            padding: 1px 8px;
+            border-radius: 10px;
+        }
+        .sidebar .bottom {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+        }
+
+        .main-content {
+            padding: 20px 28px;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .topbar h1 { font-size: 1.6rem; }
+        .topbar .actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            width: 56px;
+            height: 30px;
+        }
+        .theme-toggle .toggle-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+        .theme-toggle .toggle-dot {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            left: 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        [data-theme="light"] .theme-toggle .toggle-dot { left: 28px; }
+        .theme-toggle i { font-size: 0.7rem; color: var(--text-secondary); z-index: 1; }
+
+        .btn {
+            padding: 8px 18px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary { background: #00bcd4; color: #0f172a; }
+        .btn-primary:hover { background: #008c9e; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3); }
+        .btn-success { background: #4ade80; color: #0f172a; }
+        .btn-success:hover { background: #22c55e; transform: translateY(-2px); }
+        .btn-danger { background: #f87171; color: #0f172a; }
+        .btn-danger:hover { background: #ef4444; transform: translateY(-2px); }
+        .btn-warning { background: #fbbf24; color: #0f172a; }
+        .btn-warning:hover { background: #f59e0b; transform: translateY(-2px); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); }
+        .btn-outline:hover { border-color: #00bcd4; background: var(--hover-bg); }
+        .btn-sm { padding: 4px 12px; font-size: 0.7rem; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 16px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+        }
+        .stat-card:hover { border-color: #00bcd4; transform: translateY(-2px); }
+        .stat-card .label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-card .value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .table-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .table-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .table-header h3 { font-size: 0.95rem; }
+        .table-header .filters {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .table-header .filters input,
+        .table-header .filters select {
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.75rem;
+        }
+        .table-wrap { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        th {
+            text-align: left;
+            padding: 10px 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        tr:hover td { background: var(--hover-bg); }
+
+        .status-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+        .status-badge.active { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+        .status-badge.pending { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
+        .status-badge.admin { background: rgba(0, 188, 212, 0.15); color: #00bcd4; }
+        .status-badge.user { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+
+        .avatar-sm {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.7rem;
+            background: linear-gradient(135deg, #00bcd4, #008c9e);
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .actions-cell button {
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: none;
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .actions-cell .edit-btn { background: rgba(0, 188, 212, 0.15); color: #00bcd4; }
+        .actions-cell .edit-btn:hover { background: #00bcd4; color: #0f172a; }
+        .actions-cell .delete-btn { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+        .actions-cell .delete-btn:hover { background: #f87171; color: #0f172a; }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 28px 24px;
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+            opacity: 0;
+            position: relative;
+        }
+        .modal-overlay.show .modal-card {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+        .modal-close:hover { color: var(--text-primary); }
+        .modal-card h2 { font-size: 1.4rem; margin-bottom: 4px; }
+        .modal-card .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 18px;
+        }
+        .modal-card .field {
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        .modal-card .field label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .modal-card .field input,
+        .modal-card .field select {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        .modal-card .field input:focus,
+        .modal-card .field select:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+        .modal-card .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background: #00bcd4;
+            color: #0f172a;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            margin-top: 4px;
+            cursor: pointer;
+        }
+        .modal-card .btn-submit:hover {
+            background: #008c9e;
+            transform: scale(1.02);
+        }
+        .modal-card .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 10px 22px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 90vw;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+        .toast .toast-icon { font-size: 1.1rem; }
+        .toast.success .toast-icon { color: #4ade80; }
+        .toast.error .toast-icon { color: #f87171; }
+        .toast.info .toast-icon { color: #00bcd4; }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 99;
+        }
+        .sidebar-overlay.show { display: block; }
+
+        @media (max-width: 1024px) {
+            .admin-layout { grid-template-columns: 1fr; }
+            .sidebar {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 280px;
+                height: 100vh;
+                z-index: 100;
+                background: var(--bg-secondary);
+                border-right: 1px solid var(--border-color);
+            }
+            .sidebar.mobile-open {
+                display: flex;
+                animation: slideIn 0.3s ease;
+            }
+            @keyframes slideIn {
+                from { transform: translateX(-100%); }
+                to { transform: translateX(0); }
+            }
+            .hamburger { display: block !important; }
+            .main-content { padding: 14px 16px; }
+            .modal-card .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOGIN OVERLAY ===== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-card">
+            <h2>⚡ Curiosity</h2>
+            <p class="subtitle" id="loginSubtitle">Admin Panel — Secure Access</p>
+
+            <div class="tab-row">
+                <button class="tab-btn active" id="loginTabBtn" onclick="switchAuthTab('login')">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button class="tab-btn" id="setupTabBtn" onclick="switchAuthTab('setup')">
+                    <i class="fas fa-user-plus"></i> Setup
+                </button>
+            </div>
+
+            <form id="loginForm" onsubmit="handleAdminLogin(event)">
+                <div class="field">
+                    <label for="adminEmail">Email</label>
+                    <input type="email" id="adminEmail" placeholder="admin@curiosity.io" required>
+                </div>
+                <div class="field">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit">Log In</button>
+                <div class="error-msg" id="loginError"></div>
+            </form>
+
+            <button class="btn-outline" onclick="showResetForm()">
+                <i class="fas fa-key"></i> Forgot Password?
+            </button>
+
+            <form id="resetForm" onsubmit="handleResetPassword(event)" style="display:none; margin-top:16px;">
+                <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:12px;">
+                    Enter your email to receive a password reset link.
+                </p>
+                <div class="field">
+                    <label for="resetEmail">Email</label>
+                    <input type="email" id="resetEmail" placeholder="admin@curiosity.io" required>
+                </div>
+                <button type="submit" class="btn-submit" style="background:#fbbf24; color:#0f172a;">
+                    <i class="fas fa-paper-plane"></i> Send Reset Link
+                </button>
+                <div class="error-msg" id="resetError"></div>
+                <div class="success-msg" id="resetSuccess"></div>
+                <button type="button" class="btn-outline" onclick="showLoginForm()" style="margin-top:10px;">
+                    <i class="fas fa-arrow-left"></i> Back to Login
+                </button>
+            </form>
+
+            <form id="setupForm" onsubmit="handleAdminSetup(event)" style="display:none;">
+                <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:12px;">
+                    Create the first admin account.
+                </p>
+                <div class="field">
+                    <label for="setupName">Full Name</label>
+                    <input type="text" id="setupName" placeholder="Admin User" required>
+                </div>
+                <div class="field">
+                    <label for="setupEmail">Email</label>
+                    <input type="email" id="setupEmail" placeholder="admin@yourdomain.com" required>
+                </div>
+                <div class="field">
+                    <label for="setupPassword">Password (min 8 characters)</label>
+                    <input type="password" id="setupPassword" placeholder="••••••••" required minlength="8">
+                </div>
+                <div class="field">
+                    <label for="setupConfirmPassword">Confirm Password</label>
+                    <input type="password" id="setupConfirmPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit green">
+                    <i class="fas fa-crown"></i> Create Admin Account
+                </button>
+                <div class="error-msg" id="setupError"></div>
+                <div class="success-msg" id="setupSuccess"></div>
+                <button type="button" class="btn-outline" onclick="showLoginForm()" style="margin-top:10px;">
+                    <i class="fas fa-arrow-left"></i> Back to Login
+                </button>
+            </form>
+
+            <button class="btn-outline" onclick="clearCacheOnly()" style="margin-top:10px; border-color:#fbbf24; color:#fbbf24;">
+                <i class="fas fa-sync-alt"></i> Clear Cache &amp; Refresh
+            </button>
+
+            <div style="text-align:center; margin-top:16px; font-size:0.75rem; color:var(--text-muted);">
+                🔒 Only authorized admins can access this panel
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SIDEBAR OVERLAY ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- ===== ADMIN LAYOUT ===== -->
+    <div class="admin-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <span>⚡ Curiosity</span>
+                <small>Admin Panel v3.0</small>
+            </div>
+
+            <a href="#" class="active" onclick="event.preventDefault(); switchTab('dashboard')">
+                <i class="fas fa-chart-pie"></i> Dashboard
+            </a>
+            <a href="#" onclick="event.preventDefault(); switchTab('users')">
+                <i class="fas fa-users"></i> Users
+                <span class="badge" id="pendingBadge">0</span>
+            </a>
+            <a href="#" onclick="event.preventDefault(); switchTab('moderation')">
+                <i class="fas fa-flag"></i> Moderation
+                <span class="badge" id="modBadge">0</span>
+            </a>
+            <a href="#" onclick="event.preventDefault(); switchTab('transactions')">
+                <i class="fas fa-exchange-alt"></i> Transactions
+            </a>
+            <a href="#" onclick="event.preventDefault(); switchTab('audit')">
+                <i class="fas fa-history"></i> Audit Logs
+            </a>
+
+            <div class="bottom">
+                <a href="#" onclick="logout()" style="color:var(--danger);">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="topbar">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <button class="hamburger" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="actions">
+                    <div class="theme-toggle" onclick="toggleTheme()" role="button">
+                        <div class="toggle-track">
+                            <i class="fas fa-sun"></i>
+                            <i class="fas fa-moon"></i>
+                            <div class="toggle-dot"></div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openModal('addUserModal')">
+                        <i class="fas fa-user-plus"></i> Add User
+                    </button>
+                </div>
+            </div>
+
+            <!-- DASHBOARD -->
+            <div id="tab-dashboard">
+                <div class="stats-grid" id="statsGrid"></div>
+                <div class="table-container">
+                    <div class="table-header"><h3>Recent Users</h3></div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>User</th><th>Status</th><th>Role</th></tr></thead>
+                            <tbody id="recentUsers"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- USERS -->
+            <div id="tab-users" style="display:none;">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>All Users</h3>
+                        <div class="filters">
+                            <input type="text" id="userSearch" placeholder="Search..." oninput="filterUsers()">
+                            <select id="statusFilter" onchange="filterUsers()">
+                                <option value="all">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                            <select id="roleFilter" onchange="filterUsers()">
+                                <option value="all">All Roles</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Balance</th>
+                                    <th>CURI</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODERATION -->
+            <div id="tab-moderation" style="display:none;">
+                <div class="table-container">
+                    <div class="table-header"><h3>Moderation Queue</h3></div>
+                    <div id="moderationGrid" style="padding:20px;"></div>
+                </div>
+            </div>
+
+            <!-- TRANSACTIONS -->
+            <div id="tab-transactions" style="display:none;">
+                <div class="table-container">
+                    <div class="table-header"><h3>Transactions</h3></div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>User</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead>
+                            <tbody id="transactionsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AUDIT -->
+            <div id="tab-audit" style="display:none;">
+                <div class="table-container">
+                    <div class="table-header"><h3>Audit Logs</h3></div>
+                    <div id="auditLogList" style="padding:20px;"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ===== MODALS ===== -->
+    <div class="modal-overlay" id="addUserModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('addUserModal')">&times;</button>
+            <h2><i class="fas fa-user-plus" style="color:#00bcd4;"></i> Add User</h2>
+            <p class="subtitle">Create a new user account.</p>
+            <form id="addUserForm" onsubmit="handleAddUser(event)">
+                <div class="field">
+                    <label>Full Name</label>
+                    <input type="text" id="newUserName" placeholder="John Doe" required>
+                </div>
+                <div class="field">
+                    <label>Email</label>
+                    <input type="email" id="newUserEmail" placeholder="john@example.com" required>
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" id="newUserPassword" placeholder="••••••••" required minlength="8">
+                </div>
+                <div class="form-row">
+                    <div class="field">
+                        <label>Role</label>
+                        <select id="newUserRole">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Status</label>
+                        <select id="newUserStatus">
+                            <option value="active">Active</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-check"></i> Create User</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast">
+        <span class="toast-icon"><i class="fas fa-check-circle"></i></span>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== SCRIPTS ===== -->
+    <!-- ============================================================ -->
+    <script>
+        // ============================================================
+        // SUPABASE CONFIGURATION
+        // ============================================================
+        const SUPABASE_URL = 'https://pfnbpgdtrxqyudeqrtbr.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_L9nklf0aUlRHBVuc6V-nFg_DqW79DV4';
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let currentUser = null;
+        let users = [];
+        let auditLogs = [];
+        let transactions = [];
+        let modQueue = [];
+
+        // ============================================================
+        // UI FUNCTIONS
+        // ============================================================
+        function showLoginForm() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('resetForm').style.display = 'none';
+            document.getElementById('setupForm').style.display = 'none';
+            document.getElementById('loginTabBtn').className = 'tab-btn active';
+            document.getElementById('setupTabBtn').className = 'tab-btn';
+            document.getElementById('loginSubtitle').textContent = 'Admin Panel — Secure Access';
+        }
+
+        function showResetForm() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('resetForm').style.display = 'block';
+            document.getElementById('setupForm').style.display = 'none';
+            document.getElementById('loginSubtitle').textContent = 'Reset Password';
+        }
+
+        function switchAuthTab(tab) {
+            if (tab === 'login') {
+                showLoginForm();
+            } else {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('resetForm').style.display = 'none';
+                document.getElementById('setupForm').style.display = 'block';
+                document.getElementById('loginTabBtn').className = 'tab-btn';
+                document.getElementById('setupTabBtn').className = 'tab-btn active';
+                document.getElementById('loginSubtitle').textContent = 'First Time Setup — Create Admin Account';
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('adminTheme', newTheme);
+        }
+        document.documentElement.setAttribute('data-theme', localStorage.getItem('adminTheme') || 'dark');
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('mobile-open');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('mobile-open');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        let toastTimeout;
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const icon = toast.querySelector('.toast-icon i');
+
+            toast.className = 'toast';
+            toast.classList.add(type);
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle',
+                warning: 'fa-exclamation-triangle'
+            };
+            icon.className = 'fas ' + (icons[type] || icons.info);
+
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('.sidebar a').forEach(a => {
+                if (a.textContent.trim().toLowerCase() === tab) a.classList.add('active');
+            });
+
+            document.querySelectorAll('.main-content > div[id^="tab-"]').forEach(el => el.style.display = 'none');
+            const target = document.getElementById(`tab-${tab}`);
+            if (target) target.style.display = 'block';
+
+            const titles = {
+                dashboard: 'Dashboard',
+                users: 'Users Management',
+                moderation: 'Content Moderation',
+                transactions: 'Transactions',
+                audit: 'Audit Logs'
+            };
+            document.getElementById('pageTitle').textContent = titles[tab] || 'Dashboard';
+
+            if (tab === 'dashboard') renderDashboard();
+            if (tab === 'users') renderUsers();
+            if (tab === 'transactions') renderTransactions();
+            if (tab === 'audit') renderAudit();
+
+            closeSidebar();
+        }
+
+        // ============================================================
+        // AUTH FUNCTIONS
+        // ============================================================
+        async function clearSession() {
+            try {
+                await supabaseClient.auth.signOut();
+                localStorage.removeItem('adminUser');
+                currentUser = null;
+            } catch (e) {}
+        }
+
+        async function clearCacheOnly() {
+            try {
+                await supabaseClient.auth.signOut();
+                localStorage.removeItem('adminUser');
+                sessionStorage.clear();
+                showToast('✅ Cache cleared! Refreshing...', 'success');
+                setTimeout(() => location.reload(), 1000);
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+            }
+        }
+
+        async function checkAdminExists() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('id')
+                    .eq('role', 'admin')
+                    .limit(1);
+
+                if (error) {
+                    document.getElementById('setupTabBtn').style.display = 'block';
+                    return false;
+                }
+
+                const adminExists = data && data.length > 0;
+                document.getElementById('setupTabBtn').style.display = adminExists ? 'none' : 'block';
+                return adminExists;
+            } catch (error) {
+                document.getElementById('setupTabBtn').style.display = 'block';
+                return false;
+            }
+        }
+
+        async function handleResetPassword(e) {
+            e.preventDefault();
+            const email = document.getElementById('resetEmail').value.trim();
+            const errorEl = document.getElementById('resetError');
+            const successEl = document.getElementById('resetSuccess');
+
+            errorEl.style.display = 'none';
+            successEl.style.display = 'none';
+
+            if (!email) {
+                errorEl.textContent = 'Please enter your email.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            try {
+                const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + '/admin.html'
+                });
+
+                if (error) throw error;
+
+                successEl.textContent = '✅ Reset link sent to ' + email;
+                successEl.style.display = 'block';
+                setTimeout(() => showLoginForm(), 3000);
+            } catch (error) {
+                errorEl.textContent = '❌ ' + error.message;
+                errorEl.style.display = 'block';
+            }
+        }
+
+        // ============================================================
+        // HANDLE ADMIN LOGIN
+        // ============================================================
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const errorEl = document.getElementById('loginError');
+            errorEl.style.display = 'none';
+
+            try {
+                await clearSession();
+
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    errorEl.textContent = error.message;
+                    errorEl.style.display = 'block';
+                    return;
+                }
+
+                // Get user from database
+                const { data: userData, error: userError } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('id', data.user.id)
+                    .single();
+
+                if (userError || !userData) {
+                    await supabaseClient.auth.signOut();
+                    errorEl.textContent = '❌ Admin account not found. Please setup.';
+                    errorEl.style.display = 'block';
+                    document.getElementById('setupTabBtn').style.display = 'block';
+                    switchAuthTab('setup');
+                    return;
+                }
+
+                if (userData.role !== 'admin') {
+                    await supabaseClient.auth.signOut();
+                    errorEl.textContent = 'Access denied. Admin privileges required.';
+                    errorEl.style.display = 'block';
+                    return;
+                }
+
+                currentUser = userData;
+                localStorage.setItem('adminUser', JSON.stringify(currentUser));
+
+                document.getElementById('loginOverlay').classList.add('hidden');
+                showToast(`👋 Welcome ${currentUser.name}!`, 'success');
+                loadAllData();
+                renderDashboard();
+
+            } catch (error) {
+                errorEl.textContent = error.message || 'Login failed';
+                errorEl.style.display = 'block';
+                console.error('Login error:', error);
+            }
+        }
+
+        // ============================================================
+        // HANDLE ADMIN SETUP
+        // ============================================================
+        async function handleAdminSetup(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('setupName').value.trim();
+            const email = document.getElementById('setupEmail').value.trim();
+            const password = document.getElementById('setupPassword').value;
+            const confirmPassword = document.getElementById('setupConfirmPassword').value;
+
+            const errorEl = document.getElementById('setupError');
+            const successEl = document.getElementById('setupSuccess');
+            errorEl.style.display = 'none';
+            successEl.style.display = 'none';
+
+            if (!name || !email || !password || !confirmPassword) {
+                errorEl.textContent = 'Please fill in all fields.';
+                errorEl.style.display = 'block';
+                return;
+            }
+            if (password.length < 8) {
+                errorEl.textContent = 'Password must be at least 8 characters.';
+                errorEl.style.display = 'block';
+                return;
+            }
+            if (password !== confirmPassword) {
+                errorEl.textContent = 'Passwords do not match.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            try {
+                // Check if admin exists
+                const { data: existing, error: checkError } = await supabaseClient
+                    .from('users')
+                    .select('id')
+                    .eq('role', 'admin')
+                    .limit(1);
+
+                if (checkError) {
+                    errorEl.textContent = '❌ Database error: ' + checkError.message;
+                    errorEl.style.display = 'block';
+                    return;
+                }
+
+                if (existing && existing.length > 0) {
+                    errorEl.textContent = '❌ An admin already exists. Please login.';
+                    errorEl.style.display = 'block';
+                    showLoginForm();
+                    return;
+                }
+
+                // Create auth user
+                const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            name: name,
+                            full_name: name,
+                            role: 'admin'
+                        }
+                    }
+                });
+
+                if (authError) {
+                    if (authError.message.includes('User already registered')) {
+                        errorEl.textContent = '❌ Email already registered. Please login.';
+                        errorEl.style.display = 'block';
+                        showLoginForm();
+                        return;
+                    }
+                    throw authError;
+                }
+
+                if (!authData.user) {
+                    errorEl.textContent = '❌ Failed to create auth user.';
+                    errorEl.style.display = 'block';
+                    return;
+                }
+
+                // Insert into users table
+                const { data: userData, error: userError } = await supabaseClient
+                    .from('users')
+                    .insert({
+                        id: authData.user.id,
+                        name: name,
+                        email: email,
+                        role: 'admin',
+                        status: 'active',
+                        balance: 0,
+                        curi_balance: 1000,
+                        staked: 0,
+                        rewards: 0,
+                        email_verified: true,
+                        joined: new Date().toISOString()
+                    })
+                    .select()
+                    .single();
+
+                if (userError) {
+                    console.error('Insert error:', userError);
+                    errorEl.textContent = '❌ Database error saving new user: ' + userError.message;
+                    errorEl.style.display = 'block';
+                    // Try to clean up auth user
+                    try {
+                        await supabaseClient.auth.admin.deleteUser(authData.user.id);
+                    } catch (e) {}
+                    return;
+                }
+
+                successEl.textContent = '✅ Admin account created! Logging in...';
+                successEl.style.display = 'block';
+
+                currentUser = userData;
+                localStorage.setItem('adminUser', JSON.stringify(currentUser));
+
+                document.getElementById('loginOverlay').classList.add('hidden');
+                showToast(`👋 Welcome ${name}!`, 'success');
+                loadAllData();
+                renderDashboard();
+
+            } catch (error) {
+                console.error('Setup error:', error);
+                errorEl.textContent = '❌ ' + (error.message || 'Failed to create admin account.');
+                errorEl.style.display = 'block';
+            }
+        }
+
+        async function logout() {
+            await clearSession();
+            document.getElementById('loginOverlay').classList.remove('hidden');
+            showToast('Logged out successfully', 'info');
+        }
+
+        // ============================================================
+        // LOAD DATA
+        // ============================================================
+        async function loadAllData() {
+            try {
+                // Load users
+                const { data: usersData, error: usersError } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (!usersError) users = usersData || [];
+
+                // Load audit logs
+                const { data: auditData, error: auditError } = await supabaseClient
+                    .from('audit_logs')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(100);
+
+                if (!auditError) auditLogs = auditData || [];
+
+                // Load transactions
+                const { data: txData, error: txError } = await supabaseClient
+                    .from('transactions')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(100);
+
+                if (!txError) transactions = txData || [];
+
+                // Load moderation queue
+                const { data: modData, error: modError } = await supabaseClient
+                    .from('moderation_queue')
+                    .select('*')
+                    .order('submitted', { ascending: false });
+
+                if (!modError) modQueue = modData || [];
+
+                updateBadges();
+            } catch (error) {
+                console.error('Load data error:', error);
+            }
+        }
+
+        function updateBadges() {
+            const pendingMod = modQueue.filter(m => m.status === 'pending').length;
+            document.getElementById('modBadge').textContent = pendingMod || '0';
+            const pendingUsers = users.filter(u => u.status === 'pending').length;
+            document.getElementById('pendingBadge').textContent = pendingUsers || '0';
+        }
+
+        function getUserName(userId) {
+            const user = users.find(u => u.id === userId);
+            return user ? user.name : 'Unknown';
+        }
+
+        // ============================================================
+        // RENDER DASHBOARD
+        // ============================================================
+        function renderDashboard() {
+            const total = users.length;
+            const active = users.filter(u => u.status === 'active').length;
+            const admins = users.filter(u => u.role === 'admin').length;
+            const totalBalance = users.reduce((sum, u) => sum + (u.balance || 0), 0);
+            const totalCURI = users.reduce((sum, u) => sum + (u.curi_balance || 0), 0);
+
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card">
+                    <div class="label">Total Users</div>
+                    <div class="value">${total}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Active Users</div>
+                    <div class="value" style="color:#4ade80;">${active}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Admins</div>
+                    <div class="value" style="color:#00bcd4;">${admins}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Total Balance</div>
+                    <div class="value" style="color:#fbbf24;">$${totalBalance.toFixed(2)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Total CURI</div>
+                    <div class="value" style="color:#4ade80;">${totalCURI.toLocaleString()}</div>
+                </div>
+            `;
+
+            const recent = users.slice(0, 5);
+            document.getElementById('recentUsers').innerHTML = recent.map(u => `
+                <tr>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span class="avatar-sm">${(u.name || 'U')[0].toUpperCase()}</span>
+                            ${u.name || 'Unknown'}
+                        </div>
+                    </td>
+                    <td><span class="status-badge ${u.status || 'pending'}">${u.status || 'pending'}</span></td>
+                    <td><span class="status-badge ${u.role || 'user'}">${u.role || 'user'}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // ============================================================
+        // RENDER USERS
+        // ============================================================
+        function renderUsers() {
+            const search = document.getElementById('userSearch').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value;
+            const role = document.getElementById('roleFilter').value;
+
+            const filtered = users.filter(u => {
+                const matchSearch = (u.name || '').toLowerCase().includes(search) ||
+                    (u.email || '').toLowerCase().includes(search);
+                const matchStatus = status === 'all' || u.status === status;
+                const matchRole = role === 'all' || u.role === role;
+                return matchSearch && matchStatus && matchRole;
+            });
+
+            const tbody = document.getElementById('usersTableBody');
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr><td colspan="7"><div class="empty-state"><i class="fas fa-users"></i><p>No users found.</p></div></td></tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(u => `
+                <tr>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span class="avatar-sm">${(u.name || 'U')[0].toUpperCase()}</span>
+                            ${u.name || 'Unknown'}
+                        </div>
+                    </td>
+                    <td>${u.email}</td>
+                    <td><span class="status-badge ${u.role || 'user'}">${u.role || 'user'}</span></td>
+                    <td><span class="status-badge ${u.status || 'pending'}">${u.status || 'pending'}</span></td>
+                    <td>$${(u.balance || 0).toFixed(2)}</td>
+                    <td>${(u.curi_balance || 0).toLocaleString()}</td>
+                    <td>
+                        <div class="actions-cell">
+                            <button class="edit-btn" onclick="openEditUser('${u.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="delete-btn" onclick="openDeleteConfirm('${u.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterUsers() { renderUsers(); }
+
+        // ============================================================
+        // USER ACTIONS
+        // ============================================================
+        function openEditUser(id) {
+            const user = users.find(u => u.id === id);
+            if (!user) return;
+            showToast('Edit user: ' + user.name, 'info');
+        }
+
+        function openDeleteConfirm(id) {
+            const user = users.find(u => u.id === id);
+            if (!user) return;
+            if (confirm(`Delete user ${user.name}? This cannot be undone!`)) {
+                deleteUser(id);
+            }
+        }
+
+        async function deleteUser(id) {
+            try {
+                const { error } = await supabaseClient
+                    .from('users')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                showToast('✅ User deleted', 'success');
+                loadAllData();
+                renderUsers();
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+            }
+        }
+
+        // ============================================================
+        // ADD USER
+        // ============================================================
+        async function handleAddUser(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('newUserName').value.trim();
+            const email = document.getElementById('newUserEmail').value.trim();
+            const password = document.getElementById('newUserPassword').value;
+            const role = document.getElementById('newUserRole').value;
+            const status = document.getElementById('newUserStatus').value;
+
+            if (!name || !email || !password) {
+                showToast('Please fill in all fields.', 'error');
+                return;
+            }
+
+            if (password.length < 8) {
+                showToast('Password must be at least 8 characters.', 'error');
+                return;
+            }
+
+            try {
+                // Create auth user
+                const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: { name: name, full_name: name }
+                    }
+                });
+
+                if (authError) throw authError;
+
+                // Insert into users table
+                const { data: userData, error: userError } = await supabaseClient
+                    .from('users')
+                    .insert({
+                        id: authData.user.id,
+                        name: name,
+                        email: email,
+                        role: role,
+                        status: status,
+                        balance: 0,
+                        curi_balance: 100,
+                        staked: 0,
+                        rewards: 0,
+                        joined: new Date().toISOString()
+                    })
+                    .select()
+                    .single();
+
+                if (userError) throw userError;
+
+                closeModal('addUserModal');
+                document.getElementById('addUserForm').reset();
+                showToast(`✅ ${name} added successfully!`, 'success');
+                loadAllData();
+                renderUsers();
+
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+            }
+        }
+
+        // ============================================================
+        // RENDER TRANSACTIONS
+        // ============================================================
+        function renderTransactions() {
+            const tbody = document.getElementById('transactionsTableBody');
+            if (transactions.length === 0) {
+                tbody.innerHTML = `
+                    <tr><td colspan="4"><div class="empty-state"><i class="fas fa-exchange-alt"></i><p>No transactions found.</p></div></td></tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = transactions.slice(0, 50).map(t => `
+                <tr>
+                    <td>${getUserName(t.user_id) || 'Unknown'}</td>
+                    <td><span class="status-badge ${t.type}">${t.type}</span></td>
+                    <td style="color:${t.type === 'sent' ? '#f87171' : '#4ade80'}">
+                        ${t.type === 'sent' ? '-' : '+'}$${(t.amount || 0).toFixed(2)}
+                    </td>
+                    <td><span class="status-badge ${t.status || 'completed'}">${t.status || 'completed'}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // ============================================================
+        // RENDER AUDIT
+        // ============================================================
+        function renderAudit() {
+            const container = document.getElementById('auditLogList');
+            if (auditLogs.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state"><i class="fas fa-history"></i><p>No audit logs found.</p></div>
+                `;
+                return;
+            }
+
+            container.innerHTML = auditLogs.slice(0, 50).map(a => `
+                <div style="padding:8px 0; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <strong>${getUserName(a.user_id) || 'System'}</strong>
+                        <span style="color:var(--text-secondary); margin-left:8px;">${a.details || a.action}</span>
+                    </div>
+                    <div style="color:var(--text-muted); font-size:0.75rem;">
+                        ${new Date(a.created_at).toLocaleString()}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================================
+        // CHECK SESSION
+        // ============================================================
+        async function checkAdminSession() {
+            try {
+                await checkAdminExists();
+
+                const { data: { session } } = await supabaseClient.auth.getSession();
+
+                if (session) {
+                    const { data: userData, error } = await supabaseClient
+                        .from('users')
+                        .select('*')
+                        .eq('id', session.user.id)
+                        .single();
+
+                    if (error || !userData || userData.role !== 'admin') {
+                        await clearSession();
+                        document.getElementById('loginOverlay').classList.remove('hidden');
+                        return;
+                    }
+
+                    currentUser = userData;
+                    document.getElementById('loginOverlay').classList.add('hidden');
+                    loadAllData();
+                    renderDashboard();
+                    return;
+                }
+
+                document.getElementById('loginOverlay').classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Session check error:', error);
+                document.getElementById('loginOverlay').classList.remove('hidden');
+            }
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('⚡ Curiosity Admin Panel v3.0');
+            console.log('🔗 Connected to:', SUPABASE_URL);
+
+            // Make sure setup button is visible initially
+            document.getElementById('setupTabBtn').style.display = 'block';
+
+            await checkAdminSession();
+
+            if (currentUser) {
+                await loadAllData();
+                renderDashboard();
+            }
+
+            console.log('👤 Current user:', currentUser ? currentUser.name : 'Not logged in');
+            console.log('📊 Users loaded:', users.length);
+        });
+    </script>
+
+</body>
+</html>
