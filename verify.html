@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Verification</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .card {
+            background: #1e293b;
+            padding: 40px 36px;
+            border-radius: 16px;
+            max-width: 480px;
+            width: 100%;
+            border: 1px solid #334155;
+            text-align: center;
+        }
+        .card h1 {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card .subtitle {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        .status-box {
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 1rem;
+        }
+        .status-box.loading {
+            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+        }
+        .status-box.success {
+            color: #4ade80;
+            background: rgba(74, 222, 128, 0.08);
+            border: 1px solid rgba(74, 222, 128, 0.15);
+        }
+        .status-box.error {
+            color: #f87171;
+            background: rgba(248, 113, 113, 0.08);
+            border: 1px solid rgba(248, 113, 113, 0.15);
+        }
+        .status-box.info {
+            color: #00bcd4;
+            background: rgba(0, 188, 212, 0.08);
+            border: 1px solid rgba(0, 188, 212, 0.15);
+        }
+        .btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 8px;
+        }
+        .btn-primary {
+            background: #00bcd4;
+            color: #0f172a;
+        }
+        .btn-primary:hover {
+            background: #008c9e;
+            transform: scale(1.02);
+        }
+        .btn-success {
+            background: #4ade80;
+            color: #0f172a;
+        }
+        .btn-success:hover {
+            background: #22c55e;
+            transform: scale(1.02);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #334155;
+            color: #94a3b8;
+        }
+        .btn-outline:hover {
+            border-color: #00bcd4;
+            color: #00bcd4;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0;
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #334155;
+        }
+        .footer-text {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        .footer-text a {
+            color: #00bcd4;
+            text-decoration: none;
+        }
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Curiosity</h1>
+        <p class="subtitle">Email Verification</p>
+
+        <div id="statusBox" class="status-box loading">Verifying your email...</div>
+
+        <div id="result"></div>
+
+        <div class="footer-text">
+            <a href="admin.html">Back to Login</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.6/dist/umd/supabase.min.js">
+    </script>
+
+    <script>
+        const SUPABASE_URL = 'https://pfnbpgdtrxqyudeqrtbr.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_L9nklf0aUlRHBVuc6V-nFg_DqW79DV4';
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        function setStatus(msg, type = 'loading') {
+            const el = document.getElementById('statusBox');
+            el.textContent = msg;
+            el.className = 'status-box ' + type;
+        }
+
+        function showResult(html) {
+            document.getElementById('result').innerHTML = html;
+        }
+
+        async function verifyEmail() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const token = params.get('token');
+
+                if (token) {
+                    setStatus('Verifying your email...', 'loading');
+
+                    const { data, error } = await supabaseClient.auth.verifyOtp({
+                        token_hash: token,
+                        type: 'signup'
+                    });
+
+                    if (error) throw error;
+
+                    const { error: updateError } = await supabaseClient
+                        .from('users')
+                        .update({
+                            email_verified: true,
+                            status: 'active'
+                        })
+                        .eq('email', data.user.email);
+
+                    if (updateError) throw updateError;
+
+                    setStatus('Email verified successfully!', 'success');
+                    showResult(`
+                        <div style="margin-top:12px;">
+                            <p style="color:#94a3b8; font-size:0.95rem; margin-bottom:12px;">
+                                Your account is now active. You can log in to the admin panel.
+                            </p>
+                            <a href="admin.html" class="btn btn-primary">Go to Login</a>
+                        </div>
+                    `);
+
+                } else {
+                    const { data: { session } } = await supabaseClient.auth.getSession();
+
+                    if (session) {
+                        const { data: user } = await supabaseClient
+                            .from('users')
+                            .select('email_verified')
+                            .eq('id', session.user.id)
+                            .maybeSingle();
+
+                        if (user?.email_verified) {
+                            setStatus('Already verified!', 'success');
+                            showResult(`
+                                <div style="margin-top:12px;">
+                                    <p style="color:#94a3b8; font-size:0.95rem; margin-bottom:12px;">
+                                        Your email is already verified.
+                                    </p>
+                                    <a href="admin.html" class="btn btn-primary">Go to Login</a>
+                                </div>
+                            `);
+                            return;
+                        }
+                    }
+
+                    setStatus('No verification token found.', 'error');
+                    showResult(`
+                        <div style="margin-top:12px;">
+                            <p style="color:#94a3b8; font-size:0.95rem; margin-bottom:12px;">
+                                Please check your email for the verification link.
+                            </p>
+                            <a href="resend_verification.html" class="btn btn-success">Request New Link</a>
+                            <br>
+                            <a href="admin.html" class="btn btn-outline" style="margin-top:8px;">Back to Login</a>
+                        </div>
+                    `);
+                }
+
+            } catch (error) {
+                setStatus('Verification failed.', 'error');
+                showResult(`
+                    <div style="margin-top:12px;">
+                        <p style="color:#94a3b8; font-size:0.95rem; margin-bottom:12px;">
+                            ${error.message || 'Something went wrong. Please try again.'}
+                        </p>
+                        <a href="resend_verification.html" class="btn btn-success">Request New Link</a>
+                        <br>
+                        <a href="admin.html" class="btn btn-outline" style="margin-top:8px;">Back to Login</a>
+                    </div>
+                `);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', verifyEmail);
+    </script>
+
+</body>
+</html>
