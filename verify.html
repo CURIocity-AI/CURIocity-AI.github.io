@@ -7,6 +7,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.6/dist/umd/supabase.min.js">
     </script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #0f172a;
@@ -16,7 +21,6 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            margin: 0;
         }
         .card {
             background: #1e293b;
@@ -27,131 +31,338 @@
             border: 1px solid #334155;
             text-align: center;
         }
-        .success { color: #4ade80; padding: 16px; background: rgba(74,222,128,0.1); border-radius: 8px; border: 1px solid rgba(74,222,128,0.2); margin: 16px 0; }
-        .error { color: #f87171; padding: 16px; background: rgba(248,113,113,0.1); border-radius: 8px; border: 1px solid rgba(248,113,113,0.2); margin: 16px 0; }
-        .loading { color: #fbbf24; padding: 16px; }
-        .btn { padding: 12px 32px; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; background: #00bcd4; color: #0f172a; text-decoration: none; display: inline-block; }
-        .btn:hover { background: #008c9e; }
-        h1 { font-size: 1.8rem; background: linear-gradient(90deg, #00bcd4, #008c9e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
-        .log { background: #0f172a; padding: 12px; border-radius: 8px; margin-top: 16px; font-size: 0.7rem; color: #64748b; max-height: 150px; overflow-y: auto; font-family: monospace; text-align: left; border: 1px solid #1e293b; white-space: pre-wrap; word-break: break-all; }
-        .log .info { color: #00bcd4; }
-        .log .success { color: #4ade80; }
-        .log .error { color: #f87171; }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        .success {
+            color: #4ade80;
+            padding: 16px;
+            background: rgba(74, 222, 128, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            margin: 16px 0;
+        }
+        .error {
+            color: #f87171;
+            padding: 16px;
+            background: rgba(248, 113, 113, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(248, 113, 113, 0.2);
+            margin: 16px 0;
+        }
+        .loading {
+            color: #fbbf24;
+            padding: 16px;
+        }
+        .btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: #00bcd4;
+            color: #0f172a;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 8px;
+        }
+        .btn:hover {
+            background: #008c9e;
+            transform: scale(1.02);
+        }
+        .btn-success {
+            background: #4ade80;
+            color: #0f172a;
+        }
+        .btn-success:hover {
+            background: #22c55e;
+        }
+        .log {
+            background: #0f172a;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-size: 0.7rem;
+            color: #64748b;
+            max-height: 150px;
+            overflow-y: auto;
+            font-family: monospace;
+            text-align: left;
+            border: 1px solid #1e293b;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .log .info {
+            color: #00bcd4;
+        }
+        .log .success {
+            color: #4ade80;
+        }
+        .log .error {
+            color: #f87171;
+        }
+        .log .warning {
+            color: #fbbf24;
+        }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h1>⚡ Email Verification</h1>
+        <h1>⚡ Verify Your Email</h1>
+        <p class="subtitle">Please wait while we verify your email address...</p>
+
         <div id="status" class="loading">⏳ Verifying your email...</div>
         <div id="result"></div>
-        <div class="log" id="log">🔍 Waiting for verification...</div>
+
+        <div class="log" id="log">
+            <span class="info">🚀 Initializing verification...</span>
+        </div>
     </div>
 
     <script>
+        // ============================================================
+        // ===== SUPABASE CONFIG =====
+        // ============================================================
         const SUPABASE_URL = 'https://pfnbpgdtrxqyudeqrtbr.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_L9nklf0aUlRHBVuc6V-nFg_DqW79DV4';
+
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // ============================================================
+        // ===== HELPERS =====
+        // ============================================================
         function log(msg, type = 'info') {
             const el = document.getElementById('log');
-            const cls = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+            const cls = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info';
             el.innerHTML += `\n[${new Date().toLocaleTimeString()}] <span class="${cls}">${msg}</span>`;
             el.scrollTop = el.scrollHeight;
+            console.log(`[${type}]`, msg);
         }
 
         function showStatus(msg, type = 'loading') {
-            document.getElementById('status').textContent = msg;
-            document.getElementById('status').className = type;
+            const el = document.getElementById('status');
+            el.textContent = msg;
+            el.className = type;
         }
 
+        function showResult(html, type = 'success') {
+            document.getElementById('result').innerHTML = `<div class="${type}">${html}</div>`;
+        }
+
+        // ============================================================
+        // ===== GET USER FROM TOKEN =====
+        // ============================================================
+        async function getUserFromToken(token) {
+            try {
+                // Verify with Supabase
+                const { data, error } = await supabase.auth.verifyOtp({
+                    token_hash: token,
+                    type: 'signup'
+                });
+
+                if (error) {
+                    log('❌ Supabase verify error: ' + error.message, 'error');
+                    return null;
+                }
+
+                if (data && data.user) {
+                    log('✅ Found user: ' + data.user.email, 'success');
+                    return data.user;
+                }
+
+                return null;
+            } catch (e) {
+                log('❌ Error getting user: ' + e.message, 'error');
+                return null;
+            }
+        }
+
+        // ============================================================
+        // ===== UPDATE USER VERIFICATION =====
+        // ============================================================
+        async function verifyUser(email) {
+            try {
+                log('📝 Updating verification status for: ' + email, 'info');
+
+                const { data, error } = await supabase
+                    .from('users')
+                    .update({
+                        email_verified: true,
+                        status: 'active'
+                    })
+                    .eq('email', email)
+                    .select()
+                    .single();
+
+                if (error) {
+                    log('❌ Database update error: ' + error.message, 'error');
+                    throw error;
+                }
+
+                log('✅ User verified in database!', 'success');
+                return data;
+            } catch (e) {
+                log('❌ Update failed: ' + e.message, 'error');
+                throw e;
+            }
+        }
+
+        // ============================================================
+        // ===== MAIN VERIFICATION =====
+        // ============================================================
         async function verifyEmail() {
             try {
                 const params = new URLSearchParams(window.location.search);
                 const token = params.get('token');
-                
+                const type = params.get('type');
+
                 log('🔍 URL: ' + window.location.href, 'info');
+                log('🔍 Token found: ' + (token ? '✅ Yes' : '❌ No'), 'info');
 
                 if (token) {
-                    log('🔑 Found token: ' + token, 'info');
-                    
-                    // Verify with Supabase
-                    const { data, error } = await supabase.auth.verifyOtp({
-                        token_hash: token,
-                        type: 'signup'
-                    });
+                    log('🔑 Processing verification token...', 'info');
+                    showStatus('⏳ Verifying your email...', 'loading');
 
-                    if (error) throw error;
+                    const user = await getUserFromToken(token);
 
-                    log('✅ Supabase verification successful!', 'success');
+                    if (!user) {
+                        throw new Error('Invalid or expired verification token.');
+                    }
 
-                    // Update users table
-                    const { error: updateError } = await supabase
+                    // Check if user exists in your users table
+                    const { data: dbUser, error: dbError } = await supabase
                         .from('users')
-                        .update({ 
-                            email_verified: true, 
-                            status: 'active' 
-                        })
-                        .eq('email', data.user.email);
+                        .select('*')
+                        .eq('email', user.email)
+                        .maybeSingle();
 
-                    if (updateError) throw updateError;
+                    if (dbError) throw dbError;
 
-                    log('✅ Database updated!', 'success');
+                    if (!dbUser) {
+                        // User exists in auth but not in users table - create them
+                        log('📝 Creating user profile...', 'info');
+                        const { error: insertError } = await supabase
+                            .from('users')
+                            .insert({
+                                id: user.id,
+                                email: user.email,
+                                name: user.user_metadata?.name || user.email.split('@')[0],
+                                email_verified: true,
+                                status: 'active',
+                                role: 'user'
+                            });
 
-                    document.getElementById('result').innerHTML = `
-                        <div class="success">
-                            <p style="font-size:1.1rem;">🎉 Email Verified Successfully!</p>
-                            <p style="color:#94a3b8; font-size:0.9rem; margin:8px 0;">You can now log in to the admin panel.</p>
-                            <a href="admin.html" class="btn" style="margin-top:8px;">🔐 Go to Admin Login</a>
-                        </div>
-                    `;
-                    showStatus('✅ Verified!', 'success');
+                        if (insertError) throw insertError;
+                    } else {
+                        // Update existing user
+                        await verifyUser(user.email);
+                    }
+
+                    log('🎉 Verification complete!', 'success');
+                    showStatus('✅ Email Verified Successfully!', 'success');
+                    showResult(`
+                        <p style="font-size:1.1rem; margin-bottom:8px;">
+                            🎉 Your email has been verified!
+                        </p>
+                        <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:12px;">
+                            Your account is now active. You can log in to the admin panel.
+                        </p>
+                        <a href="admin.html" class="btn">🔐 Go to Admin Login</a>
+                    `, 'success');
 
                 } else {
-                    // No token - check if already verified
+                    // No token - check session
+                    log('ℹ️ No token found, checking session...', 'info');
                     const { data: { session } } = await supabase.auth.getSession();
+
                     if (session) {
-                        const { data: user } = await supabase
+                        const { data: user, error } = await supabase
                             .from('users')
-                            .select('email_verified')
+                            .select('email_verified, status')
                             .eq('id', session.user.id)
                             .maybeSingle();
-                            
-                        if (user?.email_verified) {
-                            document.getElementById('result').innerHTML = `
-                                <div class="success">
-                                    <p style="font-size:1.1rem;">✅ Already Verified!</p>
-                                    <a href="admin.html" class="btn" style="margin-top:8px;">🔐 Go to Admin Login</a>
-                                </div>
-                            `;
-                            showStatus('✅ Already verified', 'success');
+
+                        if (user && user.email_verified) {
+                            log('✅ Already verified!', 'success');
+                            showStatus('✅ Already Verified', 'success');
+                            showResult(`
+                                <p style="font-size:1.1rem; margin-bottom:8px;">
+                                    ✅ Your email is already verified!
+                                </p>
+                                <a href="admin.html" class="btn">🔐 Go to Admin Login</a>
+                            `, 'success');
+                            return;
+                        }
+
+                        if (user && !user.email_verified) {
+                            await verifyUser(session.user.email);
+                            showStatus('✅ Verified!', 'success');
+                            showResult(`
+                                <p style="font-size:1.1rem; margin-bottom:8px;">
+                                    ✅ Your email has been verified!
+                                </p>
+                                <a href="admin.html" class="btn">🔐 Go to Admin Login</a>
+                            `, 'success');
                             return;
                         }
                     }
 
-                    document.getElementById('result').innerHTML = `
-                        <div class="error">
-                            <p style="font-size:1rem;">No verification token found.</p>
-                            <p style="color:#94a3b8; font-size:0.9rem;">Please check your email for the verification link.</p>
-                            <a href="admin.html" class="btn" style="margin-top:8px;">🔐 Back to Login</a>
-                        </div>
-                    `;
-                    showStatus('🔓 No token found', 'error');
+                    showStatus('🔓 No Verification Found', 'error');
+                    showResult(`
+                        <p style="font-size:1rem; margin-bottom:8px; color:#94a3b8;">
+                            No verification token found.
+                        </p>
+                        <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:12px;">
+                            Please check your email for the verification link or request a new one.
+                        </p>
+                        <a href="resend_verification.html" class="btn btn-success">
+                            📧 Request New Verification
+                        </a>
+                        <br>
+                        <a href="admin.html" class="btn" style="margin-top:8px;">🔐 Back to Login</a>
+                    `, 'error');
                 }
 
             } catch (error) {
-                log('❌ Error: ' + error.message, 'error');
-                document.getElementById('result').innerHTML = `
-                    <div class="error">
-                        <p style="font-size:1rem;">❌ ${error.message}</p>
-                        <a href="admin.html" class="btn" style="margin-top:8px;">🔐 Back to Login</a>
-                    </div>
-                `;
-                showStatus('❌ Failed', 'error');
+                log('❌ Verification error: ' + error.message, 'error');
+                showStatus('❌ Verification Failed', 'error');
+                showResult(`
+                    <p style="font-size:1rem; margin-bottom:8px; color:#f87171;">
+                        ❌ ${error.message}
+                    </p>
+                    <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:12px;">
+                        Please try again or request a new verification link.
+                    </p>
+                    <a href="resend_verification.html" class="btn btn-success">
+                        📧 Request New Verification
+                    </a>
+                    <br>
+                    <a href="admin.html" class="btn" style="margin-top:8px;">🔐 Back to Login</a>
+                `, 'error');
             }
         }
 
-        document.addEventListener('DOMContentLoaded', verifyEmail);
+        // ============================================================
+        // ===== INIT =====
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            log('🚀 Verification page loaded', 'info');
+            log('🔗 URL: ' + window.location.href, 'info');
+            verifyEmail();
+        });
     </script>
 
 </body>
