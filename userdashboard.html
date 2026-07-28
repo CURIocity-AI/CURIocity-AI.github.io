@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Curiosity — Your Dashboard</title>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.6/dist/umd/supabase.min.js">
+    </script>
+
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --bg-input: #1e293b;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --info: #00bcd4;
+            --gold: #ffd700;
+            --purple: #a78bfa;
+            --pink: #f472b6;
+            --hover-bg: rgba(0, 188, 212, 0.08);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-input: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --hover-bg: rgba(0, 188, 212, 0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* ===== LOADING ===== */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .loading-overlay.show { display: flex; }
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid #00bcd4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text {
+            color: var(--text-secondary);
+            margin-top: 20px;
+            font-size: 1rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        /* ===== LOGIN OVERLAY ===== */
+        .login-overlay {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 5000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .login-overlay.hidden { display: none; }
+
+        .login-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px 36px;
+            max-width: 420px;
+            width: 100%;
+        }
+        .login-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .login-card .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+        .login-card .field {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+        .login-card .field label {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .login-card .field input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        .login-card .field input:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+        .login-card .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: #00bcd4;
+            color: #0f172a;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .login-card .btn-submit:hover:not(:disabled) {
+            background: #008c9e;
+            transform: scale(1.02);
+        }
+        .login-card .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+        .login-card .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .login-card .btn-outline:hover {
+            border-color: #00bcd4;
+            color: #00bcd4;
+            background: var(--hover-bg);
+        }
+        .login-card .error-msg {
+            color: var(--danger);
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 12px;
+            display: none;
+        }
+
+        /* ===== DASHBOARD LAYOUT ===== */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ===== TOP BAR ===== */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+        .topbar .brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00bcd4, #008c9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .topbar .brand small {
+            font-size: 0.6rem;
+            -webkit-text-fill-color: var(--text-muted);
+            background: none;
+            font-weight: 400;
+            display: block;
+            margin-top: -2px;
+        }
+        .topbar .actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .topbar .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+        .topbar .user-menu:hover {
+            border-color: #00bcd4;
+            background: var(--hover-bg);
+        }
+        .topbar .user-menu .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+            background: linear-gradient(135deg, #00bcd4, #008c9e);
+            color: white;
+        }
+        .topbar .user-menu .username {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            width: 56px;
+            height: 30px;
+        }
+        .theme-toggle .toggle-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+        .theme-toggle .toggle-dot {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            left: 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        [data-theme="light"] .theme-toggle .toggle-dot { left: 28px; }
+        .theme-toggle i { font-size: 0.7rem; color: var(--text-secondary); z-index: 1; }
+        .theme-toggle .fa-sun { color: #fbbf24; }
+        .theme-toggle .fa-moon { color: #818cf8; }
+
+        /* ===== GRID LAYOUT ===== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+
+        /* ===== SIDEBAR / PROFILE CARD ===== */
+        .profile-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            position: sticky;
+            top: 20px;
+        }
+        .profile-card .avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00bcd4, #008c9e);
+            color: white;
+            margin: 0 auto 16px;
+        }
+        .profile-card .profile-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        .profile-card .profile-email {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        .profile-card .profile-bio {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin: 8px 0 16px;
+            padding: 8px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+        }
+        .profile-card .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin: 16px 0;
+            padding: 12px;
+            background: var(--bg-primary);
+            border-radius: 12px;
+        }
+        .profile-card .profile-stats .stat {
+            text-align: center;
+        }
+        .profile-card .profile-stats .stat .value {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .profile-card .profile-stats .stat .label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        .profile-card .profile-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin: 12px 0;
+        }
+        .profile-card .badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .badge.admin { background: rgba(0, 188, 212, 0.15); color: #00bcd4; }
+        .badge.moderator { background: rgba(167, 139, 250, 0.15); color: #a78bfa; }
+        .badge.verified { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+        .badge.early { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+        .badge.beta { background: rgba(244, 114, 182, 0.15); color: #f472b6; }
+
+        .profile-card .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .profile-card .quick-actions button {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-card .quick-actions button:hover {
+            border-color: #00bcd4;
+            background: var(--hover-bg);
+        }
+        .profile-card .quick-actions button .icon {
+            width: 24px;
+            text-align: center;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* ===== FEATURE ANNOUNCEMENT ===== */
+        .feature-announcement {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(244, 114, 182, 0.15));
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: none;
+            align-items: flex-start;
+            gap: 16px;
+            position: relative;
+        }
+        .feature-announcement.show { display: flex; }
+        .feature-announcement .icon {
+            font-size: 2rem;
+            margin-top: 4px;
+        }
+        .feature-announcement .content { flex: 1; }
+        .feature-announcement .content h3 {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+        .feature-announcement .content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .feature-announcement .dismiss {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 4px;
+        }
+        .feature-announcement .dismiss:hover { color: var(--text-primary); }
+
+        /* ===== FEATURES GRID ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.25s ease;
+            opacity: 0.5;
+            filter: grayscale(0.8);
+        }
+        .feature-card.active {
+            opacity: 1;
+            filter: none;
+            border-color: #00bcd4;
+        }
+        .feature-card.active:hover {
+            border-color: #00bcd4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 188, 212, 0.15);
+        }
+        .feature-card .icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .feature-card .name {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .feature-card .status {
+            font-size: 0.6rem;
+            margin-top: 4px;
+            color: var(--text-muted);
+        }
+        .feature-card.locked .icon { opacity: 0.4; }
+        .feature-card.locked .name { color: var(--text-muted); }
+
+        /* ===== POSTS FEED ===== */
+        .feed-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .feed-section .header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .feed-section .header h3 { font-size: 1rem; }
+        .feed-section .header .create-post-btn {
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: none;
+            background: #00bcd4;
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .feed-section .header .create-post-btn:hover {
+            background: #008c9e;
+            transform: scale(1.02);
+        }
+
+        .feed-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+        }
+        .feed-item:last-child { border-bottom: none; }
+        .feed-item .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+            background: linear-gradient(135deg, #00bcd4, #008c9e);
+            color: white;
+            flex-shrink: 0;
+        }
+        .feed-item .content { flex: 1; }
+        .feed-item .content .author {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .feed-item .content .author .time {
+            font-weight: 400;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-left: 8px;
+        }
+        .feed-item .content .text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+        .feed-item .content .actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        .feed-item .content .actions button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .feed-item .content .actions button:hover { color: #00bcd4; }
+        .feed-item .content .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        .status-badge.approved { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+        .status-badge.pending { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+        .status-badge.flagged { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+
+        /* ===== CREATE POST MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 28px 24px;
+            max-width: 500px;
+            width: 100%;
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+            opacity: 0;
+            position: relative;
+        }
+        .modal-overlay.show .modal-card {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+        .modal-close:hover { color: var(--text-primary); }
+        .modal-card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+        .modal-card .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 18px;
+        }
+        .modal-card .field {
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        .modal-card .field label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .modal-card .field textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+        .modal-card .field textarea:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+        .modal-card .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background: #00bcd4;
+            color: #0f172a;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .modal-card .btn-submit:hover:not(:disabled) {
+            background: #008c9e;
+            transform: scale(1.02);
+        }
+        .modal-card .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 10px 22px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px var(--shadow);
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 90vw;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+        .toast .toast-icon { font-size: 1.1rem; }
+        .toast.success .toast-icon { color: #4ade80; }
+        .toast.error .toast-icon { color: #f87171; }
+        .toast.info .toast-icon { color: #00bcd4; }
+        .toast.warning .toast-icon { color: #fbbf24; }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+        .empty-state i {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .profile-card {
+                position: static;
+            }
+            .features-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+        @media (max-width: 600px) {
+            .topbar .brand { font-size: 1.2rem; }
+            .topbar .user-menu .username { display: none; }
+            .profile-card .profile-stats {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .dashboard-container { padding: 12px; }
+            .profile-card { padding: 16px; }
+            .feed-item { flex-direction: column; }
+            .feed-item .avatar { width: 32px; height: 32px; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOADING OVERLAY ===== -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">Loading your dashboard...</div>
+    </div>
+
+    <!-- ===== LOGIN OVERLAY ===== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-card">
+            <h2>⚡ Curiosity</h2>
+            <p class="subtitle">Sign in to your dashboard</p>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="field">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="field">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit" id="loginBtn">Sign In</button>
+                <div class="error-msg" id="loginError"></div>
+            </form>
+
+            <div style="text-align:center; margin-top:16px; font-size:0.75rem; color:var(--text-muted);">
+                🔒 Secure access to your Curiosity account
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="dashboard-container" id="dashboardContainer" style="display:none;">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+            <div class="brand">
+                ⚡ Curiosity
+                <small>Your Dashboard</small>
+            </div>
+            <div class="actions">
+                <div class="theme-toggle" onclick="toggleTheme()" role="button">
+                    <div class="toggle-track">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                        <div class="toggle-dot"></div>
+                    </div>
+                </div>
+                <div class="user-menu" onclick="logout()">
+                    <div class="avatar" id="userAvatar">U</div>
+                    <span class="username" id="userName">User</span>
+                    <i class="fas fa-chevron-down" style="font-size:0.7rem; color:var(--text-muted);"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== DASHBOARD GRID ===== -->
+        <div class="dashboard-grid">
+
+            <!-- ===== SIDEBAR / PROFILE CARD ===== -->
+            <aside class="profile-card">
+                <div class="avatar-large" id="profileAvatar">U</div>
+                <div class="profile-name" id="profileName">User</div>
+                <div class="profile-email" id="profileEmail">user@example.com</div>
+                <div class="profile-bio" id="profileBio">No bio yet</div>
+
+                <div class="profile-badges" id="profileBadges">
+                    <span class="badge user">User</span>
+                </div>
+
+                <div class="profile-stats">
+                    <div class="stat">
+                        <div class="value" id="statBalance">$0</div>
+                        <div class="label">Balance</div>
+                    </div>
+                    <div class="stat">
+                        <div class="value" id="statCURI">0</div>
+                        <div class="label">CURI</div>
+                    </div>
+                    <div class="stat">
+                        <div class="value" id="statPosts">0</div>
+                        <div class="label">Posts</div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <button onclick="openModal('createPostModal')">
+                        <span class="icon"><i class="fas fa-pen"></i></span>
+                        Create Post
+                    </button>
+                    <button onclick="showToast('Profile settings coming soon!', 'info')">
+                        <span class="icon"><i class="fas fa-user-cog"></i></span>
+                        Edit Profile
+                    </button>
+                    <button onclick="showToast('Feature preferences coming soon!', 'info')">
+                        <span class="icon"><i class="fas fa-star"></i></span>
+                        Feature Preferences
+                    </button>
+                </div>
+            </aside>
+
+            <!-- ===== MAIN CONTENT ===== -->
+            <main class="main-content">
+
+                <!-- ===== FEATURE ANNOUNCEMENT ===== -->
+                <div class="feature-announcement" id="featureAnnouncement">
+                    <div class="icon" id="announceIcon">🎉</div>
+                    <div class="content">
+                        <h3 id="announceTitle">New Feature Available!</h3>
+                        <p id="announceMessage">You now have access to Direct Messages!</p>
+                    </div>
+                    <button class="dismiss" onclick="dismissAnnouncement()">&times;</button>
+                </div>
+
+                <!-- ===== FEATURES GRID ===== -->
+                <div style="background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:16px; padding:20px;">
+                    <h4 style="margin-bottom:12px; font-size:0.95rem;">Your Features</h4>
+                    <div class="features-grid" id="featuresGrid"></div>
+                </div>
+
+                <!-- ===== POSTS FEED ===== -->
+                <div class="feed-section">
+                    <div class="header">
+                        <h3><i class="fas fa-rss" style="color:#00bcd4;"></i> Your Activity</h3>
+                        <button class="create-post-btn" onclick="openModal('createPostModal')">
+                            <i class="fas fa-plus"></i> New Post
+                        </button>
+                    </div>
+                    <div id="feedContainer">
+                        <div class="empty-state">
+                            <i class="fas fa-newspaper"></i>
+                            <p>No posts yet. Create your first post!</p>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ===== CREATE POST MODAL ===== -->
+    <div class="modal-overlay" id="createPostModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('createPostModal')">&times;</button>
+            <h2><i class="fas fa-pen" style="color:#00bcd4;"></i> Create Post</h2>
+            <p class="subtitle">Share your thoughts with the community.</p>
+            <form onsubmit="handleCreatePost(event)">
+                <div class="field">
+                    <label for="postContent">What's on your mind?</label>
+                    <textarea id="postContent" placeholder="Write something amazing..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit" id="postBtn">
+                    <i class="fas fa-paper-plane"></i> Publish Post
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast">
+        <span class="toast-icon"><i class="fas fa-check-circle"></i></span>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== SCRIPTS ===== -->
+    <!-- ============================================================ -->
+    <script>
+        // ============================================================
+        // ===== SUPABASE CONFIGURATION =====
+        // ============================================================
+        const SUPABASE_URL = 'https://eemomvwqaekiugkpcmiw.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_pFiQbfvMOIGzQI2E4n4XYw_piPgWEDu';
+
+        if (typeof supabase === 'undefined') {
+            alert('❌ Supabase SDK failed to load. Please refresh.');
+        }
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ============================================================
+        // ===== STATE =====
+        // ============================================================
+        let currentUser = null;
+        let userFeatures = [];
+        let userPosts = [];
+        let announcements = [];
+        let userRole = 'user';
+
+        // ============================================================
+        // ===== LOADING FUNCTIONS =====
+        // ============================================================
+        function showLoading(text = 'Loading...') {
+            document.getElementById('loadingText').textContent = text;
+            document.getElementById('loadingOverlay').classList.add('show');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('show');
+        }
+
+        // ============================================================
+        // ===== THEME =====
+        // ============================================================
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('userTheme', newTheme);
+        }
+        document.documentElement.setAttribute('data-theme', localStorage.getItem('userTheme') || 'dark');
+
+        // ============================================================
+        // ===== TOAST =====
+        // ============================================================
+        let toastTimeout;
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const icon = toast.querySelector('.toast-icon i');
+
+            toast.className = 'toast';
+            toast.classList.add(type);
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle',
+                warning: 'fa-exclamation-triangle'
+            };
+            icon.className = 'fas ' + (icons[type] || icons.info);
+
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        // ============================================================
+        // ===== MODALS =====
+        // ============================================================
+        function openModal(id) {
+            document.getElementById(id).classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.show').forEach(modal => {
+                    modal.classList.remove('show');
+                });
+                document.body.style.overflow = '';
+            }
+        });
+
+        // ============================================================
+        // ===== AUTH FUNCTIONS =====
+        // ============================================================
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const errorEl = document.getElementById('loginError');
+            errorEl.style.display = 'none';
+
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email,
+                    password
+                });
+
+                if (error) {
+                    errorEl.textContent = error.message;
+                    errorEl.style.display = 'block';
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = 'Sign In';
+                    return;
+                }
+
+                // Get user data
+                const { data: userData, error: userError } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('id', data.user.id)
+                    .single();
+
+                if (userError || !userData) {
+                    errorEl.textContent = 'User profile not found. Please contact support.';
+                    errorEl.style.display = 'block';
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = 'Sign In';
+                    return;
+                }
+
+                // Check if user is suspended or banned
+                if (userData.status === 'suspended') {
+                    errorEl.textContent = '⚠️ Your account has been suspended. Please contact support.';
+                    errorEl.style.display = 'block';
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = 'Sign In';
+                    await supabaseClient.auth.signOut();
+                    return;
+                }
+
+                if (userData.status === 'banned') {
+                    errorEl.textContent = '🚫 Your account has been banned. Please contact support.';
+                    errorEl.style.display = 'block';
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = 'Sign In';
+                    await supabaseClient.auth.signOut();
+                    return;
+                }
+
+                currentUser = userData;
+                userRole = userData.role;
+
+                // Load everything and show dashboard
+                await loadUserData();
+                renderDashboard();
+
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('dashboardContainer').style.display = 'block';
+                showToast(`👋 Welcome back, ${currentUser.name}!`, 'success');
+
+            } catch (error) {
+                errorEl.textContent = error.message || 'Login failed';
+                errorEl.style.display = 'block';
+            }
+
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = 'Sign In';
+        }
+
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            currentUser = null;
+            document.getElementById('dashboardContainer').style.display = 'none';
+            document.getElementById('loginOverlay').classList.remove('hidden');
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            showToast('Logged out successfully', 'info');
+        }
+
+        // ============================================================
+        // ===== LOAD USER DATA =====
+        // ============================================================
+        async function loadUserData() {
+            if (!currentUser) return;
+
+            showLoading('Loading your data...');
+
+            try {
+                // Load user features
+                const { data: featuresData, error: featuresError } = await supabaseClient
+                    .from('user_features')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .eq('enabled', true);
+
+                if (!featuresError) userFeatures = featuresData || [];
+
+                // Load user posts
+                const { data: postsData, error: postsError } = await supabaseClient
+                    .from('posts')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('created_at', { ascending: false });
+
+                if (!postsError) userPosts = postsData || [];
+
+                // Load announcements
+                const { data: annData, error: annError } = await supabaseClient
+                    .from('announcements')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(3);
+
+                if (!annError) announcements = annData || [];
+
+                hideLoading();
+
+            } catch (error) {
+                console.error('Load data error:', error);
+                hideLoading();
+                showToast('Error loading data: ' + error.message, 'error');
+            }
+        }
+
+        // ============================================================
+        // ===== RENDER DASHBOARD =====
+        // ============================================================
+        function renderDashboard() {
+            if (!currentUser) return;
+
+            // === Profile ===
+            const initials = (currentUser.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('profileName').textContent = currentUser.name || 'User';
+            document.getElementById('userName').textContent = currentUser.name || 'User';
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            document.getElementById('profileBio').textContent = currentUser.bio || 'No bio yet';
+
+            // === Stats ===
+            document.getElementById('statBalance').textContent = '$' + (currentUser.balance || 0).toFixed(2);
+            document.getElementById('statCURI').textContent = (currentUser.curi_balance || 0).toLocaleString();
+            document.getElementById('statPosts').textContent = userPosts.length;
+
+            // === Badges ===
+            const badges = document.getElementById('profileBadges');
+            let badgeHtml = '';
+
+            if (currentUser.role === 'admin') badgeHtml += '<span class="badge admin">👑 Admin</span>';
+            if (currentUser.role === 'moderator') badgeHtml += '<span class="badge moderator">🛡️ Moderator</span>';
+            if (currentUser.email_verified) badgeHtml += '<span class="badge verified">✅ Verified</span>';
+
+            // Check for special features
+            if (userFeatures.some(f => f.feature_key === 'early_access')) {
+                badgeHtml += '<span class="badge early">🚀 Early Access</span>';
+            }
+            if (userFeatures.some(f => f.feature_key === 'beta_features')) {
+                badgeHtml += '<span class="badge beta">🧪 Beta Tester</span>';
+            }
+
+            if (!badgeHtml) badgeHtml = '<span class="badge user">👤 User</span>';
+            badges.innerHTML = badgeHtml;
+
+            // === Features ===
+            renderFeatures();
+
+            // === Feed ===
+            renderFeed();
+
+            // === Check for announcements ===
+            checkForAnnouncements();
+
+            // === Show dashboard ===
+            document.getElementById('dashboardContainer').style.display = 'block';
+        }
+
+        // ============================================================
+        // ===== RENDER FEATURES =====
+        // ============================================================
+        function renderFeatures() {
+            const grid = document.getElementById('featuresGrid');
+
+            const allFeatures = [
+                { key: 'trending', icon: '🔥', label: 'Trending', desc: 'See what\'s hot' },
+                { key: 'leaderboard', icon: '🏆', label: 'Leaderboard', desc: 'Top users' },
+                { key: 'comments', icon: '💬', label: 'Comments', desc: 'Join discussions' },
+                { key: 'direct_messages', icon: '✉️', label: 'Direct Messages', desc: 'Private chat' },
+                { key: 'profile_customization', icon: '🎨', label: 'Customization', desc: 'Personalize' },
+                { key: 'advanced_search', icon: '🔍', label: 'Advanced Search', desc: 'Find anything' },
+                { key: 'content_creation', icon: '📝', label: 'Content Creation', desc: 'Create posts' },
+                { key: 'analytics', icon: '📊', label: 'Analytics', desc: 'View insights' },
+                { key: 'early_access', icon: '🚀', label: 'Early Access', desc: 'New features first' },
+                { key: 'beta_features', icon: '🧪', label: 'Beta Features', desc: 'Test new stuff' },
+            ];
+
+            const enabledKeys = userFeatures.map(f => f.feature_key);
+
+            grid.innerHTML = allFeatures.map(f => {
+                const isActive = enabledKeys.includes(f.key);
+                return `
+                    <div class="feature-card ${isActive ? 'active' : 'locked'}">
+                        <span class="icon">${f.icon}</span>
+                        <div class="name">${f.label}</div>
+                        <div class="status">${isActive ? '✅ Active' : '🔒 Locked'}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        // ===== RENDER FEED =====
+        // ============================================================
+        function renderFeed() {
+            const container = document.getElementById('feedContainer');
+
+            if (userPosts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-newspaper"></i>
+                        <p>No posts yet. Create your first post!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = userPosts.map(post => {
+                const statusColors = {
+                    'approved': 'approved',
+                    'pending': 'pending',
+                    'flagged': 'flagged'
+                };
+                return `
+                    <div class="feed-item">
+                        <div class="avatar">${(currentUser.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}</div>
+                        <div class="content">
+                            <div class="author">
+                                ${currentUser.name || 'User'}
+                                <span class="time">${new Date(post.created_at).toLocaleString()}</span>
+                            </div>
+                            <div class="text">${post.content}</div>
+                            <div class="status-badge ${statusColors[post.status] || 'pending'}">
+                                ${post.status || 'pending'}
+                            </div>
+                            <div class="actions">
+                                <button onclick="showToast('💬 Comment feature coming soon!', 'info')">
+                                    <i class="fas fa-comment"></i> 0
+                                </button>
+                                <button onclick="showToast('❤️ Like feature coming soon!', 'info')">
+                                    <i class="fas fa-heart"></i> 0
+                                </button>
+                                <button onclick="showToast('📤 Share feature coming soon!', 'info')">
+                                    <i class="fas fa-share"></i> Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        // ===== CHECK FOR ANNOUNCEMENTS =====
+        // ============================================================
+        function checkForAnnouncements() {
+            const announcement = document.getElementById('featureAnnouncement');
+
+            // Check if there's a new feature announcement
+            // This would typically come from the feature_announcements table
+            // For now, we'll check if the user has any recently enabled features
+
+            const recentlyEnabled = userFeatures.filter(f =>
+                f.enabled === true &&
+                new Date(f.granted_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Last 7 days
+            );
+
+            if (recentlyEnabled.length > 0 && !localStorage.getItem('announcement_dismissed')) {
+                const feature = recentlyEnabled[0];
+                announcement.classList.add('show');
+                document.getElementById('announceIcon').textContent = getFeatureIcon(feature.feature_key);
+                document.getElementById('announceTitle').textContent =
+                    `🎉 New Feature: ${formatFeatureName(feature.feature_key)}!`;
+                document.getElementById('announceMessage').textContent =
+                    `You now have access to ${formatFeatureName(feature.feature_key)}. Enjoy!`;
+            } else {
+                announcement.classList.remove('show');
+            }
+        }
+
+        function getFeatureIcon(key) {
+            const icons = {
+                'trending': '🔥',
+                'leaderboard': '🏆',
+                'comments': '💬',
+                'direct_messages': '✉️',
+                'profile_customization': '🎨',
+                'advanced_search': '🔍',
+                'content_creation': '📝',
+                'analytics': '📊',
+                'early_access': '🚀',
+                'beta_features': '🧪'
+            };
+            return icons[key] || '🎉';
+        }
+
+        function formatFeatureName(key) {
+            return key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        }
+
+        function dismissAnnouncement() {
+            document.getElementById('featureAnnouncement').classList.remove('show');
+            localStorage.setItem('announcement_dismissed', 'true');
+        }
+
+        // ============================================================
+        // ===== CREATE POST =====
+        // ============================================================
+        async function handleCreatePost(e) {
+            e.preventDefault();
+            const content = document.getElementById('postContent').value.trim();
+            const postBtn = document.getElementById('postBtn');
+
+            if (!content) {
+                showToast('Please write something.', 'error');
+                return;
+            }
+
+            postBtn.disabled = true;
+            postBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
+
+            try {
+                // Insert into moderation queue first
+                const { data, error } = await supabaseClient
+                    .from('moderation_queue')
+                    .insert({
+                        user_id: currentUser.id,
+                        content: content,
+                        type: 'post',
+                        status: 'pending'
+                    })
+                    .select()
+                    .single();
+
+                if (error) throw error;
+
+                // The auto-moderation trigger will check the content
+                // If it passes, it will be approved automatically
+
+                showToast('✅ Post submitted for moderation!', 'success');
+                closeModal('createPostModal');
+                document.getElementById('postContent').value = '';
+
+                // Reload posts
+                await loadUserData();
+                renderFeed();
+
+            } catch (error) {
+                showToast('Error: ' + error.message, 'error');
+            }
+
+            postBtn.disabled = false;
+            postBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish Post';
+        }
+
+        // ============================================================
+        // ===== CHECK SESSION =====
+        // ============================================================
+        async function checkSession() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+
+                if (session) {
+                    const { data: userData, error } = await supabaseClient
+                        .from('users')
+                        .select('*')
+                        .eq('id', session.user.id)
+                        .single();
+
+                    if (error || !userData) {
+                        await supabaseClient.auth.signOut();
+                        return;
+                    }
+
+                    // Check if user is suspended or banned
+                    if (userData.status === 'suspended' || userData.status === 'banned') {
+                        await supabaseClient.auth.signOut();
+                        showToast('Your account has been restricted.', 'error');
+                        return;
+                    }
+
+                    currentUser = userData;
+                    userRole = userData.role;
+
+                    await loadUserData();
+                    renderDashboard();
+
+                    document.getElementById('loginOverlay').classList.add('hidden');
+                    document.getElementById('dashboardContainer').style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Session check error:', error);
+            }
+        }
+
+        // ============================================================
+        // ===== INIT =====
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('%c⚡ Curiosity User Dashboard', 'font-size:24px; font-weight:bold; color:#00bcd4;');
+            console.log('%c🔗 Connected to: ' + SUPABASE_URL, 'font-size:12px; color:#94a3b8;');
+
+            await checkSession();
+
+            if (!currentUser) {
+                document.getElementById('loginOverlay').classList.remove('hidden');
+            }
+
+            console.log('%c👤 User:', currentUser ? currentUser.name : 'Not logged in', 'font-size:14px;');
+        });
+    </script>
+
+</body>
+</html>
