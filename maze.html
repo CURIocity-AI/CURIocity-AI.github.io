@@ -29,6 +29,19 @@
         }
 
         /* ================================================================
+           VIEWPORT / KEYBOARD FIX
+           --vvh / --vv-offset are kept in sync with window.visualViewport
+           by JS below, so fixed elements track the real visible area
+           instead of the layout viewport (which mobile browsers shift
+           upward, off-screen, when the keyboard opens).
+           ================================================================ */
+        :root {
+            --vvh: 100vh;
+            --vv-offset: 0px;
+            --vv-bottom: 0px;
+        }
+
+        /* ================================================================
            LAUNCH PAGE
            ================================================================ */
         #launchPage {
@@ -135,6 +148,7 @@
             left: 0;
             width: 100%;
             min-height: 100vh;
+            min-height: var(--vvh);
             background: #0f172a;
             z-index: 2;
             display: none;
@@ -151,7 +165,7 @@
            ================================================================ */
         .maze-header {
             position: fixed;
-            top: 0;
+            top: var(--vv-offset);
             left: 0;
             right: 0;
             z-index: 1000;
@@ -163,7 +177,9 @@
             border-bottom: 1px solid #334155;
             background: #0f172a;
             min-height: 44px;
-            /* CRITICAL: Fixed position keeps it on screen */
+            /* CRITICAL: top tracks --vv-offset (set by JS from
+               window.visualViewport) so it stays on screen even when
+               the keyboard shifts the layout viewport upward. */
             width: 100%;
         }
 
@@ -238,8 +254,8 @@
            ================================================================ */
         .maze-nav-wrapper {
             position: fixed;
-            top: 44px;
-            /* Height of header */
+            top: calc(44px + var(--vv-offset));
+            /* Height of header + keyboard/viewport offset */
             left: 0;
             right: 0;
             z-index: 999;
@@ -254,7 +270,8 @@
             min-height: 60px;
             overflow-x: auto;
             scrollbar-width: none;
-            /* CRITICAL: Fixed position keeps it on screen */
+            /* CRITICAL: top tracks --vv-offset so it stays glued
+               under the header even when the keyboard is open. */
         }
 
         .maze-nav-wrapper::-webkit-scrollbar {
@@ -691,7 +708,7 @@
            ================================================================ */
         .maze-chat-area {
             position: fixed;
-            bottom: 0;
+            bottom: var(--vv-bottom);
             left: 0;
             right: 0;
             z-index: 100;
@@ -700,7 +717,9 @@
             padding: 8px 16px 12px;
             flex-shrink: 0;
             min-height: 70px;
-            /* CRITICAL: Fixed at bottom, stays above keyboard */
+            /* CRITICAL: bottom tracks --vv-bottom (set by JS to the
+               live keyboard height) so it stays pinned just above the
+               keyboard instead of sliding underneath it. */
         }
 
         .maze-chat-area.hidden-input {
@@ -1873,6 +1892,62 @@
                 $('navSlot4')
             ]
         };
+
+        // ================================================================
+        //  VIEWPORT / KEYBOARD FIX
+        //  Keeps --vvh, --vv-offset, --vv-bottom in sync with the real
+        //  visible area (window.visualViewport), so the fixed header,
+        //  nav, and chat input track the keyboard instead of being
+        //  shifted off-screen with the rest of the page.
+        // ================================================================
+        (function setupViewportFix() {
+            const root = document.documentElement;
+
+            function applyViewport() {
+                const vv = window.visualViewport;
+
+                if (vv) {
+                    // Height of the actually-visible area
+                    root.style.setProperty('--vvh', vv.height + 'px');
+                    // How far the visible area's top has scrolled from
+                    // the layout viewport's top (0 unless the page has
+                    // been shifted, e.g. by iOS Safari on focus)
+                    root.style.setProperty('--vv-offset', vv.offsetTop + 'px');
+                    // Space between the bottom of the visible area and
+                    // the bottom of the layout viewport — effectively
+                    // the on-screen keyboard's height
+                    const bottomGap = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+                    root.style.setProperty('--vv-bottom', bottomGap + 'px');
+                } else {
+                    // Fallback for browsers without visualViewport
+                    root.style.setProperty('--vvh', window.innerHeight + 'px');
+                    root.style.setProperty('--vv-offset', '0px');
+                    root.style.setProperty('--vv-bottom', '0px');
+                }
+            }
+
+            applyViewport();
+
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', applyViewport);
+                window.visualViewport.addEventListener('scroll', applyViewport);
+            } else {
+                window.addEventListener('resize', applyViewport);
+            }
+
+            // iOS Safari sometimes needs a nudge right after a text
+            // input gains focus, before visualViewport fires.
+            document.addEventListener('focusin', (e) => {
+                if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+                    setTimeout(applyViewport, 50);
+                    setTimeout(applyViewport, 300);
+                }
+            });
+            document.addEventListener('focusout', () => {
+                setTimeout(applyViewport, 50);
+                setTimeout(applyViewport, 300);
+            });
+        })();
 
         // ================================================================
         //  RENDER FUNCTIONS
