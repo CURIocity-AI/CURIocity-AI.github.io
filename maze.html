@@ -147,8 +147,13 @@
             top: 0;
             left: 0;
             width: 100%;
-            min-height: 100vh;
-            min-height: var(--vvh);
+            height: 100vh;
+            height: var(--vvh);
+            /* CRITICAL: must be a fixed height, not min-height — a flex
+               column with an auto-height parent never actually bounds
+               its flex:1 children, so the chat area grew to fit every
+               message instead of clipping and scrolling within the
+               screen. */
             background: #0f172a;
             z-index: 2;
             display: none;
@@ -161,7 +166,8 @@
         }
 
         /* ================================================================
-           FIXED HEADER — NEVER LEAVES VIEWPORT
+           FIXED HEADER — logo, streets nav, and action buttons all in
+           one row. NEVER leaves viewport.
            ================================================================ */
         .maze-header {
             position: fixed;
@@ -172,11 +178,11 @@
             /* High z-index to stay on top */
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 6px 16px;
+            gap: 10px;
+            padding: 6px 12px;
             border-bottom: 1px solid #334155;
             background: #0f172a;
-            min-height: 44px;
+            min-height: 56px;
             /* CRITICAL: top tracks --vv-offset (set by JS from
                window.visualViewport) so it stays on screen even when
                the keyboard shifts the layout viewport upward. */
@@ -187,12 +193,21 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .maze-header .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
         .maze-header .header-title {
             font-size: 0.85rem;
             font-weight: 600;
             color: #94a3b8;
+            white-space: nowrap;
         }
 
         .maze-header .header-title span {
@@ -241,6 +256,8 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .btn-map:hover {
@@ -250,28 +267,19 @@
         }
 
         /* ================================================================
-           FIXED NAVIGATION — STAYS BELOW HEADER
+           STREETS NAV — lives inside the header row now, scrolls
+           horizontally if there isn't room for all the buttons.
            ================================================================ */
         .maze-nav-wrapper {
-            position: fixed;
-            top: calc(44px + var(--vv-offset));
-            /* Height of header + keyboard/viewport offset */
-            left: 0;
-            right: 0;
-            z-index: 999;
+            flex: 1 1 auto;
+            min-width: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
-            padding: 6px 16px 8px;
-            border-bottom: 1px solid #334155;
-            background: #0f172a;
-            width: 100%;
-            min-height: 60px;
+            gap: 6px;
+            height: 100%;
             overflow-x: auto;
             scrollbar-width: none;
-            /* CRITICAL: top tracks --vv-offset so it stays glued
-               under the header even when the keyboard is open. */
         }
 
         .maze-nav-wrapper::-webkit-scrollbar {
@@ -281,7 +289,7 @@
         .nav-slot {
             flex: 1;
             max-width: 100px;
-            min-width: 60px;
+            min-width: 56px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -290,29 +298,33 @@
         .nav-slot.middle {
             flex: 1.3;
             max-width: 120px;
-            min-width: 70px;
+            min-width: 64px;
         }
 
         .maze-nav-btn {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            gap: 2px;
-            padding: 8px 12px;
+            justify-content: center;
+            gap: 4px;
+            padding: 8px 10px;
             background: #1e293b;
             border: 2px solid #334155;
-            border-radius: 12px;
+            border-radius: 16px;
             color: #94a3b8;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             font-family: inherit;
             position: relative;
-            min-height: 48px;
+            min-height: 36px;
             width: 100%;
             text-align: center;
-            font-size: 0.5rem;
+            font-size: 0.6rem;
             font-weight: 600;
             line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .maze-nav-btn:hover {
@@ -380,9 +392,9 @@
             min-height: 0;
             overflow: hidden;
             background: #0f172a;
-            /* CRITICAL: Padding for fixed header and nav */
-            padding-top: 104px;
-            /* Header (44px) + Nav (60px) */
+            /* CRITICAL: Padding for the fixed header */
+            padding-top: 58px;
+            /* Header height (56px) + border */
             padding-bottom: 70px;
             /* Space for input */
             position: relative;
@@ -465,6 +477,11 @@
            ================================================================ */
         .maze-chat-messages {
             flex: 1;
+            min-height: 0;
+            /* CRITICAL: without this, a flex item with overflow:auto
+               still grows to fit its content instead of clipping and
+               scrolling — this is what caused messages to overflow
+               past the viewport instead of pushing upward + scrolling */
             overflow-y: auto;
             overflow-x: hidden;
             padding: 12px 16px 12px;
@@ -1185,32 +1202,47 @@
            ================================================================ */
         @media (max-width: 768px) {
             .maze-header {
-                min-height: 40px;
-                padding: 4px 12px;
+                min-height: 48px;
+                padding: 4px 8px;
+                gap: 6px;
+            }
+            .maze-header .header-title span {
+                display: none;
+                /* hide "City Maze" text, keep the icon, to free up
+                   room for the streets nav on this row */
             }
             .maze-nav-wrapper {
-                top: 40px;
-                min-height: 50px;
-                padding: 4px 12px;
                 gap: 4px;
             }
             .maze-messages-wrapper {
-                padding-top: 90px;
-                /* Header (40px) + Nav (50px) */
+                padding-top: 50px;
+                /* Header height on this breakpoint */
                 padding-bottom: 60px;
             }
             .maze-nav-btn {
-                min-height: 40px;
-                padding: 6px 8px;
-                font-size: 0.4rem;
+                min-height: 32px;
+                padding: 4px 6px;
+                font-size: 0.45rem;
+                border-radius: 12px;
             }
             .nav-slot {
                 min-width: 44px;
-                max-width: 70px;
+                max-width: 72px;
             }
             .nav-slot.middle {
                 min-width: 50px;
-                max-width: 80px;
+                max-width: 82px;
+            }
+            .btn-map-label {
+                display: none;
+                /* icon-only on small screens */
+            }
+            .btn-map {
+                padding: 6px 8px;
+            }
+            .btn-911 {
+                padding: 4px 10px;
+                font-size: 0.65rem;
             }
             .maze-chat-area {
                 min-height: 60px;
@@ -1227,15 +1259,17 @@
         }
 
         @media (max-width: 380px) {
+            .maze-header {
+                min-height: 44px;
+                padding: 3px 6px;
+                gap: 4px;
+            }
             .maze-nav-wrapper {
-                top: 36px;
-                min-height: 42px;
-                padding: 3px 8px;
                 gap: 3px;
             }
             .maze-messages-wrapper {
-                padding-top: 78px;
-                /* Header (36px) + Nav (42px) */
+                padding-top: 46px;
+                /* Header height on this breakpoint */
             }
             .nav-slot {
                 min-width: 36px;
@@ -1246,41 +1280,36 @@
                 max-width: 65px;
             }
             .maze-nav-btn {
-                font-size: 0.35rem;
-                padding: 4px 6px;
-                min-height: 34px;
-            }
-            .maze-header {
-                min-height: 36px;
-                padding: 3px 10px;
-            }
-            .maze-header .header-title {
-                font-size: 0.6rem;
+                font-size: 0.4rem;
+                padding: 3px 4px;
+                min-height: 28px;
             }
             .btn-911 {
                 font-size: 0.55rem;
-                padding: 3px 10px;
+                padding: 3px 8px;
             }
             .btn-map {
                 font-size: 0.5rem;
-                padding: 2px 6px;
+                padding: 5px 6px;
             }
         }
 
         @media (max-height: 500px) and (orientation: landscape) {
             .maze-header {
-                min-height: 32px;
-                padding: 3px 12px;
+                min-height: 40px;
+                padding: 3px 10px;
+                gap: 6px;
+            }
+            .maze-header .header-title span {
+                display: none;
+                /* keep just the icon in short landscape rows */
             }
             .maze-nav-wrapper {
-                top: 32px;
-                min-height: 38px;
-                padding: 3px 12px;
                 gap: 4px;
             }
             .maze-messages-wrapper {
-                padding-top: 70px;
-                /* Header (32px) + Nav (38px) */
+                padding-top: 42px;
+                /* Header height on this breakpoint */
                 padding-bottom: 40px;
             }
             .maze-nav-btn {
@@ -1295,6 +1324,16 @@
             .nav-slot.middle {
                 min-width: 38px;
                 max-width: 56px;
+            }
+            .btn-map-label {
+                display: none;
+            }
+            .btn-map {
+                padding: 5px 7px;
+            }
+            .btn-911 {
+                padding: 3px 10px;
+                font-size: 0.65rem;
             }
             .maze-chat-area {
                 min-height: 40px;
@@ -1333,16 +1372,15 @@
         }
 
         @media (min-width: 769px) and (max-width: 1024px) {
-            .maze-nav-wrapper {
-                top: 44px;
-                min-height: 65px;
+            .maze-header {
+                min-height: 64px;
             }
             .maze-messages-wrapper {
-                padding-top: 109px;
-                /* Header (44px) + Nav (65px) */
+                padding-top: 66px;
+                /* Header height on this breakpoint */
             }
             .maze-nav-btn {
-                min-height: 52px;
+                min-height: 44px;
                 padding: 8px 14px;
                 font-size: 0.6rem;
             }
@@ -1357,19 +1395,21 @@
         }
 
         @media (min-width: 1025px) {
-            .maze-nav-wrapper {
-                top: 44px;
-                min-height: 72px;
+            .maze-header {
                 padding: 8px 24px;
+                min-height: 72px;
+                gap: 16px;
+            }
+            .maze-nav-wrapper {
                 gap: 12px;
             }
             .maze-messages-wrapper {
-                padding-top: 116px;
-                /* Header (44px) + Nav (72px) */
+                padding-top: 74px;
+                /* Header height on this breakpoint */
             }
             .maze-nav-btn {
-                min-height: 60px;
-                padding: 12px 18px;
+                min-height: 52px;
+                padding: 10px 18px;
                 font-size: 0.7rem;
             }
             .nav-slot {
@@ -1379,10 +1419,6 @@
             .nav-slot.middle {
                 max-width: 160px;
                 min-width: 100px;
-            }
-            .maze-header {
-                padding: 8px 24px;
-                min-height: 52px;
             }
             .maze-header .header-title {
                 font-size: 1rem;
@@ -1430,26 +1466,26 @@
 
     <!-- MAZE APP -->
     <div id="mazeApp">
-        <!-- HEADER — FIXED at top, NEVER leaves viewport -->
+        <!-- HEADER — single fixed top bar containing logo, streets nav, and action buttons -->
         <div class="maze-header">
             <div class="header-left">
                 <span class="header-title">🧩 <span>City Maze</span></span>
+            </div>
+            <div class="maze-nav-wrapper" id="mazeNavWrapper">
+                <div class="nav-slot" id="navSlot0"></div>
+                <div class="nav-slot" id="navSlot1"></div>
+                <div class="nav-slot middle" id="navSlot2"></div>
+                <div class="nav-slot" id="navSlot3"></div>
+                <div class="nav-slot" id="navSlot4"></div>
+            </div>
+            <div class="header-right">
                 <button class="btn-map" onclick="App.openMap()">
-                    <i class="fas fa-map"></i> Map
+                    <i class="fas fa-map"></i><span class="btn-map-label"> Map</span>
+                </button>
+                <button class="btn-911" onclick="App.call911()">
+                    <i class="fas fa-phone-alt"></i> 911
                 </button>
             </div>
-            <button class="btn-911" onclick="App.call911()">
-                <i class="fas fa-phone-alt"></i> 911
-            </button>
-        </div>
-
-        <!-- NAVIGATION — FIXED below header, NEVER leaves viewport -->
-        <div class="maze-nav-wrapper" id="mazeNavWrapper">
-            <div class="nav-slot" id="navSlot0"></div>
-            <div class="nav-slot" id="navSlot1"></div>
-            <div class="nav-slot middle" id="navSlot2"></div>
-            <div class="nav-slot" id="navSlot3"></div>
-            <div class="nav-slot" id="navSlot4"></div>
         </div>
 
         <!-- MESSAGES — SCROLLABLE with padding for fixed elements -->
