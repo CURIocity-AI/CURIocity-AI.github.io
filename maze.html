@@ -1548,6 +1548,21 @@
         // ================================================================
         //  ROOM DATA
         // ================================================================
+
+        // Filler slots (dead ends AND hidden passages both draw from this
+        // same pool) — they must look identical either way, or players
+        // could just learn to recognize "the real passage label" and
+        // the maze collapses back into a pattern-matching shortcut.
+        const FILLER_LABEL = '__FILLER__';
+        const FILLER_FLAVORS = [
+            '🕳️ Dark Tunnel', '🌀 Strange Passage', '🚪 Narrow Doorway',
+            '🌫️ Foggy Path', '🪜 Rickety Ladder', '🕸️ Cobweb Corridor',
+            '🌿 Overgrown Trail', '🧱 Gap in the Wall', '🪟 Broken Window',
+            '🛖 Hidden Shed', '🌾 Tall Grass Path', '🪣 Old Well Shaft',
+            '🔑 Rusty Grate', '🌉 Narrow Bridge', '🕰️ Forgotten Stairwell',
+            '🪴 Hidden Greenhouse'
+        ];
+
         const ROOMS = {
             'gate_street': {
                 id: 'gate_street',
@@ -1738,11 +1753,11 @@
                 color: '#60a5fa',
                 type: '🛤️ Avenue',
                 slots: [
-                    { label: 'House #27', action: 'goTo', target: 'house_27' },
-                    { label: 'House #28', action: 'goTo', target: 'house_28' },
+                    { label: 'Sycamore Court', action: 'goTo', target: 'sycamore_court' },
+                    { label: 'Walnut Row', action: 'goTo', target: 'walnut_row' },
                     { label: '🌳 Oak Avenue', action: 'center' },
-                    { label: 'House #29', action: 'goTo', target: 'house_29' },
-                    { label: '🏛️ Gate Street', action: 'goTo', target: 'gate_street' }
+                    { label: '🏛️ Gate Street', action: 'goTo', target: 'gate_street' },
+                    { label: FILLER_LABEL, action: 'goTo', target: 'oak_avenue', filler: true }
                 ]
             },
             'elm_street': {
@@ -1751,17 +1766,103 @@
                 color: '#34d399',
                 type: '🛤️ Street',
                 slots: [
-                    { label: 'House #30', action: 'goTo', target: 'house_30' },
-                    { label: 'House #31', action: 'goTo', target: 'house_31' },
+                    { label: 'Hazel Bend', action: 'goTo', target: 'hazel_bend' },
+                    { label: 'Magnolia Walk', action: 'goTo', target: 'magnolia_walk' },
                     { label: '🌿 Elm Street', action: 'center' },
-                    { label: 'House #32', action: 'goTo', target: 'house_32' },
-                    { label: '🏛️ Gate Street', action: 'goTo', target: 'gate_street' }
+                    { label: '🏛️ Gate Street', action: 'goTo', target: 'gate_street' },
+                    { label: FILLER_LABEL, action: 'goTo', target: 'elm_street', filler: true }
+                ]
+            },
+            'sycamore_court': {
+                id: 'sycamore_court',
+                label: '🌰 Sycamore Court',
+                color: '#facc15',
+                type: '🛤️ Lane',
+                slots: [
+                    { label: 'House A', action: 'goTo', target: 'house_27' },
+                    { label: 'House B', action: 'goTo', target: 'house_28' },
+                    { label: '🌰 Sycamore Court', action: 'center' },
+                    { label: '🌳 Oak Avenue', action: 'goTo', target: 'oak_avenue' },
+                    { label: FILLER_LABEL, action: 'goTo', target: 'sycamore_court', filler: true }
+                ]
+            },
+            'walnut_row': {
+                id: 'walnut_row',
+                label: '🌰 Walnut Row',
+                color: '#fb7185',
+                type: '🛤️ Street',
+                slots: [
+                    { label: 'House A', action: 'goTo', target: 'house_29' },
+                    { label: 'House B', action: 'goTo', target: 'house_33' },
+                    { label: '🌰 Walnut Row', action: 'center' },
+                    { label: '🌳 Oak Avenue', action: 'goTo', target: 'oak_avenue' },
+                    { label: FILLER_LABEL, action: 'goTo', target: 'walnut_row', filler: true }
+                ]
+            },
+            'hazel_bend': {
+                id: 'hazel_bend',
+                label: '🌰 Hazel Bend',
+                color: '#38bdf8',
+                type: '🛤️ Lane',
+                slots: [
+                    { label: 'House A', action: 'goTo', target: 'house_30' },
+                    { label: 'House B', action: 'goTo', target: 'house_34' },
+                    { label: '🌰 Hazel Bend', action: 'center' },
+                    { label: '🌿 Elm Street', action: 'goTo', target: 'elm_street' },
+                    { label: FILLER_LABEL, action: 'goTo', target: 'hazel_bend', filler: true }
+                ]
+            },
+            'magnolia_walk': {
+                id: 'magnolia_walk',
+                label: '🌸 Magnolia Walk',
+                color: '#a3e635',
+                type: '🛤️ Avenue',
+                slots: [
+                    { label: 'House A', action: 'goTo', target: 'house_31' },
+                    { label: 'House B', action: 'goTo', target: 'house_32' },
+                    { label: '🌸 Magnolia Walk', action: 'center' },
+                    { label: '🌿 Elm Street', action: 'goTo', target: 'elm_street' },
+                    { label: FILLER_LABEL, action: 'goTo', target: 'magnolia_walk', filler: true }
                 ]
             }
         };
 
+        // Unique flavor names for houses — replaces the generic
+        // "House #N" labels so every stop feels like a real place.
+        const HOUSE_NAMES = [
+            '🕯️ Candle Room', '🧺 Laundry Nook', '🐈 Cat\'s Perch', '🔥 Old Fireplace',
+            '🛖 Toolshed', '🌾 Hay Loft', '🏺 Pottery Nook', '🧵 Sewing Room',
+            '🪴 Greenhouse Corner', '🎪 Backyard Tent', '🚲 Bike Shed', '🪑 Porch Swing',
+            '🌉 Garden Bridge', '🛶 Old Canoe', '🪵 Woodpile', '🗝️ Key Cabinet',
+            '🧳 Attic Trunk', '🌻 Sunflower Patch', '🪣 Well Bucket', '🧶 Yarn Room',
+            '🍄 Mushroom Patch', '🕰️ Grandfather Clock', '🪟 Sunroom', '🧸 Playroom',
+            '🍯 Pantry', '🪞 Hallway Mirror', '🧱 Root Cellar', '🌼 Flower Bed',
+            '🪁 Kite Corner', '🎻 Music Room', '🧦 Mudroom', '📚 Reading Nook',
+            '🕹️ Game Room', '🍞 Bread Oven'
+        ];
+
+        // Curated bidirectional secret passages — these are the real
+        // shortcuts that turn the tree into an actual maze with cycles.
+        // Each pair shares a filler slot on both ends, and every filler
+        // slot (real passage or genuine dead end) draws its label from
+        // the same FILLER_FLAVORS pool, so there is no visual tell.
+        const CROSS_LINKS = [
+            ['house_1', 'house_19'],
+            ['house_5', 'house_27'],
+            ['house_8', 'house_31'],
+            ['house_11', 'house_23'],
+            ['house_14', 'house_2'],
+            ['house_17', 'house_29'],
+            ['house_20', 'house_33'],
+            ['house_25', 'house_30'],
+            ['house_6', 'house_34'],
+            ['house_12', 'house_28'],
+            ['sycamore_court', 'house_15'],
+            ['hazel_bend', 'house_9']
+        ];
+
         // Generate houses
-        for (let i = 1; i <= 32; i++) {
+        for (let i = 1; i <= 34; i++) {
             const parent = i <= 3 ? 'birch_street' :
                 i <= 6 ? 'chestnut_ave' :
                 i <= 9 ? 'willow_lane' :
@@ -1771,23 +1872,76 @@
                 i <= 21 ? 'juniper_street' :
                 i <= 24 ? 'ash_avenue' :
                 i <= 26 ? 'poplar_lane' :
-                i <= 29 ? 'oak_avenue' : 'elm_street';
+                i <= 28 ? 'sycamore_court' :
+                (i === 29 || i === 33) ? 'walnut_row' :
+                (i === 30 || i === 34) ? 'hazel_bend' : 'magnolia_walk';
 
             const parentRoom = ROOMS[parent];
+            const houseLabel = HOUSE_NAMES[i - 1] || ('🏠 House #' + i);
+
             ROOMS['house_' + i] = {
                 id: 'house_' + i,
-                label: '🏠 House #' + i,
+                label: houseLabel,
                 color: '#94a3b8',
                 type: '🏠 House',
                 slots: [
                     { label: parentRoom.label, action: 'goTo', target: parent },
-                    { label: '📦 Porch', action: 'goTo', target: 'house_' + i },
-                    { label: '🏠 House #' + i, action: 'center' },
-                    { label: '🚪 Door', action: 'goTo', target: 'house_' + i },
-                    { label: parentRoom.label, action: 'goTo', target: parent }
+                    { label: FILLER_LABEL, action: 'goTo', target: 'house_' + i, filler: true },
+                    { label: houseLabel, action: 'center' },
+                    { label: FILLER_LABEL, action: 'goTo', target: 'house_' + i, filler: true },
+                    { label: FILLER_LABEL, action: 'goTo', target: 'house_' + i, filler: true }
                 ]
             };
         }
+
+        // Wire up the secret passages: for each pair, claim one still-
+        // unused filler slot (a self-loop, action 'goTo' pointing back
+        // at its own room) on each side and repoint it at the other
+        // room — bidirectional, so the shortcut works both ways.
+        (function wireCrossLinks() {
+            function claimFillerSlot(roomId) {
+                const room = ROOMS[roomId];
+                if (!room) return null;
+                return room.slots.find(s => s.action === 'goTo' && s.target === roomId) || null;
+            }
+
+            CROSS_LINKS.forEach(([a, b]) => {
+                const slotA = claimFillerSlot(a);
+                const slotB = claimFillerSlot(b);
+                if (!slotA || !slotB) return;
+                slotA.target = b;
+                slotB.target = a;
+            });
+        })();
+
+        // Fill in every remaining filler slot (the genuine dead ends,
+        // plus the passage slots above which kept the sentinel label)
+        // with a random flavor from the shared pool — indistinguishable
+        // from each other by design.
+        (function fillFlavorLabels() {
+            Object.keys(ROOMS).forEach(id => {
+                ROOMS[id].slots.forEach(slot => {
+                    if (slot.label === FILLER_LABEL) {
+                        slot.label = FILLER_FLAVORS[Math.floor(Math.random() * FILLER_FLAVORS.length)];
+                    }
+                });
+            });
+        })();
+
+        // Keep every *structural* (non-mystery) connection's button text
+        // in sync with its destination's real name — so a street always
+        // shows the house's actual current name instead of a stale
+        // hardcoded label. Filler/passage slots are skipped on purpose:
+        // their whole point is to NOT reveal where they lead.
+        (function syncStructuralLabels() {
+            Object.keys(ROOMS).forEach(id => {
+                ROOMS[id].slots.forEach(slot => {
+                    if (slot.action === 'goTo' && !slot.filler && ROOMS[slot.target]) {
+                        slot.label = ROOMS[slot.target].label;
+                    }
+                });
+            });
+        })();
 
         // ================================================================
         //  STATE
@@ -1855,6 +2009,18 @@
 
         function generateId() {
             return Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+        }
+
+        function shuffleArray(arr) {
+            // Fisher-Yates — used so the 4 navigable buttons land in a
+            // different order every time a room is rendered, including
+            // on revisits, so no fixed button position ever reliably
+            // leads toward the gate.
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
         }
 
         function detectEmergency(message) {
@@ -1994,12 +2160,9 @@
                 if (!room) return;
 
                 const slots = room.slots;
-                for (let i = 0; i < 5; i++) {
-                    const slot = slots[i];
-                    const navSlot = DOM.navSlots[i];
-                    if (!navSlot) continue;
 
-                    const isCenter = i === 2;
+                const renderButton = (navSlot, slot, isCenter) => {
+                    if (!navSlot) return;
                     navSlot.innerHTML = '';
 
                     const btn = document.createElement('button');
@@ -2009,19 +2172,34 @@
                         btn.classList.add('center-btn');
                         btn.setAttribute('style', `border-color: ${room.color};`);
                     } else if (slot.action === 'goTo') {
-                        if (slot.target === 'gate_street') {
-                            btn.classList.add('gate-btn');
-                        }
+                        // Intentionally no special styling based on the
+                        // target (no more gold "gate" highlight) —
+                        // every path looks the same, so players have to
+                        // read the labels instead of following a
+                        // glowing "way out" button.
                         btn.onclick = () => App.goToRoom(slot.target);
                     } else if (slot.action === 'exit') {
                         btn.classList.add('exit-btn');
                         btn.onclick = () => App.exitMaze();
                     }
 
-                    navSlot.className = isCenter ? 'nav-slot middle' : 'nav-slot';
                     btn.textContent = slot.label;
                     navSlot.appendChild(btn);
-                }
+                    navSlot.className = isCenter ? 'nav-slot middle' : 'nav-slot';
+                };
+
+                // The current-location tile always stays in the middle
+                // for readability.
+                renderButton(DOM.navSlots[2], slots[2], true);
+
+                // The 4 navigable directions are re-shuffled into the
+                // remaining positions on every render — including when
+                // re-entering a room you've already visited — so there
+                // is no fixed "always click the 3rd button" escape
+                // route. Position alone can never solve the maze.
+                const otherSlots = shuffleArray([slots[0], slots[1], slots[3], slots[4]]);
+                const otherDomSlots = [DOM.navSlots[0], DOM.navSlots[1], DOM.navSlots[3], DOM.navSlots[4]];
+                otherSlots.forEach((slot, idx) => renderButton(otherDomSlots[idx], slot, false));
             },
 
             pageBar(roomId) {
