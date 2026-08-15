@@ -1,51 +1,1021 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Site Closed</title>
-<style>
-  html, body {
-    height: 100%;
-    margin: 0;
-  }
-  body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #1e1e2f 0%, #2b2b45 100%);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: #f0f0f5;
-    text-align: center;
-    padding: 24px;
-    box-sizing: border-box;
-  }
-  .card {
-    max-width: 420px;
-  }
-  .icon {
-    font-size: 48px;
-    margin-bottom: 20px;
-  }
-  h1 {
-    font-size: 22px;
-    font-weight: 600;
-    margin: 0 0 12px;
-    letter-spacing: -0.01em;
-  }
-  p {
-    font-size: 15px;
-    line-height: 1.6;
-    color: #a8a8b8;
-    margin: 0;
-  }
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>US Passport with Visa Button</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #dce1e8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 1.5rem;
+        }
+
+        /* ---------- PASSPORT CARD CONTAINER ---------- */
+        .passport-card {
+            width: 400px;
+            max-width: 100%;
+            aspect-ratio: 1.45 / 1;
+            background: linear-gradient(160deg, #0a1628, #1a2a4a, #0a1628);
+            border-radius: 18px;
+            padding: 1.2rem 1.5rem 1.0rem;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.45),
+                0 4px 16px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .passport-card::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            border: 1px solid rgba(212, 175, 55, 0.08);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .passport-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(45deg, 
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.01) 2px,
+                    rgba(255, 255, 255, 0.01) 4px
+                );
+            pointer-events: none;
+            border-radius: 18px;
+        }
+
+        .passport-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 28px 72px rgba(0, 0, 0, 0.55), 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ---------- TOP SECTION ---------- */
+        .passport-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            z-index: 1;
+        }
+
+        .emblem-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .emblem {
+            width: 34px;
+            height: 34px;
+            background: radial-gradient(circle at 30% 30%, #f5e6a3, #c9a84c);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.0rem;
+            color: #0a1628;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 215, 100, 0.4);
+            flex-shrink: 0;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .emblem-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .emblem-text .country {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #c9a84c;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+
+        .emblem-text .type {
+            font-size: 0.4rem;
+            font-weight: 400;
+            color: rgba(201, 168, 76, 0.5);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Right side container */
+        .passport-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.3rem;
+        }
+
+        .passport-type {
+            background: rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            padding: 0.15rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.4rem;
+            font-weight: 600;
+            color: #c9a84c;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+        }
+
+        /* Visa button + flag container */
+        .visa-container {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* USA Flag Icon */
+        .flag-icon {
+            font-size: 1.0rem;
+            line-height: 1;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        /* ---------- VISA BUTTON (Reduced Shadow) ---------- */
+        .visa-btn {
+            background: linear-gradient(145deg, #1a3a5a, #0d2238);
+            border: none;
+            border-radius: 6px;
+            padding: 0.15rem 0.7rem;
+            font-size: 0.55rem;
+            font-weight: 700;
+            color: #c9a84c;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 
+                0 2px 0 #09162a,
+                0 4px 8px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.08);
+            transition: all 0.08s linear;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-family: inherit;
+            position: relative;
+            transform: translateY(0);
+        }
+
+        .visa-btn i {
+            font-size: 0.45rem;
+            color: #c9a84c;
+        }
+
+        .visa-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 
+                0 3px 0 #09162a,
+                0 6px 12px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .visa-btn:active {
+            transform: translateY(2px);
+            box-shadow: 
+                0 0px 0 #09162a,
+                0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        /* ---------- PASSPORT PHOTO + NAME ---------- */
+        .passport-user {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            position: relative;
+            z-index: 1;
+            margin: 0.1rem 0;
+        }
+
+        .passport-photo {
+            width: 52px;
+            height: 66px;
+            border-radius: 4px;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #1a2a4a;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .passport-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .passport-photo::after {
+            content: 'PASSPORT';
+            position: absolute;
+            bottom: 2px;
+            right: 3px;
+            font-size: 0.25rem;
+            color: rgba(255,255,255,0.06);
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .passport-name {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .passport-name .name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            line-height: 1.2;
+        }
+
+        .passport-name .surname {
+            font-size: 0.55rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 1px;
+        }
+
+        .passport-name .nationality {
+            font-size: 0.45rem;
+            font-weight: 400;
+            color: rgba(201, 168, 76, 0.4);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .passport-name .nationality i {
+            font-size: 0.35rem;
+            color: rgba(201, 168, 76, 0.2);
+        }
+
+        /* ---------- DETAILS GRID (6 fields, 3 columns) ---------- */
+        .passport-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.1rem 0.3rem;
+            position: relative;
+            z-index: 1;
+            background: rgba(255,255,255,0.02);
+            border-radius: 6px;
+            padding: 0.25rem 0.3rem;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.02rem;
+            min-width: 0;
+        }
+
+        .detail-item .label {
+            font-size: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: rgba(255,255,255,0.15);
+            font-weight: 500;
+        }
+
+        .detail-item .value {
+            font-size: 0.45rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .detail-item .value.gold {
+            color: #c9a84c;
+        }
+
+        /* ---------- PASSPORT FOOTER ---------- */
+        .passport-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.2rem;
+            padding-top: 0.2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.06);
+            position: relative;
+            z-index: 1;
+        }
+
+        .passport-footer .passport-number {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.4rem;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.15);
+        }
+
+        .passport-footer .expiry {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.4rem;
+            color: rgba(255,255,255,0.2);
+            letter-spacing: 0.5px;
+        }
+
+        .passport-footer .expiry span {
+            color: rgba(201, 168, 76, 0.4);
+            font-weight: 500;
+        }
+
+        .passport-footer .mrz {
+            font-family: 'Courier New', monospace;
+            font-size: 0.35rem;
+            letter-spacing: 0.8px;
+            color: rgba(255,255,255,0.04);
+            font-weight: 700;
+        }
+
+        /* ---------- VISA POPUP OVERLAY ---------- */
+        .visa-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .visa-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .visa-popup {
+            background: linear-gradient(145deg, #f0ece6, #e8e0d8);
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 420px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+            border: 2px solid #1a3a5a;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .visa-popup::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px dashed rgba(26, 58, 90, 0.15);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .visa-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: #6a5a4a;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            z-index: 2;
+            padding: 0.3rem;
+        }
+
+        .visa-close:hover {
+            transform: rotate(90deg);
+            color: #1a1a1a;
+        }
+
+        /* ----- GREEN CARD STAMP inside popup (exact design from first card) ----- */
+        .visa-stamp {
+            max-width: 100%;
+            width: 100%;
+            background: #faf8f5;
+            border-radius: 12px;
+            padding: 1.5rem 1.5rem 1.2rem;
+            border: 2px solid #22c55e;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 0.5rem 0 0.2rem;
+        }
+
+        .visa-stamp::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px dashed rgba(34, 197, 94, 0.12);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        .visa-stamp .us-flag {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 0.2rem;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+            line-height: 1;
+        }
+
+        .visa-stamp .visa-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #22c55e;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #22c55e;
+            padding-bottom: 0.5rem;
+            text-align: center;
+            margin-bottom: 0.6rem;
+        }
+
+        .visa-stamp .visa-type {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #22c55e;
+            text-align: center;
+            letter-spacing: 2px;
+            font-family: 'Times New Roman', serif;
+            margin: 0.2rem 0 0.2rem;
+        }
+
+        .visa-stamp .visitor-label {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #22c55e;
+            text-align: center;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin: 0.1rem 0 0.3rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .visa-stamp .categories-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(34, 197, 94, 0.04);
+            border: 1px solid rgba(34, 197, 94, 0.08);
+            border-radius: 20px;
+            padding: 0.4rem 1.2rem;
+            margin: 0.3rem auto 0.6rem;
+            width: fit-content;
+            flex-wrap: wrap;
+        }
+
+        .visa-stamp .categories-div .category-item {
+            font-size: 0.55rem;
+            font-weight: 500;
+            color: #4a3a2a;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .visa-stamp .categories-div .category-item:not(:last-child)::after {
+            content: '·';
+            position: absolute;
+            right: -0.5rem;
+            color: #b0a090;
+            font-weight: 300;
+        }
+
+        .visa-stamp .categories-div .category-item i {
+            font-size: 0.55rem;
+            color: rgba(34, 197, 94, 0.4);
+            width: 0.8rem;
+            text-align: center;
+        }
+
+        .visa-stamp .visa-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem 1.5rem;
+            margin: 0.8rem 0;
+            background: rgba(34, 197, 94, 0.02);
+            border-radius: 6px;
+            padding: 0.8rem;
+            border: 1px solid rgba(34, 197, 94, 0.04);
+        }
+
+        .visa-stamp .v-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+
+        .visa-stamp .v-item .v-label {
+            font-size: 0.45rem;
+            text-transform: uppercase;
+            color: #8a7a6a;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .visa-stamp .v-item .v-value {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            letter-spacing: 0.3px;
+        }
+
+        .visa-stamp .v-item .v-value.green {
+            color: #22c55e;
+        }
+
+        .visa-stamp .v-item.full {
+            grid-column: span 2;
+        }
+
+        .visa-stamp .status-badge {
+            text-align: center;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(34, 197, 94, 0.06);
+            margin-top: 0.2rem;
+        }
+
+        .visa-stamp .status-badge .status-label {
+            font-size: 0.4rem;
+            text-transform: uppercase;
+            color: #8a7a6a;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        .visa-stamp .status-badge .status-value {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #22c55e;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .visa-stamp .status-badge .status-value .check {
+            font-size: 0.9rem;
+        }
+
+        .visa-stamp .visa-number-bottom {
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 0.55rem;
+            color: #6a5a4a;
+            letter-spacing: 2px;
+            border-top: 1px solid rgba(34, 197, 94, 0.08);
+            padding-top: 0.6rem;
+            margin-top: 0.6rem;
+        }
+
+        .visa-stamp .entry-stamp {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 2.5px solid #22c55e;
+            background: rgba(34, 197, 94, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transform: rotate(-12deg);
+            font-size: 0.35rem;
+            color: #22c55e;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 12px rgba(34, 197, 94, 0.06);
+            pointer-events: none;
+        }
+
+        .visa-stamp .entry-stamp span {
+            font-size: 0.45rem;
+            font-weight: 400;
+        }
+
+        .visa-stamp .watermark {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.35rem;
+            color: rgba(34, 197, 94, 0.04);
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            pointer-events: none;
+            font-family: 'Times New Roman', serif;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 440px) {
+            .passport-card {
+                padding: 1.0rem 1.0rem 0.8rem;
+                border-radius: 14px;
+            }
+            .emblem {
+                width: 28px;
+                height: 28px;
+                font-size: 0.8rem;
+            }
+            .emblem-text .country {
+                font-size: 0.5rem;
+            }
+            .passport-photo {
+                width: 42px;
+                height: 54px;
+            }
+            .passport-name .name {
+                font-size: 0.75rem;
+            }
+            .passport-details {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.1rem 0.2rem;
+                padding: 0.2rem;
+            }
+            .detail-item .value {
+                font-size: 0.4rem;
+            }
+            .passport-type {
+                font-size: 0.35rem;
+                padding: 0.1rem 0.5rem;
+            }
+            .flag-icon {
+                font-size: 0.8rem;
+            }
+            .visa-btn {
+                padding: 0.15rem 0.5rem;
+                font-size: 0.45rem;
+            }
+            .visa-popup {
+                padding: 1.8rem 1.2rem;
+                margin: 1rem;
+            }
+            .visa-stamp {
+                padding: 1.2rem 0.8rem 1rem;
+            }
+            .visa-stamp .us-flag {
+                font-size: 2.8rem;
+            }
+            .visa-stamp .visa-title {
+                font-size: 0.7rem;
+                letter-spacing: 3px;
+            }
+            .visa-stamp .visa-type {
+                font-size: 1.8rem;
+            }
+            .visa-stamp .visitor-label {
+                font-size: 0.85rem;
+                letter-spacing: 2px;
+            }
+            .visa-stamp .categories-div {
+                padding: 0.3rem 0.8rem;
+                gap: 0.4rem;
+            }
+            .visa-stamp .categories-div .category-item {
+                font-size: 0.45rem;
+            }
+            .visa-stamp .categories-div .category-item i {
+                font-size: 0.45rem;
+            }
+            .visa-stamp .visa-details-grid {
+                gap: 0.5rem 1rem;
+                padding: 0.5rem;
+            }
+            .visa-stamp .v-item .v-value {
+                font-size: 0.7rem;
+            }
+            .visa-stamp .entry-stamp {
+                width: 55px;
+                height: 55px;
+                bottom: 14px;
+                right: 14px;
+                font-size: 0.3rem;
+            }
+            .visa-stamp .entry-stamp span {
+                font-size: 0.38rem;
+            }
+            .visa-stamp .visa-number-bottom {
+                font-size: 0.45rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .passport-card {
+                padding: 0.7rem 0.7rem 0.5rem;
+            }
+            .passport-photo {
+                width: 36px;
+                height: 46px;
+            }
+            .passport-name .name {
+                font-size: 0.65rem;
+            }
+            .passport-details {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.05rem 0.1rem;
+                padding: 0.15rem;
+            }
+            .detail-item .label {
+                font-size: 0.25rem;
+            }
+            .detail-item .value {
+                font-size: 0.35rem;
+            }
+            .flag-icon {
+                font-size: 0.6rem;
+            }
+            .visa-btn {
+                font-size: 0.4rem;
+                padding: 0.1rem 0.4rem;
+            }
+            .visa-stamp {
+                padding: 1.0rem 0.6rem 0.8rem;
+            }
+            .visa-stamp .us-flag {
+                font-size: 2.2rem;
+            }
+            .visa-stamp .visa-type {
+                font-size: 1.5rem;
+            }
+            .visa-stamp .visitor-label {
+                font-size: 0.7rem;
+                letter-spacing: 1.5px;
+            }
+            .visa-stamp .categories-div {
+                padding: 0.2rem 0.6rem;
+                gap: 0.3rem;
+                border-radius: 14px;
+            }
+            .visa-stamp .categories-div .category-item {
+                font-size: 0.4rem;
+            }
+            .visa-stamp .categories-div .category-item i {
+                font-size: 0.4rem;
+            }
+            .visa-stamp .visa-details-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.3rem 0.6rem;
+            }
+            .visa-stamp .v-item .v-value {
+                font-size: 0.6rem;
+            }
+            .visa-stamp .v-item .v-label {
+                font-size: 0.38rem;
+            }
+            .visa-stamp .entry-stamp {
+                width: 46px;
+                height: 46px;
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.25rem;
+            }
+            .visa-stamp .entry-stamp span {
+                font-size: 0.3rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="card">
-    <div class="icon">🚧</div>
-    <h1>We'll be back soon</h1>
-    <p>Sorry, this site is temporarily closed by the developer.</p>
-  </div>
+
+    <!-- US Passport -->
+    <div class="passport-card">
+
+        <!-- TOP: Emblem + Type + Visa Button + Flag -->
+        <div class="passport-top">
+            <div class="emblem-section">
+                <div class="emblem">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <div class="emblem-text">
+                    <span class="country">United States</span>
+                    <span class="type">of America</span>
+                </div>
+            </div>
+            <div class="passport-right">
+                <div class="passport-type">
+                    <i class="fas fa-passport" style="margin-right: 4px; font-size: 0.3rem;"></i> Standard
+                </div>
+                <div class="visa-container">
+                    <span class="flag-icon">🇺🇸</span>
+                    <button class="visa-btn" onclick="openVisa()">
+                        <i class="fas fa-stamp"></i> VISA
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MIDDLE: Photo + Name -->
+        <div class="passport-user">
+            <div class="passport-photo">
+                <img src="https://ui-avatars.com/api/?name=Jonathan+Wright&background=1a2a4a&color=c9a84c&size=80&bold=true" alt="Passport Photo" />
+            </div>
+            <div class="passport-name">
+                <div class="name">Jonathan Wright</div>
+                <div class="surname">WRIGHT · JONATHAN M.</div>
+                <div class="nationality">
+                    <i class="fas fa-flag"></i> United States Citizen
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM: Details Grid - 6 fields in 3 columns -->
+        <div class="passport-details">
+            <div class="detail-item">
+                <span class="label">Passport #</span>
+                <span class="value gold">P12345678</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">Nationality</span>
+                <span class="value">USA</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">Date of Birth</span>
+                <span class="value">14 MAY 1985</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">Sex</span>
+                <span class="value">M</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">Place of Birth</span>
+                <span class="value">NEW YORK, USA</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">Issue Date</span>
+                <span class="value">10 JAN 2023</span>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="passport-footer">
+            <span class="passport-number">P12345678</span>
+            <div class="expiry">
+                <i class="far fa-calendar-alt"></i> EXP <span>09 JAN 2033</span>
+            </div>
+            <span class="mrz">P12345678< USA</span>
+        </div>
+    </div>
+
+    <!-- VISA OVERLAY (popup containing the green card stamp) -->
+    <div class="visa-overlay" id="visaOverlay" onclick="closeVisaOutside(event)">
+        <div class="visa-popup">
+            <button class="visa-close" onclick="closeVisa()">&times;</button>
+
+            <!-- ====== GREEN CARD STAMP (exact same design as the first card) ====== -->
+            <div class="visa-stamp">
+                <div class="us-flag">🇺🇸</div>
+                <div class="visa-title">United States Visa</div>
+                <div class="visa-type">Green Card</div>
+                <div class="visitor-label">Permanent Resident</div>
+
+                <div class="categories-div">
+                    <span class="category-item"><i class="fas fa-home"></i> Residency</span>
+                    <span class="category-item"><i class="fas fa-flag"></i> LPR</span>
+                    <span class="category-item"><i class="fas fa-shield-alt"></i> Protected</span>
+                </div>
+
+                <div class="visa-details-grid">
+                    <div class="v-item">
+                        <span class="v-label">Resident Since</span>
+                        <span class="v-value green">15 DEC 2020</span>
+                    </div>
+                    <div class="v-item">
+                        <span class="v-label">Expiry Date</span>
+                        <span class="v-value green">14 DEC 2030</span>
+                    </div>
+                    <div class="v-item">
+                        <span class="v-label">Category</span>
+                        <span class="v-value">EB-2</span>
+                    </div>
+                    <div class="v-item">
+                        <span class="v-label">Status</span>
+                        <span class="v-value green">PERMANENT</span>
+                    </div>
+                    <div class="v-item full">
+                        <span class="v-label">Passport Number</span>
+                        <span class="v-value" style="font-family: 'Courier New', monospace; font-size: 0.85rem;">A12345678</span>
+                    </div>
+                </div>
+
+                <div class="status-badge">
+                    <span class="status-label">Status</span>
+                    <span class="status-value">
+                        <span class="check">✓</span> PERMANENT · ACTIVE
+                    </span>
+                </div>
+
+                <div class="visa-number-bottom">GC · USA · 2024 · 4456</div>
+
+                <div class="entry-stamp">
+                    LPR
+                    <span>2020</span>
+                </div>
+
+                <span class="watermark">GREEN CARD</span>
+            </div>
+            <!-- ====== END GREEN CARD STAMP ====== -->
+
+        </div>
+    </div>
+
+    <script>
+        function openVisa() {
+            document.getElementById('visaOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVisa() {
+            document.getElementById('visaOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close overlay when clicking outside the popup content
+        function closeVisaOutside(event) {
+            const overlay = document.getElementById('visaOverlay');
+            if (event.target === overlay) {
+                closeVisa();
+            }
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeVisa();
+            }
+        });
+    </script>
+
 </body>
 </html>
